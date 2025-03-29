@@ -1,4 +1,4 @@
-name: Build RISCV For Lean
+name: Build ARM For Lean
 
 on:
   schedule:
