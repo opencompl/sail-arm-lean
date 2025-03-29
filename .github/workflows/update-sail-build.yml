@@ -61,8 +61,8 @@ jobs:
       run: |
         git clone git@github.com:rems-project/sail-arm.git
         cd sail-arm/arm-v9.4a
-        eval $(opam config env)
-        sail -dprofile -verbose 1 -lean-lean_output_dir lean -o armv9 -undefined_gen -lean-noncomputable src/prelude.sail src/decode_start.sail src/builtins.sail src/v8_base.sail src/stubs.sail src/interrupts.sail src/interface.sail src/devices.sail src/impdefs.sail src/mem.sail src/sysregs_autogen.sail src/sysregs.sail src/reset.sail src/instrs32.sail src/instrs64.sail src/instrs64_sve.sail src/instrs64_sme.sail src/decode_end.sail src/fetch.sail src/map_clauses.sail src/event_clauses.sail src/termination_measures.sail
+        eval $(opam config env)eval $(opam config env)
+        sail -dprofile -verbose 1 -lean -lean_output_dir lean -o armv9 -undefined_gen -lean-noncomputable src/prelude.sail src/decode_start.sail src/builtins.sail src/v8_base.sail src/stubs.sail src/interrupts.sail src/interface.sail src/devices.sail src/impdefs.sail src/mem.sail src/sysregs_autogen.sail src/sysregs.sail src/reset.sail src/instrs32.sail src/instrs64.sail src/instrs64_sve.sail src/instrs64_sme.sail src/decode_end.sail src/fetch.sail src/map_clauses.sail src/event_clauses.sail src/termination_measures.sail
         cd ../..
 
 
