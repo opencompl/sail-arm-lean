@@ -24,6 +24,9 @@ jobs:
     - name: Checkout SAIL
       run: |
         git clone https://github.com/rems-project/sail.git
+        cd sail
+        patch -p1 < ../.github/workflows/sail.patch
+        cd ..
 
     - name: System dependencies (ubuntu)
       if: startsWith(matrix.os, 'ubuntu')
