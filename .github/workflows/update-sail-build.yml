@@ -78,6 +78,8 @@ jobs:
         wget -q https://raw.githubusercontent.com/leanprover-community/mathlib4/master/scripts/install_debian.sh
         bash install_debian.sh ; rm -f install_debian.sh
         source ~/.profile
+        cp README.md.template sail-arm/arm-v9.4-a/lean
+        cp report.py sail-arm/arm-v9.4-a/lean
         cd sail-arm/arm-v9.4-a/lean
         echo "Set ulimit"	
         ulimit -s unlimited
@@ -87,7 +89,7 @@ jobs:
         ./report.py >> README.md
         echo "Build errors" >> README.md
         tail -n 50 ../../../../sail-arm/arm-v9.4-a/sail.log >> README.md
-        cd ../../../..
+        cd ../../..
 
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
