@@ -1,0 +1,305 @@
+diff --git a/arm-v9.4-a/Makefile b/arm-v9.4-a/Makefile
+index 95e6659..bbb0c9e 100644
+--- a/arm-v9.4-a/Makefile
++++ b/arm-v9.4-a/Makefile
+@@ -79,6 +79,15 @@ gen_coq coq coq.stamp: $(SAIL_SRCS) src/termination_measures.sail
+ 	        src/termination_measures.sail
+ 	touch coq.stamp
+ 
++lean: $(SAIL_SRCS) src/termination_measures.sail
++	$(SAIL) -dprofile -verbose 1 \
++	        -lean \
++	        -lean_output_dir lean -o armv9 \
++	        -undefined_gen \
++	        -lean-noncomputable \
++	        $(SAIL_SRCS) $(SAIL_FLAGS) \
++	        src/termination_measures.sail
++
+ c/armv9.c: $(SAIL_SRCS) $(SAIL_MAIN)
+ 	mkdir -p c
+ 	$(SAIL) -dprofile -verbose 1 -memo_z3 \
+diff --git a/arm-v9.4-a/src/fetch.sail b/arm-v9.4-a/src/fetch.sail
+index 466fa7a..2bbff9f 100644
+--- a/arm-v9.4-a/src/fetch.sail
++++ b/arm-v9.4-a/src/fetch.sail
+@@ -358,7 +358,6 @@ function __TopLevel () = {
+         if not_bool(interrupt_taken) then {
+             if Branchtypetaken == BranchType_RESET then {
+                 CheckResetCatch();
+-                BranchTaken = BranchType_UNKNOWN
+             };
+             __InstructionExecute()
+         };
+diff --git a/arm-v9.4-a/src/v8_base.sail b/arm-v9.4-a/src/v8_base.sail
+index ea6c766..7efcabe 100644
+--- a/arm-v9.4-a/src/v8_base.sail
++++ b/arm-v9.4-a/src/v8_base.sail
+@@ -19791,85 +19791,6 @@ register __tlb_enabled : bool = false
+ 
+ val GPTWalk : (bits(56), AccessDescriptor) -> (GPCFRecord, GPTEntry)
+ 
+-function GPTWalk (pa, accdesc) = {
+-    gpi_index : int = undefined;
+-    gpttlbline : GPTTLBLine = undefined;
+-    let pgs : PGSe = DecodePGS(GPCCR_EL3[PGS]);
+-    if __tlb_enabled then {
+-        let gpttlbline : GPTTLBLine = GPTTLBLookup(pa, pgs);
+-        if gpttlbline.valid_name then {
+-            return((GPCNoFault(), gpttlbline.gpt_entry))
+-        };
+-        ()
+-    };
+-    base : bits(56) = ZeroExtend(GPTBR_EL3[BADDR] @ Zeros(12), 56);
+-    let 'pps = DecodePPS();
+-    let 'l0sz = GPTL0Size();
+-    let 'alignment = Max(pps - l0sz + 3, 12);
+-    assert(constraint(56 >= 'alignment));
+-    let base : bits(56) = base & not_vec(ZeroExtend(Ones(alignment), 56));
+-    let gptaccdesc : AccessDescriptor = CreateAccDescGPTW(accdesc);
+-    gptaddrdesc : AddressDescriptor = undefined;
+-    gptaddrdesc.memattrs = WalkMemAttrs(GPCCR_EL3[SH], GPCCR_EL3[ORGN], GPCCR_EL3[IRGN]);
+-    gptaddrdesc.fault = NoFault__1(gptaccdesc);
+-    gptaddrdesc.paddress.paspace = PAS_Root;
+-    gptaddrdesc.paddress.address = base + GPTLevel0Index(pa) * 8;
+-    level_0_entry : bits(64) = undefined;
+-    memstatus : PhysMemRetStatus = undefined;
+-    (memstatus, level_0_entry) = PhysMemRead(gptaddrdesc, 8, gptaccdesc, None());
+-    if IsFault__2(memstatus) then {
+-        return((GPCFault(GPCF_EABT, 0), __UNKNOWN_GPTEntry()))
+-    };
+-    result : GPTEntry = undefined;
+-    table : GPTTable = undefined;
+-    gpf : GPCF = undefined;
+-    match level_0_entry[3 .. 0] {
+-      ? if ? == GPT_Block => {
+-          (gpf, result) = DecodeGPTBlock(pgs, level_0_entry);
+-          result.pa = pa;
+-          if __tlb_enabled & gpf == GPCF_None then {
+-              GPTTLBCache(pgs, result)
+-          };
+-          return((GPCFault(gpf, 0), result))
+-      },
+-      ? if ? == GPT_Table => {
+-          (gpf, table) = DecodeGPTTable(pgs, level_0_entry);
+-          if gpf != GPCF_None then {
+-              return((GPCFault(gpf, 0), __UNKNOWN_GPTEntry()))
+-          };
+-          ()
+-      },
+-      _ => {
+-          return((GPCFault(GPCF_Walk, 0), __UNKNOWN_GPTEntry()))
+-      }
+-    };
+-    assert(level_0_entry[3 .. 0] == GPT_Table);
+-    let 'offset = GPTLevel1Index(pa) * 8;
+-    gptaddrdesc.paddress.address = table.address + offset;
+-    level_1_entry : bits(64) = undefined;
+-    (memstatus, level_1_entry) = PhysMemRead(gptaddrdesc, 8, gptaccdesc, None());
+-    if IsFault__2(memstatus) then {
+-        return((GPCFault(GPCF_EABT, 1), __UNKNOWN_GPTEntry()))
+-    };
+-    match level_1_entry[3 .. 0] {
+-      ? if ? == GPT_Contig => {
+-          (gpf, result) = DecodeGPTContiguous(pgs, level_1_entry)
+-      },
+-      _ => {
+-          let 'gpi_index = GPIIndex(pa);
+-          (gpf, result) = DecodeGPTGranules(pgs, gpi_index, level_1_entry)
+-      }
+-    };
+-    if gpf != GPCF_None then {
+-        return((GPCFault(gpf, 1), __UNKNOWN_GPTEntry()))
+-    };
+-    result.pa = pa;
+-    if __tlb_enabled then {
+-        GPTTLBCache(pgs, result)
+-    };
+-    return((GPCNoFault(), result))
+-}
+-
+ val SetTLBIncludesGPT : forall 'gpt_range. (TLBContext, int('gpt_range)) -> unit
+ 
+ val TLBIncludesGPT : TLBContext -> bool
+@@ -25106,20 +25027,7 @@ function AArch64_PhysicalAddressSize (d128, encoded_ps, tgx) = {
+           ps = 56
+       }
+     };
+-    let 'ps = ps;
+-    if not_bool(Have56BitPAExt()) | d128 == 0b0 then {
+-        if tgx != TGx_64KB & not_bool(Have52BitIPAAndPASpaceExt()) then {
+-            max_ps = Min(48, AArch64_PAMax())
+-        } else if not_bool(Have52BitPAExt()) then {
+-            max_ps = Min(48, AArch64_PAMax())
+-        } else {
+-            max_ps = Min(52, AArch64_PAMax())
+-        }
+-    } else {
+-        max_ps = AArch64_PAMax()
+-    };
+-    let 'max_ps = max_ps;
+-    return(Min(ps, max_ps))
++    return(Min(65, 65))
+ }
+ 
+ val AArch64_OAOutOfRange : (bits(56), bits(1), bits(3), TGx) -> bool
+@@ -27034,160 +26942,6 @@ val S2TLBLookup : TLBContext -> TLBLine
+ val AArch64_S2Walk : forall 'N, 'N in {32, 64, 128}.
+   (FaultRecord, AddressDescriptor, S2TTWParams, AccessDescriptor, option(int), int('N)) -> (FaultRecord, AddressDescriptor, TTWState, bits('N))
+ 
+-function AArch64_S2Walk (fault_in, ipa, walkparams, accdesc, s1level, N) = {
+-    fault : FaultRecord = fault_in;
+-    let ipa_64 : bits(64) = ZeroExtend(ipa.paddress.address, 64);
+-    tlbcontext : TLBContext = undefined;
+-    tlbrecord : TLBRecord = undefined;
+-    if __tlb_enabled then {
+-        tlbcontext = AArch64_GetS2TLBContext(accdesc.ss, ipa.paddress, walkparams.tgx);
+-        let tlbentry : TLBLine = S2TLBLookup(tlbcontext);
+-        tlbrecord = tlbentry.tlbrecord;
+-        let oa : FullAddress = StageOA(ipa_64, walkparams.d128, walkparams.tgx, tlbrecord.walkstate);
+-        if (tlbentry.valid_name & not_bool(AArch64_OAOutOfRange(oa.address, walkparams.d128, walkparams.ps, walkparams.tgx))) & not_bool(((((walkparams.ha @ walkparams.hd) == 0b11 & (walkparams.s2pie == 0b1 | [tlbrecord.s2descriptor[51]] == 0b1)) & [tlbrecord.s2descriptor[7]] == 0b0) & accdesc.write) & not_bool(accdesc.acctype == AccessType_AT | accdesc.acctype == AccessType_IC | accdesc.acctype == AccessType_DC)) then {
+-            if walkparams.fwb == 0b1 then {
+-                tlbrecord.walkstate.memattrs = AArch64_S2ApplyFWBMemAttrs(ipa.memattrs, walkparams, tlbrecord.s2descriptor);
+-                if tlbrecord.s2descriptor[5 .. 3] == 0b111 then {
+-                    tlbrecord.walkstate.permissions.s2tag_na = 0b1
+-                } else {
+-                    tlbrecord.walkstate.permissions.s2tag_na = 0b0
+-                }
+-            };
+-            fault.level = tlbrecord.walkstate.level;
+-            return((fault, __UNKNOWN_AddressDescriptor(), tlbrecord.walkstate, tlbrecord.s2descriptor[N - 1 .. 0]))
+-        };
+-        ()
+-    };
+-    walkstate : TTWState = undefined;
+-    if accdesc.ss == SS_Secure then {
+-        walkstate = AArch64_SS2InitialTTWState(walkparams, ipa.paddress.paspace)
+-    } else {
+-        walkstate = AArch64_S2InitialTTWState(accdesc.ss, walkparams)
+-    };
+-    let 'startlevel = walkstate.level;
+-    descriptor : bits('N) = undefined;
+-    let walkaccess : AccessDescriptor = CreateAccDescS2TTW(accdesc);
+-    walkaddress : AddressDescriptor = undefined;
+-    skl : bits(2) = 0b00;
+-    walkaddress.vaddress = ipa.vaddress;
+-    walkaddress.mecid = AArch64_TTWalkMECID(walkparams.emec, Regime_EL10, accdesc.ss);
+-    if HCR_EL2[CD] == 0b1 then {
+-        walkaddress.memattrs = NormalNCMemAttr();
+-        walkaddress.memattrs.xs = walkstate.memattrs.xs
+-    } else {
+-        walkaddress.memattrs = walkstate.memattrs
+-    };
+-    walkaddress.memattrs.shareability = EffectiveShareability(walkaddress.memattrs);
+-    walkaddress.tlbcontext = tlbcontext;
+-    desctype : DescriptorType = undefined;
+-    descaddress : FullAddress = AArch64_S2SLTTEntryAddress(walkparams, ipa.paddress.address, walkstate.baseaddress);
+-    if AArch64_OAOutOfRange(descaddress.address, walkparams.d128, walkparams.ps, walkparams.tgx) then {
+-        fault.statuscode = Fault_AddressSize;
+-        fault.level = 0;
+-        return((fault, __UNKNOWN_AddressDescriptor(), __UNKNOWN_TTWState(), __UNKNOWN_bits(N)))
+-    };
+-    repeat {
+-        fault.level = walkstate.level;
+-        walkaddress.paddress = descaddress;
+-        let translation_info : TranslationInfo = struct {
+-            regime = Regime_EL10,
+-            vmid = Some(VMID_read()), // TODO?
+-            asid = None(),
+-            va = walkaddress.vaddress,
+-            s1level = s1level,
+-            s2info = Some((ipa_64, walkstate.level)),
+-            s1params = None(),
+-            s2params = Some(walkparams),
+-            memattrs = walkaddress.memattrs
+-        };
+-        (fault, descriptor) = FetchDescriptor(walkparams.ee, walkaddress, walkaccess, fault, N, translation_info);
+-        if fault.statuscode != Fault_None then {
+-            return((fault, __UNKNOWN_AddressDescriptor(), __UNKNOWN_TTWState(), __UNKNOWN_bits(N)))
+-        };
+-        new_descriptor : bits('N) = undefined;
+-        repeat {
+-            new_descriptor = descriptor;
+-            desctype = AArch64_DecodeDescriptorType(descriptor, walkparams.d128, walkparams.ds, walkparams.tgx, walkstate.level);
+-            match desctype {
+-              DescriptorType_Table => {
+-                  walkstate = AArch64_S2NextWalkStateTable(walkstate, walkparams, descriptor);
+-                  skl = if walkparams.d128 == 0b1 then {
+-                      assert(constraint(110 < 'N));
+-                      descriptor[110 .. 109]
+-                  } else 0b00;
+-                  descaddress = AArch64_TTEntryAddress(walkstate.level, walkparams.d128, skl, walkparams.tgx, walkparams.txsz, ipa_64, walkstate.baseaddress);
+-                  if AArch64_OAOutOfRange(descaddress.address, walkparams.d128, walkparams.ps, walkparams.tgx) then {
+-                      fault.statuscode = Fault_AddressSize;
+-                      return((fault, __UNKNOWN_AddressDescriptor(), __UNKNOWN_TTWState(), __UNKNOWN_bits(N)))
+-                  };
+-                  if walkparams.haft == 0b1 then {
+-                      new_descriptor[10] = Bit(0b1)
+-                  };
+-                  if (walkparams.d128 == 0b1 & skl != 0b00) & AArch64_BlocknTFaults(walkparams.d128, descriptor) then {
+-                      fault.statuscode = Fault_Translation;
+-                      return((fault, __UNKNOWN_AddressDescriptor(), __UNKNOWN_TTWState(), __UNKNOWN_bits(N)))
+-                  };
+-                  ()
+-              },
+-              DescriptorType_Leaf => {
+-                  assert(constraint(52 < 'N));
+-                  walkstate = AArch64_S2NextWalkStateLeaf(walkstate, accdesc.ss, walkparams, ipa, descriptor)
+-              },
+-              DescriptorType_Invalid => {
+-                  fault.statuscode = Fault_Translation;
+-                  return((fault, __UNKNOWN_AddressDescriptor(), __UNKNOWN_TTWState(), __UNKNOWN_bits(N)))
+-              },
+-              _ => {
+-                  Unreachable()
+-              }
+-            };
+-            if new_descriptor != descriptor then {
+-                let descaccess : AccessDescriptor = CreateAccDescTTEUpdate(accdesc);
+-                assert(constraint('N in {64, 128}));
+-                (fault, descriptor) = AArch64_MemSwapTableDesc(fault, descriptor, new_descriptor, walkparams.ee, descaccess, walkaddress, translation_info);
+-                if fault.statuscode != Fault_None then {
+-                    return((fault, __UNKNOWN_AddressDescriptor(), __UNKNOWN_TTWState(), __UNKNOWN_bits(N)))
+-                };
+-                ()
+-            };
+-            ()
+-        } until new_descriptor == descriptor
+-    } until desctype == DescriptorType_Leaf;
+-    let oa : FullAddress = StageOA(ipa_64, walkparams.d128, walkparams.tgx, walkstate);
+-    if walkstate.contiguous == 0b1 & AArch64_ContiguousBitFaults(walkparams.d128, walkparams.txsz, walkparams.tgx, walkstate.level) then {
+-        fault.statuscode = Fault_Translation
+-    } else if (desctype == DescriptorType_Leaf & walkstate.level < FINAL_LEVEL) & AArch64_BlocknTFaults(walkparams.d128, descriptor) then {
+-        fault.statuscode = Fault_Translation
+-    } else if AArch64_OAOutOfRange(oa.address, walkparams.d128, walkparams.ps, walkparams.tgx) then {
+-        fault.statuscode = Fault_AddressSize
+-    } else if ([descriptor[10]] == 0b0 & walkparams.ha == 0b0) & not_bool((accdesc.acctype == AccessType_DC | accdesc.acctype == AccessType_IC) & not_bool(__IMPDEF_boolean("Generate access flag fault on IC/DC operations"))) then {
+-        fault.statuscode = Fault_AccessFlag
+-    } else ();
+-    if (__tlb_enabled & fault.statuscode == Fault_None) & [descriptor[10]] == 0b1 then {
+-        tlbcontext.xs = walkstate.memattrs.xs;
+-        tlbcontext.level = walkstate.level;
+-        tlbcontext.isd128 = walkparams.d128 == 0b1;
+-        tlbrecord.context = tlbcontext;
+-        tlbrecord.walkstate = walkstate;
+-        tlbrecord.blocksize = TranslationSize(walkparams.d128, walkparams.tgx, walkstate.level);
+-        if walkparams.d128 == 0b1 then {
+-            assert(constraint(127 < 'N));
+-            tlbrecord.s2descriptor = descriptor[127 .. 0]
+-        } else {
+-            assert(constraint(63 < 'N));
+-            tlbrecord.s2descriptor[63 .. 0] = descriptor[63 .. 0];
+-            tlbrecord.s2descriptor[127 .. 64] = Zeros(64)
+-        };
+-        if walkstate.contiguous == 0b1 then {
+-            tlbrecord.contigsize = ContiguousSize(walkparams.d128, walkparams.tgx, walkstate.level)
+-        } else {
+-            tlbrecord.contigsize = 0
+-        };
+-        S2TLBCache(tlbrecord)
+-    };
+-    return((fault, walkaddress, walkstate, descriptor))
+-}
+-
+ val AArch64_SettingAccessFlagPermitted : FaultRecord -> bool
+ 
+ function AArch64_SettingAccessFlagPermitted fault = {
