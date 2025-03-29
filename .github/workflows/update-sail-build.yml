@@ -1,0 +1,90 @@
+name: Build RISCV For Lean
+
+on:
+  schedule:
+    - cron: "42 * * * *"
+  workflow_dispatch:
+
+env:
+  OPAMVERBOSE: 1
+  CLEAR_GLOBS_FILE: .github/workflows/clear-globs.txt
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        version: [5.2.1]
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Checkout SAIL
+      run: |
+        git clone https://github.com/rems-project/sail.git
+
+    - name: System dependencies (ubuntu)
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo apt install build-essential libgmp-dev z3 cvc4 opam
+
+    - name: Restore cached opam
+      id: cache-opam-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: ~/.opam
+        key: ${{ matrix.os }}-${{ matrix.version }}
+
+    - name: Setup opam
+      if: steps.cache-opam-restore.outputs.cache-hit != 'true'
+      run: |
+        opam init --yes --no-setup --shell=sh --compiler=${{ matrix.version }}
+        opam install dune
+
+    - name: Save cached opam
+      if: steps.cache-opam-restore.outputs.cache-hit != 'true'
+      id: cache-opam-save
+      uses: actions/cache/save@v4
+      with:
+        path: ~/.opam
+        key: ${{ steps.cache-opam-restore.outputs.cache-primary-key }}
+
+    - name: Install Sail
+      run: |
+        eval $(opam env)
+        (cd sail; opam install sail --deps-only --yes)
+        (cd sail; make install)
+
+    - name: Build the Sail RISCV Model for Lean
+      run: |
+        git clone git@github.com:rems-project/sail-arm.git
+        cd sail-arm/arm-v9.4a
+        eval $(opam config env)
+	sail -dprofile -verbose 1 -lean-lean_output_dir lean -o armv9 -undefined_gen -lean-noncomputable src/prelude.sail src/decode_start.sail src/builtins.sail src/v8_base.sail src/stubs.sail src/interrupts.sail src/interface.sail src/devices.sail src/impdefs.sail src/mem.sail src/sysregs_autogen.sail src/sysregs.sail src/reset.sail src/instrs32.sail src/instrs64.sail src/instrs64_sve.sail src/instrs64_sme.sail src/decode_end.sail src/fetch.sail src/map_clauses.sail src/event_clauses.sail src/termination_measures.sail
+	cd ../..
+
+
+    - name: Use Lean to build the model and record errors
+      run: |
+        wget -q https://raw.githubusercontent.com/leanprover-community/mathlib4/master/scripts/install_debian.sh
+        bash install_debian.sh ; rm -f install_debian.sh
+        source ~/.profile
+        cd sail-arm/arm-v9.4a/lean
+        echo "Set ulimit"	
+        ulimit -s unlimited
+        ulimit -s
+        (lake build | tee build_log.txt || true)
+        cp README.md.template README.md
+        ./report.py >> README.md
+        cd ../../../..
+
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: main
+        FOLDER: sail-riscv/build/model/Lean_RV64D_LEAN/
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TARGET_DIR: .
