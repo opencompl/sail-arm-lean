@@ -88,7 +88,7 @@ jobs:
         cp README.md.template README.md
         ./report.py >> README.md
         echo "Build errors" >> README.md
-        tail -n 50 ../../../../sail-arm/arm-v9.4-a/sail.log >> README.md
+        tail -n 50 ../../../sail-arm/arm-v9.4-a/sail.log >> README.md
         cd ../../..
 
     - name: Deploy
