@@ -57,10 +57,13 @@ jobs:
         (cd sail; opam install sail --deps-only --yes)
         (cd sail; make install)
 
-    - name: Build the Sail RISCV Model for Lean
+    - name: Build the Sail ARM v9.4a Model for Lean
       run: |
         git clone https://github.com/rems-project/sail-arm.git
-        cd sail-arm/arm-v9.4a
+        ls
+        cd sail-arm
+        ls
+        cd arm-v9.4-a
         eval $(opam config env)eval $(opam config env)
         sail -dprofile -verbose 1 -lean -lean_output_dir lean -o armv9 -undefined_gen -lean-noncomputable src/prelude.sail src/decode_start.sail src/builtins.sail src/v8_base.sail src/stubs.sail src/interrupts.sail src/interface.sail src/devices.sail src/impdefs.sail src/mem.sail src/sysregs_autogen.sail src/sysregs.sail src/reset.sail src/instrs32.sail src/instrs64.sail src/instrs64_sve.sail src/instrs64_sme.sail src/decode_end.sail src/fetch.sail src/map_clauses.sail src/event_clauses.sail src/termination_measures.sail
         cd ../..
