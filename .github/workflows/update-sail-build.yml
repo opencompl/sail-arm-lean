@@ -72,11 +72,12 @@ jobs:
 
 
     - name: Use Lean to build the model and record errors
+      continue-on-error: true
       run: |
         wget -q https://raw.githubusercontent.com/leanprover-community/mathlib4/master/scripts/install_debian.sh
         bash install_debian.sh ; rm -f install_debian.sh
         source ~/.profile
-        cd sail-arm/arm-v9.4a/lean
+        cd sail-arm/arm-v9.4-a/lean
         echo "Set ulimit"	
         ulimit -s unlimited
         ulimit -s
