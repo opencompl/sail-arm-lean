@@ -92,6 +92,6 @@ jobs:
       env:
         REPO: self
         BRANCH: main
-        FOLDER: sail-riscv/build/model/Lean_RV64D_LEAN/
+        FOLDER: sail-arm/arm-v9.4-a/lean
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TARGET_DIR: .
