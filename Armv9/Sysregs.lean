@@ -583,7 +583,7 @@ def AArch64_SysRegRead (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : In
            ((BEq.beq crn (UInt0 (0xA : (BitVec 4)))) : Bool)) (BEq.beq op2 0)) (BEq.beq crm 5))
   then
     (do
-      bif (eq_any (← (CurrentSecurityState ())) SS_Secure)
+      bif (BEq.beq (← (CurrentSecurityState ())) SS_Secure)
       then
         (X_set t 64
           (Sail.BitVec.updateSubrange (← (X_read t 64)) 60 60
@@ -1040,7 +1040,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
                         (6 -i (UInt0 (_get_ICH_VTR_EL2_Type_PREbits (← readReg ICH_VTR_EL2)))) 2 0))))
               else (pure tempxt) ) : SailME _ (BitVec 64) )
             let tempxt ← (( do
-              bif (eq_any (← (CurrentSecurityState ())) SS_Secure)
+              bif (BEq.beq (← (CurrentSecurityState ())) SS_Secure)
               then
                 (do
                   bif ((UInt0 (Sail.BitVec.extractLsb tempxt 20 18)) <b (6 -i (UInt0
@@ -1092,7 +1092,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
         bif (BEq.beq (_get_ICV_CTLR_EL1_Type_CBPR (← readReg ICV_CTLR_EL1)) (0b0 : (BitVec 1)))
         then
           (do
-            bif (eq_any (← (CurrentSecurityState ())) SS_Secure)
+            bif (BEq.beq (← (CurrentSecurityState ())) SS_Secure)
             then
               (do
                 bif ((UInt0 (Sail.BitVec.extractLsb tempxt 2 0)) <b (6 -i (UInt0
@@ -1872,7 +1872,7 @@ def AArch32_SysRegRead__1 (cp_num : Int) (instr : (BitVec 32)) (t : Int) : SailM
           (R_set t
             (Sail.BitVec.updateSubrange (← (R_read t)) 18 18
               (← do
-                bif (eq_any (← (CurrentSecurityState ())) SS_NonSecure)
+                bif (BEq.beq (← (CurrentSecurityState ())) SS_NonSecure)
                 then (pure (0b1 : (BitVec 1)))
                 else (pure (0b0 : (BitVec 1))))))
           bif (HaveEL EL3)
@@ -1988,7 +1988,7 @@ def AArch32_SysRegRead__1 (cp_num : Int) (instr : (BitVec 32)) (t : Int) : SailM
                     (do
                       bif (Bool.and
                            (Bool.and
-                             (Bool.and (eq_any (← (CurrentSecurityState ())) SS_NonSecure)
+                             (Bool.and (BEq.beq (← (CurrentSecurityState ())) SS_NonSecure)
                                (HaveEL EL3)) (← (ELUsingAArch32 EL3)))
                            (BEq.beq (_get_NSACR_Type_cp10 (← readReg NSACR)) (0b0 : (BitVec 1))))
                       then
@@ -2071,7 +2071,8 @@ def AArch32_SysRegWrite (cp_num : Int) (instr : (BitVec 32)) (t : Int) : SailM U
     then
       (do
         bif (Bool.and
-             (Bool.and (Bool.and (eq_any (← (CurrentSecurityState ())) SS_NonSecure) (HaveEL EL3))
+             (Bool.and
+               (Bool.and (BEq.beq (← (CurrentSecurityState ())) SS_NonSecure) (HaveEL EL3))
                (← (ELUsingAArch32 EL3)))
              (BEq.beq (_get_NSACR_Type_cp10 (← readReg NSACR)) (0b0 : (BitVec 1))))
         then

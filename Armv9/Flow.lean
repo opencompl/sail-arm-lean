@@ -106,10 +106,6 @@ def neq_bool (x : Bool) (y : Bool) : Bool :=
 def eq_bits_int (x : (BitVec k_n)) (y : Nat) : Bool :=
   (BEq.beq (BitVec.toNat x) y)
 
-/-- Type quantifiers: k_a : Type -/
-def neq_any (x : k_a) (y : k_a) : Bool :=
-  (Bool.not (eq_any x y))
-
 /-- Type quantifiers: x : Int -/
 def __id (x : Int) : Int :=
   x

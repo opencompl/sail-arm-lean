@@ -196,7 +196,7 @@ def UnallocatedT32_16_Instruction (instr : (BitVec 16)) : SailM Unit := do
 
 def __DefaultCond (enc : __InstrEnc) : SailM (BitVec 4) := do
   let cond ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
-  bif (Bool.or (Bool.or (eq_any enc __A64) (eq_any enc __A32))
+  bif (Bool.or (Bool.or (BEq.beq enc __A64) (BEq.beq enc __A32))
        (BEq.beq (Sail.BitVec.extractLsb (← readReg PSTATE).IT 3 0) (Zeros (n := 4))))
   then (pure (0xE : (BitVec 4)))
   else
@@ -416,7 +416,7 @@ def __TopLevel (_ : Unit) : SailM Unit := do
           bif (Bool.not interrupt_taken)
           then
             (do
-              bif (eq_any (← readReg Branchtypetaken) BranchType_RESET)
+              bif (BEq.beq (← readReg Branchtypetaken) BranchType_RESET)
               then (CheckResetCatch ())
               else (pure ())
               (__InstructionExecute ()))

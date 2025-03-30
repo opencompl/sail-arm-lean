@@ -6,19 +6,20 @@ https://github.com/rems-project/sail-arm.
 ⚠️ While this repository covers the full ARM, our Lean backend for sail
 is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
-# RISC-V Lean Statistics
+# Statistics about extracted model
 
-Lines: 951709  
-Definitions: 33938  
+Lines: 951712  
+Definitions: 33937  
 Inductive definitions: 89  
 Abbreviations: 929  
 
 # Warnings and Errors
 
-Errors found: 2  
+Errors found: 4  
 Warnings found: 0  
 
 ## Error Classes
 
-- 1x unknown identifier 'eq_any'
+- 2x unknown identifier '_builtin_mod_nat'
+- 1x unknown identifier 'arith_shiftr'
 - 1x Lean exited with code 1

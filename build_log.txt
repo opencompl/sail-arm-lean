@@ -3,9 +3,18 @@
 ✔ [4/38] Built Armv9.Sail.Sail
 ✔ [5/38] Built Armv9.Defs
 ✔ [6/38] Built Armv9.Specialization
-✖ [7/38] Building Armv9.Flow
-trace: .> LEAN_PATH=././.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-03-17/bin/lean --tstack=400000 ././././Armv9/Flow.lean -R ./././. -o ././.lake/build/lib/lean/Armv9/Flow.olean -i ././.lake/build/lib/lean/Armv9/Flow.ilean -c ././.lake/build/ir/Armv9/Flow.c --json
-error: ././././Armv9/Flow.lean:111:13: unknown identifier 'eq_any'
+✔ [7/38] Built Armv9.Flow
+✔ [8/38] Built Armv9.Arith
+✔ [9/38] Built Armv9.Trace
+✔ [10/38] Built Armv9.Vector
+✔ [11/38] Built Armv9.String
+✔ [12/38] Built Armv9.ReverseEndianness
+✔ [13/38] Built Armv9.Option
+✖ [14/38] Building Armv9.MonoRewrites
+trace: .> LEAN_PATH=././.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-03-17/bin/lean --tstack=400000 ././././Armv9/MonoRewrites.lean -R ./././. -o ././.lake/build/lib/lean/Armv9/MonoRewrites.olean -i ././.lake/build/lib/lean/Armv9/MonoRewrites.ilean -c ././.lake/build/ir/Armv9/MonoRewrites.c --json
+error: ././././Armv9/MonoRewrites.lean:190:5: unknown identifier 'arith_shiftr'
+error: ././././Armv9/MonoRewrites.lean:210:3: unknown identifier '_builtin_mod_nat'
+error: ././././Armv9/MonoRewrites.lean:215:3: unknown identifier '_builtin_mod_nat'
 error: Lean exited with code 1
 Some required builds logged failures:
-- Armv9.Flow
+- Armv9.MonoRewrites

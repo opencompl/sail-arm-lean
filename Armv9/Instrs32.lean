@@ -1452,12 +1452,12 @@ def decode_aarch32_instrs_BKPT_T1enc_A_txt (imm8 : (BitVec 8)) : SailM Unit := d
   (execute_aarch32_instrs_BKPT_Op_A_txt imm16)
 
 def execute_aarch32_instrs_BL_i_Op_A_txt (imm32 : (BitVec 32)) (targetInstrSet : InstrSet) : SailM Unit := do
-  bif (eq_any (← (CurrentInstrSet ())) InstrSet_A32)
+  bif (BEq.beq (← (CurrentInstrSet ())) InstrSet_A32)
   then (LR_write (sub_vec_int (← (PC_read__1 ())) 4))
   else (LR_write ((Sail.BitVec.extractLsb (← (PC_read__1 ())) 31 1) ++ (0b1 : (BitVec 1))))
   let targetAddress ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
   let targetAddress ← (( do
-    bif (eq_any targetInstrSet InstrSet_A32)
+    bif (BEq.beq targetInstrSet InstrSet_A32)
     then
       (do
         (pure ((Align_bits (← (PC_read__1 ())) 4) + imm32)))
@@ -1523,7 +1523,7 @@ def decode_aarch32_instrs_BL_i_T2enc_A_txt (S : (BitVec 1)) (imm10H : (BitVec 10
 def execute_aarch32_instrs_BLX_r_Op_A_txt (m : Nat) : SailM Unit := do
   let target ← (( do (R_read m) ) : SailM (BitVec 32) )
   let next_instr_addr ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  bif (eq_any (← (CurrentInstrSet ())) InstrSet_A32)
+  bif (BEq.beq (← (CurrentInstrSet ())) InstrSet_A32)
   then
     (do
       let next_instr_addr ← (( do (pure (sub_vec_int (← (PC_read__1 ())) 4)) ) : SailM
@@ -2089,11 +2089,11 @@ def execute_aarch32_instrs_DMB_Op_A_txt (option_name : (BitVec 4)) : SailM Unit 
           else (pure domain) ) : SailM MBReqDomain )
         let domain ← (( do
           bif (Bool.and (BEq.beq (_get_HCR_Type_BSU (← (HCR_read ()))) (0b10 : (BitVec 2)))
-               (neq_any domain MBReqDomain_FullSystem))
+               (bne domain MBReqDomain_FullSystem))
           then (pure MBReqDomain_OuterShareable)
           else (pure domain) ) : SailM MBReqDomain )
         bif (Bool.and (BEq.beq (_get_HCR_Type_BSU (← (HCR_read ()))) (0b01 : (BitVec 2)))
-             (eq_any domain MBReqDomain_Nonshareable))
+             (BEq.beq domain MBReqDomain_Nonshareable))
         then (pure MBReqDomain_InnerShareable)
         else (pure domain))
     else (pure domain) ) : SailM MBReqDomain )
@@ -2227,11 +2227,11 @@ def execute_aarch32_instrs_DSB_Op_A_txt (option_name : (BitVec 4)) : SailM Unit 
           else (pure domain) ) : SailM MBReqDomain )
         let domain ← (( do
           bif (Bool.and (BEq.beq (_get_HCR_Type_BSU (← (HCR_read ()))) (0b10 : (BitVec 2)))
-               (neq_any domain MBReqDomain_FullSystem))
+               (bne domain MBReqDomain_FullSystem))
           then (pure MBReqDomain_OuterShareable)
           else (pure domain) ) : SailM MBReqDomain )
         bif (Bool.and (BEq.beq (_get_HCR_Type_BSU (← (HCR_read ()))) (0b01 : (BitVec 2)))
-             (eq_any domain MBReqDomain_Nonshareable))
+             (BEq.beq domain MBReqDomain_Nonshareable))
         then (pure MBReqDomain_InnerShareable)
         else (pure domain))
     else (pure domain) ) : SailM MBReqDomain )
@@ -2549,8 +2549,7 @@ def decode_aarch32_instrs_LDC_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
       let cp := 14
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       bif (Bool.or (BEq.beq W (0b1 : (BitVec 1)))
-           (Bool.and (BEq.beq P (0b0 : (BitVec 1)))
-             (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+           (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       (execute_aarch32_instrs_LDC_l_Op_A_txt add cp imm32 index))
@@ -2569,8 +2568,7 @@ def decode_aarch32_instrs_LDC_l_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (W
       let cp := 14
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       bif (Bool.or (BEq.beq W (0b1 : (BitVec 1)))
-           (Bool.and (BEq.beq P (0b0 : (BitVec 1)))
-             (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+           (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       (execute_aarch32_instrs_LDC_l_Op_A_txt add cp imm32 index))
@@ -9511,7 +9509,7 @@ def decode_aarch32_instrs_STC_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) (
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       (execute_aarch32_instrs_STC_Op_A_txt add cp imm32 index n wback))
@@ -9531,7 +9529,7 @@ def decode_aarch32_instrs_STC_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (W :
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       (execute_aarch32_instrs_STC_Op_A_txt add cp imm32 index n wback))
@@ -20739,7 +20737,7 @@ def decode_aarch32_instrs_VLDM_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (ediv_nat (UInt0 imm8) 2)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (Bool.or (BEq.beq regs 0) (regs >b 16)) ((d +i regs) >b 32))
@@ -20774,7 +20772,7 @@ def decode_aarch32_instrs_VLDM_A2enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (UInt0 imm8)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (BEq.beq regs 0) ((d +i regs) >b 32))
@@ -20804,7 +20802,7 @@ def decode_aarch32_instrs_VLDM_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (ediv_nat (UInt0 imm8) 2)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (Bool.or (BEq.beq regs 0) (regs >b 16)) ((d +i regs) >b 32))
@@ -20838,7 +20836,7 @@ def decode_aarch32_instrs_VLDM_T2enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (UInt0 imm8)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (BEq.beq regs 0) ((d +i regs) >b 32))
@@ -32177,7 +32175,7 @@ def decode_aarch32_instrs_VSTM_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (ediv_nat (UInt0 imm8) 2)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (Bool.or (BEq.beq regs 0) (regs >b 16)) ((d +i regs) >b 32))
@@ -32212,7 +32210,7 @@ def decode_aarch32_instrs_VSTM_A2enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (UInt0 imm8)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (BEq.beq regs 0) ((d +i regs) >b 32))
@@ -32242,7 +32240,7 @@ def decode_aarch32_instrs_VSTM_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (ediv_nat (UInt0 imm8) 2)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (Bool.or (BEq.beq regs 0) (regs >b 16)) ((d +i regs) >b 32))
@@ -32276,7 +32274,7 @@ def decode_aarch32_instrs_VSTM_T2enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let n := (UInt0 Rn)
       let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let regs := (UInt0 imm8)
-      bif (Bool.and (BEq.beq n 15) (Bool.or wback (neq_any (← (CurrentInstrSet ())) InstrSet_A32)))
+      bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       bif (Bool.or (BEq.beq regs 0) ((d +i regs) >b 32))
@@ -32346,7 +32344,7 @@ def decode_aarch32_instrs_VSTR_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) 
             else ()))
       let d := d
       let n := (UInt0 Rn)
-      bif (Bool.and (BEq.beq n 15) (neq_any (← (CurrentInstrSet ())) InstrSet_A32))
+      bif (Bool.and (BEq.beq n 15) (bne (← (CurrentInstrSet ())) InstrSet_A32))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       let d := d
@@ -32390,7 +32388,7 @@ def decode_aarch32_instrs_VSTR_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (Rn
             else ()))
       let d := d
       let n := (UInt0 Rn)
-      bif (Bool.and (BEq.beq n 15) (neq_any (← (CurrentInstrSet ())) InstrSet_A32))
+      bif (Bool.and (BEq.beq n 15) (bne (← (CurrentInstrSet ())) InstrSet_A32))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       let d := d
@@ -34237,12 +34235,12 @@ def execute_aarch32_instrs_SMC_Op_AS_txt (_ : Unit) : SailM Unit := do
       bif (BEq.beq (_get_SCR_Type_SCD (← readReg SCR)) (0b1 : (BitVec 1)))
       then
         (do
-          bif (eq_any (← (CurrentSecurityState ())) SS_Secure)
+          bif (BEq.beq (← (CurrentSecurityState ())) SS_Secure)
           then
             (do
               let c ← (( do (ConstrainUnpredictable Unpredictable_SMD) ) : SailM Constraint )
-              assert (Bool.or (eq_any c Constraint_NOP) (eq_any c Constraint_UNDEF)) "src/instrs32.sail:41695.66-41695.67"
-              bif (eq_any c Constraint_NOP)
+              assert (Bool.or (BEq.beq c Constraint_NOP) (BEq.beq c Constraint_UNDEF)) "src/instrs32.sail:41695.66-41695.67"
+              bif (BEq.beq c Constraint_NOP)
               then (EndOfInstruction ())
               else (pure ()))
           else (pure ())
@@ -34286,8 +34284,7 @@ def execute_aarch32_instrs_SRS_OpA_AS_txt (increment_name : Bool) (mode : (BitVe
           bif (BEq.beq mode M32_Monitor)
           then
             (do
-              bif (Bool.or (Bool.not (HaveEL EL3))
-                   (neq_any (← (CurrentSecurityState ())) SS_Secure))
+              bif (Bool.or (Bool.not (HaveEL EL3)) (bne (← (CurrentSecurityState ())) SS_Secure))
               then sailThrow ((Error_Unpredictable ()))
               else
                 (do
@@ -34344,8 +34341,7 @@ def execute_aarch32_instrs_SRS_OpT_AS_txt (increment_name : Bool) (mode : (BitVe
           bif (BEq.beq mode M32_Monitor)
           then
             (do
-              bif (Bool.or (Bool.not (HaveEL EL3))
-                   (neq_any (← (CurrentSecurityState ())) SS_Secure))
+              bif (Bool.or (Bool.not (HaveEL EL3)) (bne (← (CurrentSecurityState ())) SS_Secure))
               then sailThrow ((Error_Unpredictable ()))
               else
                 (do
@@ -34590,7 +34586,7 @@ def decode_aarch32_instrs_VMSR_A1enc_AS_txt (cond : (BitVec 4)) (reg : (BitVec 4
       then
         (do
           let c ← (( do (ConstrainUnpredictable Unpredictable_VMSR) ) : SailM Constraint )
-          assert (Bool.or (eq_any c Constraint_UNDEF) (eq_any c Constraint_NOP)) "src/instrs32.sail:42096.62-42096.63"
+          assert (Bool.or (BEq.beq c Constraint_UNDEF) (BEq.beq c Constraint_NOP)) "src/instrs32.sail:42096.62-42096.63"
           match c with
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
           | Constraint_NOP => (EndOfInstruction ())
@@ -34616,7 +34612,7 @@ def decode_aarch32_instrs_VMSR_T1enc_AS_txt (reg : (BitVec 4)) (Rt : (BitVec 4))
       then
         (do
           let c ← (( do (ConstrainUnpredictable Unpredictable_VMSR) ) : SailM Constraint )
-          assert (Bool.or (eq_any c Constraint_UNDEF) (eq_any c Constraint_NOP)) "src/instrs32.sail:42137.62-42137.63"
+          assert (Bool.or (BEq.beq c Constraint_UNDEF) (BEq.beq c Constraint_NOP)) "src/instrs32.sail:42137.62-42137.63"
           match c with
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
           | Constraint_NOP => (EndOfInstruction ())
@@ -35018,7 +35014,7 @@ def execute_aarch32_instrs_DCPS3_Op_A_txt (_ : Unit) : SailM Unit := do
   bif (← (ELUsingAArch32 EL3))
   then
     (do
-      let from_secure ← (( do (pure (eq_any (← (CurrentSecurityState ())) SS_Secure)) ) : SailM
+      let from_secure ← (( do (pure (BEq.beq (← (CurrentSecurityState ())) SS_Secure)) ) : SailM
         Bool )
       bif (BEq.beq (← readReg PSTATE).M M32_Monitor)
       then writeReg SCR (Sail.BitVec.updateSubrange (← readReg SCR) 0 0 (0b0 : (BitVec 1)))
