@@ -76,8 +76,8 @@ jobs:
 
     - name: Compress files
       run: |
-        sed -i 'e/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/DecodeEnd.lean
-        sed -i 'e/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean
+        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/DecodeEnd.lean
+        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean
 
     - name: Use Lean to build the model and record errors
       continue-on-error: true
