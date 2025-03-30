@@ -87,8 +87,8 @@ jobs:
         wget -q https://raw.githubusercontent.com/leanprover-community/mathlib4/master/scripts/install_debian.sh
         bash install_debian.sh ; rm -f install_debian.sh
         source ~/.profile
-        cp README.md.template sail-arm/arm-v9.4-a/lean
-        cp report.py sail-arm/arm-v9.4-a/lean
+        cp README.md.template sail-arm/arm-v9.4-a/lean/armv9
+        cp report.py sail-arm/arm-v9.4-a/lean/armv9
         cd sail-arm/arm-v9.4-a/lean/armv9
         echo "Set ulimit"	
         ulimit -s unlimited
@@ -107,6 +107,6 @@ jobs:
       env:
         REPO: self
         BRANCH: main
-        FOLDER: sail-arm/arm-v9.4-a/lean
+        FOLDER: sail-arm/arm-v9.4-a/lean/armv9
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TARGET_DIR: .
