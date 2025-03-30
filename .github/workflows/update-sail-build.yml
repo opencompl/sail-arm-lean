@@ -87,16 +87,14 @@ jobs:
         source ~/.profile
         cp README.md.template sail-arm/arm-v9.4-a/lean
         cp report.py sail-arm/arm-v9.4-a/lean
-        cd sail-arm/arm-v9.4-a/lean
+        cd sail-arm/arm-v9.4-a/lean/armv9
         echo "Set ulimit"	
         ulimit -s unlimited
         ulimit -s
         (lake build | tee build_log.txt || true)
         cp README.md.template README.md
         ./report.py >> README.md
-        echo "Build errors" >> README.md
-        tail -n 50 ../../../sail-arm/arm-v9.4-a/sail.log >> README.md
-        cd ../../..
+        cd ../../../..
 
     - name: Add build errors
       run: |
