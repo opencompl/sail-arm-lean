@@ -72,8 +72,8 @@ jobs:
         eval $(opam config env)eval $(opam config env)
         mkdir lean
         (sail -dprofile -verbose 1 -lean -memo-z3 -lean_output_dir lean -o armv9 -undefined_gen -lean-noncomputable src/prelude.sail src/decode_start.sail src/builtins.sail src/v8_base.sail src/stubs.sail src/interrupts.sail src/interface.sail src/devices.sail src/impdefs.sail src/mem.sail src/sysregs_autogen.sail src/sysregs.sail src/reset.sail src/instrs32.sail src/instrs64.sail src/instrs64_sve.sail src/instrs64_sme.sail src/decode_end.sail src/fetch.sail src/map_clauses.sail src/event_clauses.sail src/termination_measures.sail | tee sail.log)
-        sed -i 'e/        /\t/g' lean/armv9/Armv9/Sail/DecodeEnd.lean
-        sed -i 'e/        /\t/g' lean/armv9/Armv9/Sail/SysregsAutogen.lean
+        sed -i 'e/        /\t/g' lean/armv9/Armv9/DecodeEnd.lean
+        sed -i 'e/        /\t/g' lean/armv9/Armv9/SysregsAutogen.lean
         cd ../..
 
     - name: Use Lean to build the model and record errors
