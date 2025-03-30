@@ -77,9 +77,7 @@ jobs:
     - name: Compress files
       continue-on-error: true
       run: |
-        (sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean; true)
-        (sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean; true)
-        (sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean; true)
+        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/Armv9.lean
 
     - name: Use Lean to build the model and record errors
       continue-on-error: true
