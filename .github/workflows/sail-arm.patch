@@ -1,18 +1,23 @@
 diff --git a/arm-v9.4-a/Makefile b/arm-v9.4-a/Makefile
-index bbb0c9e..f131504 100644
+index 95e6659..f131504 100644
 --- a/arm-v9.4-a/Makefile
 +++ b/arm-v9.4-a/Makefile
-@@ -80,8 +80,8 @@ gen_coq coq coq.stamp: $(SAIL_SRCS) src/termination_measures.sail
+@@ -79,6 +79,15 @@ gen_coq coq coq.stamp: $(SAIL_SRCS) src/termination_measures.sail
+ 	        src/termination_measures.sail
  	touch coq.stamp
  
- lean: $(SAIL_SRCS) src/termination_measures.sail
--	$(SAIL) -dprofile -verbose 1 \
--	        -lean \
++lean: $(SAIL_SRCS) src/termination_measures.sail
 +	$(SAIL) -dprofile -verbose 1 -memo_z3 \
 +	        -lean --lean-force-output \
- 	        -lean_output_dir lean -o armv9 \
- 	        -undefined_gen \
- 	        -lean-noncomputable \
++	        -lean_output_dir lean -o armv9 \
++	        -undefined_gen \
++	        -lean-noncomputable \
++	        $(SAIL_SRCS) $(SAIL_FLAGS) \
++	        src/termination_measures.sail
++
+ c/armv9.c: $(SAIL_SRCS) $(SAIL_MAIN)
+ 	mkdir -p c
+ 	$(SAIL) -dprofile -verbose 1 -memo_z3 \
 diff --git a/arm-v9.4-a/src/fetch.sail b/arm-v9.4-a/src/fetch.sail
 index 466fa7a..2bbff9f 100644
 --- a/arm-v9.4-a/src/fetch.sail
