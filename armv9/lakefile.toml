@@ -1,0 +1,6 @@
+name = "armv9"
+defaultTargets = ["Armv9"]
+moreLeanArgs = ["--tstack=400000"]
+
+[[lean_lib]]
+name = "Armv9"

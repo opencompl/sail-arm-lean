@@ -11,3 +11,91 @@ noncomputable section
 
 namespace Armv9.Functions
 
+open signal
+open option
+open exception
+open arm_acc_type
+open __InstrEnc
+open WFxType
+open VFPNegMul
+open VCGTtype
+open VCGEType
+open VBitOps
+open VBitOp
+open VARange
+open Unpredictable
+open TranslationStage
+open TimeStamp
+open TMFailure
+open TLBIOp
+open TLBIMemAttr
+open TLBILevel
+open TGx
+open SystemHintOp
+open Signal
+open ShiftType
+open Shareability
+open SecurityState
+open SVECmp
+open SRType
+open SMEExceptionType
+open SDFType
+open RestrictType
+open Register
+open Regime
+open ReduceOp
+open PrivilegeLevel
+open PrefetchHint
+open PSTATEField
+open PGSe
+open PASpace
+open PARTIDspaceType
+open OpType
+open MoveWideOp
+open MemType
+open MemTagType
+open MemOp
+open MemAtomicOp
+open MOPSStage
+open MBReqTypes
+open MBReqDomain
+open LogicalOp
+open InterruptID
+open InstrSet
+open ImmediateOp
+open GPCF
+open GCSInstruction
+open Feature
+open Fault
+open FPUnaryOp
+open FPType
+open FPRounding
+open FPMaxMinOp
+open FPExc
+open FPConvOp
+open ExtendType
+open ExceptionalOccurrenceTargetState
+open Exception
+open ErrorState
+open DeviceType
+open DescriptorType
+open DSBAlias
+open CrossTriggerIn
+open CountOp
+open Constraint
+open CompareOp
+open CacheType
+open CachePASpace
+open CacheOpScope
+open CacheOp
+open BranchType
+open Barrier
+open ArchVersion
+open AccessType
+open ATAccess
+
+def __InitSystem (_ : Unit) : SailM Unit := do
+  writeReg DBGEN Signal_Low
+  (TakeReset true)
+  writeReg CNTCR (Sail.BitVec.updateSubrange (← readReg CNTCR) 0 0 (0b1 : (BitVec 1)))
+
