@@ -11544,7 +11544,7 @@ def execute_ASR_Z_P_ZZ__ (VL : Nat) (dn : Nat) (esize : Nat) (g : Nat) (m : Nat)
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
             let shift := (Min.min (UInt0 element2) esize)
-            (Elem_set result e esize (arith_shiftr element1 shift)))
+            (Elem_set result e esize (BitVec.rotateRight element1 shift)))
         else
           (do
             (Elem_set result e esize (← (Elem_read operand1 e esize))))
@@ -11650,7 +11650,7 @@ def execute_ASRR_Z_P_ZZ__ (VL : Nat) (dn : Nat) (esize : Nat) (g : Nat) (m : Nat
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
             let shift := (Min.min (UInt0 element1) esize)
-            (Elem_set result e esize (arith_shiftr element2 shift)))
+            (Elem_set result e esize (BitVec.rotateRight element2 shift)))
         else
           (do
             (Elem_set result e esize (← (Elem_read operand1 e esize))))
@@ -23736,7 +23736,7 @@ def execute_ASR_Z_ZI__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift : Int
       let result := loop_vars
       loop_vars ← do
         let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
-        (Elem_set result e esize (arith_shiftr element1 shift))
+        (Elem_set result e esize (BitVec.rotateRight element1 shift))
     (pure loop_vars) ) : SailM (BitVec VL) )
   (Z_set d VL result)
 
@@ -24119,7 +24119,7 @@ def execute_ASR_Z_P_ZI__ (VL : Nat) (dn : Nat) (esize : Nat) (g : Nat) (shift : 
         bif (← (ActivePredicateElement mask e esize))
         then
           (do
-            (Elem_set result e esize (arith_shiftr element1 shift)))
+            (Elem_set result e esize (BitVec.rotateRight element1 shift)))
         else
           (do
             (Elem_set result e esize (← (Elem_read operand1 e esize))))
@@ -24307,7 +24307,7 @@ def execute_ASR_Z_ZW__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) : 
         let element2 ← (( do (Elem_read operand2 (ediv_nat (e *i esize) 64) 64) ) : SailM
           (BitVec 64) )
         let shift := (Min.min (UInt0 element2) esize)
-        (Elem_set result e esize (arith_shiftr element1 shift))
+        (Elem_set result e esize (BitVec.rotateRight element1 shift))
     (pure loop_vars) ) : SailM (BitVec VL) )
   (Z_set d VL result)
 
@@ -24475,7 +24475,7 @@ def execute_ASR_Z_P_ZW__ (VL : Nat) (dn : Nat) (esize : Nat) (g : Nat) (m : Nat)
             let element2 ← (( do (Elem_read operand2 (ediv_nat (e *i esize) 64) 64) ) : SailM
               (BitVec 64) )
             let shift := (Min.min (UInt0 element2) esize)
-            (Elem_set result e esize (arith_shiftr element1 shift)))
+            (Elem_set result e esize (BitVec.rotateRight element1 shift)))
         else
           (do
             (Elem_set result e esize (← (Elem_read operand1 e esize))))

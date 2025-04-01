@@ -135,7 +135,7 @@ def ASR_C (x : (BitVec k_N)) (shift : Nat) : ((BitVec k_N) × (BitVec 1)) :=
       (bif (shift ≥b (Sail.BitVec.length x))
       then (BitVec.access x ((Sail.BitVec.length x) -i 1))
       else (BitVec.access x (shift -i 1)))
-  let t__53175 := (arith_shiftr x shift)
+  let t__53175 := (BitVec.rotateRight x shift)
   let t__53176 := (BitVec.join1 [carry_out])
   (t__53175, t__53176)
 

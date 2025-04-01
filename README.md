@@ -15,11 +15,10 @@ Abbreviations: 929
 
 # Warnings and Errors
 
-Errors found: 4  
+Errors found: 3  
 Warnings found: 0  
 
 ## Error Classes
 
-- 2x unknown identifier '_builtin_mod_nat'
-- 1x unknown identifier 'arith_shiftr'
+- 2x unknown identifier '_builtin_unsigned'
 - 1x Lean exited with code 1
