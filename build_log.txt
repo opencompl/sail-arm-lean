@@ -10,10 +10,23 @@
 ✔ [11/38] Built Armv9.String
 ✔ [12/38] Built Armv9.ReverseEndianness
 ✔ [13/38] Built Armv9.Option
-✖ [14/38] Building Armv9.MonoRewrites
-trace: .> LEAN_PATH=././.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-03-17/bin/lean --tstack=400000 ././././Armv9/MonoRewrites.lean -R ./././. -o ././.lake/build/lib/lean/Armv9/MonoRewrites.olean -i ././.lake/build/lib/lean/Armv9/MonoRewrites.ilean -c ././.lake/build/ir/Armv9/MonoRewrites.c --json
-error: ././././Armv9/MonoRewrites.lean:210:12: unknown identifier '_builtin_unsigned'
-error: ././././Armv9/MonoRewrites.lean:215:12: unknown identifier '_builtin_unsigned'
+✔ [14/38] Built Armv9.MonoRewrites
+✔ [15/38] Built Armv9.Result
+✔ [16/38] Built Armv9.Common
+✔ [17/38] Built Armv9.ReadWrite
+✖ [18/38] Building Armv9.Prelude
+trace: .> LEAN_PATH=././.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-03-17/bin/lean --tstack=400000 ././././Armv9/Prelude.lean -R ./././. -o ././.lake/build/lib/lean/Armv9/Prelude.olean -i ././.lake/build/lib/lean/Armv9/Prelude.ilean -c ././.lake/build/ir/Armv9/Prelude.c --json
+error: ././././Armv9/Prelude.lean:112:7: unknown identifier 'lteq_real'
+error: ././././Armv9/Prelude.lean:117:7: unknown identifier 'lteq_real'
+error: ././././Armv9/Prelude.lean:159:3: unknown identifier 'sign_extend'
+error: ././././Armv9/Prelude.lean:163:3: unknown identifier 'zero_extend'
+error: ././././Armv9/Prelude.lean:178:7: unknown identifier 'lt_real'
+error: ././././Armv9/Prelude.lean:179:8: unknown identifier 'round_up'
+error: ././././Armv9/Prelude.lean:180:8: unknown identifier 'round_down'
+error: ././././Armv9/Prelude.lean:236:3: unknown identifier 'append_str'
+error: ././././Armv9/Prelude.lean:240:3: unknown identifier 'append_str'
+error: ././././Armv9/Prelude.lean:263:3: unknown identifier 'undefined_real'
+error: ././././Armv9/Prelude.lean:276:3: unknown identifier 'ediv_nat'
 error: Lean exited with code 1
 Some required builds logged failures:
-- Armv9.MonoRewrites
+- Armv9.Prelude

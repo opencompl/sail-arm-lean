@@ -207,12 +207,12 @@ def place_subrange_signed {m : _} (xs : (BitVec k_n)) (i : Int) (j : Int) (shift
 /-- Type quantifiers: i : Int, k_n : Nat, l : Nat, k_n ≥ 0 ∧ l ≥ 0 -/
 def unsigned_slice (xs : (BitVec k_n)) (i : Int) (l : Nat) : Int :=
   let xs := ((xs &&& (slice_mask (n := (Sail.BitVec.length xs)) i l)) >>> i)
-  (Nat.mod (_builtin_unsigned xs) (pow2 l))
+  (Nat.mod (BitVec.toNat xs) (pow2 l))
 
 /-- Type quantifiers: k_n : Nat, i : Int, j : Int, k_n ≥ 0 ∧ (i - j) ≥ 0 -/
 def unsigned_subrange (xs : (BitVec k_n)) (i : Int) (j : Int) : Int :=
   let xs := ((xs &&& (slice_mask (n := (Sail.BitVec.length xs)) j ((i -i j) +i 1))) >>> i)
-  (Nat.mod (_builtin_unsigned xs) (pow2 ((i -i j) +i 1)))
+  (Nat.mod (BitVec.toNat xs) (pow2 ((i -i j) +i 1)))
 
 /-- Type quantifiers: m : Int, n : Nat, n ≥ 0 -/
 def zext_ones {n : _} (m : Int) : (BitVec n) :=
