@@ -112,9 +112,7 @@ def LSL_C (x : (BitVec k_N)) (shift : Int) : ((BitVec k_N) × (BitVec 1)) :=
     bif (Bool.and (shift >b 0) (shift ≤b (Sail.BitVec.length x)))
     then (BitVec.access x ((Sail.BitVec.length x) -i shift))
     else 0#1
-  let t__53180 := (x <<< shift)
-  let t__53181 := (BitVec.join1 [carry_out])
-  (t__53180, t__53181)
+  ((x <<< shift), (BitVec.join1 [carry_out]))
 
 /-- Type quantifiers: k_N : Int, shift : Int -/
 def LSR_C (x : (BitVec k_N)) (shift : Int) : ((BitVec k_N) × (BitVec 1)) :=
@@ -122,9 +120,7 @@ def LSR_C (x : (BitVec k_N)) (shift : Int) : ((BitVec k_N) × (BitVec 1)) :=
     bif (Bool.and (shift >b 0) (shift ≤b (Sail.BitVec.length x)))
     then (BitVec.access x (shift -i 1))
     else 0#1
-  let t__53178 := (x >>> shift)
-  let t__53179 := (BitVec.join1 [carry_out])
-  (t__53178, t__53179)
+  ((x >>> shift), (BitVec.join1 [carry_out]))
 
 /-- Type quantifiers: k_N : Nat, shift : Nat, k_N ≥ 0 ∧ shift ≥ 0 -/
 def ASR_C (x : (BitVec k_N)) (shift : Nat) : ((BitVec k_N) × (BitVec 1)) :=
@@ -135,9 +131,7 @@ def ASR_C (x : (BitVec k_N)) (shift : Nat) : ((BitVec k_N) × (BitVec 1)) :=
       (bif (shift ≥b (Sail.BitVec.length x))
       then (BitVec.access x ((Sail.BitVec.length x) -i 1))
       else (BitVec.access x (shift -i 1)))
-  let t__53175 := (BitVec.rotateRight x shift)
-  let t__53176 := (BitVec.join1 [carry_out])
-  (t__53175, t__53176)
+  ((BitVec.rotateRight x shift), (BitVec.join1 [carry_out]))
 
 /-- Type quantifiers: k_N : Nat, shift : Int, k_N > 0 -/
 def ROR_C (x : (BitVec k_N)) (shift : Int) : SailM ((BitVec k_N) × (BitVec 1)) := do

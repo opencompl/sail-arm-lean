@@ -153,10 +153,9 @@ def AArch64_PendingUnmaskedVirtualInterrupts (mask_in : (BitVec 3)) : SailM (Boo
       (let pending : (BitVec 3) := (0b000 : (BitVec 3))
       (pure (mask, pending))) ) : SailM ((BitVec 3) × (BitVec 3)) )
   let unmasked_pending : (BitVec 3) := (pending &&& (Complement.complement mask))
-  let t__50992 := (BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 2)]) (0b1 : (BitVec 1)))
-  let t__50993 := (BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 1)]) (0b1 : (BitVec 1)))
-  let t__50994 := (BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 0)]) (0b1 : (BitVec 1)))
-  (pure (t__50992, t__50993, t__50994))
+  (pure ((BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 2)]) (0b1 : (BitVec 1))), (BEq.beq
+      (BitVec.join1 [(BitVec.access unmasked_pending 1)]) (0b1 : (BitVec 1))), (BEq.beq
+      (BitVec.join1 [(BitVec.access unmasked_pending 0)]) (0b1 : (BitVec 1)))))
 
 def AArch32_PendingUnmaskedVirtualInterrupts (_ : Unit) : SailM (Bool × Bool × Bool) := do
   bif (Bool.or (Bool.and (HaveEL EL2) (Bool.not (← (ELUsingAArch32 EL2))))
@@ -183,13 +182,9 @@ def AArch32_PendingUnmaskedVirtualInterrupts (_ : Unit) : SailM (Bool × Bool ×
                       (← (HCR_read ()))) ++ (_get_HCR_Type_FMO (← (HCR_read ()))))))))
         else (pure (0b000 : (BitVec 3))) ) : SailM (BitVec 3) )
       let unmasked_pending : (BitVec 3) := (pending &&& (Complement.complement mask))
-      let t__50989 :=
-        (BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 2)]) (0b1 : (BitVec 1)))
-      let t__50990 :=
-        (BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 1)]) (0b1 : (BitVec 1)))
-      let t__50991 :=
-        (BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 0)]) (0b1 : (BitVec 1)))
-      (pure (t__50989, t__50990, t__50991)))
+      (pure ((BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 2)]) (0b1 : (BitVec 1))), (BEq.beq
+          (BitVec.join1 [(BitVec.access unmasked_pending 1)]) (0b1 : (BitVec 1))), (BEq.beq
+          (BitVec.join1 [(BitVec.access unmasked_pending 0)]) (0b1 : (BitVec 1))))))
 
 def TakePendingInterrupts (interrupt_req : InterruptReq) : SailM Bool := do
   let interrupt_pend ← (( do (undefined_bool ()) ) : SailM Bool )
