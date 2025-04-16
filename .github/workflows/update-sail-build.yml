@@ -90,9 +90,6 @@ jobs:
         cp README.md.template sail-arm/arm-v9.4-a/lean/armv9
         cp report.py sail-arm/arm-v9.4-a/lean/armv9
         cd sail-arm/arm-v9.4-a/lean/armv9
-        echo "Set ulimit"	
-        ulimit -s unlimited
-        ulimit -s
         (lake build | tee build_log.txt || true)
         cp README.md.template README.md
         ./report.py >> README.md
