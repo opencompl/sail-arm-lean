@@ -8,10 +8,10 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 951606  
-Definitions: 33944  
+Lines: 951608  
+Definitions: 33943  
 Inductive definitions: 89  
-Abbreviations: 929  
+Abbreviations: 930  
 
 # Warnings and Errors
 

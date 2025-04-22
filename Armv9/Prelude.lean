@@ -94,11 +94,11 @@ open ArchVersion
 open AccessType
 open ATAccess
 
-/-- Type quantifiers: k_ex7102533# : Bool, k_ex7102532# : Bool -/
+/-- Type quantifiers: k_ex7102527# : Bool, k_ex7102526# : Bool -/
 def implies (p : Bool) (q : Bool) : Bool :=
   (Bool.or (Bool.not p) q)
 
-/-- Type quantifiers: k_ex7102535# : Bool, k_ex7102534# : Bool -/
+/-- Type quantifiers: k_ex7102529# : Bool, k_ex7102528# : Bool -/
 def iff (p : Bool) (q : Bool) : Bool :=
   (Bool.and (implies p q) (implies q p))
 
@@ -218,14 +218,14 @@ def IsSError (ex : exception) : Bool :=
   | .Error_SError _ => true
   | _ => false
 
-/-- Type quantifiers: k_ex7102567# : Bool -/
+/-- Type quantifiers: k_ex7102561# : Bool -/
 def ThrowSError (iesb_req : Bool) : SailM Unit := do
   sailThrow ((Error_SError iesb_req))
 
 def ReservedEncoding (_ : Unit) : SailM Unit := do
   sailThrow ((Error_ReservedEncoding ()))
 
-/-- Type quantifiers: k_ex7102570# : Bool -/
+/-- Type quantifiers: k_ex7102564# : Bool -/
 def BoolStr (b : Bool) : String :=
   match b with
   | true => "true"
@@ -235,7 +235,7 @@ def BoolStr (b : Bool) : String :=
 def append_int (str : String) (n : Int) : String :=
   (append_str str (dec_str n))
 
-/-- Type quantifiers: k_ex7102573# : Bool -/
+/-- Type quantifiers: k_ex7102567# : Bool -/
 def append_bool (str : String) (b : Bool) : String :=
   (append_str str
     (bif b
