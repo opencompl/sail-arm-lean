@@ -95,8 +95,9 @@ jobs:
         cd ../../../..
 
     - name: Add build errors
+      continue-on-error: true
       run: |
-        tail -n 50 sail-arm/arm-v9.4-a/lean/armv9/build_log.log >> README.md
+        tail -n 50 sail-arm/arm-v9.4-a/lean/armv9/build_log.txt >> README.md
 
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
