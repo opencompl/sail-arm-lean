@@ -70,7 +70,6 @@ jobs:
         patch -p1 <  ../.github/workflows/sail-arm.patch
         cd arm-v9.4-a
         eval $(opam config env)
-        mkdir lean
         make lean
         cd ../..
 
