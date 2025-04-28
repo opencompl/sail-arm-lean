@@ -94,11 +94,11 @@ open ArchVersion
 open AccessType
 open ATAccess
 
-/-- Type quantifiers: k_ex7102527# : Bool, k_ex7102526# : Bool -/
+/-- Type quantifiers: k_ex7102081# : Bool, k_ex7102080# : Bool -/
 def implies (p : Bool) (q : Bool) : Bool :=
   (Bool.or (Bool.not p) q)
 
-/-- Type quantifiers: k_ex7102529# : Bool, k_ex7102528# : Bool -/
+/-- Type quantifiers: k_ex7102083# : Bool, k_ex7102082# : Bool -/
 def iff (p : Bool) (q : Bool) : Bool :=
   (Bool.and (implies p q) (implies q p))
 
@@ -160,7 +160,7 @@ def SignExtend1 {m : _} (x : (BitVec k_n)) : (BitVec m) :=
 
 /-- Type quantifiers: k_n : Nat, m : Nat, k_n ≥ 0 ∧ m ≥ k_n -/
 def ZeroExtend1 {m : _} (x : (BitVec k_n)) : (BitVec m) :=
-  (zero_extend x m)
+  (Sail.BitVec.zeroExtend x m)
 
 /-- Type quantifiers: l : Int, i : Int, n : Nat, n ≥ 0 -/
 def Slice_int (i : Int) (l : Int) (n : Nat) : (BitVec n) :=
@@ -218,14 +218,14 @@ def IsSError (ex : exception) : Bool :=
   | .Error_SError _ => true
   | _ => false
 
-/-- Type quantifiers: k_ex7102561# : Bool -/
+/-- Type quantifiers: k_ex7102115# : Bool -/
 def ThrowSError (iesb_req : Bool) : SailM Unit := do
   sailThrow ((Error_SError iesb_req))
 
 def ReservedEncoding (_ : Unit) : SailM Unit := do
   sailThrow ((Error_ReservedEncoding ()))
 
-/-- Type quantifiers: k_ex7102564# : Bool -/
+/-- Type quantifiers: k_ex7102118# : Bool -/
 def BoolStr (b : Bool) : String :=
   match b with
   | true => "true"
@@ -233,11 +233,11 @@ def BoolStr (b : Bool) : String :=
 
 /-- Type quantifiers: n : Int -/
 def append_int (str : String) (n : Int) : String :=
-  (append_str str (dec_str n))
+  (String.append str (dec_str n))
 
-/-- Type quantifiers: k_ex7102567# : Bool -/
+/-- Type quantifiers: k_ex7102121# : Bool -/
 def append_bool (str : String) (b : Bool) : String :=
-  (append_str str
+  (String.append str
     (bif b
     then "true"
     else "false"))
@@ -273,7 +273,7 @@ def __UNKNOWN_signal (_ : Unit) : SailM signal := do
 
 /-- Type quantifiers: vl : Nat, vl ≥ 0 -/
 def PL_of_VL (vl : Nat) : Nat :=
-  (ediv_nat vl 8)
+  (Int.ediv vl 8)
 
 def __GetVerbosity (_ : Unit) : (BitVec 64) :=
   (0x0000000000000000 : (BitVec 64))

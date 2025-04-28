@@ -99,28 +99,29 @@ def __SetConfig (arg : String) (value_name : Int) : SailM Unit := do
   bif (BEq.beq arg "ZCR_EL3.LEN")
   then
     (do
-      bif (Bool.and (value_name ≥b 0) ((value_name ≤b (UInt0 (0xF : (BitVec 4)))) : Bool))
+      bif (Bool.and (value_name ≥b 0) ((value_name ≤b (BitVec.toNat (0xF : (BitVec 4)))) : Bool))
       then writeReg ZCR_EL3_LEN_VALUE value_name
       else
         (do
           let msg : String :=
-            (append_str " can accept a value between 0 and 15. Value provided is "
+            (String.append " can accept a value between 0 and 15. Value provided is "
               (dec_str value_name))
-          let _ : Unit := (print_endline (append_str arg msg))
+          let _ : Unit := (print_endline (String.append arg msg))
           assert false "src/map_clauses.sail:47.20-47.21"))
   else
     (do
       bif (BEq.beq arg "CPTR_EL3.EZ")
       then
         (do
-          bif (Bool.and (value_name ≥b 0) ((value_name ≤b (UInt0 (0x1 : (BitVec 4)))) : Bool))
+          bif (Bool.and (value_name ≥b 0)
+               ((value_name ≤b (BitVec.toNat (0x1 : (BitVec 4)))) : Bool))
           then writeReg CPTR_EL3_EZ_VALUE value_name
           else
             (do
               let msg : String :=
-                (append_str " can accept a value between 0 and 1. Value provided is "
+                (String.append " can accept a value between 0 and 1. Value provided is "
                   (dec_str value_name))
-              let _ : Unit := (print_endline (append_str arg msg))
+              let _ : Unit := (print_endline (String.append arg msg))
               assert false "src/map_clauses.sail:56.20-56.21"))
       else
         (do
@@ -128,14 +129,14 @@ def __SetConfig (arg : String) (value_name : Int) : SailM Unit := do
           then
             (do
               bif (Bool.and (value_name ≥b 0)
-                   ((value_name ≤b (UInt0 (0x1 : (BitVec 4)))) : Bool))
+                   ((value_name ≤b (BitVec.toNat (0x1 : (BitVec 4)))) : Bool))
               then writeReg CPTR_EL3_ESM_VALUE value_name
               else
                 (do
                   let msg : String :=
-                    (append_str " can accept a value between 0 and 1. Value provided is "
+                    (String.append " can accept a value between 0 and 1. Value provided is "
                       (dec_str value_name))
-                  let _ : Unit := (print_endline (append_str arg msg))
+                  let _ : Unit := (print_endline (String.append arg msg))
                   assert false "src/map_clauses.sail:65.20-65.21"))
           else
             (do
@@ -143,14 +144,14 @@ def __SetConfig (arg : String) (value_name : Int) : SailM Unit := do
               then
                 (do
                   bif (Bool.and (value_name ≥b 0)
-                       ((value_name ≤b (UInt0 (0xF : (BitVec 4)))) : Bool))
+                       ((value_name ≤b (BitVec.toNat (0xF : (BitVec 4)))) : Bool))
                   then writeReg SMCR_EL3_LEN_VALUE value_name
                   else
                     (do
                       let msg : String :=
-                        (append_str " can accept a value between 0 and 1. Value provided is "
+                        (String.append " can accept a value between 0 and 1. Value provided is "
                           (dec_str value_name))
-                      let _ : Unit := (print_endline (append_str arg msg))
+                      let _ : Unit := (print_endline (String.append arg msg))
                       assert false "src/map_clauses.sail:74.20-74.21"))
               else
                 (do
@@ -1187,15 +1188,15 @@ def __SetConfig (arg : String) (value_name : Int) : SailM Unit := do
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        arg
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "SVE.ScalableVectorExtension.sme_veclens_implemented")
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   then
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    writeReg __max_implemented_smeveclen (← (decode_max_smeveclen
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        value_name))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    writeReg __max_implemented_smeveclen (decode_max_smeveclen
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      value_name)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   else
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (do
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       bif (BEq.beq
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            arg
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            "SVE.ScalableVectorExtension.has_sve_extended_bf16")
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       then
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        writeReg __has_sve_extended_bf16 (UInt0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        writeReg __has_sve_extended_bf16 (BitVec.toNat
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (integer_subrange
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             value_name
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             1

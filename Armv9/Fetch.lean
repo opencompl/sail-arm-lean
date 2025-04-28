@@ -213,7 +213,7 @@ def ExecuteA64 (instr : (BitVec 32)) : SailM Unit := do
   then
     sailTryCatch ((do
         (__SetThisInstrDetails __A64 instr (← (__DefaultCond __A64)))
-        (__DecodeA64 (UInt0 (← readReg _PC)) instr))) (fun the_exception => 
+        (__DecodeA64 (BitVec.toNat (← readReg _PC)) instr))) (fun the_exception => 
       match the_exception with
         | exn => (do
             bif (IsExceptionTaken exn)
@@ -223,17 +223,17 @@ def ExecuteA64 (instr : (BitVec 32)) : SailM Unit := do
                 bif (Bool.or (Bool.or (IsSEE exn) (IsUNDEFINED exn)) (IsUNPREDICTABLE exn))
                 then (AArch64_UndefinedFault ())
                 else sailThrow (exn))))
-  else (__DecodeA64 (UInt0 (← readReg _PC)) instr)
+  else (__DecodeA64 (BitVec.toNat (← readReg _PC)) instr)
 
 def ExecuteA32 (instr : (BitVec 32)) : SailM Unit := do
-  (__DecodeA32 (UInt0 (← readReg _PC)) instr)
+  (__DecodeA32 (BitVec.toNat (← readReg _PC)) instr)
 
 def ExecuteT32__1 (instr : (BitVec 32)) : SailM Unit := do
   bif (← (Halted ()))
   then
     sailTryCatch ((do
         (__SetThisInstrDetails __T32 instr (← (__DefaultCond __T32)))
-        (__DecodeT32 (UInt0 (← readReg _PC)) instr))) (fun the_exception => 
+        (__DecodeT32 (BitVec.toNat (← readReg _PC)) instr))) (fun the_exception => 
       match the_exception with
         | exn => (do
             bif (IsExceptionTaken exn)
@@ -243,10 +243,10 @@ def ExecuteT32__1 (instr : (BitVec 32)) : SailM Unit := do
                 bif (Bool.or (Bool.or (IsSEE exn) (IsUNDEFINED exn)) (IsUNPREDICTABLE exn))
                 then (UnallocatedT32_32_Instruction instr)
                 else sailThrow (exn))))
-  else (__DecodeT32 (UInt0 (← readReg _PC)) instr)
+  else (__DecodeT32 (BitVec.toNat (← readReg _PC)) instr)
 
 def ExecuteT16 (instr : (BitVec 16)) : SailM Unit := do
-  (__DecodeT16 (UInt0 (← readReg _PC)) instr)
+  (__DecodeT16 (BitVec.toNat (← readReg _PC)) instr)
 
 def __FetchInstr (pc : (BitVec 64)) : SailM (__InstrEnc × (BitVec 32)) := do
   let hw1 ← (( do (undefined_bitvector 16) ) : SailM (BitVec 16) )
@@ -277,7 +277,8 @@ def __FetchInstr (pc : (BitVec 64)) : SailM (__InstrEnc × (BitVec 32)) := do
                 (AArch32_MemSingle_read (Sail.BitVec.extractLsb pc 31 0) 2 accdesc true) ) : SailM
                 (BitVec 16) )
               let isT16 : Bool :=
-                ((UInt0 (Sail.BitVec.extractLsb hw1 15 11)) <b (UInt0 (0b11101 : (BitVec 5))))
+                ((BitVec.toNat (Sail.BitVec.extractLsb hw1 15 11)) <b (BitVec.toNat
+                    (0b11101 : (BitVec 5))))
               let (enc, instr) ← (( do
                 bif isT16
                 then
@@ -325,8 +326,8 @@ def __CheckForEmulatorTermination (enc : __InstrEnc) (instr : (BitVec 32)) : Sai
         (do
           let _ : Unit :=
             (print
-              (append_str
-                (append_str "[Sail] Terminating emulation at opcode " (BitVec.toFormatted magic))
+              (String.append
+                (String.append "[Sail] Terminating emulation at opcode " (BitVec.toFormatted magic))
                 "
 "))
           throw Error.Exit)

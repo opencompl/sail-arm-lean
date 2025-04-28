@@ -8,3 +8,5 @@ abbrev sign_extend {w : Nat} (x : BitVec w) (w' : Nat) := Sail.BitVec.signExtend
 
 def dec_str (x : Int) := x.repr
 def hex_str (x : Int) := x.toHex
+
+def putchar (_ : Int) : Unit := ()

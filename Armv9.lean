@@ -1427,12 +1427,12 @@ def sail_model_init (x_0 : Unit) : SailM Unit := do
   writeReg __set_mops_option_a_supported true
   writeReg __setg_mops_option_a_supported true
   writeReg __sme_only false
-  writeReg __block_bbm_implemented (UInt0 (0x2 : (BitVec 4)))
+  writeReg __block_bbm_implemented (BitVec.toNat (0x2 : (BitVec 4)))
   writeReg __has_sve_extended_bf16 2
   writeReg __max_implemented_smeveclen 512
   writeReg __max_implemented_sveveclen 2048
   writeReg __supported_pa_size 56
-  writeReg CFG_RVBAR (zero_extend (0x0 : (BitVec 4)) 64)
+  writeReg CFG_RVBAR (Sail.BitVec.zeroExtend (0x0 : (BitVec 4)) 64)
   writeReg __impdef_TG0 (0b00 : (BitVec 2))
   writeReg __impdef_TG1 (0b10 : (BitVec 2))
   writeReg __mpam_has_hcr true
@@ -1446,21 +1446,23 @@ def sail_model_init (x_0 : Unit) : SailM Unit := do
   writeReg __num_ctx_breakpoints (← readReg NUM_BREAKPOINTS)
   writeReg CFG_MPIDR (0x80000000 : (BitVec 32))
   writeReg __CNTbase_frequency (0x05F5E100 : (BitVec 32))
-  writeReg __dczid_log2_block_size (UInt0 (0x8 : (BitVec 4)))
-  writeReg __gmid_log2_block_size (UInt0 (0x4 : (BitVec 4)))
+  writeReg __dczid_log2_block_size (BitVec.toNat (0x8 : (BitVec 4)))
+  writeReg __gmid_log2_block_size (BitVec.toNat (0x4 : (BitVec 4)))
   writeReg __mecid_width (0x0 : (BitVec 4))
   writeReg __mpam_has_altsp true
   writeReg __rme_l0gptsz (Zeros (n := 4))
   writeReg __supported_va_size 56
   writeReg __g1_activity_monitor_implemented (0x0000 : (BitVec 16))
   writeReg __g1_activity_monitor_offset_implemented (0x0000 : (BitVec 16))
-  writeReg __CTIBase (integer_subrange (UInt0 (0x22020000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __CNTControlBase (integer_subrange (UInt0 (0x16200000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __ExtDebugBase (integer_subrange (UInt0 (0x22010000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __GICCPUInterfaceBase (integer_subrange (UInt0 (0x13082000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __GICDistBase (integer_subrange (UInt0 (0x2C010000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __GICITSControlBase (integer_subrange (UInt0 (0x2C120000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __PMUBase (integer_subrange (UInt0 (0x22030000 : (BitVec 32))) (56 -i 1) 0)
+  writeReg __CTIBase (integer_subrange (BitVec.toNat (0x22020000 : (BitVec 32))) (56 -i 1) 0)
+  writeReg __CNTControlBase (integer_subrange (BitVec.toNat (0x16200000 : (BitVec 32))) (56 -i 1) 0)
+  writeReg __ExtDebugBase (integer_subrange (BitVec.toNat (0x22010000 : (BitVec 32))) (56 -i 1) 0)
+  writeReg __GICCPUInterfaceBase (integer_subrange (BitVec.toNat (0x13082000 : (BitVec 32)))
+    (56 -i 1) 0)
+  writeReg __GICDistBase (integer_subrange (BitVec.toNat (0x2C010000 : (BitVec 32))) (56 -i 1) 0)
+  writeReg __GICITSControlBase (integer_subrange (BitVec.toNat (0x2C120000 : (BitVec 32))) (56 -i 1)
+    0)
+  writeReg __PMUBase (integer_subrange (BitVec.toNat (0x22030000 : (BitVec 32))) (56 -i 1) 0)
   writeReg __syncAbortOnReadNormCache true
   writeReg __syncAbortOnReadNormNonCache true
   writeReg __syncAbortOnDeviceRead true
@@ -1476,17 +1478,17 @@ def sail_model_init (x_0 : Unit) : SailM Unit := do
   writeReg __ignore_rvbar_in_aarch32 false
   writeReg __trickbox_enabled false
   writeReg __mops_forward_copy true
-  writeReg __DBG_ROM_ADDR (integer_subrange (UInt0 (0x22000000 : (BitVec 32))) (56 -i 1) 0)
+  writeReg __DBG_ROM_ADDR (integer_subrange (BitVec.toNat (0x22000000 : (BitVec 32))) (56 -i 1) 0)
   writeReg CFG_RMR_AA64 (0b1 : (BitVec 1))
   writeReg ZCR_EL3_LEN_VALUE (Neg.neg 1)
   writeReg CPTR_EL3_EZ_VALUE (Neg.neg 1)
   writeReg CPTR_EL3_ESM_VALUE (Neg.neg 1)
   writeReg SMCR_EL3_LEN_VALUE (Neg.neg 1)
   writeReg __has_spe_pseudo_cycles false
-  writeReg HEAP_BASE (zero_extend (0x00000000 : (BitVec 32)) 64)
-  writeReg HEAP_LIMIT (zero_extend (0x0F000000 : (BitVec 32)) 64)
-  writeReg STACK_BASE (zero_extend (0x10000000 : (BitVec 32)) 64)
-  writeReg STACK_LIMIT (zero_extend (0x0F000000 : (BitVec 32)) 64)
+  writeReg HEAP_BASE (Sail.BitVec.zeroExtend (0x00000000 : (BitVec 32)) 64)
+  writeReg HEAP_LIMIT (Sail.BitVec.zeroExtend (0x0F000000 : (BitVec 32)) 64)
+  writeReg STACK_BASE (Sail.BitVec.zeroExtend (0x10000000 : (BitVec 32)) 64)
+  writeReg STACK_LIMIT (Sail.BitVec.zeroExtend (0x0F000000 : (BitVec 32)) 64)
   writeReg __emulator_termination_opcode none
   (initialize_registers ())
 

@@ -100,7 +100,7 @@ open ArchVersion
 open AccessType
 open ATAccess
 
-/-- Type quantifiers: k_ex7102283# : Bool, k_ex7102282# : Bool -/
+/-- Type quantifiers: k_ex7101837# : Bool, k_ex7101836# : Bool -/
 def neq_bool (x : Bool) (y : Bool) : Bool :=
   (Bool.not (BEq.beq x y))
 

@@ -126,8 +126,8 @@ def decode_aarch32_instrs_ADC_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:68.29-68.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_ADC_i_Op_A_txt d imm32 n setflags))
@@ -137,8 +137,8 @@ def decode_aarch32_instrs_ADC_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
@@ -183,9 +183,9 @@ def decode_aarch32_instrs_ADC_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:143.29-143.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -201,9 +201,9 @@ def decode_aarch32_instrs_ADC_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -220,9 +220,9 @@ def decode_aarch32_instrs_ADC_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -242,7 +242,7 @@ def decode_aarch32_instrs_ADC_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_ADC_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do (pure (AddWithCarry (← (R_read n)) shifted (← readReg PSTATE).C))
@@ -264,10 +264,10 @@ def decode_aarch32_instrs_ADC_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:252.29-252.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -314,8 +314,8 @@ def decode_aarch32_instrs_ADD_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "ADD (SP plus immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_ADD_i_OpA_A_txt d imm32 n setflags))
@@ -344,10 +344,10 @@ def decode_aarch32_instrs_ADD_i_T1enc_A_txt (imm3 : (BitVec 3)) (Rn : (BitVec 3)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
-      let imm32 : (BitVec 32) := (zero_extend imm3 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm3 32)
       (execute_aarch32_instrs_ADD_i_OpT_A_txt d imm32 n setflags))
   else (pure ())
 
@@ -355,10 +355,10 @@ def decode_aarch32_instrs_ADD_i_T2enc_A_txt (Rdn : (BitVec 3)) (imm8 : (BitVec 8
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       (execute_aarch32_instrs_ADD_i_OpT_A_txt d imm32 n setflags))
   else (pure ())
 
@@ -372,8 +372,8 @@ def decode_aarch32_instrs_ADD_i_T3enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "ADD (SP plus immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (Bool.or (Bool.and (BEq.beq d 15) (Bool.not setflags)) (BEq.beq n 15))
@@ -392,10 +392,10 @@ def decode_aarch32_instrs_ADD_i_T4enc_A_txt (i : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "ADD (SP plus immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend ((i ++ imm3) ++ imm8) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend ((i ++ imm3) ++ imm8) 32)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -441,9 +441,9 @@ def decode_aarch32_instrs_ADD_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "ADD (SP plus register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -459,9 +459,9 @@ def decode_aarch32_instrs_ADD_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -481,9 +481,9 @@ def decode_aarch32_instrs_ADD_r_T2enc_A_txt (DN : (BitVec 1)) (Rm : (BitVec 4)) 
       bif (Bool.or (BEq.beq (DN ++ Rdn) (0xD : (BitVec 4))) (BEq.beq Rm (0xD : (BitVec 4))))
       then sailThrow ((Error_See "ADD (SP plus register)"))
       else (pure ())
-      let d := (UInt0 (DN ++ Rdn))
+      let d := (BitVec.toNat (DN ++ Rdn))
       let n := d
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -513,9 +513,9 @@ def decode_aarch32_instrs_ADD_r_T3enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "ADD (SP plus register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -534,7 +534,7 @@ def decode_aarch32_instrs_ADD_r_T3enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_ADD_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do (pure (AddWithCarry (← (R_read n)) shifted (0b0 : (BitVec 1))))
@@ -556,10 +556,10 @@ def decode_aarch32_instrs_ADD_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:632.29-632.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -599,7 +599,7 @@ def decode_aarch32_instrs_ADD_SP_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:685.29-685.30"
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_ADD_SP_i_Op_A_txt d imm32 setflags))
@@ -609,9 +609,9 @@ def decode_aarch32_instrs_ADD_SP_i_T1enc_A_txt (Rd : (BitVec 3)) (imm8 : (BitVec
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       (execute_aarch32_instrs_ADD_SP_i_Op_A_txt d imm32 setflags))
   else (pure ())
 
@@ -621,7 +621,7 @@ def decode_aarch32_instrs_ADD_SP_i_T2enc_A_txt (imm7 : (BitVec 7)) : SailM Unit 
     (do
       let d := 13
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm7 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm7 ++ (0b00 : (BitVec 2))) 32)
       (execute_aarch32_instrs_ADD_SP_i_Op_A_txt d imm32 setflags))
   else (pure ())
 
@@ -632,7 +632,7 @@ def decode_aarch32_instrs_ADD_SP_i_T3enc_A_txt (i : (BitVec 1)) (S : (BitVec 1))
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "CMN (immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (Bool.and (BEq.beq d 15) (Bool.not setflags))
@@ -645,9 +645,9 @@ def decode_aarch32_instrs_ADD_SP_i_T4enc_A_txt (i : (BitVec 1)) (imm3 : (BitVec 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend ((i ++ imm3) ++ imm8) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend ((i ++ imm3) ++ imm8) 32)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -690,8 +690,8 @@ def decode_aarch32_instrs_ADD_SP_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:820.29-820.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -707,8 +707,8 @@ def decode_aarch32_instrs_ADD_SP_r_T1enc_A_txt (DM : (BitVec 1)) (Rdm : (BitVec 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 (DM ++ Rdm))
-      let m := (UInt0 (DM ++ Rdm))
+      let d := (BitVec.toNat (DM ++ Rdm))
+      let m := (BitVec.toNat (DM ++ Rdm))
       let setflags : Bool := false
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -735,7 +735,7 @@ def decode_aarch32_instrs_ADD_SP_r_T2enc_A_txt (Rm : (BitVec 4)) : SailM Unit :=
       then sailThrow ((Error_See "encoding T1"))
       else (pure ())
       let d := 13
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -755,8 +755,8 @@ def decode_aarch32_instrs_ADD_SP_r_T3enc_A_txt (S : (BitVec 1)) (imm3 : (BitVec 
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "CMN (register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -784,7 +784,7 @@ def decode_aarch32_instrs_ADR_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:951.29-951.30"
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       let add : Bool := true
       (execute_aarch32_instrs_ADR_Op_A_txt add d imm32))
@@ -795,7 +795,7 @@ def decode_aarch32_instrs_ADR_A2enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:972.29-972.30"
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       let add : Bool := false
       (execute_aarch32_instrs_ADR_Op_A_txt add d imm32))
@@ -805,8 +805,8 @@ def decode_aarch32_instrs_ADR_T1enc_A_txt (Rd : (BitVec 3)) (imm8 : (BitVec 8)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let d := (BitVec.toNat Rd)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let add : Bool := true
       (execute_aarch32_instrs_ADR_Op_A_txt add d imm32))
   else (pure ())
@@ -815,8 +815,8 @@ def decode_aarch32_instrs_ADR_T2enc_A_txt (i : (BitVec 1)) (imm3 : (BitVec 3)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let imm32 : (BitVec 32) := (zero_extend ((i ++ imm3) ++ imm8) 32)
+      let d := (BitVec.toNat Rd)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend ((i ++ imm3) ++ imm8) 32)
       let add : Bool := false
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -828,8 +828,8 @@ def decode_aarch32_instrs_ADR_T3enc_A_txt (i : (BitVec 1)) (imm3 : (BitVec 3)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let imm32 : (BitVec 32) := (zero_extend ((i ++ imm3) ++ imm8) 32)
+      let d := (BitVec.toNat Rd)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend ((i ++ imm3) ++ imm8) 32)
       let add : Bool := true
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -865,8 +865,8 @@ def decode_aarch32_instrs_AND_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:1083.29-1083.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -884,8 +884,8 @@ def decode_aarch32_instrs_AND_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "TST (immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -931,9 +931,9 @@ def decode_aarch32_instrs_AND_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:1167.29-1167.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -949,9 +949,9 @@ def decode_aarch32_instrs_AND_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -971,9 +971,9 @@ def decode_aarch32_instrs_AND_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "TST (register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -992,7 +992,7 @@ def decode_aarch32_instrs_AND_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_AND_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let shifted ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let shifted : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -1012,10 +1012,10 @@ def decode_aarch32_instrs_AND_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:1279.29-1279.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -1047,8 +1047,8 @@ def decode_aarch32_instrs_ASR_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rm : (BitVec 3)
   then
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let (_, __tup_1) ← do (DecodeImmShift (0b10 : (BitVec 2)) imm5)
       let shift_n : Int := __tup_1
@@ -1062,7 +1062,7 @@ def decode_aarch32_instrs_ASR_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rm : (BitVec 3)
 def execute_aarch32_instrs_ASR_r_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read n)) SRType_ASR shift_n (← readReg PSTATE).C)
   let result : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -1080,9 +1080,9 @@ def decode_aarch32_instrs_ASR_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       (execute_aarch32_instrs_ASR_r_Op_A_txt d m n setflags))
   else (pure ())
@@ -1171,9 +1171,9 @@ def decode_aarch32_instrs_BFC_A1enc_A_txt (cond : (BitVec 4)) (msb : (BitVec 5))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:1527.29-1527.30"
-      let d := (UInt0 Rd)
-      let msbit := (UInt0 msb)
-      let lsbit := (UInt0 lsb)
+      let d := (BitVec.toNat Rd)
+      let msbit := (BitVec.toNat msb)
+      let lsbit := (BitVec.toNat lsb)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1187,9 +1187,9 @@ def decode_aarch32_instrs_BFC_T1enc_A_txt (imm3 : (BitVec 3)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let msbit := (UInt0 msb)
-      let lsbit := (UInt0 (imm3 ++ imm2))
+      let d := (BitVec.toNat Rd)
+      let msbit := (BitVec.toNat msb)
+      let lsbit := (BitVec.toNat (imm3 ++ imm2))
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1216,10 +1216,10 @@ def decode_aarch32_instrs_BFI_A1enc_A_txt (cond : (BitVec 4)) (msb : (BitVec 5))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "BFC"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let msbit := (UInt0 msb)
-      let lsbit := (UInt0 lsb)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let msbit := (BitVec.toNat msb)
+      let lsbit := (BitVec.toNat lsb)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1236,10 +1236,10 @@ def decode_aarch32_instrs_BFI_T1enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "BFC"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let msbit := (UInt0 msb)
-      let lsbit := (UInt0 (imm3 ++ imm2))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let msbit := (BitVec.toNat msb)
+      let lsbit := (BitVec.toNat (imm3 ++ imm2))
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1278,8 +1278,8 @@ def decode_aarch32_instrs_BIC_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:1687.29-1687.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -1294,8 +1294,8 @@ def decode_aarch32_instrs_BIC_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
     (do
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -1344,9 +1344,9 @@ def decode_aarch32_instrs_BIC_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:1770.29-1770.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -1362,9 +1362,9 @@ def decode_aarch32_instrs_BIC_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -1381,9 +1381,9 @@ def decode_aarch32_instrs_BIC_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -1403,7 +1403,7 @@ def decode_aarch32_instrs_BIC_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_BIC_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let shifted ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let shifted : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -1424,10 +1424,10 @@ def decode_aarch32_instrs_BIC_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:1881.29-1881.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -1448,12 +1448,12 @@ def decode_aarch32_instrs_BKPT_A1enc_A_txt (cond : (BitVec 4)) (imm12 : (BitVec 
   (execute_aarch32_instrs_BKPT_Op_A_txt imm16)
 
 def decode_aarch32_instrs_BKPT_T1enc_A_txt (imm8 : (BitVec 8)) : SailM Unit := do
-  let imm16 : (BitVec 16) := (zero_extend imm8 16)
+  let imm16 : (BitVec 16) := (Sail.BitVec.zeroExtend imm8 16)
   (execute_aarch32_instrs_BKPT_Op_A_txt imm16)
 
 def execute_aarch32_instrs_BL_i_Op_A_txt (imm32 : (BitVec 32)) (targetInstrSet : InstrSet) : SailM Unit := do
   bif (BEq.beq (← (CurrentInstrSet ())) InstrSet_A32)
-  then (LR_write (sub_vec_int (← (PC_read__1 ())) 4))
+  then (LR_write (BitVec.subInt (← (PC_read__1 ())) 4))
   else (LR_write ((Sail.BitVec.extractLsb (← (PC_read__1 ())) 31 1) ++ (0b1 : (BitVec 1))))
   let targetAddress ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
   let targetAddress ← (( do
@@ -1526,12 +1526,12 @@ def execute_aarch32_instrs_BLX_r_Op_A_txt (m : Nat) : SailM Unit := do
   bif (BEq.beq (← (CurrentInstrSet ())) InstrSet_A32)
   then
     (do
-      let next_instr_addr ← (( do (pure (sub_vec_int (← (PC_read__1 ())) 4)) ) : SailM
+      let next_instr_addr ← (( do (pure (BitVec.subInt (← (PC_read__1 ())) 4)) ) : SailM
         (BitVec 32) )
       (LR_write next_instr_addr))
   else
     (do
-      let next_instr_addr ← (( do (pure (sub_vec_int (← (PC_read__1 ())) 2)) ) : SailM
+      let next_instr_addr ← (( do (pure (BitVec.subInt (← (PC_read__1 ())) 2)) ) : SailM
         (BitVec 32) )
       (LR_write ((Sail.BitVec.extractLsb next_instr_addr 31 1) ++ (0b1 : (BitVec 1)))))
   (BXWritePC target BranchType_INDCALL)
@@ -1541,7 +1541,7 @@ def decode_aarch32_instrs_BLX_r_A1enc_A_txt (cond : (BitVec 4)) (Rm : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2077.29-2077.30"
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       bif (BEq.beq m 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1552,7 +1552,7 @@ def decode_aarch32_instrs_BLX_r_T1enc_A_txt (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       bif (BEq.beq m 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1571,7 +1571,7 @@ def decode_aarch32_instrs_BX_A1enc_A_txt (cond : (BitVec 4)) (Rm : (BitVec 4)) :
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2135.29-2135.30"
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       (execute_aarch32_instrs_BX_Op_A_txt m))
   else (pure ())
 
@@ -1579,7 +1579,7 @@ def decode_aarch32_instrs_BX_T1enc_A_txt (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       bif (Bool.and (← (InITBlock ())) (Bool.not (← (LastInITBlock ()))))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1595,7 +1595,7 @@ def decode_aarch32_instrs_BXJ_A1enc_A_txt (cond : (BitVec 4)) (Rm : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2187.29-2187.30"
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       bif (BEq.beq m 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1606,7 +1606,7 @@ def decode_aarch32_instrs_BXJ_T1enc_A_txt (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
-      let m := (UInt0 Rm)
+      let m := (BitVec.toNat Rm)
       bif (BEq.beq m 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1623,8 +1623,8 @@ def execute_aarch32_instrs_CBNZ_Op_A_txt (imm32 : (BitVec 32)) (n : Nat) (nonzer
   else (pure ())
 
 def decode_aarch32_instrs_CBNZ_T1enc_A_txt (op : (BitVec 1)) (i : (BitVec 1)) (imm5 : (BitVec 5)) (Rn : (BitVec 3)) : SailM Unit := do
-  let n := (UInt0 Rn)
-  let imm32 : (BitVec 32) := (zero_extend ((i ++ imm5) ++ (0b0 : (BitVec 1))) 32)
+  let n := (BitVec.toNat Rn)
+  let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend ((i ++ imm5) ++ (0b0 : (BitVec 1))) 32)
   let nonzero : Bool := (BEq.beq op (0b1 : (BitVec 1)))
   bif (← (InITBlock ()))
   then sailThrow ((Error_Unpredictable ()))
@@ -1654,8 +1654,8 @@ def decode_aarch32_instrs_CLZ_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2321.29-2321.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1666,9 +1666,9 @@ def decode_aarch32_instrs_CLZ_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (bne m n) (BEq.beq d 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -1693,7 +1693,7 @@ def decode_aarch32_instrs_CMN_i_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2381.29-2381.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_CMN_i_Op_A_txt imm32 n))
   else (pure ())
@@ -1702,7 +1702,7 @@ def decode_aarch32_instrs_CMN_i_T1enc_A_txt (i : (BitVec 1)) (Rn : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (BEq.beq n 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -1732,8 +1732,8 @@ def decode_aarch32_instrs_CMN_r_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2440.29-2440.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -1748,8 +1748,8 @@ def decode_aarch32_instrs_CMN_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
         let shift_t : SRType := tup__0
@@ -1765,8 +1765,8 @@ def decode_aarch32_instrs_CMN_r_T2enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -1785,7 +1785,7 @@ def decode_aarch32_instrs_CMN_r_T2enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
 def execute_aarch32_instrs_CMN_rr_Op_A_txt (m : Nat) (n : Nat) (s : Nat) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do (pure (AddWithCarry (← (R_read n)) shifted (0b0 : (BitVec 1))))
@@ -1802,9 +1802,9 @@ def decode_aarch32_instrs_CMN_rr_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2539.29-2539.30"
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (BEq.beq n 15) (BEq.beq m 15)) (BEq.beq s 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -1831,7 +1831,7 @@ def decode_aarch32_instrs_CMP_i_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2580.29-2580.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_CMP_i_Op_A_txt imm32 n))
   else (pure ())
@@ -1840,8 +1840,8 @@ def decode_aarch32_instrs_CMP_i_T1enc_A_txt (Rn : (BitVec 3)) (imm8 : (BitVec 8)
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       (execute_aarch32_instrs_CMP_i_Op_A_txt imm32 n))
   else (pure ())
 
@@ -1849,7 +1849,7 @@ def decode_aarch32_instrs_CMP_i_T2enc_A_txt (i : (BitVec 1)) (Rn : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (BEq.beq n 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -1880,8 +1880,8 @@ def decode_aarch32_instrs_CMP_r_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2657.29-2657.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -1896,8 +1896,8 @@ def decode_aarch32_instrs_CMP_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
         let shift_t : SRType := tup__0
@@ -1913,8 +1913,8 @@ def decode_aarch32_instrs_CMP_r_T2enc_A_txt (N : (BitVec 1)) (Rm : (BitVec 4)) (
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 (N ++ Rn))
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat (N ++ Rn))
+      let m := (BitVec.toNat Rm)
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
         let shift_t : SRType := tup__0
@@ -1938,8 +1938,8 @@ def decode_aarch32_instrs_CMP_r_T3enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -1958,7 +1958,7 @@ def decode_aarch32_instrs_CMP_r_T3enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
 def execute_aarch32_instrs_CMP_rr_Op_A_txt (m : Nat) (n : Nat) (s : Nat) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do
@@ -1976,9 +1976,9 @@ def decode_aarch32_instrs_CMP_rr_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:2787.29-2787.30"
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (BEq.beq n 15) (BEq.beq m 15)) (BEq.beq s 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -2275,8 +2275,8 @@ def decode_aarch32_instrs_EOR_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:3115.29-3115.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -2294,8 +2294,8 @@ def decode_aarch32_instrs_EOR_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "TEQ (immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -2341,9 +2341,9 @@ def decode_aarch32_instrs_EOR_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:3199.29-3199.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -2359,9 +2359,9 @@ def decode_aarch32_instrs_EOR_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -2381,9 +2381,9 @@ def decode_aarch32_instrs_EOR_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "TEQ (register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -2402,7 +2402,7 @@ def decode_aarch32_instrs_EOR_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_EOR_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let shifted ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let shifted : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -2422,10 +2422,10 @@ def decode_aarch32_instrs_EOR_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:3311.29-3311.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -2494,9 +2494,9 @@ def decode_aarch32_instrs_LDC_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
            (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let cp := 14
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -2514,9 +2514,9 @@ def decode_aarch32_instrs_LDC_i_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (W
            (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let cp := 14
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -2547,7 +2547,7 @@ def decode_aarch32_instrs_LDC_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let cp := 14
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       bif (Bool.or (BEq.beq W (0b1 : (BitVec 1)))
            (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
@@ -2566,7 +2566,7 @@ def decode_aarch32_instrs_LDC_l_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (W
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let cp := 14
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       bif (Bool.or (BEq.beq W (0b1 : (BitVec 1)))
            (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
@@ -2606,7 +2606,7 @@ def decode_aarch32_instrs_LDM_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1)) (
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:3589.29-3589.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -2622,7 +2622,7 @@ def decode_aarch32_instrs_LDM_T1enc_A_txt (Rn : (BitVec 3)) (register_list : (Bi
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := ((0x00 : (BitVec 8)) ++ register_list)
       let wback : Bool := (BEq.beq (BitVec.join1 [(BitVec.access registers n)]) (0b0 : (BitVec 1)))
       bif ((BitCount registers) <b 1)
@@ -2635,7 +2635,7 @@ def decode_aarch32_instrs_LDM_T2enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (P 
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := ((P ++ M) ++ register_list)
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq n 15) ((BitCount registers) <b 2))
@@ -2659,7 +2659,7 @@ def decode_aarch32_instrs_LDM_T2enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (P 
 /-- Type quantifiers: n : Nat, k_wback : Bool, 0 ≤ n ∧ n ≤ 15 -/
 def execute_aarch32_instrs_LDMDA_Op_A_txt (n : Nat) (registers : (BitVec 16)) (wback : Bool) : SailM Unit := do
   let address ← (( do
-    (pure (BitVec.addInt (sub_vec_int (← (R_read n)) (4 *i (BitCount registers))) 4)) ) : SailM
+    (pure (BitVec.addInt (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers))) 4)) ) : SailM
     (BitVec 32) )
   let address ← (( do
     let loop_i_lower := 0
@@ -2679,7 +2679,7 @@ def execute_aarch32_instrs_LDMDA_Op_A_txt (n : Nat) (registers : (BitVec 16)) (w
   then (LoadWritePC (← (MemS_read address 4)))
   else (pure ())
   bif (Bool.and wback (BEq.beq (BitVec.join1 [(BitVec.access registers n)]) (0b0 : (BitVec 1))))
-  then (R_set n (sub_vec_int (← (R_read n)) (4 *i (BitCount registers))))
+  then (R_set n (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers))))
   else (pure ())
   bif (Bool.and wback (BEq.beq (BitVec.join1 [(BitVec.access registers n)]) (0b1 : (BitVec 1))))
   then (R_set n (← (__UNKNOWN_bits 32)))
@@ -2690,7 +2690,7 @@ def decode_aarch32_instrs_LDMDA_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:3697.29-3697.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -2704,8 +2704,8 @@ def decode_aarch32_instrs_LDMDA_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
 
 /-- Type quantifiers: n : Nat, k_wback : Bool, 0 ≤ n ∧ n ≤ 15 -/
 def execute_aarch32_instrs_LDMDB_Op_A_txt (n : Nat) (registers : (BitVec 16)) (wback : Bool) : SailM Unit := do
-  let address ← (( do (pure (sub_vec_int (← (R_read n)) (4 *i (BitCount registers)))) ) : SailM
-    (BitVec 32) )
+  let address ← (( do (pure (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers)))) ) :
+    SailM (BitVec 32) )
   let address ← (( do
     let loop_i_lower := 0
     let loop_i_upper := 14
@@ -2724,7 +2724,7 @@ def execute_aarch32_instrs_LDMDB_Op_A_txt (n : Nat) (registers : (BitVec 16)) (w
   then (LoadWritePC (← (MemS_read address 4)))
   else (pure ())
   bif (Bool.and wback (BEq.beq (BitVec.join1 [(BitVec.access registers n)]) (0b0 : (BitVec 1))))
-  then (R_set n (sub_vec_int (← (R_read n)) (4 *i (BitCount registers))))
+  then (R_set n (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers))))
   else (pure ())
   bif (Bool.and wback (BEq.beq (BitVec.join1 [(BitVec.access registers n)]) (0b1 : (BitVec 1))))
   then (R_set n (← (__UNKNOWN_bits 32)))
@@ -2735,7 +2735,7 @@ def decode_aarch32_instrs_LDMDB_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:3749.29-3749.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -2751,7 +2751,7 @@ def decode_aarch32_instrs_LDMDB_T1enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := ((P ++ M) ++ register_list)
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq n 15) ((BitCount registers) <b 2))
@@ -2804,7 +2804,7 @@ def decode_aarch32_instrs_LDMIB_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:3835.29-3835.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -2831,7 +2831,7 @@ def execute_aarch32_instrs_LDRB_i_OpA_A_txt (add : Bool) (imm32 : (BitVec 32)) (
     bif (Bool.and (Bool.not wback) (bne t 15))
     then (AArch32_SetLSInstructionSyndrome 1 false t false)
     else ()
-  (R_set t (zero_extend (← (MemU_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemU_read address 1)) 32))
   bif wback
   then (R_set n offset_addr)
   else (pure ())
@@ -2847,9 +2847,9 @@ def decode_aarch32_instrs_LDRB_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -2874,7 +2874,7 @@ def execute_aarch32_instrs_LDRB_i_OpT_A_txt (add : Bool) (imm32 : (BitVec 32)) (
     bif (Bool.and (Bool.not wback) (bne t 15))
     then (AArch32_SetLSInstructionSyndrome 1 false t false)
     else ()
-  (R_set t (zero_extend (← (MemU_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemU_read address 1)) 32))
   bif wback
   then (R_set n offset_addr)
   else (pure ())
@@ -2883,9 +2883,9 @@ def decode_aarch32_instrs_LDRB_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rn : (BitVec 3
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm5 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm5 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -2902,9 +2902,9 @@ def decode_aarch32_instrs_LDRB_i_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDRB (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -2930,9 +2930,9 @@ def decode_aarch32_instrs_LDRB_i_T3enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -2954,7 +2954,7 @@ def execute_aarch32_instrs_LDRB_l_Op_A_txt (add : Bool) (imm32 : (BitVec 32)) (t
     bif (bne t 15)
     then (AArch32_SetLSInstructionSyndrome 1 false t false)
     else ()
-  (R_set t (zero_extend (← (MemU_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemU_read address 1)) 32))
 
 def decode_aarch32_instrs_LDRB_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) (U : (BitVec 1)) (W : (BitVec 1)) (Rt : (BitVec 4)) (imm12 : (BitVec 12)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -2964,8 +2964,8 @@ def decode_aarch32_instrs_LDRB_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       bif (Bool.or (BEq.beq t 15) wback)
@@ -2981,8 +2981,8 @@ def decode_aarch32_instrs_LDRB_l_T1enc_A_txt (U : (BitVec 1)) (Rt : (BitVec 4)) 
       bif (BEq.beq Rt (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLD"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_LDRB_l_Op_A_txt add imm32 t))
   else (pure ())
@@ -3004,7 +3004,7 @@ def execute_aarch32_instrs_LDRB_r_Op_A_txt (add : Bool) (index : Bool) (m : Nat)
     bif (Bool.and (Bool.not wback) (bne t 15))
     then (AArch32_SetLSInstructionSyndrome 1 false t false)
     else ()
-  (R_set t (zero_extend (← (MemU_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemU_read address 1)) 32))
   bif wback
   then (R_set n offset_addr)
   else (pure ())
@@ -3019,9 +3019,9 @@ def decode_aarch32_instrs_LDRB_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -3045,9 +3045,9 @@ def decode_aarch32_instrs_LDRB_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -3072,14 +3072,14 @@ def decode_aarch32_instrs_LDRB_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDRB (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -3112,7 +3112,7 @@ def execute_aarch32_instrs_LDRBT_Op_A_txt (add : Bool) (imm32 : (BitVec 32)) (m 
        (BEq.beq (← readReg PSTATE).T (0b1 : (BitVec 1))))
   then (pure (AArch32_SetLSInstructionSyndrome 1 false t false))
   else (pure ())
-  (R_set t (zero_extend (← (MemU_unpriv_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemU_unpriv_read address 1)) 32))
   bif postindex
   then (R_set n offset_addr)
   else (pure ())
@@ -3125,12 +3125,12 @@ def decode_aarch32_instrs_LDRBT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq n 15)) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3148,9 +3148,9 @@ def decode_aarch32_instrs_LDRBT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -3181,12 +3181,12 @@ def decode_aarch32_instrs_LDRBT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3237,10 +3237,10 @@ def decode_aarch32_instrs_LDRD_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (BEq.beq (BitVec.join1 [(BitVec.access Rt 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -3266,10 +3266,10 @@ def decode_aarch32_instrs_LDRD_i_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDRD (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -3316,9 +3316,9 @@ def decode_aarch32_instrs_LDRD_l_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)
       bif (BEq.beq (BitVec.join1 [(BitVec.access Rt 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       bif (BEq.beq t2 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -3333,9 +3333,9 @@ def decode_aarch32_instrs_LDRD_l_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq t2 15)) (BEq.beq t t2))
       then sailThrow ((Error_Unpredictable ()))
@@ -3388,10 +3388,10 @@ def decode_aarch32_instrs_LDRD_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (BEq.beq (BitVec.join1 [(BitVec.access Rt 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -3418,8 +3418,8 @@ def decode_aarch32_instrs_LDREX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:4641.29-4641.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let imm32 : (BitVec 32) := (Zeros (n := 32))
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -3431,9 +3431,9 @@ def decode_aarch32_instrs_LDREX_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3444,15 +3444,15 @@ def decode_aarch32_instrs_LDREX_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
 def execute_aarch32_instrs_LDREXB_Op_A_txt (n : Nat) (t : Nat) : SailM Unit := do
   let address ← (( do (R_read n) ) : SailM (BitVec 32) )
   (AArch32_SetExclusiveMonitors address 1)
-  (R_set t (zero_extend (← (MemA_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemA_read address 1)) 32))
 
 def decode_aarch32_instrs_LDREXB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:4706.29-4706.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3463,8 +3463,8 @@ def decode_aarch32_instrs_LDREXB_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3493,9 +3493,9 @@ def decode_aarch32_instrs_LDREXD_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:4772.29-4772.30"
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or
            (Bool.or (BEq.beq (BitVec.join1 [(BitVec.access Rt 0)]) (0b1 : (BitVec 1)))
              (BEq.beq t2 15)) (BEq.beq n 15))
@@ -3508,9 +3508,9 @@ def decode_aarch32_instrs_LDREXD_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq t2 15)) (BEq.beq t t2)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3521,15 +3521,15 @@ def decode_aarch32_instrs_LDREXD_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
 def execute_aarch32_instrs_LDREXH_Op_A_txt (n : Nat) (t : Nat) : SailM Unit := do
   let address ← (( do (R_read n) ) : SailM (BitVec 32) )
   (AArch32_SetExclusiveMonitors address 2)
-  (R_set t (zero_extend (← (MemA_read address 2)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemA_read address 2)) 32))
 
 def decode_aarch32_instrs_LDREXH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:4837.29-4837.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3540,8 +3540,8 @@ def decode_aarch32_instrs_LDREXH_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3567,7 +3567,7 @@ def execute_aarch32_instrs_LDRH_i_OpA_A_txt (add : Bool) (imm32 : (BitVec 32)) (
   bif wback
   then (R_set n offset_addr)
   else (pure ())
-  (R_set t (zero_extend data 32))
+  (R_set t (Sail.BitVec.zeroExtend data 32))
 
 def decode_aarch32_instrs_LDRH_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) (U : (BitVec 1)) (W : (BitVec 1)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) (imm4H : (BitVec 4)) (imm4L : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -3580,9 +3580,9 @@ def decode_aarch32_instrs_LDRH_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -3611,15 +3611,15 @@ def execute_aarch32_instrs_LDRH_i_OpT_A_txt (add : Bool) (imm32 : (BitVec 32)) (
   bif wback
   then (R_set n offset_addr)
   else (pure ())
-  (R_set t (zero_extend data 32))
+  (R_set t (Sail.BitVec.zeroExtend data 32))
 
 def decode_aarch32_instrs_LDRH_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rn : (BitVec 3)) (Rt : (BitVec 3)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm5 ++ (0b0 : (BitVec 1))) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm5 ++ (0b0 : (BitVec 1))) 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -3636,9 +3636,9 @@ def decode_aarch32_instrs_LDRH_i_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDRH (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -3664,9 +3664,9 @@ def decode_aarch32_instrs_LDRH_i_T3enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -3689,7 +3689,7 @@ def execute_aarch32_instrs_LDRH_l_Op_A_txt (add : Bool) (imm32 : (BitVec 32)) (t
     then (AArch32_SetLSInstructionSyndrome 2 false t false)
     else ()
   let data ← (( do (MemU_read address 2) ) : SailM (BitVec 16) )
-  (R_set t (zero_extend data 32))
+  (R_set t (Sail.BitVec.zeroExtend data 32))
 
 def decode_aarch32_instrs_LDRH_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) (U : (BitVec 1)) (W : (BitVec 1)) (Rt : (BitVec 4)) (imm4H : (BitVec 4)) (imm4L : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -3699,8 +3699,8 @@ def decode_aarch32_instrs_LDRH_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       bif (Bool.or (BEq.beq t 15) wback)
@@ -3716,8 +3716,8 @@ def decode_aarch32_instrs_LDRH_l_T1enc_A_txt (U : (BitVec 1)) (Rt : (BitVec 4)) 
       bif (BEq.beq Rt (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLD (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_LDRH_l_Op_A_txt add imm32 t))
   else (pure ())
@@ -3743,7 +3743,7 @@ def execute_aarch32_instrs_LDRH_r_Op_A_txt (add : Bool) (index : Bool) (m : Nat)
   bif wback
   then (R_set n offset_addr)
   else (pure ())
-  (R_set t (zero_extend data 32))
+  (R_set t (Sail.BitVec.zeroExtend data 32))
 
 def decode_aarch32_instrs_LDRH_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) (U : (BitVec 1)) (W : (BitVec 1)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -3755,9 +3755,9 @@ def decode_aarch32_instrs_LDRH_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -3782,9 +3782,9 @@ def decode_aarch32_instrs_LDRH_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -3809,14 +3809,14 @@ def decode_aarch32_instrs_LDRH_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rt (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLDW (register)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -3853,7 +3853,7 @@ def execute_aarch32_instrs_LDRHT_Op_A_txt (add : Bool) (imm32 : (BitVec 32)) (m 
   bif postindex
   then (R_set n offset_addr)
   else (pure ())
-  (R_set t (zero_extend data 32))
+  (R_set t (Sail.BitVec.zeroExtend data 32))
 
 def decode_aarch32_instrs_LDRHT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) (imm4H : (BitVec 4)) (imm4L : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -3863,12 +3863,12 @@ def decode_aarch32_instrs_LDRHT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq n 15)) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3884,9 +3884,9 @@ def decode_aarch32_instrs_LDRHT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:5310.29-5310.30"
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -3910,12 +3910,12 @@ def decode_aarch32_instrs_LDRHT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -3960,9 +3960,9 @@ def decode_aarch32_instrs_LDR_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -4003,9 +4003,9 @@ def decode_aarch32_instrs_LDR_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rn : (BitVec 3)
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm5 ++ (0b00 : (BitVec 2))) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm5 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -4016,9 +4016,9 @@ def decode_aarch32_instrs_LDR_i_T2enc_A_txt (Rt : (BitVec 3)) (imm8 : (BitVec 8)
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let n := 13
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -4032,9 +4032,9 @@ def decode_aarch32_instrs_LDR_i_T3enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDR (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -4059,9 +4059,9 @@ def decode_aarch32_instrs_LDR_i_T4enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -4101,8 +4101,8 @@ def decode_aarch32_instrs_LDR_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       bif wback
@@ -4115,8 +4115,8 @@ def decode_aarch32_instrs_LDR_l_T1enc_A_txt (Rt : (BitVec 3)) (imm8 : (BitVec 8)
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let add : Bool := true
       (execute_aarch32_instrs_LDR_l_Op_A_txt add imm32 t))
   else (pure ())
@@ -4125,8 +4125,8 @@ def decode_aarch32_instrs_LDR_l_T2enc_A_txt (U : (BitVec 1)) (Rt : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       bif (Bool.and (Bool.and (BEq.beq t 15) (← (InITBlock ())))
            (Bool.not (← (LastInITBlock ()))))
@@ -4174,9 +4174,9 @@ def decode_aarch32_instrs_LDR_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -4220,9 +4220,9 @@ def decode_aarch32_instrs_LDR_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
         let shift_t : SRType := tup__0
@@ -4241,11 +4241,11 @@ def decode_aarch32_instrs_LDR_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDR (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -4291,9 +4291,9 @@ def decode_aarch32_instrs_LDRSB_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRSBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -4313,9 +4313,9 @@ def decode_aarch32_instrs_LDRSB_i_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDRSB (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -4341,9 +4341,9 @@ def decode_aarch32_instrs_LDRSB_i_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -4375,8 +4375,8 @@ def decode_aarch32_instrs_LDRSB_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRSBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       bif (Bool.or (BEq.beq t 15) wback)
@@ -4392,8 +4392,8 @@ def decode_aarch32_instrs_LDRSB_l_T1enc_A_txt (U : (BitVec 1)) (Rt : (BitVec 4))
       bif (BEq.beq Rt (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLI"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_LDRSB_l_Op_A_txt add imm32 t))
   else (pure ())
@@ -4430,9 +4430,9 @@ def decode_aarch32_instrs_LDRSB_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRSBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -4457,9 +4457,9 @@ def decode_aarch32_instrs_LDRSB_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -4484,14 +4484,14 @@ def decode_aarch32_instrs_LDRSB_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "LDRSB (literal)"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -4537,12 +4537,12 @@ def decode_aarch32_instrs_LDRSBT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq n 15)) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -4558,9 +4558,9 @@ def decode_aarch32_instrs_LDRSBT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:6205.29-6205.30"
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -4584,12 +4584,12 @@ def decode_aarch32_instrs_LDRSBT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -4628,9 +4628,9 @@ def decode_aarch32_instrs_LDRSH_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRSHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -4650,9 +4650,9 @@ def decode_aarch32_instrs_LDRSH_i_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)
       bif (BEq.beq Rt (0xF : (BitVec 4)))
       then sailThrow ((Error_See "Related instructions"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -4678,9 +4678,9 @@ def decode_aarch32_instrs_LDRSH_i_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -4713,8 +4713,8 @@ def decode_aarch32_instrs_LDRSH_l_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRSHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       bif (Bool.or (BEq.beq t 15) wback)
@@ -4730,8 +4730,8 @@ def decode_aarch32_instrs_LDRSH_l_T1enc_A_txt (U : (BitVec 1)) (Rt : (BitVec 4))
       bif (BEq.beq Rt (0xF : (BitVec 4)))
       then sailThrow ((Error_See "Related instructions"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_LDRSH_l_Op_A_txt add imm32 t))
   else (pure ())
@@ -4769,9 +4769,9 @@ def decode_aarch32_instrs_LDRSH_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "LDRSHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -4796,9 +4796,9 @@ def decode_aarch32_instrs_LDRSH_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -4823,14 +4823,14 @@ def decode_aarch32_instrs_LDRSH_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)
       bif (BEq.beq Rt (0xF : (BitVec 4)))
       then sailThrow ((Error_See "Related instructions"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -4877,12 +4877,12 @@ def decode_aarch32_instrs_LDRSHT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq n 15)) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -4898,9 +4898,9 @@ def decode_aarch32_instrs_LDRSHT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:6655.29-6655.30"
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -4924,12 +4924,12 @@ def decode_aarch32_instrs_LDRSHT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -4972,12 +4972,12 @@ def decode_aarch32_instrs_LDRT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) 
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq n 15)) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -4995,9 +4995,9 @@ def decode_aarch32_instrs_LDRT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) 
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -5028,12 +5028,12 @@ def decode_aarch32_instrs_LDRT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) (
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -5066,8 +5066,8 @@ def decode_aarch32_instrs_LSL_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rm : (BitVec 3)
       bif (BEq.beq imm5 (0b00000 : (BitVec 5)))
       then sailThrow ((Error_See "MOV (register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let (_, __tup_1) ← do (DecodeImmShift (0b00 : (BitVec 2)) imm5)
       let shift_n : Int := __tup_1
@@ -5081,7 +5081,7 @@ def decode_aarch32_instrs_LSL_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rm : (BitVec 3)
 def execute_aarch32_instrs_LSL_r_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read n)) SRType_LSL shift_n (← readReg PSTATE).C)
   let result : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -5099,9 +5099,9 @@ def decode_aarch32_instrs_LSL_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       (execute_aarch32_instrs_LSL_r_Op_A_txt d m n setflags))
   else (pure ())
@@ -5110,9 +5110,9 @@ def decode_aarch32_instrs_LSL_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -5143,8 +5143,8 @@ def decode_aarch32_instrs_LSR_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rm : (BitVec 3)
   then
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let (_, __tup_1) ← do (DecodeImmShift (0b01 : (BitVec 2)) imm5)
       let shift_n : Int := __tup_1
@@ -5158,7 +5158,7 @@ def decode_aarch32_instrs_LSR_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rm : (BitVec 3)
 def execute_aarch32_instrs_LSR_r_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read n)) SRType_LSR shift_n (← readReg PSTATE).C)
   let result : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -5176,9 +5176,9 @@ def decode_aarch32_instrs_LSR_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       (execute_aarch32_instrs_LSR_r_Op_A_txt d m n setflags))
   else (pure ())
@@ -5192,7 +5192,7 @@ def decode_aarch32_instrs_MCR_A1enc_A_txt (cond : (BitVec 4)) (opc1 : (BitVec 3)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7065.29-7065.30"
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5207,7 +5207,7 @@ def decode_aarch32_instrs_MCR_T1enc_A_txt (opc1 : (BitVec 3)) (CRn : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5228,8 +5228,8 @@ def decode_aarch32_instrs_MCRR_A1enc_A_txt (cond : (BitVec 4)) (Rt2 : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7125.29-7125.30"
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5244,8 +5244,8 @@ def decode_aarch32_instrs_MCRR_T1enc_A_txt (Rt2 : (BitVec 4)) (Rt : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5259,9 +5259,9 @@ def decode_aarch32_instrs_MCRR_T1enc_A_txt (Rt2 : (BitVec 4)) (Rt : (BitVec 4)) 
 /-- Type quantifiers: a : Nat, d : Nat, m : Nat, n : Nat, k_setflags : Bool, 0 ≤ n ∧
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 ∧ 0 ≤ a ∧ a ≤ 15 -/
 def execute_aarch32_instrs_MLA_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
-  let operand1 ← do (pure (sint (← (R_read n))))
-  let operand2 ← do (pure (sint (← (R_read m))))
-  let addend ← do (pure (sint (← (R_read a))))
+  let operand1 ← do (pure (BitVec.toInt (← (R_read n))))
+  let operand2 ← do (pure (BitVec.toInt (← (R_read m))))
+  let addend ← do (pure (BitVec.toInt (← (R_read a))))
   let result := ((operand1 *i operand2) +i addend)
   (R_set d (integer_subrange result 31 0))
   bif setflags
@@ -5276,10 +5276,10 @@ def decode_aarch32_instrs_MLA_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)) (
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7194.29-7194.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq a 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -5294,10 +5294,10 @@ def decode_aarch32_instrs_MLA_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) (R
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "MUL"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let setflags : Bool := false
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -5308,9 +5308,9 @@ def decode_aarch32_instrs_MLA_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) (R
 /-- Type quantifiers: a : Nat, d : Nat, m : Nat, n : Nat, 0 ≤ n ∧
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 ∧ 0 ≤ a ∧ a ≤ 15 -/
 def execute_aarch32_instrs_MLS_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
-  let operand1 ← do (pure (sint (← (R_read n))))
-  let operand2 ← do (pure (sint (← (R_read m))))
-  let addend ← do (pure (sint (← (R_read a))))
+  let operand1 ← do (pure (BitVec.toInt (← (R_read n))))
+  let operand2 ← do (pure (BitVec.toInt (← (R_read m))))
+  let addend ← do (pure (BitVec.toInt (← (R_read a))))
   let result := (addend -i (operand1 *i operand2))
   (R_set d (integer_subrange result 31 0))
 
@@ -5319,10 +5319,10 @@ def decode_aarch32_instrs_MLS_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7264.29-7264.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq a 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -5333,10 +5333,10 @@ def decode_aarch32_instrs_MLS_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq a 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -5370,7 +5370,7 @@ def decode_aarch32_instrs_MOV_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7338.29-7338.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -5385,9 +5385,9 @@ def decode_aarch32_instrs_MOV_i_A2enc_A_txt (cond : (BitVec 4)) (imm4 : (BitVec 
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7366.29-7366.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm4 ++ imm12) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4 ++ imm12) 32)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -5399,9 +5399,9 @@ def decode_aarch32_instrs_MOV_i_T1enc_A_txt (Rd : (BitVec 3)) (imm8 : (BitVec 8)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let carry ← (( do (pure (← readReg PSTATE).C) ) : SailM (BitVec 1) )
       (execute_aarch32_instrs_MOV_i_Op_A_txt carry d imm32 setflags))
   else (pure ())
@@ -5412,7 +5412,7 @@ def decode_aarch32_instrs_MOV_i_T2enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (i
     (do
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -5431,9 +5431,9 @@ def decode_aarch32_instrs_MOV_i_T3enc_A_txt (i : (BitVec 1)) (imm4 : (BitVec 4))
   then
     (do
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (((imm4 ++ i) ++ imm3) ++ imm8) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (((imm4 ++ i) ++ imm3) ++ imm8) 32)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -5475,8 +5475,8 @@ def decode_aarch32_instrs_MOV_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7495.29-7495.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -5492,8 +5492,8 @@ def decode_aarch32_instrs_MOV_r_T1enc_A_txt (D : (BitVec 1)) (Rm : (BitVec 4)) (
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 (D ++ Rd))
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Rd))
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -5516,8 +5516,8 @@ def decode_aarch32_instrs_MOV_r_T2enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := true
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -5539,8 +5539,8 @@ def decode_aarch32_instrs_MOV_r_T3enc_A_txt (S : (BitVec 1)) (imm3 : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -5560,7 +5560,7 @@ def decode_aarch32_instrs_MOV_r_T3enc_A_txt (S : (BitVec 1)) (imm3 : (BitVec 3))
 def execute_aarch32_instrs_MOV_rr_Op_A_txt (d : Nat) (m : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let result : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -5579,9 +5579,9 @@ def decode_aarch32_instrs_MOV_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7638.29-7638.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq m 15)) (BEq.beq s 15))
@@ -5600,9 +5600,9 @@ def decode_aarch32_instrs_MOV_rr_T1enc_A_txt (op : (BitVec 4)) (Rs : (BitVec 3))
                (Bool.or (BEq.beq op (0x4 : (BitVec 4))) (BEq.beq op (0x7 : (BitVec 4)))))))
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
-      let d := (UInt0 Rdm)
-      let m := (UInt0 Rdm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rdm)
+      let m := (BitVec.toNat Rdm)
+      let s := (BitVec.toNat Rs)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let shift_t ← (( do
         (DecodeRegShift
@@ -5615,9 +5615,9 @@ def decode_aarch32_instrs_MOV_rr_T2enc_A_txt (stype : (BitVec 2)) (S : (BitVec 1
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq m 15)) (BEq.beq s 15))
@@ -5635,7 +5635,7 @@ def decode_aarch32_instrs_MOVT_A1enc_A_txt (cond : (BitVec 4)) (imm4 : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7730.29-7730.30"
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let imm16 : (BitVec 16) := (imm4 ++ imm12)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -5647,7 +5647,7 @@ def decode_aarch32_instrs_MOVT_T1enc_A_txt (i : (BitVec 1)) (imm4 : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let imm16 : (BitVec 16) := (((imm4 ++ i) ++ imm3) ++ imm8)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -5666,7 +5666,7 @@ def decode_aarch32_instrs_MRC_A1enc_A_txt (cond : (BitVec 4)) (opc1 : (BitVec 3)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7790.29-7790.30"
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5678,7 +5678,7 @@ def decode_aarch32_instrs_MRC_T1enc_A_txt (opc1 : (BitVec 3)) (CRn : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5696,8 +5696,8 @@ def decode_aarch32_instrs_MRRC_A1enc_A_txt (cond : (BitVec 4)) (Rt2 : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7844.29-7844.30"
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5712,8 +5712,8 @@ def decode_aarch32_instrs_MRRC_T1enc_A_txt (Rt2 : (BitVec 4)) (Rt : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
       let cp :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access coproc 0)]) (0b0 : (BitVec 1)))
         then 14
@@ -5727,8 +5727,8 @@ def decode_aarch32_instrs_MRRC_T1enc_A_txt (Rt2 : (BitVec 4)) (Rt : (BitVec 4)) 
 /-- Type quantifiers: d : Nat, m : Nat, n : Nat, k_setflags : Bool, 0 ≤ n ∧
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_MUL_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
-  let operand1 ← do (pure (sint (← (R_read n))))
-  let operand2 ← do (pure (sint (← (R_read m))))
+  let operand1 ← do (pure (BitVec.toInt (← (R_read n))))
+  let operand2 ← do (pure (BitVec.toInt (← (R_read m))))
   let result := (operand1 *i operand2)
   (R_set d (integer_subrange result 31 0))
   bif setflags
@@ -5743,9 +5743,9 @@ def decode_aarch32_instrs_MUL_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)) (
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:7912.29-7912.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -5757,9 +5757,9 @@ def decode_aarch32_instrs_MUL_T1enc_A_txt (Rn : (BitVec 3)) (Rdm : (BitVec 3)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rdm)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rdm)
+      let d := (BitVec.toNat Rdm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rdm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       (execute_aarch32_instrs_MUL_Op_A_txt d m n setflags))
   else (pure ())
@@ -5768,9 +5768,9 @@ def decode_aarch32_instrs_MUL_T2enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -5805,7 +5805,7 @@ def decode_aarch32_instrs_MVN_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:8009.29-8009.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -5820,7 +5820,7 @@ def decode_aarch32_instrs_MVN_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (i
     (do
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -5868,8 +5868,8 @@ def decode_aarch32_instrs_MVN_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:8092.29-8092.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -5885,8 +5885,8 @@ def decode_aarch32_instrs_MVN_r_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -5903,8 +5903,8 @@ def decode_aarch32_instrs_MVN_r_T2enc_A_txt (S : (BitVec 1)) (imm3 : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -5924,7 +5924,7 @@ def decode_aarch32_instrs_MVN_r_T2enc_A_txt (S : (BitVec 1)) (imm3 : (BitVec 3))
 def execute_aarch32_instrs_MVN_rr_Op_A_txt (d : Nat) (m : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let shifted ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let shifted : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -5944,9 +5944,9 @@ def decode_aarch32_instrs_MVN_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:8202.29-8202.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq m 15)) (BEq.beq s 15))
@@ -5999,8 +5999,8 @@ def decode_aarch32_instrs_ORN_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "MVN (immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -6041,9 +6041,9 @@ def decode_aarch32_instrs_ORN_r_T1enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "MVN (register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -6084,8 +6084,8 @@ def decode_aarch32_instrs_ORR_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:8420.29-8420.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -6103,8 +6103,8 @@ def decode_aarch32_instrs_ORR_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "MOV (immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
@@ -6150,9 +6150,9 @@ def decode_aarch32_instrs_ORR_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:8504.29-8504.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -6168,9 +6168,9 @@ def decode_aarch32_instrs_ORR_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -6190,9 +6190,9 @@ def decode_aarch32_instrs_ORR_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -6210,7 +6210,7 @@ def decode_aarch32_instrs_ORR_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_ORR_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let shifted ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let shifted : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -6230,10 +6230,10 @@ def decode_aarch32_instrs_ORR_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:8616.29-8616.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -6267,9 +6267,9 @@ def decode_aarch32_instrs_PKH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) 
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:8660.29-8660.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let tbform : Bool := (BEq.beq tb (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift (tb ++ (0b0 : (BitVec 1))) imm5)
       let shift_t : SRType := tup__0
@@ -6293,9 +6293,9 @@ def decode_aarch32_instrs_PKH_T1enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (im
       bif (Bool.or (BEq.beq S (0b1 : (BitVec 1))) (BEq.beq T (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let tbform : Bool := (BEq.beq tb (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift (tb ++ (0b0 : (BitVec 1))) (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -6325,8 +6325,8 @@ def decode_aarch32_instrs_PLD_i_A1enc_A_txt (U : (BitVec 1)) (R : (BitVec 1)) (R
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLD (literal)"))
       else (pure ())
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let is_pldw : Bool := (BEq.beq R (0b0 : (BitVec 1)))
       (execute_aarch32_instrs_PLD_i_Op_A_txt add imm32 is_pldw n))
@@ -6339,8 +6339,8 @@ def decode_aarch32_instrs_PLD_i_T1enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLD (literal)"))
       else (pure ())
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := true
       let is_pldw : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_PLD_i_Op_A_txt add imm32 is_pldw n))
@@ -6353,8 +6353,8 @@ def decode_aarch32_instrs_PLD_i_T2enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLD (literal)"))
       else (pure ())
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let add : Bool := false
       let is_pldw : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_PLD_i_Op_A_txt add imm32 is_pldw n))
@@ -6372,7 +6372,7 @@ def decode_aarch32_instrs_PLD_l_A1enc_A_txt (U : (BitVec 1)) (imm12 : (BitVec 12
   bif (← (ConditionPassed ()))
   then
     (do
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_PLD_l_Op_A_txt add imm32))
   else (pure ())
@@ -6381,7 +6381,7 @@ def decode_aarch32_instrs_PLD_l_T1enc_A_txt (U : (BitVec 1)) (imm12 : (BitVec 12
   bif (← (ConditionPassed ()))
   then
     (do
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_PLD_l_Op_A_txt add imm32))
   else (pure ())
@@ -6405,8 +6405,8 @@ def decode_aarch32_instrs_PLD_r_A1enc_A_txt (U : (BitVec 1)) (R : (BitVec 1)) (R
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let is_pldw : Bool := (BEq.beq R (0b0 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
@@ -6431,12 +6431,12 @@ def decode_aarch32_instrs_PLD_r_T1enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLD (literal)"))
       else (pure ())
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let add : Bool := true
       let is_pldw : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -6463,8 +6463,8 @@ def decode_aarch32_instrs_PLI_i_A1enc_A_txt (U : (BitVec 1)) (Rn : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_PLI_i_Op_A_txt add imm32 n))
   else (pure ())
@@ -6476,8 +6476,8 @@ def decode_aarch32_instrs_PLI_i_T1enc_A_txt (Rn : (BitVec 4)) (imm12 : (BitVec 1
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "encoding T3"))
       else (pure ())
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := true
       (execute_aarch32_instrs_PLI_i_Op_A_txt add imm32 n))
   else (pure ())
@@ -6489,8 +6489,8 @@ def decode_aarch32_instrs_PLI_i_T2enc_A_txt (Rn : (BitVec 4)) (imm8 : (BitVec 8)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "encoding T3"))
       else (pure ())
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let add : Bool := false
       (execute_aarch32_instrs_PLI_i_Op_A_txt add imm32 n))
   else (pure ())
@@ -6500,7 +6500,7 @@ def decode_aarch32_instrs_PLI_i_T3enc_A_txt (U : (BitVec 1)) (imm12 : (BitVec 12
   then
     (do
       let n := 15
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       (execute_aarch32_instrs_PLI_i_Op_A_txt add imm32 n))
   else (pure ())
@@ -6522,8 +6522,8 @@ def decode_aarch32_instrs_PLI_r_A1enc_A_txt (U : (BitVec 1)) (Rn : (BitVec 4)) (
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -6547,11 +6547,11 @@ def decode_aarch32_instrs_PLI_r_T1enc_A_txt (Rn : (BitVec 4)) (imm2 : (BitVec 2)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "PLI (immediate, literal)"))
       else (pure ())
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let add : Bool := true
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -6620,8 +6620,8 @@ def decode_aarch32_instrs_POP_T1enc_A_txt (P : (BitVec 1)) (register_list : (Bit
 
 /-- Type quantifiers: k_UnalignedAllowed : Bool -/
 def execute_aarch32_instrs_PUSH_Op_A_txt (UnalignedAllowed : Bool) (registers : (BitVec 16)) : SailM Unit := do
-  let address ← (( do (pure (sub_vec_int (← (R_read 13)) (4 *i (BitCount registers)))) ) : SailM
-    (BitVec 32) )
+  let address ← (( do (pure (BitVec.subInt (← (R_read 13)) (4 *i (BitCount registers)))) ) :
+    SailM (BitVec 32) )
   let address ← (( do
     let loop_i_lower := 0
     let loop_i_upper := 14
@@ -6649,7 +6649,7 @@ def execute_aarch32_instrs_PUSH_Op_A_txt (UnalignedAllowed : Bool) (registers : 
       then (MemU_set address 4 (← (PCStoreValue ())))
       else (MemA_set address 4 (← (PCStoreValue ()))))
   else (pure ())
-  (R_set 13 (sub_vec_int (← (R_read 13)) (4 *i (BitCount registers))))
+  (R_set 13 (BitVec.subInt (← (R_read 13)) (4 *i (BitCount registers))))
 
 def decode_aarch32_instrs_PUSH_T1enc_A_txt (M : (BitVec 1)) (register_list : (BitVec 8)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -6668,10 +6668,10 @@ def decode_aarch32_instrs_PUSH_T1enc_A_txt (M : (BitVec 1)) (register_list : (Bi
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QADD16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let sum2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (SignedSat sum1 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (SignedSat sum2 16))))
@@ -6681,9 +6681,9 @@ def decode_aarch32_instrs_QADD16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9237.29-9237.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6694,9 +6694,9 @@ def decode_aarch32_instrs_QADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6707,16 +6707,16 @@ def decode_aarch32_instrs_QADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QADD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let sum2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let sum3 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let sum4 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (← (SignedSat sum1 8))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (← (SignedSat sum2 8))))
@@ -6728,9 +6728,9 @@ def decode_aarch32_instrs_QADD8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9304.29-9304.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6741,9 +6741,9 @@ def decode_aarch32_instrs_QADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6754,7 +6754,8 @@ def decode_aarch32_instrs_QADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QADD_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sat ← (( do (undefined_bool ()) ) : SailM Bool )
-  let (__tup_0, __tup_1) ← do (SignedSatQ ((sint (← (R_read m))) +i (sint (← (R_read n)))) 32)
+  let (__tup_0, __tup_1) ← do
+    (SignedSatQ ((BitVec.toInt (← (R_read m))) +i (BitVec.toInt (← (R_read n)))) 32)
   (R_set d __tup_0)
   let sat : Bool := __tup_1
   (pure ())
@@ -6767,9 +6768,9 @@ def decode_aarch32_instrs_QADD_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9375.29-9375.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6780,9 +6781,9 @@ def decode_aarch32_instrs_QADD_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6793,10 +6794,10 @@ def decode_aarch32_instrs_QADD_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QASX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let sum ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (SignedSat diff 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (SignedSat sum 16))))
@@ -6806,9 +6807,9 @@ def decode_aarch32_instrs_QASX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9438.29-9438.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6819,9 +6820,9 @@ def decode_aarch32_instrs_QASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6833,12 +6834,13 @@ def decode_aarch32_instrs_QASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
 def execute_aarch32_instrs_QDADD_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let doubled ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
   let sat1 ← (( do (undefined_bool ()) ) : SailM Bool )
-  let (tup__0, tup__1) ← do (SignedSatQ (2 *i (sint (← (R_read n)))) 32)
+  let (tup__0, tup__1) ← do (SignedSatQ (2 *i (BitVec.toInt (← (R_read n)))) 32)
   let doubled : (BitVec 32) := tup__0
   let sat1 : Bool := tup__1
   (pure ())
   let sat2 ← (( do (undefined_bool ()) ) : SailM Bool )
-  let (__tup_0, __tup_1) ← do (SignedSatQ ((sint (← (R_read m))) +i (sint doubled)) 32)
+  let (__tup_0, __tup_1) ← do
+    (SignedSatQ ((BitVec.toInt (← (R_read m))) +i (BitVec.toInt doubled)) 32)
   (R_set d __tup_0)
   let sat2 : Bool := __tup_1
   (pure ())
@@ -6851,9 +6853,9 @@ def decode_aarch32_instrs_QDADD_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9512.29-9512.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6864,9 +6866,9 @@ def decode_aarch32_instrs_QDADD_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6878,12 +6880,13 @@ def decode_aarch32_instrs_QDADD_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
 def execute_aarch32_instrs_QDSUB_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let doubled ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
   let sat1 ← (( do (undefined_bool ()) ) : SailM Bool )
-  let (tup__0, tup__1) ← do (SignedSatQ (2 *i (sint (← (R_read n)))) 32)
+  let (tup__0, tup__1) ← do (SignedSatQ (2 *i (BitVec.toInt (← (R_read n)))) 32)
   let doubled : (BitVec 32) := tup__0
   let sat1 : Bool := tup__1
   (pure ())
   let sat2 ← (( do (undefined_bool ()) ) : SailM Bool )
-  let (__tup_0, __tup_1) ← do (SignedSatQ ((sint (← (R_read m))) -i (sint doubled)) 32)
+  let (__tup_0, __tup_1) ← do
+    (SignedSatQ ((BitVec.toInt (← (R_read m))) -i (BitVec.toInt doubled)) 32)
   (R_set d __tup_0)
   let sat2 : Bool := __tup_1
   (pure ())
@@ -6896,9 +6899,9 @@ def decode_aarch32_instrs_QDSUB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9586.29-9586.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6909,9 +6912,9 @@ def decode_aarch32_instrs_QDSUB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6922,10 +6925,10 @@ def decode_aarch32_instrs_QDSUB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QSAX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let diff ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (SignedSat sum 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (SignedSat diff 16))))
@@ -6935,9 +6938,9 @@ def decode_aarch32_instrs_QSAX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9649.29-9649.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6948,9 +6951,9 @@ def decode_aarch32_instrs_QSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6961,10 +6964,10 @@ def decode_aarch32_instrs_QSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QSUB16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let diff2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (SignedSat diff1 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (SignedSat diff2 16))))
@@ -6974,9 +6977,9 @@ def decode_aarch32_instrs_QSUB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9712.29-9712.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -6987,9 +6990,9 @@ def decode_aarch32_instrs_QSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7000,16 +7003,16 @@ def decode_aarch32_instrs_QSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QSUB8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let diff2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let diff3 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let diff4 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (← (SignedSat diff1 8))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (← (SignedSat diff2 8))))
@@ -7021,9 +7024,9 @@ def decode_aarch32_instrs_QSUB8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9779.29-9779.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7034,9 +7037,9 @@ def decode_aarch32_instrs_QSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7047,7 +7050,8 @@ def decode_aarch32_instrs_QSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_QSUB_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sat ← (( do (undefined_bool ()) ) : SailM Bool )
-  let (__tup_0, __tup_1) ← do (SignedSatQ ((sint (← (R_read m))) -i (sint (← (R_read n)))) 32)
+  let (__tup_0, __tup_1) ← do
+    (SignedSatQ ((BitVec.toInt (← (R_read m))) -i (BitVec.toInt (← (R_read n)))) 32)
   (R_set d __tup_0)
   let sat : Bool := __tup_1
   (pure ())
@@ -7060,9 +7064,9 @@ def decode_aarch32_instrs_QSUB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9850.29-9850.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7073,9 +7077,9 @@ def decode_aarch32_instrs_QSUB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7102,8 +7106,8 @@ def decode_aarch32_instrs_RBIT_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9914.29-9914.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7114,9 +7118,9 @@ def decode_aarch32_instrs_RBIT_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (bne m n) (BEq.beq d 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7141,8 +7145,8 @@ def decode_aarch32_instrs_REV16_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:9977.29-9977.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7153,8 +7157,8 @@ def decode_aarch32_instrs_REV16_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       (execute_aarch32_instrs_REV16_Op_A_txt d m))
   else (pure ())
 
@@ -7162,9 +7166,9 @@ def decode_aarch32_instrs_REV16_T2enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (bne m n) (BEq.beq d 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7189,8 +7193,8 @@ def decode_aarch32_instrs_REV_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10058.29-10058.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7201,8 +7205,8 @@ def decode_aarch32_instrs_REV_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) : 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       (execute_aarch32_instrs_REV_Op_A_txt d m))
   else (pure ())
 
@@ -7210,9 +7214,9 @@ def decode_aarch32_instrs_REV_T2enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (bne m n) (BEq.beq d 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7234,8 +7238,8 @@ def decode_aarch32_instrs_REVSH_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10137.29-10137.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7246,8 +7250,8 @@ def decode_aarch32_instrs_REVSH_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       (execute_aarch32_instrs_REVSH_Op_A_txt d m))
   else (pure ())
 
@@ -7255,9 +7259,9 @@ def decode_aarch32_instrs_REVSH_T2enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (bne m n) (BEq.beq d 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7269,7 +7273,7 @@ def decode_aarch32_instrs_REVSH_T2enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
 def execute_aarch32_instrs_ROR_r_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read n)) SRType_ROR shift_n (← readReg PSTATE).C)
   let result : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -7287,9 +7291,9 @@ def decode_aarch32_instrs_ROR_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       (execute_aarch32_instrs_ROR_r_Op_A_txt d m n setflags))
   else (pure ())
@@ -7327,8 +7331,8 @@ def decode_aarch32_instrs_RSB_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10266.29-10266.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_RSB_i_Op_A_txt d imm32 n setflags))
@@ -7338,8 +7342,8 @@ def decode_aarch32_instrs_RSB_i_T1enc_A_txt (Rn : (BitVec 3)) (Rd : (BitVec 3)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let imm32 : (BitVec 32) := (Zeros (n := 32))
       (execute_aarch32_instrs_RSB_i_Op_A_txt d imm32 n setflags))
@@ -7349,8 +7353,8 @@ def decode_aarch32_instrs_RSB_i_T2enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
@@ -7396,9 +7400,9 @@ def decode_aarch32_instrs_RSB_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10361.29-10361.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -7414,9 +7418,9 @@ def decode_aarch32_instrs_RSB_r_T1enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -7436,7 +7440,7 @@ def decode_aarch32_instrs_RSB_r_T1enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_RSB_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do
@@ -7459,10 +7463,10 @@ def decode_aarch32_instrs_RSB_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10446.29-10446.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -7504,8 +7508,8 @@ def decode_aarch32_instrs_RSC_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10500.29-10500.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_RSC_i_Op_A_txt d imm32 n setflags))
@@ -7548,9 +7552,9 @@ def decode_aarch32_instrs_RSC_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10548.29-10548.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -7565,7 +7569,7 @@ def decode_aarch32_instrs_RSC_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
 def execute_aarch32_instrs_RSC_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do
@@ -7588,10 +7592,10 @@ def decode_aarch32_instrs_RSC_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10595.29-10595.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -7604,10 +7608,10 @@ def decode_aarch32_instrs_RSC_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SADD16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let sum2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum1 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum2 15 0)))
@@ -7627,9 +7631,9 @@ def decode_aarch32_instrs_SADD16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10639.29-10639.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7640,9 +7644,9 @@ def decode_aarch32_instrs_SADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7653,16 +7657,16 @@ def decode_aarch32_instrs_SADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SADD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let sum2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let sum3 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let sum4 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange sum1 7 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange sum2 7 0)))
@@ -7694,9 +7698,9 @@ def decode_aarch32_instrs_SADD8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10710.29-10710.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7707,9 +7711,9 @@ def decode_aarch32_instrs_SADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7720,10 +7724,10 @@ def decode_aarch32_instrs_SADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SASX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let sum ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum 15 0)))
@@ -7743,9 +7747,9 @@ def decode_aarch32_instrs_SASX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10775.29-10775.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7756,9 +7760,9 @@ def decode_aarch32_instrs_SASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -7816,8 +7820,8 @@ def decode_aarch32_instrs_SBC_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10895.29-10895.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_SBC_i_Op_A_txt d imm32 n setflags))
@@ -7827,8 +7831,8 @@ def decode_aarch32_instrs_SBC_i_T1enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
@@ -7874,9 +7878,9 @@ def decode_aarch32_instrs_SBC_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:10970.29-10970.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -7892,9 +7896,9 @@ def decode_aarch32_instrs_SBC_r_T1enc_A_txt (Rm : (BitVec 3)) (Rdn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -7911,9 +7915,9 @@ def decode_aarch32_instrs_SBC_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -7933,7 +7937,7 @@ def decode_aarch32_instrs_SBC_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_SBC_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do
@@ -7956,10 +7960,10 @@ def decode_aarch32_instrs_SBC_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11079.29-11079.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -7979,10 +7983,10 @@ def decode_aarch32_instrs_SBFX_A1enc_A_txt (cond : (BitVec 4)) (widthm1 : (BitVe
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11119.29-11119.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let lsbit := (UInt0 lsb)
-      let widthminus1 := (UInt0 widthm1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let lsbit := (BitVec.toNat lsb)
+      let widthminus1 := (BitVec.toNat widthm1)
       let msbit := (lsbit +i widthminus1)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -7997,10 +8001,10 @@ def decode_aarch32_instrs_SBFX_T1enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let lsbit := (UInt0 (imm3 ++ imm2))
-      let widthminus1 := (UInt0 widthm1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let lsbit := (BitVec.toNat (imm3 ++ imm2))
+      let widthminus1 := (BitVec.toNat widthm1)
       let msbit := (lsbit +i widthminus1)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8016,13 +8020,13 @@ def decode_aarch32_instrs_SBFX_T1enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3))
 def execute_aarch32_instrs_SDIV_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let result ← (( do (undefined_int ()) ) : SailM Int )
   let result ← (( do
-    bif (BEq.beq (sint (← (R_read m))) 0)
+    bif (BEq.beq (BitVec.toInt (← (R_read m))) 0)
     then (pure 0)
     else
       (do
         (pure (RoundTowardsZero
-            (div_real (to_real (sint (← (R_read n)))) (to_real (sint (← (R_read m)))))))) ) :
-    SailM Int )
+            (div_real (to_real (BitVec.toInt (← (R_read n))))
+              (to_real (BitVec.toInt (← (R_read m)))))))) ) : SailM Int )
   let result := result
   (R_set d (integer_subrange result 31 0))
 
@@ -8031,10 +8035,10 @@ def decode_aarch32_instrs_SDIV_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11199.29-11199.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (bne a 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8045,10 +8049,10 @@ def decode_aarch32_instrs_SDIV_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (bne a 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8088,9 +8092,9 @@ def decode_aarch32_instrs_SEL_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11274.29-11274.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8101,9 +8105,9 @@ def decode_aarch32_instrs_SEL_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (R
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8153,10 +8157,10 @@ def decode_aarch32_instrs_SEV_T2enc_A_txt (_ : Unit) : SailM Unit := do
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SHADD16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let sum2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum1 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum2 16 1)))
@@ -8166,9 +8170,9 @@ def decode_aarch32_instrs_SHADD16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11440.29-11440.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8179,9 +8183,9 @@ def decode_aarch32_instrs_SHADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8192,16 +8196,16 @@ def decode_aarch32_instrs_SHADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SHADD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let sum2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let sum3 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let sum4 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange sum1 8 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange sum2 8 1)))
@@ -8213,9 +8217,9 @@ def decode_aarch32_instrs_SHADD8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11507.29-11507.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8226,9 +8230,9 @@ def decode_aarch32_instrs_SHADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8239,10 +8243,10 @@ def decode_aarch32_instrs_SHADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SHASX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let sum ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum 16 1)))
@@ -8252,9 +8256,9 @@ def decode_aarch32_instrs_SHASX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11570.29-11570.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8265,9 +8269,9 @@ def decode_aarch32_instrs_SHASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8278,10 +8282,10 @@ def decode_aarch32_instrs_SHASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SHSAX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let diff ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff 16 1)))
@@ -8291,9 +8295,9 @@ def decode_aarch32_instrs_SHSAX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11633.29-11633.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8304,9 +8308,9 @@ def decode_aarch32_instrs_SHSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8317,10 +8321,10 @@ def decode_aarch32_instrs_SHSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SHSUB16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let diff2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff1 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff2 16 1)))
@@ -8330,9 +8334,9 @@ def decode_aarch32_instrs_SHSUB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11696.29-11696.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8343,9 +8347,9 @@ def decode_aarch32_instrs_SHSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8356,16 +8360,16 @@ def decode_aarch32_instrs_SHSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SHSUB8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let diff2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let diff3 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let diff4 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange diff1 8 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange diff2 8 1)))
@@ -8377,9 +8381,9 @@ def decode_aarch32_instrs_SHSUB8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11763.29-11763.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8390,9 +8394,9 @@ def decode_aarch32_instrs_SHSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -8410,9 +8414,10 @@ def execute_aarch32_instrs_SMLABB_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (m_high
     bif m_high
     then (pure (Sail.BitVec.extractLsb (← (R_read m)) 31 16))
     else (pure (Sail.BitVec.extractLsb (← (R_read m)) 15 0)) ) : SailM (BitVec 16) )
-  let result ← do (pure (((sint operand1) *i (sint operand2)) +i (sint (← (R_read a)))))
+  let result ← do
+    (pure (((BitVec.toInt operand1) *i (BitVec.toInt operand2)) +i (BitVec.toInt (← (R_read a)))))
   (R_set d (integer_subrange result 31 0))
-  bif (bne result (sint (integer_subrange result 31 0)))
+  bif (bne result (BitVec.toInt (integer_subrange result 31 0)))
   then writeReg PSTATE { (← readReg PSTATE) with Q := (0b1 : (BitVec 1)) }
   else (pure ())
 
@@ -8421,10 +8426,10 @@ def decode_aarch32_instrs_SMLABB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11832.29-11832.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let n_high : Bool := (BEq.beq N (0b1 : (BitVec 1)))
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq a 15))
@@ -8440,10 +8445,10 @@ def decode_aarch32_instrs_SMLABB_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4))
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMULBB, SMULBT, SMULTB, SMULTT"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let n_high : Bool := (BEq.beq N (0b1 : (BitVec 1)))
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
@@ -8460,14 +8465,14 @@ def execute_aarch32_instrs_SMLAD_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (m_swap 
     then (pure (ROR (← (R_read m)) 16))
     else (R_read m) ) : SailM (BitVec 32) )
   let product1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 15 0))))
   let product2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 31 16))))
-  let result ← do (pure ((product1 +i product2) +i (sint (← (R_read a)))))
+  let result ← do (pure ((product1 +i product2) +i (BitVec.toInt (← (R_read a)))))
   (R_set d (integer_subrange result 31 0))
-  bif (bne result (sint (integer_subrange result 31 0)))
+  bif (bne result (BitVec.toInt (integer_subrange result 31 0)))
   then writeReg PSTATE { (← readReg PSTATE) with Q := (0b1 : (BitVec 1)) }
   else (pure ())
 
@@ -8479,10 +8484,10 @@ def decode_aarch32_instrs_SMLAD_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMUAD"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8497,10 +8502,10 @@ def decode_aarch32_instrs_SMLAD_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) 
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMUAD"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8512,7 +8517,7 @@ def decode_aarch32_instrs_SMLAD_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ dLo ∧ dLo ≤ 15 ∧ 0 ≤ dHi ∧ dHi ≤ 15 -/
 def execute_aarch32_instrs_SMLAL_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
   let result ← do
-    (pure (((sint (← (R_read n))) *i (sint (← (R_read m)))) +i (sint
+    (pure (((BitVec.toInt (← (R_read n))) *i (BitVec.toInt (← (R_read m)))) +i (BitVec.toInt
           ((← (R_read dHi)) ++ (← (R_read dLo))))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
@@ -8528,10 +8533,10 @@ def decode_aarch32_instrs_SMLAL_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:11988.29-11988.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -8547,10 +8552,10 @@ def decode_aarch32_instrs_SMLAL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -8575,7 +8580,8 @@ def execute_aarch32_instrs_SMLALBB_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (m
     then (pure (Sail.BitVec.extractLsb (← (R_read m)) 31 16))
     else (pure (Sail.BitVec.extractLsb (← (R_read m)) 15 0)) ) : SailM (BitVec 16) )
   let result ← do
-    (pure (((sint operand1) *i (sint operand2)) +i (sint ((← (R_read dHi)) ++ (← (R_read dLo))))))
+    (pure (((BitVec.toInt operand1) *i (BitVec.toInt operand2)) +i (BitVec.toInt
+          ((← (R_read dHi)) ++ (← (R_read dLo))))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
 
@@ -8584,10 +8590,10 @@ def decode_aarch32_instrs_SMLALBB_A1enc_A_txt (cond : (BitVec 4)) (RdHi : (BitVe
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12063.29-12063.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let n_high : Bool := (BEq.beq N (0b1 : (BitVec 1)))
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
@@ -8604,10 +8610,10 @@ def decode_aarch32_instrs_SMLALBB_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let n_high : Bool := (BEq.beq N (0b1 : (BitVec 1)))
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
@@ -8628,13 +8634,13 @@ def execute_aarch32_instrs_SMLALD_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (m_
     then (pure (ROR (← (R_read m)) 16))
     else (R_read m) ) : SailM (BitVec 32) )
   let product1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 15 0))))
   let product2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 31 16))))
   let result ← do
-    (pure ((product1 +i product2) +i (sint ((← (R_read dHi)) ++ (← (R_read dLo))))))
+    (pure ((product1 +i product2) +i (BitVec.toInt ((← (R_read dHi)) ++ (← (R_read dLo))))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
 
@@ -8643,10 +8649,10 @@ def decode_aarch32_instrs_SMLALD_A1enc_A_txt (cond : (BitVec 4)) (RdHi : (BitVec
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12142.29-12142.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -8662,10 +8668,10 @@ def decode_aarch32_instrs_SMLALD_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -8685,9 +8691,10 @@ def execute_aarch32_instrs_SMLAWB_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (m_high
     then (pure (Sail.BitVec.extractLsb (← (R_read m)) 31 16))
     else (pure (Sail.BitVec.extractLsb (← (R_read m)) 15 0)) ) : SailM (BitVec 16) )
   let result ← do
-    (pure (((sint (← (R_read n))) *i (sint operand2)) +i (Int.shiftl (sint (← (R_read a))) 16)))
+    (pure (((BitVec.toInt (← (R_read n))) *i (BitVec.toInt operand2)) +i (Int.shiftl
+          (BitVec.toInt (← (R_read a))) 16)))
   (R_set d (integer_subrange result 47 16))
-  bif (bne (Int.shiftr result 16) (sint (← (R_read d))))
+  bif (bne (Int.shiftr result 16) (BitVec.toInt (← (R_read d))))
   then writeReg PSTATE { (← readReg PSTATE) with Q := (0b1 : (BitVec 1)) }
   else (pure ())
 
@@ -8696,10 +8703,10 @@ def decode_aarch32_instrs_SMLAWB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12219.29-12219.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq a 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8714,10 +8721,10 @@ def decode_aarch32_instrs_SMLAWB_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4))
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMULWB, SMULWT"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8733,14 +8740,14 @@ def execute_aarch32_instrs_SMLSD_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (m_swap 
     then (pure (ROR (← (R_read m)) 16))
     else (R_read m) ) : SailM (BitVec 32) )
   let product1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 15 0))))
   let product2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 31 16))))
-  let result ← do (pure ((product1 -i product2) +i (sint (← (R_read a)))))
+  let result ← do (pure ((product1 -i product2) +i (BitVec.toInt (← (R_read a)))))
   (R_set d (integer_subrange result 31 0))
-  bif (bne result (sint (integer_subrange result 31 0)))
+  bif (bne result (BitVec.toInt (integer_subrange result 31 0)))
   then writeReg PSTATE { (← readReg PSTATE) with Q := (0b1 : (BitVec 1)) }
   else (pure ())
 
@@ -8752,10 +8759,10 @@ def decode_aarch32_instrs_SMLSD_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMUSD"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8770,10 +8777,10 @@ def decode_aarch32_instrs_SMLSD_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) 
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMUSD"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8789,13 +8796,13 @@ def execute_aarch32_instrs_SMLSLD_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (m_
     then (pure (ROR (← (R_read m)) 16))
     else (R_read m) ) : SailM (BitVec 32) )
   let product1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 15 0))))
   let product2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 31 16))))
   let result ← do
-    (pure ((product1 -i product2) +i (sint ((← (R_read dHi)) ++ (← (R_read dLo))))))
+    (pure ((product1 -i product2) +i (BitVec.toInt ((← (R_read dHi)) ++ (← (R_read dLo))))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
 
@@ -8804,10 +8811,10 @@ def decode_aarch32_instrs_SMLSLD_A1enc_A_txt (cond : (BitVec 4)) (RdHi : (BitVec
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12369.29-12369.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -8823,10 +8830,10 @@ def decode_aarch32_instrs_SMLSLD_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -8842,11 +8849,11 @@ def decode_aarch32_instrs_SMLSLD_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 ∧ 0 ≤ a ∧ a ≤ 15 -/
 def execute_aarch32_instrs_SMMLA_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (n : Nat) (round : Bool) : SailM Unit := do
   let result ← (( do
-    (pure ((Int.shiftl (sint (← (R_read a))) 32) +i ((sint (← (R_read n))) *i (sint
+    (pure ((Int.shiftl (BitVec.toInt (← (R_read a))) 32) +i ((BitVec.toInt (← (R_read n))) *i (BitVec.toInt
             (← (R_read m)))))) ) : SailM Int )
   let result : Int :=
     bif round
-    then (result +i (UInt0 (0x80000000 : (BitVec 32))))
+    then (result +i (BitVec.toNat (0x80000000 : (BitVec 32))))
     else result
   let result := result
   (R_set d (integer_subrange result 63 32))
@@ -8859,10 +8866,10 @@ def decode_aarch32_instrs_SMMLA_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMMUL"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let round : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8877,10 +8884,10 @@ def decode_aarch32_instrs_SMMLA_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) 
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SMMUL"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let round : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8892,11 +8899,11 @@ def decode_aarch32_instrs_SMMLA_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 ∧ 0 ≤ a ∧ a ≤ 15 -/
 def execute_aarch32_instrs_SMMLS_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (n : Nat) (round : Bool) : SailM Unit := do
   let result ← (( do
-    (pure ((Int.shiftl (sint (← (R_read a))) 32) -i ((sint (← (R_read n))) *i (sint
+    (pure ((Int.shiftl (BitVec.toInt (← (R_read a))) 32) -i ((BitVec.toInt (← (R_read n))) *i (BitVec.toInt
             (← (R_read m)))))) ) : SailM Int )
   let result : Int :=
     bif round
-    then (result +i (UInt0 (0x80000000 : (BitVec 32))))
+    then (result +i (BitVec.toNat (0x80000000 : (BitVec 32))))
     else result
   let result := result
   (R_set d (integer_subrange result 63 32))
@@ -8906,10 +8913,10 @@ def decode_aarch32_instrs_SMMLS_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12519.29-12519.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let round : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq a 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8921,10 +8928,10 @@ def decode_aarch32_instrs_SMMLS_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       let round : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq a 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8935,10 +8942,11 @@ def decode_aarch32_instrs_SMMLS_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) 
 /-- Type quantifiers: d : Nat, m : Nat, n : Nat, k_round : Bool, 0 ≤ n ∧
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SMMUL_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (round : Bool) : SailM Unit := do
-  let result ← (( do (pure ((sint (← (R_read n))) *i (sint (← (R_read m))))) ) : SailM Int )
+  let result ← (( do (pure ((BitVec.toInt (← (R_read n))) *i (BitVec.toInt (← (R_read m))))) )
+    : SailM Int )
   let result : Int :=
     bif round
-    then (result +i (UInt0 (0x80000000 : (BitVec 32))))
+    then (result +i (BitVec.toNat (0x80000000 : (BitVec 32))))
     else result
   let result := result
   (R_set d (integer_subrange result 63 32))
@@ -8948,9 +8956,9 @@ def decode_aarch32_instrs_SMMUL_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12588.29-12588.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let round : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8962,9 +8970,9 @@ def decode_aarch32_instrs_SMMUL_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let round : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -8980,14 +8988,14 @@ def execute_aarch32_instrs_SMUAD_Op_A_txt (d : Nat) (m : Nat) (m_swap : Bool) (n
     then (pure (ROR (← (R_read m)) 16))
     else (R_read m) ) : SailM (BitVec 32) )
   let product1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 15 0))))
   let product2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 31 16))))
   let result := (product1 +i product2)
   (R_set d (integer_subrange result 31 0))
-  bif (bne result (sint (integer_subrange result 31 0)))
+  bif (bne result (BitVec.toInt (integer_subrange result 31 0)))
   then writeReg PSTATE { (← readReg PSTATE) with Q := (0b1 : (BitVec 1)) }
   else (pure ())
 
@@ -8996,9 +9004,9 @@ def decode_aarch32_instrs_SMUAD_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12656.29-12656.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -9010,9 +9018,9 @@ def decode_aarch32_instrs_SMUAD_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -9031,7 +9039,7 @@ def execute_aarch32_instrs_SMULBB_Op_A_txt (d : Nat) (m : Nat) (m_high : Bool) (
     bif m_high
     then (pure (Sail.BitVec.extractLsb (← (R_read m)) 31 16))
     else (pure (Sail.BitVec.extractLsb (← (R_read m)) 15 0)) ) : SailM (BitVec 16) )
-  let result := ((sint operand1) *i (sint operand2))
+  let result := ((BitVec.toInt operand1) *i (BitVec.toInt operand2))
   (R_set d (integer_subrange result 31 0))
 
 def decode_aarch32_instrs_SMULBB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) (Rm : (BitVec 4)) (M : (BitVec 1)) (N : (BitVec 1)) (Rn : (BitVec 4)) : SailM Unit := do
@@ -9039,9 +9047,9 @@ def decode_aarch32_instrs_SMULBB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12721.29-12721.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let n_high : Bool := (BEq.beq N (0b1 : (BitVec 1)))
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
@@ -9054,9 +9062,9 @@ def decode_aarch32_instrs_SMULBB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let n_high : Bool := (BEq.beq N (0b1 : (BitVec 1)))
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
@@ -9068,7 +9076,7 @@ def decode_aarch32_instrs_SMULBB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
 /-- Type quantifiers: dHi : Nat, dLo : Nat, m : Nat, n : Nat, k_setflags : Bool, 0 ≤ n ∧
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ dLo ∧ dLo ≤ 15 ∧ 0 ≤ dHi ∧ dHi ≤ 15 -/
 def execute_aarch32_instrs_SMULL_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
-  let result ← do (pure ((sint (← (R_read n))) *i (sint (← (R_read m)))))
+  let result ← do (pure ((BitVec.toInt (← (R_read n))) *i (BitVec.toInt (← (R_read m)))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
   bif setflags
@@ -9083,10 +9091,10 @@ def decode_aarch32_instrs_SMULL_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12796.29-12796.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -9102,10 +9110,10 @@ def decode_aarch32_instrs_SMULL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -9124,7 +9132,7 @@ def execute_aarch32_instrs_SMULWB_Op_A_txt (d : Nat) (m : Nat) (m_high : Bool) (
     bif m_high
     then (pure (Sail.BitVec.extractLsb (← (R_read m)) 31 16))
     else (pure (Sail.BitVec.extractLsb (← (R_read m)) 15 0)) ) : SailM (BitVec 16) )
-  let product ← do (pure ((sint (← (R_read n))) *i (sint operand2)))
+  let product ← do (pure ((BitVec.toInt (← (R_read n))) *i (BitVec.toInt operand2)))
   (R_set d (integer_subrange product 47 16))
 
 def decode_aarch32_instrs_SMULWB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) (Rm : (BitVec 4)) (M : (BitVec 1)) (Rn : (BitVec 4)) : SailM Unit := do
@@ -9132,9 +9140,9 @@ def decode_aarch32_instrs_SMULWB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12868.29-12868.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -9146,9 +9154,9 @@ def decode_aarch32_instrs_SMULWB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_high : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -9164,10 +9172,10 @@ def execute_aarch32_instrs_SMUSD_Op_A_txt (d : Nat) (m : Nat) (m_swap : Bool) (n
     then (pure (ROR (← (R_read m)) 16))
     else (R_read m) ) : SailM (BitVec 32) )
   let product1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 15 0))))
   let product2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) *i (BitVec.toInt
           (Sail.BitVec.extractLsb operand2 31 16))))
   let result := (product1 -i product2)
   (R_set d (integer_subrange result 31 0))
@@ -9177,9 +9185,9 @@ def decode_aarch32_instrs_SMUSD_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:12936.29-12936.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -9191,9 +9199,9 @@ def decode_aarch32_instrs_SMUSD_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let m_swap : Bool := (BEq.beq M (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -9209,12 +9217,12 @@ def execute_aarch32_instrs_SSAT16_Op_A_txt (d : Nat) (n : Nat) (saturate_to : Na
   let sat1 ← (( do (undefined_bool ()) ) : SailM Bool )
   let sat2 ← (( do (undefined_bool ()) ) : SailM Bool )
   let (tup__0, tup__1) ← do
-    (SignedSatQ (sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) saturate_to)
+    (SignedSatQ (BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) saturate_to)
   let result1 : (BitVec saturate_to) := tup__0
   let sat1 : Bool := tup__1
   (pure ())
   let (tup__0, tup__1) ← do
-    (SignedSatQ (sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) saturate_to)
+    (SignedSatQ (BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) saturate_to)
   let result2 : (BitVec saturate_to) := tup__0
   let sat2 : Bool := tup__1
   (pure ())
@@ -9229,9 +9237,9 @@ def decode_aarch32_instrs_SSAT16_A1enc_A_txt (cond : (BitVec 4)) (sat_imm : (Bit
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13007.29-13007.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := ((UInt0 sat_imm) +i 1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := ((BitVec.toNat sat_imm) +i 1)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9242,9 +9250,9 @@ def decode_aarch32_instrs_SSAT16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := ((UInt0 sat_imm) +i 1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := ((BitVec.toNat sat_imm) +i 1)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9258,7 +9266,7 @@ def execute_aarch32_instrs_SSAT_Op_A_txt (d : Nat) (n : Nat) (saturate_to : Nat)
   let sat ← (( do (undefined_bool ()) ) : SailM Bool )
   let operand ← (( do (Shift (← (R_read n)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
-  let (tup__0, tup__1) ← do (SignedSatQ (sint operand) saturate_to)
+  let (tup__0, tup__1) ← do (SignedSatQ (BitVec.toInt operand) saturate_to)
   let result : (BitVec saturate_to) := tup__0
   let sat : Bool := tup__1
   (pure ())
@@ -9274,9 +9282,9 @@ def decode_aarch32_instrs_SSAT_A1enc_A_txt (cond : (BitVec 4)) (sat_imm : (BitVe
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13079.29-13079.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := ((UInt0 sat_imm) +i 1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := ((BitVec.toNat sat_imm) +i 1)
       let (tup__0, tup__1) ← do (DecodeImmShift (sh ++ (0b0 : (BitVec 1))) imm5)
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -9299,9 +9307,9 @@ def decode_aarch32_instrs_SSAT_T1enc_A_txt (sh : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (Bool.and (BEq.beq sh (0b1 : (BitVec 1))) (BEq.beq (imm3 ++ imm2) (0b00000 : (BitVec 5))))
       then sailThrow ((Error_See "SSAT16"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := ((UInt0 sat_imm) +i 1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := ((BitVec.toNat sat_imm) +i 1)
       let (tup__0, tup__1) ← do (DecodeImmShift (sh ++ (0b0 : (BitVec 1))) (imm3 ++ imm2))
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -9317,10 +9325,10 @@ def decode_aarch32_instrs_SSAT_T1enc_A_txt (sh : (BitVec 1)) (Rn : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SSAX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let diff ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff 15 0)))
@@ -9340,9 +9348,9 @@ def decode_aarch32_instrs_SSAX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13162.29-13162.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9353,9 +9361,9 @@ def decode_aarch32_instrs_SSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9366,10 +9374,10 @@ def decode_aarch32_instrs_SSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SSUB16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let diff2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff1 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff2 15 0)))
@@ -9389,9 +9397,9 @@ def decode_aarch32_instrs_SSUB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13227.29-13227.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9402,9 +9410,9 @@ def decode_aarch32_instrs_SSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9415,16 +9423,16 @@ def decode_aarch32_instrs_SSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_SSUB8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let diff2 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let diff3 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let diff4 ← do
-    (pure ((sint (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (sint
+    (pure ((BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toInt
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange diff1 7 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange diff2 7 0)))
@@ -9456,9 +9464,9 @@ def decode_aarch32_instrs_SSUB8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13298.29-13298.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9469,9 +9477,9 @@ def decode_aarch32_instrs_SSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -9503,9 +9511,9 @@ def decode_aarch32_instrs_STC_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) (
            (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let cp := 14
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -9523,9 +9531,9 @@ def decode_aarch32_instrs_STC_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (W :
            (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let cp := 14
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -9566,7 +9574,7 @@ def decode_aarch32_instrs_STM_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1)) (
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13454.29-13454.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -9579,7 +9587,7 @@ def decode_aarch32_instrs_STM_T1enc_A_txt (Rn : (BitVec 3)) (register_list : (Bi
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := ((0x00 : (BitVec 8)) ++ register_list)
       let wback : Bool := true
       bif ((BitCount registers) <b 1)
@@ -9592,7 +9600,7 @@ def decode_aarch32_instrs_STM_T2enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (P 
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := ((P ++ M) ++ register_list)
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 2))
@@ -9613,7 +9621,7 @@ def decode_aarch32_instrs_STM_T2enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (P 
 /-- Type quantifiers: n : Nat, k_wback : Bool, 0 ≤ n ∧ n ≤ 15 -/
 def execute_aarch32_instrs_STMDA_Op_A_txt (n : Nat) (registers : (BitVec 16)) (wback : Bool) : SailM Unit := do
   let address ← (( do
-    (pure (BitVec.addInt (sub_vec_int (← (R_read n)) (4 *i (BitCount registers))) 4)) ) : SailM
+    (pure (BitVec.addInt (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers))) 4)) ) : SailM
     (BitVec 32) )
   let address ← (( do
     let loop_i_lower := 0
@@ -9635,7 +9643,7 @@ def execute_aarch32_instrs_STMDA_Op_A_txt (n : Nat) (registers : (BitVec 16)) (w
   then (MemS_set address 4 (← (PCStoreValue ())))
   else (pure ())
   bif wback
-  then (R_set n (sub_vec_int (← (R_read n)) (4 *i (BitCount registers))))
+  then (R_set n (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers))))
   else (pure ())
 
 def decode_aarch32_instrs_STMDA_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1)) (Rn : (BitVec 4)) (register_list : (BitVec 16)) : SailM Unit := do
@@ -9643,7 +9651,7 @@ def decode_aarch32_instrs_STMDA_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13560.29-13560.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -9654,8 +9662,8 @@ def decode_aarch32_instrs_STMDA_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
 
 /-- Type quantifiers: n : Nat, k_wback : Bool, 0 ≤ n ∧ n ≤ 15 -/
 def execute_aarch32_instrs_STMDB_Op_A_txt (n : Nat) (registers : (BitVec 16)) (wback : Bool) : SailM Unit := do
-  let address ← (( do (pure (sub_vec_int (← (R_read n)) (4 *i (BitCount registers)))) ) : SailM
-    (BitVec 32) )
+  let address ← (( do (pure (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers)))) ) :
+    SailM (BitVec 32) )
   let address ← (( do
     let loop_i_lower := 0
     let loop_i_upper := 14
@@ -9676,7 +9684,7 @@ def execute_aarch32_instrs_STMDB_Op_A_txt (n : Nat) (registers : (BitVec 16)) (w
   then (MemS_set address 4 (← (PCStoreValue ())))
   else (pure ())
   bif wback
-  then (R_set n (sub_vec_int (← (R_read n)) (4 *i (BitCount registers))))
+  then (R_set n (BitVec.subInt (← (R_read n)) (4 *i (BitCount registers))))
   else (pure ())
 
 def decode_aarch32_instrs_STMDB_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1)) (Rn : (BitVec 4)) (register_list : (BitVec 16)) : SailM Unit := do
@@ -9684,7 +9692,7 @@ def decode_aarch32_instrs_STMDB_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13610.29-13610.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -9697,7 +9705,7 @@ def decode_aarch32_instrs_STMDB_T1enc_A_txt (W : (BitVec 1)) (Rn : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := ((P ++ M) ++ register_list)
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 2))
@@ -9746,7 +9754,7 @@ def decode_aarch32_instrs_STMIB_A1enc_A_txt (cond : (BitVec 4)) (W : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:13694.29-13694.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       bif (Bool.or (BEq.beq n 15) ((BitCount registers) <b 1))
@@ -9783,9 +9791,9 @@ def decode_aarch32_instrs_STRB_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "STRBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -9822,9 +9830,9 @@ def decode_aarch32_instrs_STRB_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rn : (BitVec 3
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm5 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm5 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -9838,9 +9846,9 @@ def decode_aarch32_instrs_STRB_i_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -9862,9 +9870,9 @@ def decode_aarch32_instrs_STRB_i_T3enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
            (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -9906,9 +9914,9 @@ def decode_aarch32_instrs_STRB_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "STRBT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -9932,9 +9940,9 @@ def decode_aarch32_instrs_STRB_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -9956,14 +9964,14 @@ def decode_aarch32_instrs_STRB_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -10009,12 +10017,12 @@ def decode_aarch32_instrs_STRBT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq n 15)) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10032,9 +10040,9 @@ def decode_aarch32_instrs_STRBT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -10065,12 +10073,12 @@ def decode_aarch32_instrs_STRBT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10120,10 +10128,10 @@ def decode_aarch32_instrs_STRD_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (BEq.beq (BitVec.join1 [(BitVec.access Rt 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -10146,10 +10154,10 @@ def decode_aarch32_instrs_STRD_i_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1))))
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -10206,10 +10214,10 @@ def decode_aarch32_instrs_STRD_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (BEq.beq (BitVec.join1 [(BitVec.access Rt 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -10233,17 +10241,17 @@ def execute_aarch32_instrs_STREX_Op_A_txt (d : Nat) (imm32 : (BitVec 32)) (n : N
   then
     (do
       (MemA_set address 4 (← (R_read t)))
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STREX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:14330.29-14330.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let imm32 : (BitVec 32) := (Zeros (n := 32))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -10258,10 +10266,10 @@ def decode_aarch32_instrs_STREX_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10279,17 +10287,17 @@ def execute_aarch32_instrs_STREXB_Op_A_txt (d : Nat) (n : Nat) (t : Nat) : SailM
   then
     (do
       (MemA_set address 1 (Sail.BitVec.extractLsb (← (R_read t)) 7 0))
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STREXB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:14405.29-14405.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10303,9 +10311,9 @@ def decode_aarch32_instrs_STREXB_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10327,18 +10335,18 @@ def execute_aarch32_instrs_STREXD_Op_A_txt (d : Nat) (n : Nat) (t : Nat) (t2 : N
   then
     (do
       (MemA_set address 8 value_name)
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STREXD_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:14485.29-14485.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or
            (Bool.or
              (Bool.or (BEq.beq d 15)
@@ -10356,10 +10364,10 @@ def decode_aarch32_instrs_STREXD_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq t2 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10377,17 +10385,17 @@ def execute_aarch32_instrs_STREXH_Op_A_txt (d : Nat) (n : Nat) (t : Nat) : SailM
   then
     (do
       (MemA_set address 2 (Sail.BitVec.extractLsb (← (R_read t)) 15 0))
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STREXH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:14560.29-14560.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10401,9 +10409,9 @@ def decode_aarch32_instrs_STREXH_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10441,9 +10449,9 @@ def decode_aarch32_instrs_STRH_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "STRHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -10480,9 +10488,9 @@ def decode_aarch32_instrs_STRH_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rn : (BitVec 3
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm5 ++ (0b0 : (BitVec 1))) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm5 ++ (0b0 : (BitVec 1))) 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -10496,9 +10504,9 @@ def decode_aarch32_instrs_STRH_i_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -10520,9 +10528,9 @@ def decode_aarch32_instrs_STRH_i_T3enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
            (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -10564,9 +10572,9 @@ def decode_aarch32_instrs_STRH_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "STRHT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -10591,9 +10599,9 @@ def decode_aarch32_instrs_STRH_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3))
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -10615,14 +10623,14 @@ def decode_aarch32_instrs_STRH_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -10667,12 +10675,12 @@ def decode_aarch32_instrs_STRHT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm4H ++ imm4L) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4H ++ imm4L) 32)
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq n 15)) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10688,9 +10696,9 @@ def decode_aarch32_instrs_STRHT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1))
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:14966.29-14966.30"
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -10714,12 +10722,12 @@ def decode_aarch32_instrs_STRHT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -10758,9 +10766,9 @@ def decode_aarch32_instrs_STR_i_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "STRT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -10794,9 +10802,9 @@ def decode_aarch32_instrs_STR_i_T1enc_A_txt (imm5 : (BitVec 5)) (Rn : (BitVec 3)
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm5 ++ (0b00 : (BitVec 2))) 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm5 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -10807,9 +10815,9 @@ def decode_aarch32_instrs_STR_i_T2enc_A_txt (Rt : (BitVec 3)) (imm8 : (BitVec 8)
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let n := 13
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -10823,9 +10831,9 @@ def decode_aarch32_instrs_STR_i_T3enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -10847,9 +10855,9 @@ def decode_aarch32_instrs_STR_i_T4enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
            (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b0 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
@@ -10900,9 +10908,9 @@ def decode_aarch32_instrs_STR_r_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1))
       bif (Bool.and (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "STRT"))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := (BEq.beq P (0b1 : (BitVec 1)))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (Bool.or (BEq.beq P (0b0 : (BitVec 1))) (BEq.beq W (0b1 : (BitVec 1))))
@@ -10926,9 +10934,9 @@ def decode_aarch32_instrs_STR_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
@@ -10950,14 +10958,14 @@ def decode_aarch32_instrs_STR_r_T2enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let index : Bool := true
       let add : Bool := true
       let wback : Bool := false
       let _ : Unit :=
-        let (tup__0, tup__1) := ((SRType_LSL, (UInt0 imm2)) : (SRType × Int))
+        let (tup__0, tup__1) := ((SRType_LSL, (BitVec.toNat imm2)) : (SRType × Int))
         let shift_t : SRType := tup__0
         let shift_n : Int := tup__1
         ()
@@ -11012,12 +11020,12 @@ def decode_aarch32_instrs_STRT_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) 
       let m ← (( do (undefined_int ()) ) : SailM Int )
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm12 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm12 32)
       bif (Bool.or (BEq.beq n 15) (BEq.beq n t))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11035,9 +11043,9 @@ def decode_aarch32_instrs_STRT_A2enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) 
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let postindex : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let register_form : Bool := true
@@ -11068,12 +11076,12 @@ def decode_aarch32_instrs_STRT_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) (
       let shift_t := shift_t
       let shift_n := shift_n
       let m := m
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       let postindex : Bool := false
       let add : Bool := true
       let register_form : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11119,8 +11127,8 @@ def decode_aarch32_instrs_SUB_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "SUB (SP minus immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_SUB_i_Op_A_txt d imm32 n setflags))
@@ -11130,10 +11138,10 @@ def decode_aarch32_instrs_SUB_i_T1enc_A_txt (imm3 : (BitVec 3)) (Rn : (BitVec 3)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
-      let imm32 : (BitVec 32) := (zero_extend imm3 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm3 32)
       (execute_aarch32_instrs_SUB_i_Op_A_txt d imm32 n setflags))
   else (pure ())
 
@@ -11141,10 +11149,10 @@ def decode_aarch32_instrs_SUB_i_T2enc_A_txt (Rdn : (BitVec 3)) (imm8 : (BitVec 8
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rdn)
-      let n := (UInt0 Rdn)
+      let d := (BitVec.toNat Rdn)
+      let n := (BitVec.toNat Rdn)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       (execute_aarch32_instrs_SUB_i_Op_A_txt d imm32 n setflags))
   else (pure ())
 
@@ -11158,8 +11166,8 @@ def decode_aarch32_instrs_SUB_i_T3enc_A_txt (i : (BitVec 1)) (S : (BitVec 1)) (R
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "SUB (SP minus immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (Bool.or (Bool.and (BEq.beq d 15) (Bool.not setflags)) (BEq.beq n 15))
@@ -11178,10 +11186,10 @@ def decode_aarch32_instrs_SUB_i_T4enc_A_txt (i : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "SUB (SP minus immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend ((i ++ imm3) ++ imm8) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend ((i ++ imm3) ++ imm8) 32)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11196,9 +11204,9 @@ def decode_aarch32_instrs_SUB_i_T5enc_A_txt (Rn : (BitVec 4)) (imm8 : (BitVec 8)
       then sailThrow ((Error_See "ERET"))
       else (pure ())
       let d := 15
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let setflags : Bool := true
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       bif (bne n 14)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11248,9 +11256,9 @@ def decode_aarch32_instrs_SUB_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "SUB (SP minus register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -11266,9 +11274,9 @@ def decode_aarch32_instrs_SUB_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags ← (( do (pure (Bool.not (← (InITBlock ())))) ) : SailM Bool )
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
@@ -11291,9 +11299,9 @@ def decode_aarch32_instrs_SUB_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (BEq.beq Rn (0xD : (BitVec 4)))
       then sailThrow ((Error_See "SUB (SP minus register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -11312,7 +11320,7 @@ def decode_aarch32_instrs_SUB_r_T2enc_A_txt (S : (BitVec 1)) (Rn : (BitVec 4)) (
 def execute_aarch32_instrs_SUB_rr_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (s : Nat) (setflags : Bool) (shift_t : SRType) : SailM Unit := do
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let result ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let shifted ← (( do (Shift (← (R_read m)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
   let (tup__0, tup__1) ← do
@@ -11335,10 +11343,10 @@ def decode_aarch32_instrs_SUB_rr_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:15817.29-15817.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (BEq.beq s 15))
@@ -11379,7 +11387,7 @@ def decode_aarch32_instrs_SUB_SP_i_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:15870.29-15870.30"
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (A32ExpandImm imm12) ) : SailM (BitVec 32) )
       (execute_aarch32_instrs_SUB_SP_i_Op_A_txt d imm32 setflags))
@@ -11391,7 +11399,7 @@ def decode_aarch32_instrs_SUB_SP_i_T1enc_A_txt (imm7 : (BitVec 7)) : SailM Unit 
     (do
       let d := 13
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend (imm7 ++ (0b00 : (BitVec 2))) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm7 ++ (0b00 : (BitVec 2))) 32)
       (execute_aarch32_instrs_SUB_SP_i_Op_A_txt d imm32 setflags))
   else (pure ())
 
@@ -11402,7 +11410,7 @@ def decode_aarch32_instrs_SUB_SP_i_T2enc_A_txt (i : (BitVec 1)) (S : (BitVec 1))
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "CMP (immediate)"))
       else (pure ())
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let imm32 ← (( do (T32ExpandImm ((i ++ imm3) ++ imm8)) ) : SailM (BitVec 32) )
       bif (Bool.and (BEq.beq d 15) (Bool.not setflags))
@@ -11415,9 +11423,9 @@ def decode_aarch32_instrs_SUB_SP_i_T3enc_A_txt (i : (BitVec 1)) (imm3 : (BitVec 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let setflags : Bool := false
-      let imm32 : (BitVec 32) := (zero_extend ((i ++ imm3) ++ imm8) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend ((i ++ imm3) ++ imm8) 32)
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11461,8 +11469,8 @@ def decode_aarch32_instrs_SUB_SP_r_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:15986.29-15986.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
@@ -11481,8 +11489,8 @@ def decode_aarch32_instrs_SUB_SP_r_T1enc_A_txt (S : (BitVec 1)) (imm3 : (BitVec 
       bif (Bool.and (BEq.beq Rd (0xF : (BitVec 4))) (BEq.beq S (0b1 : (BitVec 1))))
       then sailThrow ((Error_See "CMP (register)"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
@@ -11504,7 +11512,7 @@ def decode_aarch32_instrs_SVC_A1enc_A_txt (cond : (BitVec 4)) (imm24 : (BitVec 2
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16058.29-16058.30"
-      let imm32 : (BitVec 32) := (zero_extend imm24 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm24 32)
       (execute_aarch32_instrs_SVC_Op_A_txt imm32))
   else (pure ())
 
@@ -11512,7 +11520,7 @@ def decode_aarch32_instrs_SVC_T1enc_A_txt (imm8 : (BitVec 8)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       (execute_aarch32_instrs_SVC_Op_A_txt imm32))
   else (pure ())
 
@@ -11537,10 +11545,10 @@ def decode_aarch32_instrs_SXTAB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SXTB16"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11554,10 +11562,10 @@ def decode_aarch32_instrs_SXTAB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SXTB16"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11578,10 +11586,10 @@ def decode_aarch32_instrs_SXTAB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SXTB"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11595,10 +11603,10 @@ def decode_aarch32_instrs_SXTAB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SXTB"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11619,10 +11627,10 @@ def decode_aarch32_instrs_SXTAH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SXTH"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11636,10 +11644,10 @@ def decode_aarch32_instrs_SXTAH_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "SXTH"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11662,9 +11670,9 @@ def decode_aarch32_instrs_SXTB16_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16328.29-16328.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11675,9 +11683,9 @@ def decode_aarch32_instrs_SXTB16_T1enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11695,9 +11703,9 @@ def decode_aarch32_instrs_SXTB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16393.29-16393.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11708,8 +11716,8 @@ def decode_aarch32_instrs_SXTB_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let rotation := 0
       (execute_aarch32_instrs_SXTB_Op_A_txt d m rotation))
   else (pure ())
@@ -11718,9 +11726,9 @@ def decode_aarch32_instrs_SXTB_T2enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec 2
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11738,9 +11746,9 @@ def decode_aarch32_instrs_SXTH_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16477.29-16477.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11751,8 +11759,8 @@ def decode_aarch32_instrs_SXTH_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let rotation := 0
       (execute_aarch32_instrs_SXTH_Op_A_txt d m rotation))
   else (pure ())
@@ -11761,9 +11769,9 @@ def decode_aarch32_instrs_SXTH_T2enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec 2
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -11778,10 +11786,11 @@ def execute_aarch32_instrs_TBB_Op_A_txt (is_tbh : Bool) (m : Nat) (n : Nat) : Sa
     bif is_tbh
     then
       (do
-        (pure (UInt0 (← (MemU_read ((← (R_read n)) + ((← (R_read m)) <<< 1)) 2)))))
+        (pure (BitVec.toNat (← (MemU_read ((← (R_read n)) + ((← (R_read m)) <<< 1)) 2)))))
     else
       (do
-        (pure (UInt0 (← (MemU_read ((← (R_read n)) + (← (R_read m))) 1))))) ) : SailM Nat )
+        (pure (BitVec.toNat (← (MemU_read ((← (R_read n)) + (← (R_read m))) 1))))) ) : SailM
+    Nat )
   let halfwords := halfwords
   (BranchWritePC (BitVec.addInt (← (PC_read__1 ())) (2 *i halfwords)) BranchType_INDIR)
 
@@ -11789,8 +11798,8 @@ def decode_aarch32_instrs_TBB_T1enc_A_txt (Rn : (BitVec 4)) (H : (BitVec 1)) (Rm
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let is_tbh : Bool := (BEq.beq H (0b1 : (BitVec 1)))
       bif (BEq.beq m 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -11815,7 +11824,7 @@ def decode_aarch32_instrs_TEQ_i_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16607.29-16607.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
       let carry : (BitVec 1) := tup__1
@@ -11829,7 +11838,7 @@ def decode_aarch32_instrs_TEQ_i_T1enc_A_txt (i : (BitVec 1)) (Rn : (BitVec 4)) (
     (do
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
       let carry : (BitVec 1) := tup__1
@@ -11862,8 +11871,8 @@ def decode_aarch32_instrs_TEQ_r_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16674.29-16674.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -11878,8 +11887,8 @@ def decode_aarch32_instrs_TEQ_r_T1enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -11898,7 +11907,7 @@ def decode_aarch32_instrs_TEQ_r_T1enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
 def execute_aarch32_instrs_TEQ_rr_Op_A_txt (m : Nat) (n : Nat) (s : Nat) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let shifted ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let shifted : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -11913,9 +11922,9 @@ def decode_aarch32_instrs_TEQ_rr_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16753.29-16753.30"
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (BEq.beq n 15) (BEq.beq m 15)) (BEq.beq s 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -11937,7 +11946,7 @@ def decode_aarch32_instrs_TST_i_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16794.29-16794.30"
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let (tup__0, tup__1) ← do (A32ExpandImm_C imm12 (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
       let carry : (BitVec 1) := tup__1
@@ -11951,7 +11960,7 @@ def decode_aarch32_instrs_TST_i_T1enc_A_txt (i : (BitVec 1)) (Rn : (BitVec 4)) (
     (do
       let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let imm32 ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let (tup__0, tup__1) ← do (T32ExpandImm_C ((i ++ imm3) ++ imm8) (← readReg PSTATE).C)
       let imm32 : (BitVec 32) := tup__0
       let carry : (BitVec 1) := tup__1
@@ -11984,8 +11993,8 @@ def decode_aarch32_instrs_TST_r_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16861.29-16861.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype imm5)
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -12000,8 +12009,8 @@ def decode_aarch32_instrs_TST_r_T1enc_A_txt (Rm : (BitVec 3)) (Rn : (BitVec 3)) 
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let _ : Unit :=
         let (tup__0, tup__1) := ((SRType_LSL, 0) : (SRType × Nat))
         let shift_t : SRType := tup__0
@@ -12017,8 +12026,8 @@ def decode_aarch32_instrs_TST_r_T2enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
     (do
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let (tup__0, tup__1) ← do (DecodeImmShift stype (imm3 ++ imm2))
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -12037,7 +12046,7 @@ def decode_aarch32_instrs_TST_r_T2enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3)
 def execute_aarch32_instrs_TST_rr_Op_A_txt (m : Nat) (n : Nat) (s : Nat) (shift_t : SRType) : SailM Unit := do
   let carry ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let shifted ← (( do (undefined_bitvector 32) ) : SailM (BitVec 32) )
-  let shift_n ← do (pure (UInt0 (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
+  let shift_n ← do (pure (BitVec.toNat (Sail.BitVec.extractLsb (← (R_read s)) 7 0)))
   let (tup__0, tup__1) ← do (Shift_C (← (R_read m)) shift_t shift_n (← readReg PSTATE).C)
   let shifted : (BitVec 32) := tup__0
   let carry : (BitVec 1) := tup__1
@@ -12052,9 +12061,9 @@ def decode_aarch32_instrs_TST_rr_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:16962.29-16962.30"
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let s := (UInt0 Rs)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let s := (BitVec.toNat Rs)
       let shift_t ← (( do (DecodeRegShift stype) ) : SailM SRType )
       bif (Bool.or (Bool.or (BEq.beq n 15) (BEq.beq m 15)) (BEq.beq s 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -12066,21 +12075,21 @@ def decode_aarch32_instrs_TST_rr_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UADD16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let sum2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum1 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum2 15 0)))
   writeReg PSTATE { (← readReg PSTATE) with GE := (Sail.BitVec.updateSubrange
     (← readReg PSTATE).GE 1 0
-    (bif (sum1 ≥b (UInt0 (0x10000 : (BitVec 20))))
+    (bif (sum1 ≥b (BitVec.toNat (0x10000 : (BitVec 20))))
     then (0b11 : (BitVec 2))
     else (0b00 : (BitVec 2)))) }
   writeReg PSTATE { (← readReg PSTATE) with GE := (Sail.BitVec.updateSubrange
     (← readReg PSTATE).GE 3 2
-    (bif (sum2 ≥b (UInt0 (0x10000 : (BitVec 20))))
+    (bif (sum2 ≥b (BitVec.toNat (0x10000 : (BitVec 20))))
     then (0b11 : (BitVec 2))
     else (0b00 : (BitVec 2)))) }
 
@@ -12089,9 +12098,9 @@ def decode_aarch32_instrs_UADD16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17006.29-17006.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12102,9 +12111,9 @@ def decode_aarch32_instrs_UADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12115,16 +12124,16 @@ def decode_aarch32_instrs_UADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UADD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let sum2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let sum3 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let sum4 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange sum1 7 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange sum2 7 0)))
@@ -12132,22 +12141,22 @@ def execute_aarch32_instrs_UADD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM 
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 24 (integer_subrange sum4 7 0)))
   writeReg PSTATE { (← readReg PSTATE) with GE := (BitVec.update (← readReg PSTATE).GE 0
     (Bit
-      (bif (sum1 ≥b (UInt0 (0x100 : (BitVec 12))))
+      (bif (sum1 ≥b (BitVec.toNat (0x100 : (BitVec 12))))
       then (0b1 : (BitVec 1))
       else (0b0 : (BitVec 1))))) }
   writeReg PSTATE { (← readReg PSTATE) with GE := (BitVec.update (← readReg PSTATE).GE 1
     (Bit
-      (bif (sum2 ≥b (UInt0 (0x100 : (BitVec 12))))
+      (bif (sum2 ≥b (BitVec.toNat (0x100 : (BitVec 12))))
       then (0b1 : (BitVec 1))
       else (0b0 : (BitVec 1))))) }
   writeReg PSTATE { (← readReg PSTATE) with GE := (BitVec.update (← readReg PSTATE).GE 2
     (Bit
-      (bif (sum3 ≥b (UInt0 (0x100 : (BitVec 12))))
+      (bif (sum3 ≥b (BitVec.toNat (0x100 : (BitVec 12))))
       then (0b1 : (BitVec 1))
       else (0b0 : (BitVec 1))))) }
   writeReg PSTATE { (← readReg PSTATE) with GE := (BitVec.update (← readReg PSTATE).GE 3
     (Bit
-      (bif (sum4 ≥b (UInt0 (0x100 : (BitVec 12))))
+      (bif (sum4 ≥b (BitVec.toNat (0x100 : (BitVec 12))))
       then (0b1 : (BitVec 1))
       else (0b0 : (BitVec 1))))) }
 
@@ -12156,9 +12165,9 @@ def decode_aarch32_instrs_UADD8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17077.29-17077.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12169,9 +12178,9 @@ def decode_aarch32_instrs_UADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12182,10 +12191,10 @@ def decode_aarch32_instrs_UADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UASX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let sum ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum 15 0)))
@@ -12196,7 +12205,7 @@ def execute_aarch32_instrs_UASX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM U
     else (0b00 : (BitVec 2)))) }
   writeReg PSTATE { (← readReg PSTATE) with GE := (Sail.BitVec.updateSubrange
     (← readReg PSTATE).GE 3 2
-    (bif (sum ≥b (UInt0 (0x10000 : (BitVec 20))))
+    (bif (sum ≥b (BitVec.toNat (0x10000 : (BitVec 20))))
     then (0b11 : (BitVec 2))
     else (0b00 : (BitVec 2)))) }
 
@@ -12205,9 +12214,9 @@ def decode_aarch32_instrs_UASX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17142.29-17142.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12218,9 +12227,9 @@ def decode_aarch32_instrs_UASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12231,17 +12240,17 @@ def decode_aarch32_instrs_UASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ lsbit ∧ lsbit ≤ 31 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UBFX_Op_A_txt (d : Nat) (lsbit : Nat) (msbit : Int) (n : Nat) : SailM Unit := do
   assert (Bool.and (lsbit ≤b msbit) (msbit <b 32)) "src/instrs32.sail:17195.55-17195.56"
-  (R_set d (zero_extend (Sail.BitVec.extractLsb (← (R_read n)) msbit lsbit) 32))
+  (R_set d (Sail.BitVec.zeroExtend (Sail.BitVec.extractLsb (← (R_read n)) msbit lsbit) 32))
 
 def decode_aarch32_instrs_UBFX_A1enc_A_txt (cond : (BitVec 4)) (widthm1 : (BitVec 5)) (Rd : (BitVec 4)) (lsb : (BitVec 5)) (Rn : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17203.29-17203.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let lsbit := (UInt0 lsb)
-      let widthminus1 := (UInt0 widthm1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let lsbit := (BitVec.toNat lsb)
+      let widthminus1 := (BitVec.toNat widthm1)
       let msbit := (lsbit +i widthminus1)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -12256,10 +12265,10 @@ def decode_aarch32_instrs_UBFX_T1enc_A_txt (Rn : (BitVec 4)) (imm3 : (BitVec 3))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let lsbit := (UInt0 (imm3 ++ imm2))
-      let widthminus1 := (UInt0 widthm1)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let lsbit := (BitVec.toNat (imm3 ++ imm2))
+      let widthminus1 := (BitVec.toNat widthm1)
       let msbit := (lsbit +i widthminus1)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -12277,7 +12286,7 @@ def decode_aarch32_instrs_UDF_A1enc_A_txt (imm12 : (BitVec 12)) (imm4 : (BitVec 
   bif (← (ConditionPassed ()))
   then
     (do
-      let imm32 : (BitVec 32) := (zero_extend (imm12 ++ imm4) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm12 ++ imm4) 32)
       (execute_aarch32_instrs_UDF_Op_A_txt ()))
   else (pure ())
 
@@ -12285,7 +12294,7 @@ def decode_aarch32_instrs_UDF_T1enc_A_txt (imm8 : (BitVec 8)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
-      let imm32 : (BitVec 32) := (zero_extend imm8 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend imm8 32)
       (execute_aarch32_instrs_UDF_Op_A_txt ()))
   else (pure ())
 
@@ -12293,7 +12302,7 @@ def decode_aarch32_instrs_UDF_T2enc_A_txt (imm4 : (BitVec 4)) (imm12 : (BitVec 1
   bif (← (ConditionPassed ()))
   then
     (do
-      let imm32 : (BitVec 32) := (zero_extend (imm4 ++ imm12) 32)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm4 ++ imm12) 32)
       (execute_aarch32_instrs_UDF_Op_A_txt ()))
   else (pure ())
 
@@ -12302,13 +12311,13 @@ def decode_aarch32_instrs_UDF_T2enc_A_txt (imm4 : (BitVec 4)) (imm12 : (BitVec 1
 def execute_aarch32_instrs_UDIV_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let result ← (( do (undefined_int ()) ) : SailM Int )
   let result ← (( do
-    bif (BEq.beq (UInt0 (← (R_read m))) 0)
+    bif (BEq.beq (BitVec.toNat (← (R_read m))) 0)
     then (pure 0)
     else
       (do
         (pure (RoundTowardsZero
-            (div_real (to_real (UInt0 (← (R_read n)))) (to_real (UInt0 (← (R_read m)))))))) ) :
-    SailM Int )
+            (div_real (to_real (BitVec.toNat (← (R_read n))))
+              (to_real (BitVec.toNat (← (R_read m)))))))) ) : SailM Int )
   let result := result
   (R_set d (integer_subrange result 31 0))
 
@@ -12317,10 +12326,10 @@ def decode_aarch32_instrs_UDIV_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17339.29-17339.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (bne a 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12331,10 +12340,10 @@ def decode_aarch32_instrs_UDIV_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15)) (bne a 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12345,10 +12354,10 @@ def decode_aarch32_instrs_UDIV_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UHADD16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let sum2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum1 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum2 16 1)))
@@ -12358,9 +12367,9 @@ def decode_aarch32_instrs_UHADD16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17402.29-17402.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12371,9 +12380,9 @@ def decode_aarch32_instrs_UHADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12384,16 +12393,16 @@ def decode_aarch32_instrs_UHADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UHADD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let sum2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let sum3 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let sum4 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange sum1 8 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange sum2 8 1)))
@@ -12405,9 +12414,9 @@ def decode_aarch32_instrs_UHADD8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17469.29-17469.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12418,9 +12427,9 @@ def decode_aarch32_instrs_UHADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12431,10 +12440,10 @@ def decode_aarch32_instrs_UHADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UHASX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let sum ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange sum 16 1)))
@@ -12444,9 +12453,9 @@ def decode_aarch32_instrs_UHASX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17532.29-17532.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12457,9 +12466,9 @@ def decode_aarch32_instrs_UHASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12470,10 +12479,10 @@ def decode_aarch32_instrs_UHASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UHSAX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let diff ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff 16 1)))
@@ -12483,9 +12492,9 @@ def decode_aarch32_instrs_UHSAX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17595.29-17595.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12496,9 +12505,9 @@ def decode_aarch32_instrs_UHSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12509,10 +12518,10 @@ def decode_aarch32_instrs_UHSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UHSUB16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let diff2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff1 16 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff2 16 1)))
@@ -12522,9 +12531,9 @@ def decode_aarch32_instrs_UHSUB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17658.29-17658.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12535,9 +12544,9 @@ def decode_aarch32_instrs_UHSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12548,16 +12557,16 @@ def decode_aarch32_instrs_UHSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UHSUB8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let diff2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let diff3 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let diff4 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange diff1 8 1)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange diff2 8 1)))
@@ -12569,9 +12578,9 @@ def decode_aarch32_instrs_UHSUB8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17725.29-17725.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12582,9 +12591,9 @@ def decode_aarch32_instrs_UHSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12595,8 +12604,8 @@ def decode_aarch32_instrs_UHSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ dLo ∧ dLo ≤ 15 ∧ 0 ≤ dHi ∧ dHi ≤ 15 -/
 def execute_aarch32_instrs_UMAAL_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let result ← do
-    (pure ((((UInt0 (← (R_read n))) *i (UInt0 (← (R_read m)))) +i (UInt0 (← (R_read dHi)))) +i (UInt0
-          (← (R_read dLo)))))
+    (pure ((((BitVec.toNat (← (R_read n))) *i (BitVec.toNat (← (R_read m)))) +i (BitVec.toNat
+            (← (R_read dHi)))) +i (BitVec.toNat (← (R_read dLo)))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
 
@@ -12605,10 +12614,10 @@ def decode_aarch32_instrs_UMAAL_A1enc_A_txt (cond : (BitVec 4)) (RdHi : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17787.29-17787.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -12623,10 +12632,10 @@ def decode_aarch32_instrs_UMAAL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -12641,7 +12650,7 @@ def decode_aarch32_instrs_UMAAL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ dLo ∧ dLo ≤ 15 ∧ 0 ≤ dHi ∧ dHi ≤ 15 -/
 def execute_aarch32_instrs_UMLAL_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
   let result ← do
-    (pure (((UInt0 (← (R_read n))) *i (UInt0 (← (R_read m)))) +i (UInt0
+    (pure (((BitVec.toNat (← (R_read n))) *i (BitVec.toNat (← (R_read m)))) +i (BitVec.toNat
           ((← (R_read dHi)) ++ (← (R_read dLo))))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
@@ -12657,10 +12666,10 @@ def decode_aarch32_instrs_UMLAL_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17860.29-17860.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -12676,10 +12685,10 @@ def decode_aarch32_instrs_UMLAL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -12694,7 +12703,7 @@ def decode_aarch32_instrs_UMLAL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
 /-- Type quantifiers: dHi : Nat, dLo : Nat, m : Nat, n : Nat, k_setflags : Bool, 0 ≤ n ∧
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ dLo ∧ dLo ≤ 15 ∧ 0 ≤ dHi ∧ dHi ≤ 15 -/
 def execute_aarch32_instrs_UMULL_Op_A_txt (dHi : Nat) (dLo : Nat) (m : Nat) (n : Nat) (setflags : Bool) : SailM Unit := do
-  let result ← do (pure ((UInt0 (← (R_read n))) *i (UInt0 (← (R_read m)))))
+  let result ← do (pure ((BitVec.toNat (← (R_read n))) *i (BitVec.toNat (← (R_read m)))))
   (R_set dHi (integer_subrange result 63 32))
   (R_set dLo (integer_subrange result 31 0))
   bif setflags
@@ -12709,10 +12718,10 @@ def decode_aarch32_instrs_UMULL_A1enc_A_txt (cond : (BitVec 4)) (S : (BitVec 1))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:17936.29-17936.30"
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := (BEq.beq S (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -12728,10 +12737,10 @@ def decode_aarch32_instrs_UMULL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let dLo := (UInt0 RdLo)
-      let dHi := (UInt0 RdHi)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let dLo := (BitVec.toNat RdLo)
+      let dHi := (BitVec.toNat RdHi)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let setflags : Bool := false
       bif (Bool.or (Bool.or (Bool.or (BEq.beq dLo 15) (BEq.beq dHi 15)) (BEq.beq n 15))
            (BEq.beq m 15))
@@ -12747,10 +12756,10 @@ def decode_aarch32_instrs_UMULL_T1enc_A_txt (Rn : (BitVec 4)) (RdLo : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UQADD16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let sum2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (UnsignedSat sum1 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (UnsignedSat sum2 16))))
@@ -12760,9 +12769,9 @@ def decode_aarch32_instrs_UQADD16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18008.29-18008.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12773,9 +12782,9 @@ def decode_aarch32_instrs_UQADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12786,16 +12795,16 @@ def decode_aarch32_instrs_UQADD16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UQADD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let sum2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let sum3 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let sum4 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (← (UnsignedSat sum1 8))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (← (UnsignedSat sum2 8))))
@@ -12807,9 +12816,9 @@ def decode_aarch32_instrs_UQADD8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18075.29-18075.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12820,9 +12829,9 @@ def decode_aarch32_instrs_UQADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12833,10 +12842,10 @@ def decode_aarch32_instrs_UQADD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UQASX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let sum ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (UnsignedSat diff 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (UnsignedSat sum 16))))
@@ -12846,9 +12855,9 @@ def decode_aarch32_instrs_UQASX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18138.29-18138.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12859,9 +12868,9 @@ def decode_aarch32_instrs_UQASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12872,10 +12881,10 @@ def decode_aarch32_instrs_UQASX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UQSAX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let diff ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (UnsignedSat sum 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (UnsignedSat diff 16))))
@@ -12885,9 +12894,9 @@ def decode_aarch32_instrs_UQSAX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18201.29-18201.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12898,9 +12907,9 @@ def decode_aarch32_instrs_UQSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12911,10 +12920,10 @@ def decode_aarch32_instrs_UQSAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UQSUB16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let diff2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (← (UnsignedSat diff1 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (← (UnsignedSat diff2 16))))
@@ -12924,9 +12933,9 @@ def decode_aarch32_instrs_UQSUB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18264.29-18264.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12937,9 +12946,9 @@ def decode_aarch32_instrs_UQSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12950,16 +12959,16 @@ def decode_aarch32_instrs_UQSUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UQSUB8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let diff2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let diff3 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let diff4 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (← (UnsignedSat diff1 8))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (← (UnsignedSat diff2 8))))
@@ -12971,9 +12980,9 @@ def decode_aarch32_instrs_UQSUB8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18331.29-18331.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12984,9 +12993,9 @@ def decode_aarch32_instrs_UQSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -12998,19 +13007,19 @@ def decode_aarch32_instrs_UQSUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
 def execute_aarch32_instrs_USAD8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let absdiff1 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))))
   let absdiff2 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 15 8)))))
   let absdiff3 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 23 16)))))
   let absdiff4 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 31 24)))))
   let result := (((absdiff1 +i absdiff2) +i absdiff3) +i absdiff4)
   (R_set d (integer_subrange result 31 0))
@@ -13020,9 +13029,9 @@ def decode_aarch32_instrs_USAD8_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18396.29-18396.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13033,9 +13042,9 @@ def decode_aarch32_instrs_USAD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13047,22 +13056,22 @@ def decode_aarch32_instrs_USAD8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
 def execute_aarch32_instrs_USADA8_Op_A_txt (a : Nat) (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let absdiff1 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 7 0)))))
   let absdiff2 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 15 8)))))
   let absdiff3 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 23 16)))))
   let absdiff4 ← do
     (pure (Int.natAbs
-        ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (UInt0
+        ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toNat
             (Sail.BitVec.extractLsb (← (R_read m)) 31 24)))))
   let result ← do
-    (pure (((((UInt0 (← (R_read a))) +i absdiff1) +i absdiff2) +i absdiff3) +i absdiff4))
+    (pure (((((BitVec.toNat (← (R_read a))) +i absdiff1) +i absdiff2) +i absdiff3) +i absdiff4))
   (R_set d (integer_subrange result 31 0))
 
 def decode_aarch32_instrs_USADA8_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) (Ra : (BitVec 4)) (Rm : (BitVec 4)) (Rn : (BitVec 4)) : SailM Unit := do
@@ -13073,10 +13082,10 @@ def decode_aarch32_instrs_USADA8_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "USAD8"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13090,10 +13099,10 @@ def decode_aarch32_instrs_USADA8_T1enc_A_txt (Rn : (BitVec 4)) (Ra : (BitVec 4))
       bif (BEq.beq Ra (0xF : (BitVec 4)))
       then sailThrow ((Error_See "USAD8"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let a := (UInt0 Ra)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let a := (BitVec.toNat Ra)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13108,12 +13117,12 @@ def execute_aarch32_instrs_USAT16_Op_A_txt (d : Nat) (n : Nat) (saturate_to : Na
   let sat1 ← (( do (undefined_bool ()) ) : SailM Bool )
   let sat2 ← (( do (undefined_bool ()) ) : SailM Bool )
   let (tup__0, tup__1) ← do
-    (ZeroUnsignedSatQ (sint (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) saturate_to 16)
+    (ZeroUnsignedSatQ (BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) saturate_to 16)
   let result1 : (BitVec 16) := tup__0
   let sat1 : Bool := tup__1
   (pure ())
   let (tup__0, tup__1) ← do
-    (ZeroUnsignedSatQ (sint (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) saturate_to 16)
+    (ZeroUnsignedSatQ (BitVec.toInt (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) saturate_to 16)
   let result2 : (BitVec 16) := tup__0
   let sat2 : Bool := tup__1
   (pure ())
@@ -13128,9 +13137,9 @@ def decode_aarch32_instrs_USAT16_A1enc_A_txt (cond : (BitVec 4)) (sat_imm : (Bit
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18534.29-18534.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := (UInt0 sat_imm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := (BitVec.toNat sat_imm)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13141,9 +13150,9 @@ def decode_aarch32_instrs_USAT16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := (UInt0 sat_imm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := (BitVec.toNat sat_imm)
       bif (Bool.or (BEq.beq d 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13157,7 +13166,7 @@ def execute_aarch32_instrs_USAT_Op_A_txt (d : Nat) (n : Nat) (saturate_to : Nat)
   let sat ← (( do (undefined_bool ()) ) : SailM Bool )
   let operand ← (( do (Shift (← (R_read n)) shift_t shift_n (← readReg PSTATE).C) ) : SailM
     (BitVec 32) )
-  let (tup__0, tup__1) ← do (ZeroUnsignedSatQ (sint operand) saturate_to 32)
+  let (tup__0, tup__1) ← do (ZeroUnsignedSatQ (BitVec.toInt operand) saturate_to 32)
   let result : (BitVec 32) := tup__0
   let sat : Bool := tup__1
   (pure ())
@@ -13173,9 +13182,9 @@ def decode_aarch32_instrs_USAT_A1enc_A_txt (cond : (BitVec 4)) (sat_imm : (BitVe
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18606.29-18606.30"
       let shift_n ← (( do (undefined_int ()) ) : SailM Int )
       let shift_t ← (( do (undefined_SRType ()) ) : SailM SRType )
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := (UInt0 sat_imm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := (BitVec.toNat sat_imm)
       let (tup__0, tup__1) ← do (DecodeImmShift (sh ++ (0b0 : (BitVec 1))) imm5)
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -13198,9 +13207,9 @@ def decode_aarch32_instrs_USAT_T1enc_A_txt (sh : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (Bool.and (BEq.beq sh (0b1 : (BitVec 1))) (BEq.beq (imm3 ++ imm2) (0b00000 : (BitVec 5))))
       then sailThrow ((Error_See "USAT16"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let saturate_to := (UInt0 sat_imm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let saturate_to := (BitVec.toNat sat_imm)
       let (tup__0, tup__1) ← do (DecodeImmShift (sh ++ (0b0 : (BitVec 1))) (imm3 ++ imm2))
       let shift_t : SRType := tup__0
       let shift_n : Int := tup__1
@@ -13216,16 +13225,16 @@ def decode_aarch32_instrs_USAT_T1enc_A_txt (sh : (BitVec 1)) (Rn : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_USAX_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let sum ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) +i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   let diff ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange sum 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff 15 0)))
   writeReg PSTATE { (← readReg PSTATE) with GE := (Sail.BitVec.updateSubrange
     (← readReg PSTATE).GE 1 0
-    (bif (sum ≥b (UInt0 (0x10000 : (BitVec 20))))
+    (bif (sum ≥b (BitVec.toNat (0x10000 : (BitVec 20))))
     then (0b11 : (BitVec 2))
     else (0b00 : (BitVec 2)))) }
   writeReg PSTATE { (← readReg PSTATE) with GE := (Sail.BitVec.updateSubrange
@@ -13239,9 +13248,9 @@ def decode_aarch32_instrs_USAX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18689.29-18689.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13252,9 +13261,9 @@ def decode_aarch32_instrs_USAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13265,10 +13274,10 @@ def decode_aarch32_instrs_USAX_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) (
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_USUB16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 0))))
   let diff2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 16))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 0 (integer_subrange diff1 15 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 31 16 (integer_subrange diff2 15 0)))
@@ -13288,9 +13297,9 @@ def decode_aarch32_instrs_USUB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18754.29-18754.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13301,9 +13310,9 @@ def decode_aarch32_instrs_USUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13314,16 +13323,16 @@ def decode_aarch32_instrs_USUB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4))
   n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_USUB8_Op_A_txt (d : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   let diff1 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 7 0)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 7 0))))
   let diff2 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 15 8)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 15 8))))
   let diff3 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 23 16)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 23 16))))
   let diff4 ← do
-    (pure ((UInt0 (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (UInt0
+    (pure ((BitVec.toNat (Sail.BitVec.extractLsb (← (R_read n)) 31 24)) -i (BitVec.toNat
           (Sail.BitVec.extractLsb (← (R_read m)) 31 24))))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 7 0 (integer_subrange diff1 7 0)))
   (R_set d (Sail.BitVec.updateSubrange (← (R_read d)) 15 8 (integer_subrange diff2 7 0)))
@@ -13355,9 +13364,9 @@ def decode_aarch32_instrs_USUB8_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:18825.29-18825.30"
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13368,9 +13377,9 @@ def decode_aarch32_instrs_USUB8_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13383,11 +13392,11 @@ def execute_aarch32_instrs_UXTAB16_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (rotat
   let rotated ← (( do (pure (ROR (← (R_read m)) rotation)) ) : SailM (BitVec 32) )
   (R_set d
     (Sail.BitVec.updateSubrange (← (R_read d)) 15 0
-      ((Sail.BitVec.extractLsb (← (R_read n)) 15 0) + (zero_extend
+      ((Sail.BitVec.extractLsb (← (R_read n)) 15 0) + (Sail.BitVec.zeroExtend
           (Sail.BitVec.extractLsb rotated 7 0) 16))))
   (R_set d
     (Sail.BitVec.updateSubrange (← (R_read d)) 31 16
-      ((Sail.BitVec.extractLsb (← (R_read n)) 31 16) + (zero_extend
+      ((Sail.BitVec.extractLsb (← (R_read n)) 31 16) + (Sail.BitVec.zeroExtend
           (Sail.BitVec.extractLsb rotated 23 16) 16))))
 
 def decode_aarch32_instrs_UXTAB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (rotate : (BitVec 2)) (Rm : (BitVec 4)) : SailM Unit := do
@@ -13398,10 +13407,10 @@ def decode_aarch32_instrs_UXTAB16_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "UXTB16"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13415,10 +13424,10 @@ def decode_aarch32_instrs_UXTAB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "UXTB16"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13429,7 +13438,7 @@ def decode_aarch32_instrs_UXTAB16_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)
   rotation ≤ 31 ∧ 0 ≤ n ∧ n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UXTAB_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (rotation : Nat) : SailM Unit := do
   let rotated ← (( do (pure (ROR (← (R_read m)) rotation)) ) : SailM (BitVec 32) )
-  (R_set d ((← (R_read n)) + (zero_extend (Sail.BitVec.extractLsb rotated 7 0) 32)))
+  (R_set d ((← (R_read n)) + (Sail.BitVec.zeroExtend (Sail.BitVec.extractLsb rotated 7 0) 32)))
 
 def decode_aarch32_instrs_UXTAB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (rotate : (BitVec 2)) (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -13439,10 +13448,10 @@ def decode_aarch32_instrs_UXTAB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "UXTB"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13456,10 +13465,10 @@ def decode_aarch32_instrs_UXTAB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "UXTB"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13470,7 +13479,7 @@ def decode_aarch32_instrs_UXTAB_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
   rotation ≤ 31 ∧ 0 ≤ n ∧ n ≤ 15 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UXTAH_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (rotation : Nat) : SailM Unit := do
   let rotated ← (( do (pure (ROR (← (R_read m)) rotation)) ) : SailM (BitVec 32) )
-  (R_set d ((← (R_read n)) + (zero_extend (Sail.BitVec.extractLsb rotated 15 0) 32)))
+  (R_set d ((← (R_read n)) + (Sail.BitVec.zeroExtend (Sail.BitVec.extractLsb rotated 15 0) 32)))
 
 def decode_aarch32_instrs_UXTAH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (rotate : (BitVec 2)) (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -13480,10 +13489,10 @@ def decode_aarch32_instrs_UXTAH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "UXTH"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13497,10 +13506,10 @@ def decode_aarch32_instrs_UXTAH_T1enc_A_txt (Rn : (BitVec 4)) (Rd : (BitVec 4)) 
       bif (BEq.beq Rn (0xF : (BitVec 4)))
       then sailThrow ((Error_See "UXTH"))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13513,19 +13522,19 @@ def execute_aarch32_instrs_UXTB16_Op_A_txt (d : Nat) (m : Nat) (rotation : Nat) 
   let rotated ← (( do (pure (ROR (← (R_read m)) rotation)) ) : SailM (BitVec 32) )
   (R_set d
     (Sail.BitVec.updateSubrange (← (R_read d)) 15 0
-      (zero_extend (Sail.BitVec.extractLsb rotated 7 0) 16)))
+      (Sail.BitVec.zeroExtend (Sail.BitVec.extractLsb rotated 7 0) 16)))
   (R_set d
     (Sail.BitVec.updateSubrange (← (R_read d)) 31 16
-      (zero_extend (Sail.BitVec.extractLsb rotated 23 16) 16)))
+      (Sail.BitVec.zeroExtend (Sail.BitVec.extractLsb rotated 23 16) 16)))
 
 def decode_aarch32_instrs_UXTB16_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) (rotate : (BitVec 2)) (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:19113.29-19113.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13536,9 +13545,9 @@ def decode_aarch32_instrs_UXTB16_T1enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13549,16 +13558,16 @@ def decode_aarch32_instrs_UXTB16_T1enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec
   rotation ≤ 31 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UXTB_Op_A_txt (d : Nat) (m : Nat) (rotation : Nat) : SailM Unit := do
   let rotated ← (( do (pure (ROR (← (R_read m)) rotation)) ) : SailM (BitVec 32) )
-  (R_set d (zero_extend (Sail.BitVec.extractLsb rotated 7 0) 32))
+  (R_set d (Sail.BitVec.zeroExtend (Sail.BitVec.extractLsb rotated 7 0) 32))
 
 def decode_aarch32_instrs_UXTB_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) (rotate : (BitVec 2)) (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:19178.29-19178.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13569,8 +13578,8 @@ def decode_aarch32_instrs_UXTB_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let rotation := 0
       (execute_aarch32_instrs_UXTB_Op_A_txt d m rotation))
   else (pure ())
@@ -13579,9 +13588,9 @@ def decode_aarch32_instrs_UXTB_T2enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec 2
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13592,16 +13601,16 @@ def decode_aarch32_instrs_UXTB_T2enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec 2
   rotation ≤ 31 ∧ 0 ≤ m ∧ m ≤ 15 ∧ 0 ≤ d ∧ d ≤ 15 -/
 def execute_aarch32_instrs_UXTH_Op_A_txt (d : Nat) (m : Nat) (rotation : Nat) : SailM Unit := do
   let rotated ← (( do (pure (ROR (← (R_read m)) rotation)) ) : SailM (BitVec 32) )
-  (R_set d (zero_extend (Sail.BitVec.extractLsb rotated 15 0) 32))
+  (R_set d (Sail.BitVec.zeroExtend (Sail.BitVec.extractLsb rotated 15 0) 32))
 
 def decode_aarch32_instrs_UXTH_A1enc_A_txt (cond : (BitVec 4)) (Rd : (BitVec 4)) (rotate : (BitVec 2)) (Rm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:19262.29-19262.30"
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13612,8 +13621,8 @@ def decode_aarch32_instrs_UXTH_T1enc_A_txt (Rm : (BitVec 3)) (Rd : (BitVec 3)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
       let rotation := 0
       (execute_aarch32_instrs_UXTH_Op_A_txt d m rotation))
   else (pure ())
@@ -13622,9 +13631,9 @@ def decode_aarch32_instrs_UXTH_T2enc_A_txt (Rd : (BitVec 4)) (rotate : (BitVec 2
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let m := (UInt0 Rm)
-      let rotation := (UInt0 (rotate ++ (0b000 : (BitVec 3))))
+      let d := (BitVec.toNat Rd)
+      let m := (BitVec.toNat Rm)
+      let rotation := (BitVec.toNat (rotate ++ (0b000 : (BitVec 3))))
       bif (Bool.or (BEq.beq d 15) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -13692,11 +13701,11 @@ def decode_aarch32_instrs_VABA_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (si
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -13716,11 +13725,11 @@ def decode_aarch32_instrs_VABA_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (si
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := true
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VABA_Op_A_txt d elements esize long_destination m n regs is_unsigned))
   else (pure ())
@@ -13741,11 +13750,11 @@ def decode_aarch32_instrs_VABA_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (si
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -13765,11 +13774,11 @@ def decode_aarch32_instrs_VABA_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (si
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := true
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VABA_Op_A_txt d elements esize long_destination m n regs is_unsigned))
   else (pure ())
@@ -13839,9 +13848,9 @@ def decode_aarch32_instrs_VABD_f_A1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -13881,9 +13890,9 @@ def decode_aarch32_instrs_VABD_f_T1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -13951,11 +13960,11 @@ def decode_aarch32_instrs_VABD_i_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -13975,11 +13984,11 @@ def decode_aarch32_instrs_VABD_i_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := true
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VABD_i_Op_A_txt d elements esize long_destination m n regs is_unsigned))
   else (pure ())
@@ -14000,11 +14009,11 @@ def decode_aarch32_instrs_VABD_i_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14024,11 +14033,11 @@ def decode_aarch32_instrs_VABD_i_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := true
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VABD_i_Op_A_txt d elements esize long_destination m n regs is_unsigned))
   else (pure ())
@@ -14068,7 +14077,8 @@ def execute_aarch32_instrs_VABS_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elemen
                 else
                   (do
                     let result ←
-                      (pure (Int.natAbs (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+                      (pure (Int.natAbs
+                          (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
                     (D_set (d +i r)
                       (← (Elem_set (← (D_read (d +i r))) e esize
                           (integer_subrange result (esize -i 1) 0))))
@@ -14104,10 +14114,10 @@ def decode_aarch32_instrs_VABS_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       else (pure ())
       let advsimd : Bool := true
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14146,22 +14156,22 @@ def decode_aarch32_instrs_VABS_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -14193,10 +14203,10 @@ def decode_aarch32_instrs_VABS_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       else (pure ())
       let advsimd : Bool := true
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14234,22 +14244,22 @@ def decode_aarch32_instrs_VABS_T2enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (s
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -14335,9 +14345,9 @@ def decode_aarch32_instrs_VACGE_A1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) (
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14378,9 +14388,9 @@ def decode_aarch32_instrs_VACGE_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) (
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14456,9 +14466,9 @@ def decode_aarch32_instrs_VADD_f_A1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14496,25 +14506,25 @@ def decode_aarch32_instrs_VADD_f_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -14557,9 +14567,9 @@ def decode_aarch32_instrs_VADD_f_T1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14596,25 +14606,25 @@ def decode_aarch32_instrs_VADD_f_T2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -14658,11 +14668,11 @@ def decode_aarch32_instrs_VADDHN_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VADDHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -14677,11 +14687,11 @@ def decode_aarch32_instrs_VADDHN_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VADDHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -14722,11 +14732,11 @@ def decode_aarch32_instrs_VADD_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14745,11 +14755,11 @@ def decode_aarch32_instrs_VADD_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14804,12 +14814,12 @@ def decode_aarch32_instrs_VADDL_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       let is_vaddw : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VADDL_Op_A_txt d elements esize is_vaddw m n is_unsigned))
   else (pure ())
 
@@ -14826,12 +14836,12 @@ def decode_aarch32_instrs_VADDL_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       let is_vaddw : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VADDL_Op_A_txt d elements esize is_vaddw m n is_unsigned))
   else (pure ())
 
@@ -14858,9 +14868,9 @@ def decode_aarch32_instrs_VAND_r_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14879,9 +14889,9 @@ def decode_aarch32_instrs_VAND_r_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14914,7 +14924,7 @@ def decode_aarch32_instrs_VBIC_i_A1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14936,7 +14946,7 @@ def decode_aarch32_instrs_VBIC_i_A2enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14958,7 +14968,7 @@ def decode_aarch32_instrs_VBIC_i_T1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -14980,7 +14990,7 @@ def decode_aarch32_instrs_VBIC_i_T2enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15012,9 +15022,9 @@ def decode_aarch32_instrs_VBIC_r_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15033,9 +15043,9 @@ def decode_aarch32_instrs_VBIC_r_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15092,9 +15102,9 @@ def decode_aarch32_instrs_VBIF_A1enc_A_txt (D : (BitVec 1)) (op : (BitVec 2)) (V
         bif (BEq.beq op (0b11 : (BitVec 2)))
         then VBitOps_VBIF
         else operation
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15129,9 +15139,9 @@ def decode_aarch32_instrs_VBIF_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 2)) (V
         bif (BEq.beq op (0b11 : (BitVec 2)))
         then VBitOps_VBIF
         else operation
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15196,10 +15206,10 @@ def decode_aarch32_instrs_VCEQ_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15229,10 +15239,10 @@ def decode_aarch32_instrs_VCEQ_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15300,11 +15310,11 @@ def decode_aarch32_instrs_VCEQ_r_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let int_operation : Bool := true
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15342,9 +15352,9 @@ def decode_aarch32_instrs_VCEQ_r_A2enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15367,11 +15377,11 @@ def decode_aarch32_instrs_VCEQ_r_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let int_operation : Bool := true
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15412,9 +15422,9 @@ def decode_aarch32_instrs_VCEQ_r_T2enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15451,8 +15461,8 @@ def execute_aarch32_instrs_VCGE_i_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
                   (← (StandardFPSCRValue ()))))
             else
               (do
-                (pure ((sint (← (Elem_read (← (D_read (m +i r))) e esize))) ≥b 0))) ) : SailM
-            Bool )
+                (pure ((BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize))) ≥b 0))) )
+            : SailM Bool )
           (D_set (d +i r)
             (← (Elem_set (← (D_read (d +i r))) e esize
                 (bif test_passed
@@ -15479,10 +15489,10 @@ def decode_aarch32_instrs_VCGE_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15512,10 +15522,10 @@ def decode_aarch32_instrs_VCGE_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15551,8 +15561,8 @@ def execute_aarch32_instrs_VCGE_r_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
               let test_passed ← (( do (undefined_bool ()) ) : SailM Bool )
               let test_passed ← (( do
                 match vtype with
-                | VCGEType_signed => (pure ((sint op1) ≥b (sint op2)))
-                | VCGEType_unsigned => (pure ((UInt0 op1) ≥b (UInt0 op2)))
+                | VCGEType_signed => (pure ((BitVec.toInt op1) ≥b (BitVec.toInt op2)))
+                | VCGEType_unsigned => (pure ((BitVec.toNat op1) ≥b (BitVec.toNat op2)))
                 | VCGEType_fp => (do
                     assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32))
                       (BEq.beq esize 64)) "src/instrs32.sail:21435.59-21435.60"
@@ -15587,11 +15597,11 @@ def decode_aarch32_instrs_VCGE_r_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         bif (BEq.beq U (0b1 : (BitVec 1)))
         then VCGEType_unsigned
         else VCGEType_signed
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15629,9 +15639,9 @@ def decode_aarch32_instrs_VCGE_r_A2enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15657,11 +15667,11 @@ def decode_aarch32_instrs_VCGE_r_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         bif (BEq.beq U (0b1 : (BitVec 1)))
         then VCGEType_unsigned
         else VCGEType_signed
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15702,9 +15712,9 @@ def decode_aarch32_instrs_VCGE_r_T2enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15741,8 +15751,8 @@ def execute_aarch32_instrs_VCGT_i_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
                   (← (StandardFPSCRValue ()))))
             else
               (do
-                (pure ((sint (← (Elem_read (← (D_read (m +i r))) e esize))) >b 0))) ) : SailM
-            Bool )
+                (pure ((BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize))) >b 0))) ) :
+            SailM Bool )
           (D_set (d +i r)
             (← (Elem_set (← (D_read (d +i r))) e esize
                 (bif test_passed
@@ -15769,10 +15779,10 @@ def decode_aarch32_instrs_VCGT_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15802,10 +15812,10 @@ def decode_aarch32_instrs_VCGT_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15841,8 +15851,8 @@ def execute_aarch32_instrs_VCGT_r_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
               let test_passed ← (( do (undefined_bool ()) ) : SailM Bool )
               let test_passed ← (( do
                 match vtype with
-                | VCGTtype_signed => (pure ((sint op1) >b (sint op2)))
-                | VCGTtype_unsigned => (pure ((UInt0 op1) >b (UInt0 op2)))
+                | VCGTtype_signed => (pure ((BitVec.toInt op1) >b (BitVec.toInt op2)))
+                | VCGTtype_unsigned => (pure ((BitVec.toNat op1) >b (BitVec.toNat op2)))
                 | VCGTtype_fp => (do
                     assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32))
                       (BEq.beq esize 64)) "src/instrs32.sail:21741.59-21741.60"
@@ -15877,11 +15887,11 @@ def decode_aarch32_instrs_VCGT_r_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         bif (BEq.beq U (0b1 : (BitVec 1)))
         then VCGTtype_unsigned
         else VCGTtype_signed
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15919,9 +15929,9 @@ def decode_aarch32_instrs_VCGT_r_A2enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15947,11 +15957,11 @@ def decode_aarch32_instrs_VCGT_r_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         bif (BEq.beq U (0b1 : (BitVec 1)))
         then VCGTtype_unsigned
         else VCGTtype_signed
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -15992,9 +16002,9 @@ def decode_aarch32_instrs_VCGT_r_T2enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16031,8 +16041,8 @@ def execute_aarch32_instrs_VCLE_i_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
                   (← (StandardFPSCRValue ()))))
             else
               (do
-                (pure ((sint (← (Elem_read (← (D_read (m +i r))) e esize))) ≤b 0))) ) : SailM
-            Bool )
+                (pure ((BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize))) ≤b 0))) )
+            : SailM Bool )
           (D_set (d +i r)
             (← (Elem_set (← (D_read (d +i r))) e esize
                 (bif test_passed
@@ -16059,10 +16069,10 @@ def decode_aarch32_instrs_VCLE_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16092,10 +16102,10 @@ def decode_aarch32_instrs_VCLE_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16140,10 +16150,10 @@ def decode_aarch32_instrs_VCLS_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16163,10 +16173,10 @@ def decode_aarch32_instrs_VCLS_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16203,8 +16213,8 @@ def execute_aarch32_instrs_VCLT_i_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
                   (← (StandardFPSCRValue ()))))
             else
               (do
-                (pure ((sint (← (Elem_read (← (D_read (m +i r))) e esize))) <b 0))) ) : SailM
-            Bool )
+                (pure ((BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize))) <b 0))) ) :
+            SailM Bool )
           (D_set (d +i r)
             (← (Elem_set (← (D_read (d +i r))) e esize
                 (bif test_passed
@@ -16231,10 +16241,10 @@ def decode_aarch32_instrs_VCLT_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16264,10 +16274,10 @@ def decode_aarch32_instrs_VCLT_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16312,10 +16322,10 @@ def decode_aarch32_instrs_VCLZ_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16335,10 +16345,10 @@ def decode_aarch32_instrs_VCLZ_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16397,22 +16407,22 @@ def decode_aarch32_instrs_VCMP_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -16444,19 +16454,19 @@ def decode_aarch32_instrs_VCMP_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let esize := esize
@@ -16485,22 +16495,22 @@ def decode_aarch32_instrs_VCMP_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (s
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -16531,19 +16541,19 @@ def decode_aarch32_instrs_VCMP_T2enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (s
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let esize := esize
@@ -16589,8 +16599,8 @@ def decode_aarch32_instrs_VCNT_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       else (pure ())
       let esize := 8
       let elements := 8
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16612,8 +16622,8 @@ def decode_aarch32_instrs_VCNT_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       else (pure ())
       let esize := 8
       let elements := 8
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16665,17 +16675,17 @@ def decode_aarch32_instrs_VCVTB_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1))
           (let (d, m) : (Nat × Nat) :=
             bif convert_from_half
             then
-              (let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (Vm ++ M))
+              (let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (Vm ++ M))
               (d, m))
             else
-              (let d : Nat := (UInt0 (Vd ++ D))
-              let m : Nat := (UInt0 (M ++ Vm))
+              (let d : Nat := (BitVec.toNat (Vd ++ D))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               (d, m))
           (d, m))
         else
-          (let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           (d, m))
       let m := m
       let d := d
@@ -16700,17 +16710,17 @@ def decode_aarch32_instrs_VCVTB_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) (
           (let (d, m) : (Nat × Nat) :=
             bif convert_from_half
             then
-              (let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (Vm ++ M))
+              (let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (Vm ++ M))
               (d, m))
             else
-              (let d : Nat := (UInt0 (Vd ++ D))
-              let m : Nat := (UInt0 (M ++ Vm))
+              (let d : Nat := (BitVec.toNat (Vd ++ D))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               (d, m))
           (d, m))
         else
-          (let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           (d, m))
       let m := m
       let d := d
@@ -16733,12 +16743,12 @@ def decode_aarch32_instrs_VCVT_ds_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1
       let double_to_single : Bool := (BEq.beq size (0b11 : (BitVec 2)))
       let d :=
         bif double_to_single
-        then (UInt0 (Vd ++ D))
-        else (UInt0 (D ++ Vd))
+        then (BitVec.toNat (Vd ++ D))
+        else (BitVec.toNat (D ++ Vd))
       let m :=
         bif double_to_single
-        then (UInt0 (M ++ Vm))
-        else (UInt0 (Vm ++ M))
+        then (BitVec.toNat (M ++ Vm))
+        else (BitVec.toNat (Vm ++ M))
       assert (Bool.and (0 ≤b m) (Bool.and (m ≤b 31) (Bool.and (0 ≤b d) (d ≤b 31)))) "src/instrs32.sail:22716.68-22716.69"
       (execute_aarch32_instrs_VCVT_ds_Op_A_txt d double_to_single m))
   else (pure ())
@@ -16750,12 +16760,12 @@ def decode_aarch32_instrs_VCVT_ds_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4))
       let double_to_single : Bool := (BEq.beq size (0b11 : (BitVec 2)))
       let d :=
         bif double_to_single
-        then (UInt0 (Vd ++ D))
-        else (UInt0 (D ++ Vd))
+        then (BitVec.toNat (Vd ++ D))
+        else (BitVec.toNat (D ++ Vd))
       let m :=
         bif double_to_single
-        then (UInt0 (M ++ Vm))
-        else (UInt0 (Vm ++ M))
+        then (BitVec.toNat (M ++ Vm))
+        else (BitVec.toNat (Vm ++ M))
       assert (Bool.and (0 ≤b m) (Bool.and (m ≤b 31) (Bool.and (0 ≤b d) (d ≤b 31)))) "src/instrs32.sail:22740.68-22740.69"
       (execute_aarch32_instrs_VCVT_ds_Op_A_txt d double_to_single m))
   else (pure ())
@@ -16802,8 +16812,8 @@ def decode_aarch32_instrs_VCVT_hs_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let esize := 16
       let elements := 4
-      let m := (UInt0 (M ++ Vm))
-      let d := (UInt0 (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
       (execute_aarch32_instrs_VCVT_hs_Op_A_txt d elements half_to_single m))
   else (pure ())
 
@@ -16825,8 +16835,8 @@ def decode_aarch32_instrs_VCVT_hs_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let esize := 16
       let elements := 4
-      let m := (UInt0 (M ++ Vm))
-      let d := (UInt0 (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
       (execute_aarch32_instrs_VCVT_hs_Op_A_txt d elements half_to_single m))
   else (pure ())
 
@@ -16903,8 +16913,8 @@ def decode_aarch32_instrs_VCVT_is_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
           else ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -16948,8 +16958,8 @@ def decode_aarch32_instrs_VCVT_is_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
           else ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17023,27 +17033,27 @@ def decode_aarch32_instrs_VCVT_iv_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1
               bif (BEq.beq op (0b1 : (BitVec 1)))
               then (pure FPRounding_ZERO)
               else (FPRoundingMode (← (FPSCR_read ())))
-            let d : Nat := (UInt0 (Vd ++ D))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
             let b__4 := size
             let (esize, m) : (Int × Nat) :=
               bif (BEq.beq b__4 (0b01 : (BitVec 2)))
               then
                 (let esize : Int := 16
-                let m : Nat := (UInt0 (Vm ++ M))
+                let m : Nat := (BitVec.toNat (Vm ++ M))
                 (esize, m))
               else
                 (let (esize, m) : (Int × Nat) :=
                   bif (BEq.beq b__4 (0b10 : (BitVec 2)))
                   then
                     (let esize : Int := 32
-                    let m : Nat := (UInt0 (Vm ++ M))
+                    let m : Nat := (BitVec.toNat (Vm ++ M))
                     (esize, m))
                   else
                     (let (esize, m) : (Int × Nat) :=
                       bif (BEq.beq b__4 (0b11 : (BitVec 2)))
                       then
                         (let esize : Int := 64
-                        let m : Nat := (UInt0 (M ++ Vm))
+                        let m : Nat := (BitVec.toNat (M ++ Vm))
                         (esize, m))
                       else (esize, m)
                     (esize, m))
@@ -17053,27 +17063,27 @@ def decode_aarch32_instrs_VCVT_iv_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1
           (do
             let is_unsigned : Bool := (BEq.beq op (0b0 : (BitVec 1)))
             let rounding ← (FPRoundingMode (← (FPSCR_read ())))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             let b__1 := size
             let (d, esize) : (Nat × Int) :=
               bif (BEq.beq b__1 (0b01 : (BitVec 2)))
               then
                 (let esize : Int := 16
-                let d : Nat := (UInt0 (Vd ++ D))
+                let d : Nat := (BitVec.toNat (Vd ++ D))
                 (d, esize))
               else
                 (let (d, esize) : (Nat × Int) :=
                   bif (BEq.beq b__1 (0b10 : (BitVec 2)))
                   then
                     (let esize : Int := 32
-                    let d : Nat := (UInt0 (Vd ++ D))
+                    let d : Nat := (BitVec.toNat (Vd ++ D))
                     (d, esize))
                   else
                     (let (d, esize) : (Nat × Int) :=
                       bif (BEq.beq b__1 (0b11 : (BitVec 2)))
                       then
                         (let esize : Int := 64
-                        let d : Nat := (UInt0 (D ++ Vd))
+                        let d : Nat := (BitVec.toNat (D ++ Vd))
                         (d, esize))
                       else (d, esize)
                     (d, esize))
@@ -17121,27 +17131,27 @@ def decode_aarch32_instrs_VCVT_iv_T1enc_A_txt (D : (BitVec 1)) (opc2 : (BitVec 3
               bif (BEq.beq op (0b1 : (BitVec 1)))
               then (pure FPRounding_ZERO)
               else (FPRoundingMode (← (FPSCR_read ())))
-            let d : Nat := (UInt0 (Vd ++ D))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
             let b__4 := size
             let (esize, m) : (Int × Nat) :=
               bif (BEq.beq b__4 (0b01 : (BitVec 2)))
               then
                 (let esize : Int := 16
-                let m : Nat := (UInt0 (Vm ++ M))
+                let m : Nat := (BitVec.toNat (Vm ++ M))
                 (esize, m))
               else
                 (let (esize, m) : (Int × Nat) :=
                   bif (BEq.beq b__4 (0b10 : (BitVec 2)))
                   then
                     (let esize : Int := 32
-                    let m : Nat := (UInt0 (Vm ++ M))
+                    let m : Nat := (BitVec.toNat (Vm ++ M))
                     (esize, m))
                   else
                     (let (esize, m) : (Int × Nat) :=
                       bif (BEq.beq b__4 (0b11 : (BitVec 2)))
                       then
                         (let esize : Int := 64
-                        let m : Nat := (UInt0 (M ++ Vm))
+                        let m : Nat := (BitVec.toNat (M ++ Vm))
                         (esize, m))
                       else (esize, m)
                     (esize, m))
@@ -17151,27 +17161,27 @@ def decode_aarch32_instrs_VCVT_iv_T1enc_A_txt (D : (BitVec 1)) (opc2 : (BitVec 3
           (do
             let is_unsigned : Bool := (BEq.beq op (0b0 : (BitVec 1)))
             let rounding ← (FPRoundingMode (← (FPSCR_read ())))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             let b__1 := size
             let (d, esize) : (Nat × Int) :=
               bif (BEq.beq b__1 (0b01 : (BitVec 2)))
               then
                 (let esize : Int := 16
-                let d : Nat := (UInt0 (Vd ++ D))
+                let d : Nat := (BitVec.toNat (Vd ++ D))
                 (d, esize))
               else
                 (let (d, esize) : (Nat × Int) :=
                   bif (BEq.beq b__1 (0b10 : (BitVec 2)))
                   then
                     (let esize : Int := 32
-                    let d : Nat := (UInt0 (Vd ++ D))
+                    let d : Nat := (BitVec.toNat (Vd ++ D))
                     (d, esize))
                   else
                     (let (d, esize) : (Nat × Int) :=
                       bif (BEq.beq b__1 (0b11 : (BitVec 2)))
                       then
                         (let esize : Int := 64
-                        let d : Nat := (UInt0 (D ++ Vd))
+                        let d : Nat := (BitVec.toNat (D ++ Vd))
                         (d, esize))
                       else (d, esize)
                     (d, esize))
@@ -17260,7 +17270,7 @@ def decode_aarch32_instrs_VCVT_xs_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let to_fixed : Bool := (BEq.beq (BitVec.join1 [(BitVec.access op 0)]) (0b1 : (BitVec 1)))
-      let frac_bits := (64 -i (UInt0 imm6))
+      let frac_bits := (64 -i (BitVec.toNat imm6))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let esize : Int := 16
       let elements : Int := 2
@@ -17277,8 +17287,8 @@ def decode_aarch32_instrs_VCVT_xs_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17320,7 +17330,7 @@ def decode_aarch32_instrs_VCVT_xs_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let to_fixed : Bool := (BEq.beq (BitVec.join1 [(BitVec.access op 0)]) (0b1 : (BitVec 1)))
-      let frac_bits := (64 -i (UInt0 imm6))
+      let frac_bits := (64 -i (BitVec.toNat imm6))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let esize : Int := 16
       let elements : Int := 2
@@ -17337,8 +17347,8 @@ def decode_aarch32_instrs_VCVT_xs_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17406,7 +17416,7 @@ def decode_aarch32_instrs_VCVT_xv_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1
         bif (BEq.beq sx (0b0 : (BitVec 1)))
         then 16
         else 32
-      let frac_bits := (size -i (UInt0 (imm4 ++ i)))
+      let frac_bits := (size -i (BitVec.toNat (imm4 ++ i)))
       let fp_size : Int := 16
       let d ← (( do (undefined_range 0 31) ) : SailM Nat )
       let _ : Unit :=
@@ -17414,19 +17424,19 @@ def decode_aarch32_instrs_VCVT_xv_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let fp_size : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let fp_size : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let fp_size : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let fp_size := fp_size
@@ -17455,7 +17465,7 @@ def decode_aarch32_instrs_VCVT_xv_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1))
         bif (BEq.beq sx (0b0 : (BitVec 1)))
         then 16
         else 32
-      let frac_bits := (size -i (UInt0 (imm4 ++ i)))
+      let frac_bits := (size -i (BitVec.toNat (imm4 ++ i)))
       let fp_size : Int := 16
       let d ← (( do (undefined_range 0 31) ) : SailM Nat )
       let _ : Unit :=
@@ -17463,19 +17473,19 @@ def decode_aarch32_instrs_VCVT_xv_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1))
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let fp_size : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let fp_size : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let fp_size : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let fp_size := fp_size
@@ -17524,25 +17534,25 @@ def decode_aarch32_instrs_VDIV_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -17576,25 +17586,25 @@ def decode_aarch32_instrs_VDIV_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -17637,8 +17647,8 @@ def decode_aarch32_instrs_VDUP_r_A1enc_A_txt (cond : (BitVec 4)) (B : (BitVec 1)
            (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let t := (UInt0 Rt)
+      let d := (BitVec.toNat (D ++ Vd))
+      let t := (BitVec.toNat Rt)
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17682,8 +17692,8 @@ def decode_aarch32_instrs_VDUP_r_T1enc_A_txt (B : (BitVec 1)) (Q : (BitVec 1)) (
            (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let t := (UInt0 Rt)
+      let d := (BitVec.toNat (D ++ Vd))
+      let t := (BitVec.toNat Rt)
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17767,28 +17777,28 @@ def decode_aarch32_instrs_VDUP_s_A1enc_A_txt (D : (BitVec 1)) (imm4 : (BitVec 4)
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let index : Nat := (UInt0 (Sail.BitVec.extractLsb imm4 3 1))
+          let index : Nat := (BitVec.toNat (Sail.BitVec.extractLsb imm4 3 1))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 1 0) (0b10 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let index : Nat := (UInt0 (Sail.BitVec.extractLsb imm4 3 2))
+            let index : Nat := (BitVec.toNat (Sail.BitVec.extractLsb imm4 3 2))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 2 0) (0b100 : (BitVec 3)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let index : Nat := (UInt0 (BitVec.join1 [(BitVec.access imm4 3)]))
+              let index : Nat := (BitVec.toNat (BitVec.join1 [(BitVec.access imm4 3)]))
               ())
             else ()))
       let index := index
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17819,28 +17829,28 @@ def decode_aarch32_instrs_VDUP_s_T1enc_A_txt (D : (BitVec 1)) (imm4 : (BitVec 4)
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let index : Nat := (UInt0 (Sail.BitVec.extractLsb imm4 3 1))
+          let index : Nat := (BitVec.toNat (Sail.BitVec.extractLsb imm4 3 1))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 1 0) (0b10 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let index : Nat := (UInt0 (Sail.BitVec.extractLsb imm4 3 2))
+            let index : Nat := (BitVec.toNat (Sail.BitVec.extractLsb imm4 3 2))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 2 0) (0b100 : (BitVec 3)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let index : Nat := (UInt0 (BitVec.join1 [(BitVec.access imm4 3)]))
+              let index : Nat := (BitVec.toNat (BitVec.join1 [(BitVec.access imm4 3)]))
               ())
             else ()))
       let index := index
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17871,9 +17881,9 @@ def decode_aarch32_instrs_VEOR_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17892,9 +17902,9 @@ def decode_aarch32_instrs_VEOR_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -17935,10 +17945,10 @@ def decode_aarch32_instrs_VEXT_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let quadword_operation : Bool := (BEq.beq Q (0b1 : (BitVec 1)))
-      let position := (8 *i (UInt0 imm4))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let position := (8 *i (BitVec.toNat imm4))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VEXT_Op_A_txt d m n position quadword_operation))
   else (pure ())
 
@@ -17958,10 +17968,10 @@ def decode_aarch32_instrs_VEXT_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let quadword_operation : Bool := (BEq.beq Q (0b1 : (BitVec 1)))
-      let position := (8 *i (UInt0 imm4))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let position := (8 *i (BitVec.toNat imm4))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VEXT_Op_A_txt d m n position quadword_operation))
   else (pure ())
 
@@ -18060,9 +18070,9 @@ def decode_aarch32_instrs_VFMA_A1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) (s
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -18103,25 +18113,25 @@ def decode_aarch32_instrs_VFMA_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -18165,9 +18175,9 @@ def decode_aarch32_instrs_VFMA_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) (s
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -18207,25 +18217,25 @@ def decode_aarch32_instrs_VFMA_T2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -18294,25 +18304,25 @@ def decode_aarch32_instrs_VFNMA_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1))
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -18347,25 +18357,25 @@ def decode_aarch32_instrs_VFNMA_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -18430,11 +18440,11 @@ def decode_aarch32_instrs_VHADD_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       else (pure ())
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -18458,11 +18468,11 @@ def decode_aarch32_instrs_VHADD_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       else (pure ())
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -18508,11 +18518,11 @@ def decode_aarch32_instrs_VLD1_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let alignment := 1
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -18532,14 +18542,14 @@ def decode_aarch32_instrs_VLD1_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -18563,14 +18573,14 @@ def decode_aarch32_instrs_VLD1_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -18590,11 +18600,11 @@ def decode_aarch32_instrs_VLD1_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let alignment := 1
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -18614,14 +18624,14 @@ def decode_aarch32_instrs_VLD1_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -18645,14 +18655,14 @@ def decode_aarch32_instrs_VLD1_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -18679,7 +18689,7 @@ def execute_aarch32_instrs_VLD1_a_Op_A_txt (alignment : Nat) (d : Nat) (ebytes :
   else (pure ())
   let esize := (8 *i ebytes)
   let element ← (( do (MemU_read address ebytes) ) : SailM (BitVec esize) )
-  let replicated_element : (BitVec 64) := (BitVec.replicateBits element (ediv_nat 64 esize))
+  let replicated_element : (BitVec 64) := (BitVec.replicateBits element (Int.ediv 64 esize))
   let loop_r_lower := 0
   let loop_r_upper := (regs -i 1)
   let mut loop_vars := ()
@@ -18703,7 +18713,7 @@ def decode_aarch32_instrs_VLD1_a_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
            (Bool.and (BEq.beq size (0b00 : (BitVec 2))) (BEq.beq a (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let ebytes := (Int.shiftl 1 (UInt0 size))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
       let regs :=
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
@@ -18712,9 +18722,9 @@ def decode_aarch32_instrs_VLD1_a_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq a (0b0 : (BitVec 1)))
         then 1
         else ebytes
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -18731,7 +18741,7 @@ def decode_aarch32_instrs_VLD1_a_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
            (Bool.and (BEq.beq size (0b00 : (BitVec 2))) (BEq.beq a (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let ebytes := (Int.shiftl 1 (UInt0 size))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
       let regs :=
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
@@ -18740,9 +18750,9 @@ def decode_aarch32_instrs_VLD1_a_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq a (0b0 : (BitVec 1)))
         then 1
         else ebytes
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -18831,12 +18841,12 @@ def decode_aarch32_instrs_VLD1_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -18874,12 +18884,12 @@ def decode_aarch32_instrs_VLD1_m_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -18917,12 +18927,12 @@ def decode_aarch32_instrs_VLD1_m_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -18957,12 +18967,12 @@ def decode_aarch32_instrs_VLD1_m_A4enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -19000,12 +19010,12 @@ def decode_aarch32_instrs_VLD1_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -19043,12 +19053,12 @@ def decode_aarch32_instrs_VLD1_m_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -19086,12 +19096,12 @@ def decode_aarch32_instrs_VLD1_m_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -19126,12 +19136,12 @@ def decode_aarch32_instrs_VLD1_m_T4enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -19197,16 +19207,16 @@ def decode_aarch32_instrs_VLD2_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD2 (single 2-element structure to all lanes)"))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19223,7 +19233,7 @@ def decode_aarch32_instrs_VLD2_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD2 (single 2-element structure to all lanes)"))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -19232,10 +19242,10 @@ def decode_aarch32_instrs_VLD2_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19255,7 +19265,7 @@ def decode_aarch32_instrs_VLD2_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -19264,10 +19274,10 @@ def decode_aarch32_instrs_VLD2_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19284,16 +19294,16 @@ def decode_aarch32_instrs_VLD2_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD2 (single 2-element structure to all lanes)"))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19310,7 +19320,7 @@ def decode_aarch32_instrs_VLD2_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD2 (single 2-element structure to all lanes)"))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -19319,10 +19329,10 @@ def decode_aarch32_instrs_VLD2_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19342,7 +19352,7 @@ def decode_aarch32_instrs_VLD2_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -19351,10 +19361,10 @@ def decode_aarch32_instrs_VLD2_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19382,8 +19392,8 @@ def execute_aarch32_instrs_VLD2_a_Op_A_txt (alignment : Nat) (d : Nat) (d2 : Int
   let element1 ← (( do (MemU_read address ebytes) ) : SailM (BitVec esize) )
   let element2 ← (( do (MemU_read (BitVec.addInt address ebytes) ebytes) ) : SailM (BitVec esize)
     )
-  (D_set d (BitVec.replicateBits element1 (ediv_nat 64 esize)))
-  (D_set d2 (BitVec.replicateBits element2 (ediv_nat 64 esize)))
+  (D_set d (BitVec.replicateBits element1 (Int.ediv 64 esize)))
+  (D_set d2 (BitVec.replicateBits element2 (Int.ediv 64 esize)))
   bif wback
   then
     (do
@@ -19399,7 +19409,7 @@ def decode_aarch32_instrs_VLD2_a_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       bif (BEq.beq size (0b11 : (BitVec 2)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let ebytes := (Int.shiftl 1 (UInt0 size))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
       let alignment :=
         bif (BEq.beq a (0b0 : (BitVec 1)))
         then 1
@@ -19408,10 +19418,10 @@ def decode_aarch32_instrs_VLD2_a_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19427,7 +19437,7 @@ def decode_aarch32_instrs_VLD2_a_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       bif (BEq.beq size (0b11 : (BitVec 2)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let ebytes := (Int.shiftl 1 (UInt0 size))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
       let alignment :=
         bif (BEq.beq a (0b0 : (BitVec 1)))
         then 1
@@ -19436,10 +19446,10 @@ def decode_aarch32_instrs_VLD2_a_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -19515,13 +19525,13 @@ def decode_aarch32_instrs_VLD2_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -19558,13 +19568,13 @@ def decode_aarch32_instrs_VLD2_m_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -19607,13 +19617,13 @@ def decode_aarch32_instrs_VLD2_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -19650,13 +19660,13 @@ def decode_aarch32_instrs_VLD2_m_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -19719,13 +19729,13 @@ def decode_aarch32_instrs_VLD3_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -19745,16 +19755,16 @@ def decode_aarch32_instrs_VLD3_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -19774,16 +19784,16 @@ def decode_aarch32_instrs_VLD3_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -19803,13 +19813,13 @@ def decode_aarch32_instrs_VLD3_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -19829,16 +19839,16 @@ def decode_aarch32_instrs_VLD3_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -19858,16 +19868,16 @@ def decode_aarch32_instrs_VLD3_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -19888,9 +19898,9 @@ def execute_aarch32_instrs_VLD3_a_Op_A_txt (d : Nat) (d2 : Int) (d3 : Int) (ebyt
     )
   let element3 ← (( do (MemU_read (BitVec.addInt address (2 *i ebytes)) ebytes) ) : SailM
     (BitVec esize) )
-  (D_set d (BitVec.replicateBits element1 (ediv_nat 64 esize)))
-  (D_set d2 (BitVec.replicateBits element2 (ediv_nat 64 esize)))
-  (D_set d3 (BitVec.replicateBits element3 (ediv_nat 64 esize)))
+  (D_set d (BitVec.replicateBits element1 (Int.ediv 64 esize)))
+  (D_set d2 (BitVec.replicateBits element2 (Int.ediv 64 esize)))
+  (D_set d3 (BitVec.replicateBits element3 (Int.ediv 64 esize)))
   bif wback
   then
     (do
@@ -19906,16 +19916,16 @@ def decode_aarch32_instrs_VLD3_a_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       bif (Bool.or (BEq.beq size (0b11 : (BitVec 2))) (BEq.beq a (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let ebytes := (Int.shiftl 1 (UInt0 size))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
       let inc_name :=
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -19931,16 +19941,16 @@ def decode_aarch32_instrs_VLD3_a_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       bif (Bool.or (BEq.beq size (0b11 : (BitVec 2))) (BEq.beq a (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let ebytes := (Int.shiftl 1 (UInt0 size))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
       let inc_name :=
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -20017,13 +20027,13 @@ def decode_aarch32_instrs_VLD3_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -20059,13 +20069,13 @@ def decode_aarch32_instrs_VLD3_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -20122,18 +20132,18 @@ def decode_aarch32_instrs_VLD4_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD4 (single 4-element structure to all lanes)"))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20151,7 +20161,7 @@ def decode_aarch32_instrs_VLD4_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD4 (single 4-element structure to all lanes)"))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -20160,12 +20170,12 @@ def decode_aarch32_instrs_VLD4_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20186,7 +20196,7 @@ def decode_aarch32_instrs_VLD4_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -20194,13 +20204,13 @@ def decode_aarch32_instrs_VLD4_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 (Sail.BitVec.extractLsb index_align 1 0)))
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat (Sail.BitVec.extractLsb index_align 1 0)))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20239,18 +20249,18 @@ def decode_aarch32_instrs_VLD4_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD4 (single 4-element structure to all lanes)"))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20268,7 +20278,7 @@ def decode_aarch32_instrs_VLD4_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "VLD4 (single 4-element structure to all lanes)"))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -20277,12 +20287,12 @@ def decode_aarch32_instrs_VLD4_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20303,7 +20313,7 @@ def decode_aarch32_instrs_VLD4_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -20311,13 +20321,13 @@ def decode_aarch32_instrs_VLD4_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 (Sail.BitVec.extractLsb index_align 1 0)))
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat (Sail.BitVec.extractLsb index_align 1 0)))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20371,10 +20381,10 @@ def execute_aarch32_instrs_VLD4_a_Op_A_txt (alignment : Nat) (d : Nat) (d2 : Int
     (BitVec esize) )
   let element4 ← (( do (MemU_read (BitVec.addInt address (3 *i ebytes)) ebytes) ) : SailM
     (BitVec esize) )
-  (D_set d (BitVec.replicateBits element1 (ediv_nat 64 esize)))
-  (D_set d2 (BitVec.replicateBits element2 (ediv_nat 64 esize)))
-  (D_set d3 (BitVec.replicateBits element3 (ediv_nat 64 esize)))
-  (D_set d4 (BitVec.replicateBits element4 (ediv_nat 64 esize)))
+  (D_set d (BitVec.replicateBits element1 (Int.ediv 64 esize)))
+  (D_set d2 (BitVec.replicateBits element2 (Int.ediv 64 esize)))
+  (D_set d3 (BitVec.replicateBits element3 (Int.ediv 64 esize)))
+  (D_set d4 (BitVec.replicateBits element4 (Int.ediv 64 esize)))
   bif wback
   then
     (do
@@ -20399,7 +20409,7 @@ def decode_aarch32_instrs_VLD4_a_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
           let alignment : Int := 16
           (alignment, ebytes))
         else
-          (let ebytes : Int := (Int.shiftl 1 (UInt0 size))
+          (let ebytes : Int := (Int.shiftl 1 (BitVec.toNat size))
           let alignment : Int :=
             bif (BEq.beq size (0b10 : (BitVec 2)))
             then
@@ -20417,12 +20427,12 @@ def decode_aarch32_instrs_VLD4_a_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20462,7 +20472,7 @@ def decode_aarch32_instrs_VLD4_a_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
           let alignment : Int := 16
           (alignment, ebytes))
         else
-          (let ebytes : Int := (Int.shiftl 1 (UInt0 size))
+          (let ebytes : Int := (Int.shiftl 1 (BitVec.toNat size))
           let alignment : Int :=
             bif (BEq.beq size (0b10 : (BitVec 2)))
             then
@@ -20480,12 +20490,12 @@ def decode_aarch32_instrs_VLD4_a_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq T (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20580,15 +20590,15 @@ def decode_aarch32_instrs_VLD4_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20636,15 +20646,15 @@ def decode_aarch32_instrs_VLD4_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -20733,10 +20743,10 @@ def decode_aarch32_instrs_VLDM_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let single_regs : Bool := false
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (ediv_nat (UInt0 imm8) 2)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (Int.ediv (BitVec.toNat imm8) 2)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -20768,10 +20778,10 @@ def decode_aarch32_instrs_VLDM_A2enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let single_regs : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (Vd ++ D))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (UInt0 imm8)
+      let d := (BitVec.toNat (Vd ++ D))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (BitVec.toNat imm8)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -20798,10 +20808,10 @@ def decode_aarch32_instrs_VLDM_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let single_regs : Bool := false
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (ediv_nat (UInt0 imm8) 2)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (Int.ediv (BitVec.toNat imm8) 2)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -20832,10 +20842,10 @@ def decode_aarch32_instrs_VLDM_T2enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let single_regs : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (Vd ++ D))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (UInt0 imm8)
+      let d := (BitVec.toNat (Vd ++ D))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (BitVec.toNat imm8)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -20884,32 +20894,32 @@ def decode_aarch32_instrs_VLDR_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) 
       bif (Bool.and (BEq.beq size (0b01 : (BitVec 2))) (bne cond (0xE : (BitVec 4))))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let imm32 : (BitVec 32) :=
         bif (BEq.beq esize 16)
-        then (zero_extend (imm8 ++ (0b0 : (BitVec 1))) 32)
-        else (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+        then (Sail.BitVec.zeroExtend (imm8 ++ (0b0 : (BitVec 1))) 32)
+        else (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let d ← (( do (undefined_range 0 31) ) : SailM Nat )
       let _ : Unit :=
         let b__0 := size
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
-          (let d : Nat := (UInt0 (Vd ++ D))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
-            (let d : Nat := (UInt0 (Vd ++ D))
+            (let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
-              (let d : Nat := (UInt0 (D ++ Vd))
+              (let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let d := d
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       (execute_aarch32_instrs_VLDR_Op_A_txt add d esize imm32 n))
   else (pure ())
 
@@ -20924,32 +20934,32 @@ def decode_aarch32_instrs_VLDR_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (Rn
       bif (Bool.and (BEq.beq size (0b01 : (BitVec 2))) (← (InITBlock ())))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let imm32 : (BitVec 32) :=
         bif (BEq.beq esize 16)
-        then (zero_extend (imm8 ++ (0b0 : (BitVec 1))) 32)
-        else (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+        then (Sail.BitVec.zeroExtend (imm8 ++ (0b0 : (BitVec 1))) 32)
+        else (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let d ← (( do (undefined_range 0 31) ) : SailM Nat )
       let _ : Unit :=
         let b__0 := size
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
-          (let d : Nat := (UInt0 (Vd ++ D))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
-            (let d : Nat := (UInt0 (Vd ++ D))
+            (let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
-              (let d : Nat := (UInt0 (D ++ Vd))
+              (let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let d := d
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       (execute_aarch32_instrs_VLDR_Op_A_txt add d esize imm32 n))
   else (pure ())
 
@@ -21025,9 +21035,9 @@ def decode_aarch32_instrs_VMAX_f_A1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21068,9 +21078,9 @@ def decode_aarch32_instrs_VMAX_f_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21133,11 +21143,11 @@ def decode_aarch32_instrs_VMAX_i_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let maximum : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21161,11 +21171,11 @@ def decode_aarch32_instrs_VMAX_i_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let maximum : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21282,9 +21292,9 @@ def decode_aarch32_instrs_VMLA_f_A1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21325,25 +21335,25 @@ def decode_aarch32_instrs_VMLA_f_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -21387,9 +21397,9 @@ def decode_aarch32_instrs_VMLA_f_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21429,25 +21439,25 @@ def decode_aarch32_instrs_VMLA_f_T2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -21520,11 +21530,11 @@ def decode_aarch32_instrs_VMLA_i_A1enc_A_txt (op : (BitVec 1)) (D : (BitVec 1)) 
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let long_destination : Bool := false
       let is_unsigned : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21546,11 +21556,11 @@ def decode_aarch32_instrs_VMLA_i_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let long_destination : Bool := true
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VMLA_i_Op_A_txt add d elements esize long_destination m n regs
         is_unsigned))
@@ -21573,11 +21583,11 @@ def decode_aarch32_instrs_VMLA_i_T1enc_A_txt (op : (BitVec 1)) (D : (BitVec 1)) 
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let long_destination : Bool := false
       let is_unsigned : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21599,11 +21609,11 @@ def decode_aarch32_instrs_VMLA_i_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let long_destination : Bool := true
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VMLA_i_Op_A_txt add d elements esize long_destination m n regs
         is_unsigned))
@@ -21702,8 +21712,8 @@ def decode_aarch32_instrs_VMLA_s_A1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21717,8 +21727,8 @@ def decode_aarch32_instrs_VMLA_s_A1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -21726,8 +21736,8 @@ def decode_aarch32_instrs_VMLA_s_A1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -21764,8 +21774,8 @@ def decode_aarch32_instrs_VMLA_s_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let floating_point : Bool := false
       let long_destination : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs := 1
       let esize : Int := 16
       let elements : Int := 2
@@ -21776,8 +21786,8 @@ def decode_aarch32_instrs_VMLA_s_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -21785,8 +21795,8 @@ def decode_aarch32_instrs_VMLA_s_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -21833,8 +21843,8 @@ def decode_aarch32_instrs_VMLA_s_T1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -21848,8 +21858,8 @@ def decode_aarch32_instrs_VMLA_s_T1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -21857,8 +21867,8 @@ def decode_aarch32_instrs_VMLA_s_T1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -21895,8 +21905,8 @@ def decode_aarch32_instrs_VMLA_s_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let floating_point : Bool := false
       let long_destination : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs := 1
       let esize : Int := 16
       let elements : Int := 2
@@ -21907,8 +21917,8 @@ def decode_aarch32_instrs_VMLA_s_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -21916,8 +21926,8 @@ def decode_aarch32_instrs_VMLA_s_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -21955,8 +21965,8 @@ def decode_aarch32_instrs_VMOVX_A1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (
            (bne (_get_FPSCR_Type_Stride (← (FPSCR_read__1 ()))) (0b00 : (BitVec 2))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VMOVX_Op_A_txt d m))
   else (pure ())
 
@@ -21974,8 +21984,8 @@ def decode_aarch32_instrs_VMOVX_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (
            (bne (_get_FPSCR_Type_Stride (← (FPSCR_read__1 ()))) (0b00 : (BitVec 2))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VMOVX_Op_A_txt d m))
   else (pure ())
 
@@ -21996,8 +22006,8 @@ def decode_aarch32_instrs_VINS_A1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (M
            (bne (_get_FPSCR_Type_Stride (← (FPSCR_read__1 ()))) (0b00 : (BitVec 2))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VINS_Op_A_txt d m))
   else (pure ())
 
@@ -22015,8 +22025,8 @@ def decode_aarch32_instrs_VINS_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (M
            (bne (_get_FPSCR_Type_Stride (← (FPSCR_read__1 ()))) (0b00 : (BitVec 2))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VINS_Op_A_txt d m))
   else (pure ())
 
@@ -22040,9 +22050,9 @@ def decode_aarch32_instrs_VMOV_d_A1enc_A_txt (cond : (BitVec 4)) (op : (BitVec 1
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:28225.29-28225.30"
       let to_arm_registers : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let m := (UInt0 (M ++ Vm))
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let m := (BitVec.toNat (M ++ Vm))
       bif (Bool.or (BEq.beq t 15) (BEq.beq t2 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22057,9 +22067,9 @@ def decode_aarch32_instrs_VMOV_d_T1enc_A_txt (op : (BitVec 1)) (Rt2 : (BitVec 4)
   then
     (do
       let to_arm_registers : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let m := (UInt0 (M ++ Vm))
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let m := (BitVec.toNat (M ++ Vm))
       bif (Bool.or (BEq.beq t 15) (BEq.beq t2 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22107,7 +22117,7 @@ def decode_aarch32_instrs_VMOV_i_A1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22142,7 +22152,7 @@ def decode_aarch32_instrs_VMOV_i_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
       bif (BEq.beq b__0 (0b01 : (BitVec 2)))
       then
         (do
-          let d : Nat := (UInt0 (Vd ++ D))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
           let imm16 ← (( do (VFPExpandImm (imm4H ++ imm4L) 16) ) : SailM (BitVec 16) )
           let imm32 : (BitVec 32) := ((Zeros (n := 16)) ++ imm16)
           (pure ()))
@@ -22151,7 +22161,7 @@ def decode_aarch32_instrs_VMOV_i_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
           bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (do
-              let d : Nat := (UInt0 (Vd ++ D))
+              let d : Nat := (BitVec.toNat (Vd ++ D))
               let imm32 ← (VFPExpandImm (imm4H ++ imm4L) 32)
               (pure ()))
           else
@@ -22159,7 +22169,7 @@ def decode_aarch32_instrs_VMOV_i_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
               bif (BEq.beq b__0 (0b11 : (BitVec 2)))
               then
                 (do
-                  let d : Nat := (UInt0 (D ++ Vd))
+                  let d : Nat := (BitVec.toNat (D ++ Vd))
                   let imm64 ← (VFPExpandImm (imm4H ++ imm4L) 64)
                   let regs : Int := 1
                   (pure ()))
@@ -22191,7 +22201,7 @@ def decode_aarch32_instrs_VMOV_i_A3enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22221,7 +22231,7 @@ def decode_aarch32_instrs_VMOV_i_A4enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22251,7 +22261,7 @@ def decode_aarch32_instrs_VMOV_i_A5enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22281,7 +22291,7 @@ def decode_aarch32_instrs_VMOV_i_T1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22315,7 +22325,7 @@ def decode_aarch32_instrs_VMOV_i_T2enc_A_txt (D : (BitVec 1)) (imm4H : (BitVec 4
       bif (BEq.beq b__0 (0b01 : (BitVec 2)))
       then
         (do
-          let d : Nat := (UInt0 (Vd ++ D))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
           let imm16 ← (( do (VFPExpandImm (imm4H ++ imm4L) 16) ) : SailM (BitVec 16) )
           let imm32 : (BitVec 32) := ((Zeros (n := 16)) ++ imm16)
           (pure ()))
@@ -22324,7 +22334,7 @@ def decode_aarch32_instrs_VMOV_i_T2enc_A_txt (D : (BitVec 1)) (imm4H : (BitVec 4
           bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (do
-              let d : Nat := (UInt0 (Vd ++ D))
+              let d : Nat := (BitVec.toNat (Vd ++ D))
               let imm32 ← (VFPExpandImm (imm4H ++ imm4L) 32)
               (pure ()))
           else
@@ -22332,7 +22342,7 @@ def decode_aarch32_instrs_VMOV_i_T2enc_A_txt (D : (BitVec 1)) (imm4H : (BitVec 4
               bif (BEq.beq b__0 (0b11 : (BitVec 2)))
               then
                 (do
-                  let d : Nat := (UInt0 (D ++ Vd))
+                  let d : Nat := (BitVec.toNat (D ++ Vd))
                   let imm64 ← (VFPExpandImm (imm4H ++ imm4L) 64)
                   let regs : Int := 1
                   (pure ()))
@@ -22364,7 +22374,7 @@ def decode_aarch32_instrs_VMOV_i_T3enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22394,7 +22404,7 @@ def decode_aarch32_instrs_VMOV_i_T4enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22424,7 +22434,7 @@ def decode_aarch32_instrs_VMOV_i_T5enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       let single_register : Bool := false
       let advsimd : Bool := true
       let imm64 ← (( do (AdvSIMDExpandImm op cmode ((i ++ imm3) ++ imm4)) ) : SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -22469,11 +22479,11 @@ def decode_aarch32_instrs_VMOVL_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
       bif (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (8 *i (UInt0 imm3H))
+      let esize := (8 *i (BitVec.toNat imm3H))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let elements := (fdiv_int 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VMOVL_Op_A_txt d elements esize m is_unsigned))
   else (pure ())
 
@@ -22491,11 +22501,11 @@ def decode_aarch32_instrs_VMOVL_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
       bif (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (8 *i (UInt0 imm3H))
+      let esize := (8 *i (BitVec.toNat imm3H))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let elements := (fdiv_int 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VMOVL_Op_A_txt d elements esize m is_unsigned))
   else (pure ())
 
@@ -22526,10 +22536,10 @@ def decode_aarch32_instrs_VMOVN_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
       bif (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VMOVN_Op_A_txt d elements esize m))
   else (pure ())
 
@@ -22543,10 +22553,10 @@ def decode_aarch32_instrs_VMOVN_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
       bif (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VMOVN_Op_A_txt d elements esize m))
   else (pure ())
 
@@ -22570,8 +22580,8 @@ def decode_aarch32_instrs_VMOV_h_A1enc_A_txt (cond : (BitVec 4)) (op : (BitVec 1
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       let to_arm_register : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let n := (UInt0 (Vn ++ N))
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat (Vn ++ N))
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22589,8 +22599,8 @@ def decode_aarch32_instrs_VMOV_h_T1enc_A_txt (op : (BitVec 1)) (Vn : (BitVec 4))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
       let to_arm_register : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let n := (UInt0 (Vn ++ N))
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat (Vn ++ N))
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22630,12 +22640,12 @@ def decode_aarch32_instrs_VMOV_r_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
       let (d, m, regs) : (Nat × Nat × Int) :=
         bif single_register
         then
-          (let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           (d, m, regs))
         else
-          (let d : Nat := (UInt0 (D ++ Vd))
-          let m : Nat := (UInt0 (M ++ Vm))
+          (let d : Nat := (BitVec.toNat (D ++ Vd))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           let regs : Int := 1
           (d, m, regs))
       let regs := regs
@@ -22660,12 +22670,12 @@ def decode_aarch32_instrs_VMOV_r_T2enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) 
       let (d, m, regs) : (Nat × Nat × Int) :=
         bif single_register
         then
-          (let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           (d, m, regs))
         else
-          (let d : Nat := (UInt0 (D ++ Vd))
-          let m : Nat := (UInt0 (M ++ Vm))
+          (let d : Nat := (BitVec.toNat (D ++ Vd))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           let regs : Int := 1
           (d, m, regs))
       let regs := regs
@@ -22696,7 +22706,7 @@ def decode_aarch32_instrs_VMOV_rs_A1enc_A_txt (cond : (BitVec 4)) (opc1 : (BitVe
       then
         (let advsimd : Bool := true
         let esize : Int := 8
-        let index : Int := (UInt0 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
+        let index : Int := (BitVec.toNat ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
         (pure ()))
       else
         (do
@@ -22706,7 +22716,7 @@ def decode_aarch32_instrs_VMOV_rs_A1enc_A_txt (cond : (BitVec 4)) (opc1 : (BitVe
             (let advsimd : Bool := true
             let esize : Int := 16
             let index : Int :=
-              (UInt0
+              (BitVec.toNat
                 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ (BitVec.join1 [(BitVec.access opc2 1)])))
             (pure ()))
           else
@@ -22716,14 +22726,14 @@ def decode_aarch32_instrs_VMOV_rs_A1enc_A_txt (cond : (BitVec 4)) (opc1 : (BitVe
               then
                 (let advsimd : Bool := false
                 let esize : Int := 32
-                let index : Int := (UInt0 (BitVec.join1 [(BitVec.access opc1 0)]))
+                let index : Int := (BitVec.toNat (BitVec.join1 [(BitVec.access opc1 0)]))
                 (pure ()))
               else sailThrow ((Error_Undefined ()))))
       let advsimd := advsimd
       let index := index
       let esize := esize
-      let d := (UInt0 (D ++ Vd))
-      let t := (UInt0 Rt)
+      let d := (BitVec.toNat (D ++ Vd))
+      let t := (BitVec.toNat Rt)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22746,7 +22756,7 @@ def decode_aarch32_instrs_VMOV_rs_T1enc_A_txt (opc1 : (BitVec 2)) (Vd : (BitVec 
       then
         (let advsimd : Bool := true
         let esize : Int := 8
-        let index : Int := (UInt0 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
+        let index : Int := (BitVec.toNat ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
         (pure ()))
       else
         (do
@@ -22756,7 +22766,7 @@ def decode_aarch32_instrs_VMOV_rs_T1enc_A_txt (opc1 : (BitVec 2)) (Vd : (BitVec 
             (let advsimd : Bool := true
             let esize : Int := 16
             let index : Int :=
-              (UInt0
+              (BitVec.toNat
                 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ (BitVec.join1 [(BitVec.access opc2 1)])))
             (pure ()))
           else
@@ -22766,14 +22776,14 @@ def decode_aarch32_instrs_VMOV_rs_T1enc_A_txt (opc1 : (BitVec 2)) (Vd : (BitVec 
               then
                 (let advsimd : Bool := false
                 let esize : Int := 32
-                let index : Int := (UInt0 (BitVec.join1 [(BitVec.access opc1 0)]))
+                let index : Int := (BitVec.toNat (BitVec.join1 [(BitVec.access opc1 0)]))
                 (pure ()))
               else sailThrow ((Error_Undefined ()))))
       let advsimd := advsimd
       let index := index
       let esize := esize
-      let d := (UInt0 (D ++ Vd))
-      let t := (UInt0 Rt)
+      let d := (BitVec.toNat (D ++ Vd))
+      let t := (BitVec.toNat Rt)
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22798,8 +22808,8 @@ def decode_aarch32_instrs_VMOV_s_A1enc_A_txt (cond : (BitVec 4)) (op : (BitVec 1
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:29211.29-29211.30"
       let to_arm_register : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let n := (UInt0 (Vn ++ N))
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat (Vn ++ N))
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22811,8 +22821,8 @@ def decode_aarch32_instrs_VMOV_s_T1enc_A_txt (op : (BitVec 1)) (Vn : (BitVec 4))
   then
     (do
       let to_arm_register : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let n := (UInt0 (Vn ++ N))
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat (Vn ++ N))
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22824,7 +22834,7 @@ def decode_aarch32_instrs_VMOV_s_T1enc_A_txt (op : (BitVec 1)) (Vn : (BitVec 4))
 def execute_aarch32_instrs_VMOV_sr_Op_A_txt (advsimd : Bool) (esize : Nat) (index : Int) (n : Nat) (t : Nat) (is_unsigned : Bool) : SailM Unit := do
   (CheckAdvSIMDOrVFPEnabled true advsimd)
   bif is_unsigned
-  then (R_set t (zero_extend (← (Elem_read (← (D_read n)) index esize)) 32))
+  then (R_set t (Sail.BitVec.zeroExtend (← (Elem_read (← (D_read n)) index esize)) 32))
   else (R_set t (sign_extend (← (Elem_read (← (D_read n)) index esize)) 32))
 
 def decode_aarch32_instrs_VMOV_sr_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) (opc1 : (BitVec 2)) (Vn : (BitVec 4)) (Rt : (BitVec 4)) (N : (BitVec 1)) (opc2 : (BitVec 2)) : SailM Unit := do
@@ -22840,7 +22850,7 @@ def decode_aarch32_instrs_VMOV_sr_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1
       then
         (let advsimd : Bool := true
         let esize : Int := 8
-        let index : Int := (UInt0 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
+        let index : Int := (BitVec.toNat ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
         (pure ()))
       else
         (do
@@ -22850,7 +22860,7 @@ def decode_aarch32_instrs_VMOV_sr_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1
             (let advsimd : Bool := true
             let esize : Int := 16
             let index : Int :=
-              (UInt0
+              (BitVec.toNat
                 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ (BitVec.join1 [(BitVec.access opc2 1)])))
             (pure ()))
           else
@@ -22860,7 +22870,7 @@ def decode_aarch32_instrs_VMOV_sr_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1
               then
                 (let advsimd : Bool := false
                 let esize : Int := 32
-                let index : Int := (UInt0 (BitVec.join1 [(BitVec.access opc1 0)]))
+                let index : Int := (BitVec.toNat (BitVec.join1 [(BitVec.access opc1 0)]))
                 (pure ()))
               else
                 (do
@@ -22871,8 +22881,8 @@ def decode_aarch32_instrs_VMOV_sr_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1
       let advsimd := advsimd
       let index := index
       let esize := esize
-      let t := (UInt0 Rt)
-      let n := (UInt0 (N ++ Vn))
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat (N ++ Vn))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -22896,7 +22906,7 @@ def decode_aarch32_instrs_VMOV_sr_T1enc_A_txt (U : (BitVec 1)) (opc1 : (BitVec 2
       then
         (let advsimd : Bool := true
         let esize : Int := 8
-        let index : Int := (UInt0 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
+        let index : Int := (BitVec.toNat ((BitVec.join1 [(BitVec.access opc1 0)]) ++ opc2))
         (pure ()))
       else
         (do
@@ -22906,7 +22916,7 @@ def decode_aarch32_instrs_VMOV_sr_T1enc_A_txt (U : (BitVec 1)) (opc1 : (BitVec 2
             (let advsimd : Bool := true
             let esize : Int := 16
             let index : Int :=
-              (UInt0
+              (BitVec.toNat
                 ((BitVec.join1 [(BitVec.access opc1 0)]) ++ (BitVec.join1 [(BitVec.access opc2 1)])))
             (pure ()))
           else
@@ -22916,7 +22926,7 @@ def decode_aarch32_instrs_VMOV_sr_T1enc_A_txt (U : (BitVec 1)) (opc1 : (BitVec 2
               then
                 (let advsimd : Bool := false
                 let esize : Int := 32
-                let index : Int := (UInt0 (BitVec.join1 [(BitVec.access opc1 0)]))
+                let index : Int := (BitVec.toNat (BitVec.join1 [(BitVec.access opc1 0)]))
                 (pure ()))
               else
                 (do
@@ -22927,8 +22937,8 @@ def decode_aarch32_instrs_VMOV_sr_T1enc_A_txt (U : (BitVec 1)) (opc1 : (BitVec 2
       let advsimd := advsimd
       let index := index
       let esize := esize
-      let t := (UInt0 Rt)
-      let n := (UInt0 (N ++ Vn))
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat (N ++ Vn))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       bif (BEq.beq t 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -22960,9 +22970,9 @@ def decode_aarch32_instrs_VMOV_ss_A1enc_A_txt (cond : (BitVec 4)) (op : (BitVec 
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:29443.29-29443.30"
       let to_arm_registers : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let m := (UInt0 (Vm ++ M))
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let m := (BitVec.toNat (Vm ++ M))
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq t2 15)) (BEq.beq m 31))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -22977,9 +22987,9 @@ def decode_aarch32_instrs_VMOV_ss_T1enc_A_txt (op : (BitVec 1)) (Rt2 : (BitVec 4
   then
     (do
       let to_arm_registers : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let m := (UInt0 (Vm ++ M))
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let m := (BitVec.toNat (Vm ++ M))
       bif (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq t2 15)) (BEq.beq m 31))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -23057,9 +23067,9 @@ def decode_aarch32_instrs_VMUL_f_A1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23099,25 +23109,25 @@ def decode_aarch32_instrs_VMUL_f_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -23160,9 +23170,9 @@ def decode_aarch32_instrs_VMUL_f_T1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23201,25 +23211,25 @@ def decode_aarch32_instrs_VMUL_f_T2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -23296,11 +23306,11 @@ def decode_aarch32_instrs_VMUL_i_A1enc_A_txt (op : (BitVec 1)) (D : (BitVec 1)) 
       let is_unsigned : Bool := false
       let polynomial : Bool := (BEq.beq op (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23319,8 +23329,8 @@ def decode_aarch32_instrs_VMUL_i_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let polynomial : Bool := (BEq.beq op (0b1 : (BitVec 1)))
       let long_destination : Bool := true
-      let esize : Int := (Int.shiftl 8 (UInt0 size))
-      let elements : Int := (ediv_nat 64 esize)
+      let esize : Int := (Int.shiftl 8 (BitVec.toNat size))
+      let elements : Int := (Int.ediv 64 esize)
       let (elements, esize) ← (( do
         bif polynomial
         then
@@ -23346,9 +23356,9 @@ def decode_aarch32_instrs_VMUL_i_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       bif (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VMUL_i_Op_A_txt d elements esize long_destination m n polynomial regs
         is_unsigned))
@@ -23372,11 +23382,11 @@ def decode_aarch32_instrs_VMUL_i_T1enc_A_txt (op : (BitVec 1)) (D : (BitVec 1)) 
       let is_unsigned : Bool := false
       let polynomial : Bool := (BEq.beq op (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23395,8 +23405,8 @@ def decode_aarch32_instrs_VMUL_i_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let polynomial : Bool := (BEq.beq op (0b1 : (BitVec 1)))
       let long_destination : Bool := true
-      let esize : Int := (Int.shiftl 8 (UInt0 size))
-      let elements : Int := (ediv_nat 64 esize)
+      let esize : Int := (Int.shiftl 8 (BitVec.toNat size))
+      let elements : Int := (Int.ediv 64 esize)
       let (elements, esize) ← (( do
         bif polynomial
         then
@@ -23425,9 +23435,9 @@ def decode_aarch32_instrs_VMUL_i_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       bif (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs := 1
       (execute_aarch32_instrs_VMUL_i_Op_A_txt d elements esize long_destination m n polynomial regs
         is_unsigned))
@@ -23507,8 +23517,8 @@ def decode_aarch32_instrs_VMUL_s_A1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
       let is_unsigned : Bool := false
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23522,8 +23532,8 @@ def decode_aarch32_instrs_VMUL_s_A1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -23531,8 +23541,8 @@ def decode_aarch32_instrs_VMUL_s_A1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -23568,8 +23578,8 @@ def decode_aarch32_instrs_VMUL_s_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := true
       let floating_point : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs := 1
       let esize : Int := 16
       let elements : Int := 2
@@ -23580,8 +23590,8 @@ def decode_aarch32_instrs_VMUL_s_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -23589,8 +23599,8 @@ def decode_aarch32_instrs_VMUL_s_A2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -23636,8 +23646,8 @@ def decode_aarch32_instrs_VMUL_s_T1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
       let is_unsigned : Bool := false
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
       let long_destination : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23651,8 +23661,8 @@ def decode_aarch32_instrs_VMUL_s_T1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -23660,8 +23670,8 @@ def decode_aarch32_instrs_VMUL_s_T1enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -23697,8 +23707,8 @@ def decode_aarch32_instrs_VMUL_s_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let long_destination : Bool := true
       let floating_point : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs := 1
       let esize : Int := 16
       let elements : Int := 2
@@ -23709,8 +23719,8 @@ def decode_aarch32_instrs_VMUL_s_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -23718,8 +23728,8 @@ def decode_aarch32_instrs_VMUL_s_T2enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -23768,7 +23778,7 @@ def decode_aarch32_instrs_VMVN_i_A1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23792,7 +23802,7 @@ def decode_aarch32_instrs_VMVN_i_A2enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23816,7 +23826,7 @@ def decode_aarch32_instrs_VMVN_i_A3enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23840,7 +23850,7 @@ def decode_aarch32_instrs_VMVN_i_T1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23864,7 +23874,7 @@ def decode_aarch32_instrs_VMVN_i_T2enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23888,7 +23898,7 @@ def decode_aarch32_instrs_VMVN_i_T3enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b1 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23920,8 +23930,8 @@ def decode_aarch32_instrs_VMVN_r_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23941,8 +23951,8 @@ def decode_aarch32_instrs_VMVN_r_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -23985,7 +23995,8 @@ def execute_aarch32_instrs_VNEG_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elemen
                 else
                   (do
                     let result ←
-                      (pure (Neg.neg (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+                      (pure (Neg.neg
+                          (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
                     (D_set (d +i r)
                       (← (Elem_set (← (D_read (d +i r))) e esize
                           (integer_subrange result (esize -i 1) 0))))
@@ -24021,10 +24032,10 @@ def decode_aarch32_instrs_VNEG_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       else (pure ())
       let advsimd : Bool := true
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24063,22 +24074,22 @@ def decode_aarch32_instrs_VNEG_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -24110,10 +24121,10 @@ def decode_aarch32_instrs_VNEG_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       else (pure ())
       let advsimd : Bool := true
       let floating_point : Bool := (BEq.beq F (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24151,22 +24162,22 @@ def decode_aarch32_instrs_VNEG_T2enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (s
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -24247,25 +24258,25 @@ def decode_aarch32_instrs_VNMLA_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1))
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -24300,25 +24311,25 @@ def decode_aarch32_instrs_VNMLA_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1))
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -24356,25 +24367,25 @@ def decode_aarch32_instrs_VNMLA_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -24408,25 +24419,25 @@ def decode_aarch32_instrs_VNMLA_T2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -24460,9 +24471,9 @@ def decode_aarch32_instrs_VORN_r_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24481,9 +24492,9 @@ def decode_aarch32_instrs_VORN_r_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24516,7 +24527,7 @@ def decode_aarch32_instrs_VORR_i_A1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b0 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24538,7 +24549,7 @@ def decode_aarch32_instrs_VORR_i_A2enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b0 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24560,7 +24571,7 @@ def decode_aarch32_instrs_VORR_i_T1enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b0 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24582,7 +24593,7 @@ def decode_aarch32_instrs_VORR_i_T2enc_A_txt (i : (BitVec 1)) (D : (BitVec 1)) (
       else (pure ())
       let imm64 ← (( do (AdvSIMDExpandImm (0b0 : (BitVec 1)) cmode ((i ++ imm3) ++ imm4)) ) :
         SailM (BitVec 64) )
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24613,9 +24624,9 @@ def decode_aarch32_instrs_VORR_r_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24634,9 +24645,9 @@ def decode_aarch32_instrs_VORR_r_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24694,10 +24705,10 @@ def decode_aarch32_instrs_VPADAL_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24718,10 +24729,10 @@ def decode_aarch32_instrs_VPADAL_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24735,7 +24746,7 @@ def decode_aarch32_instrs_VPADAL_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
 def execute_aarch32_instrs_VPADD_f_Op_A_txt (d : Nat) (elements : Nat) (esize : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   (CheckAdvSIMDEnabled ())
   let dest ← (( do (undefined_bitvector 64) ) : SailM (BitVec 64) )
-  let h := (ediv_nat elements 2)
+  let h := (Int.ediv elements 2)
   let dest ← (( do
     let loop_e_lower := 0
     let loop_e_upper := (h -i 1)
@@ -24779,9 +24790,9 @@ def decode_aarch32_instrs_VPADD_f_A1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1))
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPADD_f_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -24813,9 +24824,9 @@ def decode_aarch32_instrs_VPADD_f_T1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1))
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPADD_f_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -24849,11 +24860,11 @@ def decode_aarch32_instrs_VPADD_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       bif (Bool.or (BEq.beq size (0b11 : (BitVec 2))) (BEq.beq Q (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPADD_i_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -24864,11 +24875,11 @@ def decode_aarch32_instrs_VPADD_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       bif (Bool.or (BEq.beq size (0b11 : (BitVec 2))) (BEq.beq Q (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPADD_i_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -24922,10 +24933,10 @@ def decode_aarch32_instrs_VPADDL_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24946,10 +24957,10 @@ def decode_aarch32_instrs_VPADDL_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -24966,7 +24977,7 @@ def execute_aarch32_instrs_VPMAX_f_Op_A_txt (d : Nat) (elements : Nat) (esize : 
   let op2 ← (( do (undefined_bitvector esize) ) : SailM (BitVec esize) )
   (CheckAdvSIMDEnabled ())
   let dest ← (( do (undefined_bitvector 64) ) : SailM (BitVec 64) )
-  let h := (ediv_nat elements 2)
+  let h := (Int.ediv elements 2)
   let (dest, op1, op2) ← (( do
     let loop_e_lower := 0
     let loop_e_upper := (h -i 1)
@@ -25017,9 +25028,9 @@ def decode_aarch32_instrs_VPMAX_f_A1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1))
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPMAX_f_Op_A_txt d elements esize m maximum n))
   else (pure ())
 
@@ -25049,9 +25060,9 @@ def decode_aarch32_instrs_VPMAX_f_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1))
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPMAX_f_Op_A_txt d elements esize m maximum n))
   else (pure ())
 
@@ -25099,11 +25110,11 @@ def decode_aarch32_instrs_VPMAX_i_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       else (pure ())
       let maximum : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPMAX_i_Op_A_txt d elements esize m maximum n is_unsigned))
   else (pure ())
 
@@ -25116,11 +25127,11 @@ def decode_aarch32_instrs_VPMAX_i_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       else (pure ())
       let maximum : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VPMAX_i_Op_A_txt d elements esize m maximum n is_unsigned))
   else (pure ())
 
@@ -25144,7 +25155,7 @@ def execute_aarch32_instrs_VQABS_Op_A_txt (d__arg : Nat) (elements : Int) (esize
           let result := loop_vars_1
           loop_vars_1 ← do
             let result ←
-              (pure (Int.natAbs (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+              (pure (Int.natAbs (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
             let sat ← (( do (undefined_bool ()) ) : SailM Bool )
             let (__tup_0, __tup_1) ← do (SignedSatQ result esize)
             (D_set (d +i r) (← (Elem_set (← (D_read (d +i r))) e esize __tup_0)))
@@ -25170,10 +25181,10 @@ def decode_aarch32_instrs_VQABS_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25193,10 +25204,10 @@ def decode_aarch32_instrs_VQABS_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25253,11 +25264,11 @@ def decode_aarch32_instrs_VQADD_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25277,11 +25288,11 @@ def decode_aarch32_instrs_VQADD_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25303,7 +25314,7 @@ def execute_aarch32_instrs_VQDMLAL_Op_A_txt (add : Bool) (d__arg : Nat) (element
     bif scalar_form
     then
       (do
-        (pure (sint (← (Elem_read (← (Din_read m)) index esize)))))
+        (pure (BitVec.toInt (← (Elem_read (← (Din_read m)) index esize)))))
     else (pure op2) ) : SailM Int )
   let (op1, op2, product, sat1) ← (( do
     let loop_e_lower := 0
@@ -25316,9 +25327,9 @@ def execute_aarch32_instrs_VQDMLAL_Op_A_txt (add : Bool) (d__arg : Nat) (element
           bif (Bool.not scalar_form)
           then
             (do
-              (pure (sint (← (Elem_read (← (Din_read m)) e esize)))))
+              (pure (BitVec.toInt (← (Elem_read (← (Din_read m)) e esize)))))
           else (pure op2) ) : SailM Int )
-        let op1 ← (pure (sint (← (Elem_read (← (Din_read n)) e esize))))
+        let op1 ← (pure (BitVec.toInt (← (Elem_read (← (Din_read n)) e esize))))
         let (tup__0, tup__1) ← do (SignedSatQ ((2 *i op1) *i op2) (2 *i esize))
         let product : (BitVec (2 * esize)) := tup__0
         let sat1 : Bool := tup__1
@@ -25328,11 +25339,13 @@ def execute_aarch32_instrs_VQDMLAL_Op_A_txt (add : Bool) (d__arg : Nat) (element
           bif add
           then
             (do
-              (pure ((sint (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) +i (sint
+              (pure ((BitVec.toInt
+                    (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) +i (BitVec.toInt
                     product))))
           else
             (do
-              (pure ((sint (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) -i (sint
+              (pure ((BitVec.toInt
+                    (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) -i (BitVec.toInt
                     product)))) ) : SailM Int )
         let result := result
         let sat2 ← (( do (undefined_bool ()) ) : SailM Bool )
@@ -25363,11 +25376,11 @@ def decode_aarch32_instrs_VQDMLAL_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       let index := index
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       (execute_aarch32_instrs_VQDMLAL_Op_A_txt add d elements esize index m n scalar_form))
   else (pure ())
 
@@ -25384,8 +25397,8 @@ def decode_aarch32_instrs_VQDMLAL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let esize : Int := 8
       let elements ← (( do (undefined_int ()) ) : SailM Int )
       let m ← (( do (undefined_int ()) ) : SailM Int )
@@ -25395,8 +25408,8 @@ def decode_aarch32_instrs_VQDMLAL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -25404,8 +25417,8 @@ def decode_aarch32_instrs_VQDMLAL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -25437,11 +25450,11 @@ def decode_aarch32_instrs_VQDMLAL_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       let index := index
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       (execute_aarch32_instrs_VQDMLAL_Op_A_txt add d elements esize index m n scalar_form))
   else (pure ())
 
@@ -25458,8 +25471,8 @@ def decode_aarch32_instrs_VQDMLAL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let esize : Int := 8
       let elements ← (( do (undefined_int ()) ) : SailM Int )
       let m ← (( do (undefined_int ()) ) : SailM Int )
@@ -25469,8 +25482,8 @@ def decode_aarch32_instrs_VQDMLAL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -25478,8 +25491,8 @@ def decode_aarch32_instrs_VQDMLAL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -25510,7 +25523,7 @@ def execute_aarch32_instrs_VQDMLSL_Op_A_txt (add : Bool) (d__arg : Nat) (element
     bif scalar_form
     then
       (do
-        (pure (sint (← (Elem_read (← (Din_read m)) index esize)))))
+        (pure (BitVec.toInt (← (Elem_read (← (Din_read m)) index esize)))))
     else (pure op2) ) : SailM Int )
   let (op1, op2, product, sat1) ← (( do
     let loop_e_lower := 0
@@ -25523,9 +25536,9 @@ def execute_aarch32_instrs_VQDMLSL_Op_A_txt (add : Bool) (d__arg : Nat) (element
           bif (Bool.not scalar_form)
           then
             (do
-              (pure (sint (← (Elem_read (← (Din_read m)) e esize)))))
+              (pure (BitVec.toInt (← (Elem_read (← (Din_read m)) e esize)))))
           else (pure op2) ) : SailM Int )
-        let op1 ← (pure (sint (← (Elem_read (← (Din_read n)) e esize))))
+        let op1 ← (pure (BitVec.toInt (← (Elem_read (← (Din_read n)) e esize))))
         let (tup__0, tup__1) ← do (SignedSatQ ((2 *i op1) *i op2) (2 *i esize))
         let product : (BitVec (2 * esize)) := tup__0
         let sat1 : Bool := tup__1
@@ -25535,11 +25548,13 @@ def execute_aarch32_instrs_VQDMLSL_Op_A_txt (add : Bool) (d__arg : Nat) (element
           bif add
           then
             (do
-              (pure ((sint (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) +i (sint
+              (pure ((BitVec.toInt
+                    (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) +i (BitVec.toInt
                     product))))
           else
             (do
-              (pure ((sint (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) -i (sint
+              (pure ((BitVec.toInt
+                    (← (Elem_read (← (Qin_read (Int.shiftr d 1))) e (2 *i esize)))) -i (BitVec.toInt
                     product)))) ) : SailM Int )
         let result := result
         let sat2 ← (( do (undefined_bool ()) ) : SailM Bool )
@@ -25570,11 +25585,11 @@ def decode_aarch32_instrs_VQDMLSL_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       let index := index
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       (execute_aarch32_instrs_VQDMLSL_Op_A_txt add d elements esize index m n scalar_form))
   else (pure ())
 
@@ -25591,8 +25606,8 @@ def decode_aarch32_instrs_VQDMLSL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let esize : Int := 8
       let elements ← (( do (undefined_int ()) ) : SailM Int )
       let m ← (( do (undefined_int ()) ) : SailM Int )
@@ -25602,8 +25617,8 @@ def decode_aarch32_instrs_VQDMLSL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -25611,8 +25626,8 @@ def decode_aarch32_instrs_VQDMLSL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -25644,11 +25659,11 @@ def decode_aarch32_instrs_VQDMLSL_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       let index := index
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       (execute_aarch32_instrs_VQDMLSL_Op_A_txt add d elements esize index m n scalar_form))
   else (pure ())
 
@@ -25665,8 +25680,8 @@ def decode_aarch32_instrs_VQDMLSL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let add : Bool := (BEq.beq op (0b0 : (BitVec 1)))
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let esize : Int := 8
       let elements ← (( do (undefined_int ()) ) : SailM Int )
       let m ← (( do (undefined_int ()) ) : SailM Int )
@@ -25676,8 +25691,8 @@ def decode_aarch32_instrs_VQDMLSL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -25685,8 +25700,8 @@ def decode_aarch32_instrs_VQDMLSL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -25718,7 +25733,7 @@ def execute_aarch32_instrs_VQDMULH_Op_A_txt (d__arg : Nat) (elements : Int) (esi
     bif scalar_form
     then
       (do
-        (pure (sint (← (Elem_read (← (D_read m)) index esize)))))
+        (pure (BitVec.toInt (← (Elem_read (← (D_read m)) index esize)))))
     else (pure op2) ) : SailM Int )
   let (op1, op2, result, sat) ← (( do
     let loop_r_lower := 0
@@ -25738,9 +25753,9 @@ def execute_aarch32_instrs_VQDMULH_Op_A_txt (d__arg : Nat) (elements : Int) (esi
                 bif (Bool.not scalar_form)
                 then
                   (do
-                    (pure (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+                    (pure (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
                 else (pure op2) ) : SailM Int )
-              let op1 ← (pure (sint (← (Elem_read (← (D_read (n +i r))) e esize))))
+              let op1 ← (pure (BitVec.toInt (← (Elem_read (← (D_read (n +i r))) e esize))))
               let (tup__0, tup__1) ← do (SignedSatQ (Int.shiftr ((2 *i op1) *i op2) esize) esize)
               let result : (BitVec esize) := tup__0
               let sat : Bool := tup__1
@@ -25772,11 +25787,11 @@ def decode_aarch32_instrs_VQDMULH_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let index := index
       let scalar_form : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25800,8 +25815,8 @@ def decode_aarch32_instrs_VQDMULH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25815,8 +25830,8 @@ def decode_aarch32_instrs_VQDMULH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -25824,8 +25839,8 @@ def decode_aarch32_instrs_VQDMULH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -25861,11 +25876,11 @@ def decode_aarch32_instrs_VQDMULH_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let index := index
       let scalar_form : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25889,8 +25904,8 @@ def decode_aarch32_instrs_VQDMULH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -25904,8 +25919,8 @@ def decode_aarch32_instrs_VQDMULH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -25913,8 +25928,8 @@ def decode_aarch32_instrs_VQDMULH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -25947,7 +25962,7 @@ def execute_aarch32_instrs_VQDMULL_Op_A_txt (d__arg : Nat) (elements : Int) (esi
     bif scalar_form
     then
       (do
-        (pure (sint (← (Elem_read (← (Din_read m)) index esize)))))
+        (pure (BitVec.toInt (← (Elem_read (← (Din_read m)) index esize)))))
     else (pure op2) ) : SailM Int )
   let (op1, op2, product, sat) ← (( do
     let loop_e_lower := 0
@@ -25960,9 +25975,9 @@ def execute_aarch32_instrs_VQDMULL_Op_A_txt (d__arg : Nat) (elements : Int) (esi
           bif (Bool.not scalar_form)
           then
             (do
-              (pure (sint (← (Elem_read (← (Din_read m)) e esize)))))
+              (pure (BitVec.toInt (← (Elem_read (← (Din_read m)) e esize)))))
           else (pure op2) ) : SailM Int )
-        let op1 ← (pure (sint (← (Elem_read (← (Din_read n)) e esize))))
+        let op1 ← (pure (BitVec.toInt (← (Elem_read (← (Din_read n)) e esize))))
         let (tup__0, tup__1) ← do (SignedSatQ ((2 *i op1) *i op2) (2 *i esize))
         let product : (BitVec (2 * esize)) := tup__0
         let sat : Bool := tup__1
@@ -25990,11 +26005,11 @@ def decode_aarch32_instrs_VQDMULL_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let index := index
       let scalar_form : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       (execute_aarch32_instrs_VQDMULL_Op_A_txt d elements esize index m n scalar_form))
   else (pure ())
 
@@ -26010,8 +26025,8 @@ def decode_aarch32_instrs_VQDMULL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let esize : Int := 8
       let elements ← (( do (undefined_int ()) ) : SailM Int )
       let m ← (( do (undefined_int ()) ) : SailM Int )
@@ -26021,8 +26036,8 @@ def decode_aarch32_instrs_VQDMULL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26030,8 +26045,8 @@ def decode_aarch32_instrs_VQDMULL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -26062,11 +26077,11 @@ def decode_aarch32_instrs_VQDMULL_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       else (pure ())
       let index := index
       let scalar_form : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       (execute_aarch32_instrs_VQDMULL_Op_A_txt d elements esize index m n scalar_form))
   else (pure ())
 
@@ -26082,8 +26097,8 @@ def decode_aarch32_instrs_VQDMULL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let esize : Int := 8
       let elements ← (( do (undefined_int ()) ) : SailM Int )
       let m ← (( do (undefined_int ()) ) : SailM Int )
@@ -26093,8 +26108,8 @@ def decode_aarch32_instrs_VQDMULL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26102,8 +26117,8 @@ def decode_aarch32_instrs_VQDMULL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -26160,10 +26175,10 @@ def decode_aarch32_instrs_VQMOVN_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       else (pure ())
       let src_unsigned : Bool := (BEq.beq op (0b11 : (BitVec 2)))
       let dest_unsigned : Bool := (BEq.beq (BitVec.join1 [(BitVec.access op 0)]) (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VQMOVN_Op_A_txt d dest_unsigned elements esize m src_unsigned))
   else (pure ())
 
@@ -26180,10 +26195,10 @@ def decode_aarch32_instrs_VQMOVN_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
       else (pure ())
       let src_unsigned : Bool := (BEq.beq op (0b11 : (BitVec 2)))
       let dest_unsigned : Bool := (BEq.beq (BitVec.join1 [(BitVec.access op 0)]) (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VQMOVN_Op_A_txt d dest_unsigned elements esize m src_unsigned))
   else (pure ())
 
@@ -26206,7 +26221,8 @@ def execute_aarch32_instrs_VQNEG_Op_A_txt (d__arg : Nat) (elements : Int) (esize
         for e in [loop_e_lower:loop_e_upper:1]i do
           let result := loop_vars_1
           loop_vars_1 ← do
-            let result ← (pure (Neg.neg (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+            let result ←
+              (pure (Neg.neg (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
             let sat ← (( do (undefined_bool ()) ) : SailM Bool )
             let (__tup_0, __tup_1) ← do (SignedSatQ result esize)
             (D_set (d +i r) (← (Elem_set (← (D_read (d +i r))) e esize __tup_0)))
@@ -26232,10 +26248,10 @@ def decode_aarch32_instrs_VQNEG_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -26255,10 +26271,10 @@ def decode_aarch32_instrs_VQNEG_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -26282,7 +26298,7 @@ def execute_aarch32_instrs_VQRDMULH_Op_A_txt (d__arg : Nat) (elements : Int) (es
     bif scalar_form
     then
       (do
-        (pure (sint (← (Elem_read (← (D_read m)) index esize)))))
+        (pure (BitVec.toInt (← (Elem_read (← (D_read m)) index esize)))))
     else (pure op2) ) : SailM Int )
   let (op1, op2, result, sat) ← (( do
     let loop_r_lower := 0
@@ -26298,12 +26314,12 @@ def execute_aarch32_instrs_VQRDMULH_Op_A_txt (d__arg : Nat) (elements : Int) (es
           for e in [loop_e_lower:loop_e_upper:1]i do
             let (op1, op2, result, sat) := loop_vars_1
             loop_vars_1 ← do
-              let op1 ← (pure (sint (← (Elem_read (← (D_read (n +i r))) e esize))))
+              let op1 ← (pure (BitVec.toInt (← (Elem_read (← (D_read (n +i r))) e esize))))
               let op2 ← (( do
                 bif (Bool.not scalar_form)
                 then
                   (do
-                    (pure (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+                    (pure (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
                 else (pure op2) ) : SailM Int )
               let rdmulh ← do (RShr ((2 *i op1) *i op2) esize round)
               let (tup__0, tup__1) ← do (SignedSatQ rdmulh esize)
@@ -26337,11 +26353,11 @@ def decode_aarch32_instrs_VQRDMULH_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 
       else (pure ())
       let index := index
       let scalar_form : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -26365,8 +26381,8 @@ def decode_aarch32_instrs_VQRDMULH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -26380,8 +26396,8 @@ def decode_aarch32_instrs_VQRDMULH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26389,8 +26405,8 @@ def decode_aarch32_instrs_VQRDMULH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -26426,11 +26442,11 @@ def decode_aarch32_instrs_VQRDMULH_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 
       else (pure ())
       let index := index
       let scalar_form : Bool := false
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -26454,8 +26470,8 @@ def decode_aarch32_instrs_VQRDMULH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let scalar_form : Bool := true
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -26469,8 +26485,8 @@ def decode_aarch32_instrs_VQRDMULH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
         then
           (let esize : Int := 16
           let elements : Int := 4
-          let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-          let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+          let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+          let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26478,8 +26494,8 @@ def decode_aarch32_instrs_VQRDMULH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
         then
           (let esize : Int := 32
           let elements : Int := 2
-          let m : Int := (UInt0 Vm)
-          let index : Int := (UInt0 M)
+          let m : Int := (BitVec.toNat Vm)
+          let index : Int := (BitVec.toNat M)
           (elements, esize, index, m))
         else (elements, esize, index, m)
       let m := m
@@ -26515,7 +26531,7 @@ def execute_aarch32_instrs_VQRDMLAH_Op_A_txt (d__arg : Nat) (elements : Int) (es
     bif scalar_form
     then
       (do
-        (pure (sint (← (Elem_read (← (D_read m)) index esize)))))
+        (pure (BitVec.toInt (← (Elem_read (← (D_read m)) index esize)))))
     else (pure op2) ) : SailM Int )
   let (op1, op2, op3, result, sat) ← (( do
     let loop_r_lower := 0
@@ -26531,14 +26547,15 @@ def execute_aarch32_instrs_VQRDMLAH_Op_A_txt (d__arg : Nat) (elements : Int) (es
           for e in [loop_e_lower:loop_e_upper:1]i do
             let (op1, op2, op3, result, sat) := loop_vars_1
             loop_vars_1 ← do
-              let op1 ← (pure (sint (← (Elem_read (← (D_read (n +i r))) e esize))))
+              let op1 ← (pure (BitVec.toInt (← (Elem_read (← (D_read (n +i r))) e esize))))
               let op3 ←
-                (pure (Int.shiftl (sint (← (Elem_read (← (D_read (d +i r))) e esize))) esize))
+                (pure (Int.shiftl (BitVec.toInt (← (Elem_read (← (D_read (d +i r))) e esize)))
+                    esize))
               let op2 ← (( do
                 bif (Bool.not scalar_form)
                 then
                   (do
-                    (pure (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+                    (pure (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
                 else (pure op2) ) : SailM Int )
               let rdmlah ← do (RShr (op3 +i (2 *i (op1 *i op2))) esize round)
               let (tup__0, tup__1) ← do (SignedSatQ rdmlah esize)
@@ -26573,11 +26590,11 @@ def decode_aarch32_instrs_VQRDMLAH_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 
   let index := index
   let add : Bool := true
   let scalar_form : Bool := false
-  let esize := (Int.shiftl 8 (UInt0 size))
-  let elements := (ediv_nat 64 esize)
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let esize := (Int.shiftl 8 (BitVec.toNat size))
+  let elements := (Int.ediv 64 esize)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26601,8 +26618,8 @@ def decode_aarch32_instrs_VQRDMLAH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
   else (pure ())
   let add : Bool := true
   let scalar_form : Bool := true
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26616,8 +26633,8 @@ def decode_aarch32_instrs_VQRDMLAH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 16
       let elements : Int := 4
-      let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-      let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+      let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+      let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26625,8 +26642,8 @@ def decode_aarch32_instrs_VQRDMLAH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 32
       let elements : Int := 2
-      let m : Int := (UInt0 Vm)
-      let index : Int := (UInt0 M)
+      let m : Int := (BitVec.toNat Vm)
+      let index : Int := (BitVec.toNat M)
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let m := m
@@ -26657,11 +26674,11 @@ def decode_aarch32_instrs_VQRDMLAH_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 
   let index := index
   let add : Bool := true
   let scalar_form : Bool := false
-  let esize := (Int.shiftl 8 (UInt0 size))
-  let elements := (ediv_nat 64 esize)
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let esize := (Int.shiftl 8 (BitVec.toNat size))
+  let elements := (Int.ediv 64 esize)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26688,8 +26705,8 @@ def decode_aarch32_instrs_VQRDMLAH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
   else (pure ())
   let add : Bool := true
   let scalar_form : Bool := true
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26703,8 +26720,8 @@ def decode_aarch32_instrs_VQRDMLAH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 16
       let elements : Int := 4
-      let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-      let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+      let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+      let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26712,8 +26729,8 @@ def decode_aarch32_instrs_VQRDMLAH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 32
       let elements : Int := 2
-      let m : Int := (UInt0 Vm)
-      let index : Int := (UInt0 M)
+      let m : Int := (BitVec.toNat Vm)
+      let index : Int := (BitVec.toNat M)
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let m := m
@@ -26740,7 +26757,7 @@ def execute_aarch32_instrs_VQRDMLSH_Op_A_txt (d__arg : Nat) (elements : Int) (es
     bif scalar_form
     then
       (do
-        (pure (sint (← (Elem_read (← (D_read m)) index esize)))))
+        (pure (BitVec.toInt (← (Elem_read (← (D_read m)) index esize)))))
     else (pure op2) ) : SailM Int )
   let (op1, op2, op3, result, sat) ← (( do
     let loop_r_lower := 0
@@ -26756,14 +26773,15 @@ def execute_aarch32_instrs_VQRDMLSH_Op_A_txt (d__arg : Nat) (elements : Int) (es
           for e in [loop_e_lower:loop_e_upper:1]i do
             let (op1, op2, op3, result, sat) := loop_vars_1
             loop_vars_1 ← do
-              let op1 ← (pure (sint (← (Elem_read (← (D_read (n +i r))) e esize))))
+              let op1 ← (pure (BitVec.toInt (← (Elem_read (← (D_read (n +i r))) e esize))))
               let op3 ←
-                (pure (Int.shiftl (sint (← (Elem_read (← (D_read (d +i r))) e esize))) esize))
+                (pure (Int.shiftl (BitVec.toInt (← (Elem_read (← (D_read (d +i r))) e esize)))
+                    esize))
               let op2 ← (( do
                 bif (Bool.not scalar_form)
                 then
                   (do
-                    (pure (sint (← (Elem_read (← (D_read (m +i r))) e esize)))))
+                    (pure (BitVec.toInt (← (Elem_read (← (D_read (m +i r))) e esize)))))
                 else (pure op2) ) : SailM Int )
               let rdmlsh ← do (RShr (op3 -i (2 *i (op1 *i op2))) esize round)
               let (tup__0, tup__1) ← do (SignedSatQ rdmlsh esize)
@@ -26798,11 +26816,11 @@ def decode_aarch32_instrs_VQRDMLSH_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 
   let index := index
   let add : Bool := false
   let scalar_form : Bool := false
-  let esize := (Int.shiftl 8 (UInt0 size))
-  let elements := (ediv_nat 64 esize)
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let esize := (Int.shiftl 8 (BitVec.toNat size))
+  let elements := (Int.ediv 64 esize)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26826,8 +26844,8 @@ def decode_aarch32_instrs_VQRDMLSH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
   else (pure ())
   let add : Bool := false
   let scalar_form : Bool := true
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26841,8 +26859,8 @@ def decode_aarch32_instrs_VQRDMLSH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 16
       let elements : Int := 4
-      let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-      let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+      let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+      let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26850,8 +26868,8 @@ def decode_aarch32_instrs_VQRDMLSH_A2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 32
       let elements : Int := 2
-      let m : Int := (UInt0 Vm)
-      let index : Int := (UInt0 M)
+      let m : Int := (BitVec.toNat Vm)
+      let index : Int := (BitVec.toNat M)
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let m := m
@@ -26882,11 +26900,11 @@ def decode_aarch32_instrs_VQRDMLSH_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 
   let index := index
   let add : Bool := false
   let scalar_form : Bool := false
-  let esize := (Int.shiftl 8 (UInt0 size))
-  let elements := (ediv_nat 64 esize)
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let esize := (Int.shiftl 8 (BitVec.toNat size))
+  let elements := (Int.ediv 64 esize)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26913,8 +26931,8 @@ def decode_aarch32_instrs_VQRDMLSH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
   else (pure ())
   let add : Bool := false
   let scalar_form : Bool := true
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -26928,8 +26946,8 @@ def decode_aarch32_instrs_VQRDMLSH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 16
       let elements : Int := 4
-      let m : Int := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-      let index : Int := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+      let m : Int := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+      let index : Int := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let (elements, esize, index, m) : (Int × Int × Int × Int) :=
@@ -26937,8 +26955,8 @@ def decode_aarch32_instrs_VQRDMLSH_T2enc_A_txt (Q : (BitVec 1)) (D : (BitVec 1))
     then
       (let esize : Int := 32
       let elements : Int := 2
-      let m : Int := (UInt0 Vm)
-      let index : Int := (UInt0 M)
+      let m : Int := (BitVec.toNat Vm)
+      let index : Int := (BitVec.toNat M)
       (elements, esize, index, m))
     else (elements, esize, index, m)
   let m := m
@@ -26975,7 +26993,7 @@ def execute_aarch32_instrs_VQRSHL_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
                 (asl_Int (← (Elem_read (← (D_read (m +i r))) e esize)) is_unsigned) ) : SailM
                 Int )
               let shift ← (( do
-                (pure (sint
+                (pure (BitVec.toInt
                     (Sail.BitVec.extractLsb (← (Elem_read (← (D_read (n +i r))) e esize)) 7 0)))
                 ) : SailM Int )
               let element : Int :=
@@ -27011,11 +27029,11 @@ def decode_aarch32_instrs_VQRSHL_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27035,11 +27053,11 @@ def decode_aarch32_instrs_VQRSHL_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27104,21 +27122,21 @@ def decode_aarch32_instrs_VQRSHRN_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
@@ -27127,8 +27145,8 @@ def decode_aarch32_instrs_VQRSHRN_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       let src_unsigned : Bool :=
         (Bool.and (BEq.beq U (0b1 : (BitVec 1))) (BEq.beq op (0b1 : (BitVec 1))))
       let dest_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VQRSHRN_Op_A_txt d dest_unsigned elements esize m shift_amount
         src_unsigned))
   else (pure ())
@@ -27158,21 +27176,21 @@ def decode_aarch32_instrs_VQRSHRN_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
@@ -27181,8 +27199,8 @@ def decode_aarch32_instrs_VQRSHRN_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       let src_unsigned : Bool :=
         (Bool.and (BEq.beq U (0b1 : (BitVec 1))) (BEq.beq op (0b1 : (BitVec 1))))
       let dest_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VQRSHRN_Op_A_txt d dest_unsigned elements esize m shift_amount
         src_unsigned))
   else (pure ())
@@ -27256,28 +27274,28 @@ def decode_aarch32_instrs_VQSHL_i_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (UInt0 imm6)
+                let shift_amount : Int := (BitVec.toNat imm6)
                 ())
               else ())))
       let shift_amount := shift_amount
@@ -27286,8 +27304,8 @@ def decode_aarch32_instrs_VQSHL_i_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       let src_unsigned : Bool :=
         (Bool.and (BEq.beq U (0b1 : (BitVec 1))) (BEq.beq op (0b1 : (BitVec 1))))
       let dest_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27331,28 +27349,28 @@ def decode_aarch32_instrs_VQSHL_i_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (UInt0 imm6)
+                let shift_amount : Int := (BitVec.toNat imm6)
                 ())
               else ())))
       let shift_amount := shift_amount
@@ -27361,8 +27379,8 @@ def decode_aarch32_instrs_VQSHL_i_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       let src_unsigned : Bool :=
         (Bool.and (BEq.beq U (0b1 : (BitVec 1))) (BEq.beq op (0b1 : (BitVec 1))))
       let dest_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27403,7 +27421,7 @@ def execute_aarch32_instrs_VQSHL_r_Op_A_txt (d__arg : Nat) (elements : Int) (esi
             let (operand, shift) := loop_vars_1
             loop_vars_1 ← do
               let shift ←
-                (pure (sint
+                (pure (BitVec.toInt
                     (Sail.BitVec.extractLsb (← (Elem_read (← (D_read (n +i r))) e esize)) 7 0)))
               let operand ←
                 (asl_Int (← (Elem_read (← (D_read (m +i r))) e esize)) is_unsigned)
@@ -27447,11 +27465,11 @@ def decode_aarch32_instrs_VQSHL_r_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27471,11 +27489,11 @@ def decode_aarch32_instrs_VQSHL_r_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27539,21 +27557,21 @@ def decode_aarch32_instrs_VQSHRN_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
@@ -27562,8 +27580,8 @@ def decode_aarch32_instrs_VQSHRN_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let src_unsigned : Bool :=
         (Bool.and (BEq.beq U (0b1 : (BitVec 1))) (BEq.beq op (0b1 : (BitVec 1))))
       let dest_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VQSHRN_Op_A_txt d dest_unsigned elements esize m shift_amount
         src_unsigned))
   else (pure ())
@@ -27593,21 +27611,21 @@ def decode_aarch32_instrs_VQSHRN_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
@@ -27616,8 +27634,8 @@ def decode_aarch32_instrs_VQSHRN_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       let src_unsigned : Bool :=
         (Bool.and (BEq.beq U (0b1 : (BitVec 1))) (BEq.beq op (0b1 : (BitVec 1))))
       let dest_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VQSHRN_Op_A_txt d dest_unsigned elements esize m shift_amount
         src_unsigned))
   else (pure ())
@@ -27671,11 +27689,11 @@ def decode_aarch32_instrs_VQSUB_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27695,11 +27713,11 @@ def decode_aarch32_instrs_VQSUB_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27723,7 +27741,7 @@ def execute_aarch32_instrs_VRADDHN_Op_A_txt (d__arg : Nat) (elements : Int) (esi
       loop_vars ← do
         let result ←
           (RShr
-            (UInt0
+            (BitVec.toNat
               ((← (Elem_read (← (Qin_read (Int.shiftl n 1))) e (2 *i esize))) + (← (Elem_read
                     (← (Qin_read (Int.shiftl m 1))) e (2 *i esize))))) esize round)
         (D_set d (← (Elem_set (← (D_read d)) e esize (integer_subrange result (esize -i 1) 0))))
@@ -27742,11 +27760,11 @@ def decode_aarch32_instrs_VRADDHN_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VRADDHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -27761,11 +27779,11 @@ def decode_aarch32_instrs_VRADDHN_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VRADDHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -27837,8 +27855,8 @@ def decode_aarch32_instrs_VRECPE_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
           else ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27883,8 +27901,8 @@ def decode_aarch32_instrs_VRECPE_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
           else ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27949,9 +27967,9 @@ def decode_aarch32_instrs_VRECPS_A1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -27991,9 +28009,9 @@ def decode_aarch32_instrs_VRECPS_T1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28053,7 +28071,7 @@ def decode_aarch32_instrs_VREV16_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
   bif (← (ConditionPassed ()))
   then
     (do
-      bif (((UInt0 op) +i (UInt0 size)) ≥b 3)
+      bif (((BitVec.toNat op) +i (BitVec.toNat size)) ≥b 3)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       bif (Bool.and (BEq.beq Q (0b1 : (BitVec 1)))
@@ -28061,7 +28079,7 @@ def decode_aarch32_instrs_VREV16_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
       let container_size : Int := 16
       let _ : Unit :=
         let b__0 := op
@@ -28081,10 +28099,10 @@ def decode_aarch32_instrs_VREV16_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
               ())
             else ()))
       let container_size := container_size
-      let containers := (ediv_nat 64 container_size)
-      let elements_per_container := (ediv_nat container_size esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let containers := (Int.ediv 64 container_size)
+      let elements_per_container := (Int.ediv container_size esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28096,7 +28114,7 @@ def decode_aarch32_instrs_VREV16_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
   bif (← (ConditionPassed ()))
   then
     (do
-      bif (((UInt0 op) +i (UInt0 size)) ≥b 3)
+      bif (((BitVec.toNat op) +i (BitVec.toNat size)) ≥b 3)
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       bif (Bool.and (BEq.beq Q (0b1 : (BitVec 1)))
@@ -28104,7 +28122,7 @@ def decode_aarch32_instrs_VREV16_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
       let container_size : Int := 16
       let _ : Unit :=
         let b__0 := op
@@ -28124,10 +28142,10 @@ def decode_aarch32_instrs_VREV16_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
               ())
             else ()))
       let container_size := container_size
-      let containers := (ediv_nat 64 container_size)
-      let elements_per_container := (ediv_nat container_size esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let containers := (Int.ediv 64 container_size)
+      let elements_per_container := (Int.ediv container_size esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28186,11 +28204,11 @@ def decode_aarch32_instrs_VRHADD_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28213,11 +28231,11 @@ def decode_aarch32_instrs_VRHADD_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28249,7 +28267,7 @@ def execute_aarch32_instrs_VRSHL_Op_A_txt (d__arg : Nat) (elements : Int) (esize
             let element ← do
               (asl_Int (← (Elem_read (← (D_read (m +i r))) e esize)) is_unsigned)
             let shift ← (( do
-              (pure (sint
+              (pure (BitVec.toInt
                   (Sail.BitVec.extractLsb (← (Elem_read (← (D_read (n +i r))) e esize)) 7 0))) )
               : SailM Int )
             let result : Int :=
@@ -28278,11 +28296,11 @@ def decode_aarch32_instrs_VRSHL_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28302,11 +28320,11 @@ def decode_aarch32_instrs_VRSHL_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28372,36 +28390,36 @@ def decode_aarch32_instrs_VRSHR_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28438,36 +28456,36 @@ def decode_aarch32_instrs_VRSHR_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28496,7 +28514,7 @@ def execute_aarch32_instrs_VRSHRN_Op_A_txt (d__arg : Nat) (elements : Nat) (esiz
       let result := loop_vars
       loop_vars ← do
         let result ←
-          (RShr (UInt0 (← (Elem_read (← (Qin_read (Int.shiftl m 1))) e (2 *i esize))))
+          (RShr (BitVec.toNat (← (Elem_read (← (Qin_read (Int.shiftl m 1))) e (2 *i esize))))
             shift_amount round)
         (D_set d (← (Elem_set (← (D_read d)) e esize (integer_subrange result (esize -i 1) 0))))
         (pure result)
@@ -28525,28 +28543,28 @@ def decode_aarch32_instrs_VRSHRN_A1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VRSHRN_Op_A_txt d elements esize m shift_amount))
   else (pure ())
 
@@ -28572,28 +28590,28 @@ def decode_aarch32_instrs_VRSHRN_T1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VRSHRN_Op_A_txt d elements esize m shift_amount))
   else (pure ())
 
@@ -28665,8 +28683,8 @@ def decode_aarch32_instrs_VRSQRTE_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
           else ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28711,8 +28729,8 @@ def decode_aarch32_instrs_VRSQRTE_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
           else ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28777,9 +28795,9 @@ def decode_aarch32_instrs_VRSQRTS_A1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1))
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28819,9 +28837,9 @@ def decode_aarch32_instrs_VRSQRTS_T1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1))
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28887,36 +28905,36 @@ def decode_aarch32_instrs_VRSRA_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -28953,36 +28971,36 @@ def decode_aarch32_instrs_VRSRA_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29011,7 +29029,7 @@ def execute_aarch32_instrs_VRSUBHN_Op_A_txt (d__arg : Nat) (elements : Int) (esi
       loop_vars ← do
         let result ←
           (RShr
-            (UInt0
+            (BitVec.toNat
               ((← (Elem_read (← (Qin_read (Int.shiftl n 1))) e (2 *i esize))) - (← (Elem_read
                     (← (Qin_read (Int.shiftl m 1))) e (2 *i esize))))) esize round)
         (D_set d (← (Elem_set (← (D_read d)) e esize (integer_subrange result (esize -i 1) 0))))
@@ -29030,11 +29048,11 @@ def decode_aarch32_instrs_VRSUBHN_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VRSUBHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -29049,11 +29067,11 @@ def decode_aarch32_instrs_VRSUBHN_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VRSUBHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -29107,35 +29125,35 @@ def decode_aarch32_instrs_VSHL_i_A1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (UInt0 imm6)
+                let shift_amount : Int := (BitVec.toNat imm6)
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29172,35 +29190,35 @@ def decode_aarch32_instrs_VSHL_i_T1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (UInt0 imm6)
+                let shift_amount : Int := (BitVec.toNat imm6)
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29258,21 +29276,21 @@ def decode_aarch32_instrs_VSHLL_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else ()))
       let shift_amount := shift_amount
@@ -29283,8 +29301,8 @@ def decode_aarch32_instrs_VSHLL_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
       else (pure ())
       let shift_amount := shift_amount
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSHLL_Op_A_txt d elements esize m shift_amount is_unsigned))
   else (pure ())
 
@@ -29296,12 +29314,12 @@ def decode_aarch32_instrs_VSHLL_A2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
            (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       let shift_amount := esize
       let is_unsigned : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSHLL_Op_A_txt d elements esize m shift_amount is_unsigned))
   else (pure ())
 
@@ -29327,21 +29345,21 @@ def decode_aarch32_instrs_VSHLL_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else ()))
       let shift_amount := shift_amount
@@ -29352,8 +29370,8 @@ def decode_aarch32_instrs_VSHLL_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (i
       else (pure ())
       let shift_amount := shift_amount
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSHLL_Op_A_txt d elements esize m shift_amount is_unsigned))
   else (pure ())
 
@@ -29365,12 +29383,12 @@ def decode_aarch32_instrs_VSHLL_T2enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
            (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       let shift_amount := esize
       let is_unsigned : Bool := false
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSHLL_Op_A_txt d elements esize m shift_amount is_unsigned))
   else (pure ())
 
@@ -29396,7 +29414,7 @@ def execute_aarch32_instrs_VSHL_r_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
           let shift := loop_vars_1
           loop_vars_1 ← do
             let shift ←
-              (pure (sint
+              (pure (BitVec.toInt
                   (Sail.BitVec.extractLsb (← (Elem_read (← (D_read (n +i r))) e esize)) 7 0)))
             let result ← (( do (undefined_int ()) ) : SailM Int )
             let result ← (( do
@@ -29432,11 +29450,11 @@ def decode_aarch32_instrs_VSHL_r_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29456,11 +29474,11 @@ def decode_aarch32_instrs_VSHL_r_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
-      let n := (UInt0 (N ++ Vn))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
+      let n := (BitVec.toNat (N ++ Vn))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29526,36 +29544,36 @@ def decode_aarch32_instrs_VSHR_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (im
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29592,36 +29610,36 @@ def decode_aarch32_instrs_VSHR_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (im
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29678,28 +29696,28 @@ def decode_aarch32_instrs_VSHRN_A1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6))
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSHRN_Op_A_txt d elements esize m shift_amount))
   else (pure ())
 
@@ -29725,28 +29743,28 @@ def decode_aarch32_instrs_VSHRN_T1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6))
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 4) (0b01 : (BitVec 2)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 5 5) (0b1 : (BitVec 1)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else ()))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSHRN_Op_A_txt d elements esize m shift_amount))
   else (pure ())
 
@@ -29808,35 +29826,35 @@ def decode_aarch32_instrs_VSLI_A1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (UInt0 imm6)
+                let shift_amount : Int := (BitVec.toNat imm6)
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29873,35 +29891,35 @@ def decode_aarch32_instrs_VSLI_T1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := ((UInt0 imm6) -i 8)
+          let shift_amount : Int := ((BitVec.toNat imm6) -i 8)
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := ((UInt0 imm6) -i 16)
+            let shift_amount : Int := ((BitVec.toNat imm6) -i 16)
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := ((UInt0 imm6) -i 32)
+              let shift_amount : Int := ((BitVec.toNat imm6) -i 32)
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (UInt0 imm6)
+                let shift_amount : Int := (BitVec.toNat imm6)
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -29950,22 +29968,22 @@ def decode_aarch32_instrs_VSQRT_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1))
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -29997,22 +30015,22 @@ def decode_aarch32_instrs_VSQRT_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -30079,36 +30097,36 @@ def decode_aarch32_instrs_VSRA_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (im
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -30145,36 +30163,36 @@ def decode_aarch32_instrs_VSRA_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (im
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -30245,35 +30263,35 @@ def decode_aarch32_instrs_VSRI_A1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -30310,35 +30328,35 @@ def decode_aarch32_instrs_VSRI_T1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)) 
         then
           (let esize : Int := 8
           let elements : Int := 8
-          let shift_amount : Int := (16 -i (UInt0 imm6))
+          let shift_amount : Int := (16 -i (BitVec.toNat imm6))
           ())
         else
           (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 4) (0b001 : (BitVec 3)))
           then
             (let esize : Int := 16
             let elements : Int := 4
-            let shift_amount : Int := (32 -i (UInt0 imm6))
+            let shift_amount : Int := (32 -i (BitVec.toNat imm6))
             ())
           else
             (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 5) (0b01 : (BitVec 2)))
             then
               (let esize : Int := 32
               let elements : Int := 2
-              let shift_amount : Int := (64 -i (UInt0 imm6))
+              let shift_amount : Int := (64 -i (BitVec.toNat imm6))
               ())
             else
               (bif (BEq.beq (Sail.BitVec.extractLsb b__1 6 6) (0b1 : (BitVec 1)))
               then
                 (let esize : Int := 64
                 let elements : Int := 1
-                let shift_amount : Int := (64 -i (UInt0 imm6))
+                let shift_amount : Int := (64 -i (BitVec.toNat imm6))
                 ())
               else ())))
       let shift_amount := shift_amount
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -30388,11 +30406,11 @@ def decode_aarch32_instrs_VST1_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let alignment := 1
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30412,14 +30430,14 @@ def decode_aarch32_instrs_VST1_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30443,14 +30461,14 @@ def decode_aarch32_instrs_VST1_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30470,11 +30488,11 @@ def decode_aarch32_instrs_VST1_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let alignment := 1
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30494,14 +30512,14 @@ def decode_aarch32_instrs_VST1_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30525,14 +30543,14 @@ def decode_aarch32_instrs_VST1_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30609,12 +30627,12 @@ def decode_aarch32_instrs_VST1_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30652,12 +30670,12 @@ def decode_aarch32_instrs_VST1_m_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -30695,12 +30713,12 @@ def decode_aarch32_instrs_VST1_m_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -30735,12 +30753,12 @@ def decode_aarch32_instrs_VST1_m_A4enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -30778,12 +30796,12 @@ def decode_aarch32_instrs_VST1_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (BEq.beq n 15)
@@ -30821,12 +30839,12 @@ def decode_aarch32_instrs_VST1_m_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -30864,12 +30882,12 @@ def decode_aarch32_instrs_VST1_m_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -30904,12 +30922,12 @@ def decode_aarch32_instrs_VST1_m_T4enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d +i regs) >b 32))
@@ -30972,16 +30990,16 @@ def decode_aarch32_instrs_VST2_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -30998,7 +31016,7 @@ def decode_aarch32_instrs_VST2_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -31007,10 +31025,10 @@ def decode_aarch32_instrs_VST2_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -31030,7 +31048,7 @@ def decode_aarch32_instrs_VST2_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -31039,10 +31057,10 @@ def decode_aarch32_instrs_VST2_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -31059,16 +31077,16 @@ def decode_aarch32_instrs_VST2_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -31085,7 +31103,7 @@ def decode_aarch32_instrs_VST2_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -31094,10 +31112,10 @@ def decode_aarch32_instrs_VST2_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -31117,7 +31135,7 @@ def decode_aarch32_instrs_VST2_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -31126,10 +31144,10 @@ def decode_aarch32_instrs_VST2_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d2 >b 31))
@@ -31199,13 +31217,13 @@ def decode_aarch32_instrs_VST2_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -31242,13 +31260,13 @@ def decode_aarch32_instrs_VST2_m_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -31291,13 +31309,13 @@ def decode_aarch32_instrs_VST2_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -31334,13 +31352,13 @@ def decode_aarch32_instrs_VST2_m_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) ((d2 +i pairs) >b 32))
@@ -31397,13 +31415,13 @@ def decode_aarch32_instrs_VST3_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31423,16 +31441,16 @@ def decode_aarch32_instrs_VST3_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31452,16 +31470,16 @@ def decode_aarch32_instrs_VST3_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31481,13 +31499,13 @@ def decode_aarch32_instrs_VST3_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31507,16 +31525,16 @@ def decode_aarch32_instrs_VST3_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31536,16 +31554,16 @@ def decode_aarch32_instrs_VST3_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
         else 2
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31616,13 +31634,13 @@ def decode_aarch32_instrs_VST3_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31658,13 +31676,13 @@ def decode_aarch32_instrs_VST3_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d3 >b 31))
@@ -31717,18 +31735,18 @@ def decode_aarch32_instrs_VST4_1_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -31749,7 +31767,7 @@ def decode_aarch32_instrs_VST4_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -31758,12 +31776,12 @@ def decode_aarch32_instrs_VST4_1_A2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -31787,7 +31805,7 @@ def decode_aarch32_instrs_VST4_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -31795,13 +31813,13 @@ def decode_aarch32_instrs_VST4_1_A3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 (Sail.BitVec.extractLsb index_align 1 0)))
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat (Sail.BitVec.extractLsb index_align 1 0)))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -31843,18 +31861,18 @@ def decode_aarch32_instrs_VST4_1_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
       let ebytes := 1
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 1))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 1))
       let inc_name := 1
       let alignment :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 4
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -31875,7 +31893,7 @@ def decode_aarch32_instrs_VST4_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_See "Related encodings"))
       else (pure ())
       let ebytes := 2
-      let index := (UInt0 (Sail.BitVec.extractLsb index_align 3 2))
+      let index := (BitVec.toNat (Sail.BitVec.extractLsb index_align 3 2))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 1)]) (0b0 : (BitVec 1)))
         then 1
@@ -31884,12 +31902,12 @@ def decode_aarch32_instrs_VST4_1_T2enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 0)]) (0b0 : (BitVec 1)))
         then 1
         else 8
-      let d := (UInt0 (D ++ Vd))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -31913,7 +31931,7 @@ def decode_aarch32_instrs_VST4_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let ebytes := 4
-      let index := (UInt0 (BitVec.join1 [(BitVec.access index_align 3)]))
+      let index := (BitVec.toNat (BitVec.join1 [(BitVec.access index_align 3)]))
       let inc_name :=
         bif (BEq.beq (BitVec.join1 [(BitVec.access index_align 2)]) (0b0 : (BitVec 1)))
         then 1
@@ -31921,13 +31939,13 @@ def decode_aarch32_instrs_VST4_1_T3enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq (Sail.BitVec.extractLsb index_align 1 0) (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 (Sail.BitVec.extractLsb index_align 1 0)))
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat (Sail.BitVec.extractLsb index_align 1 0)))
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -32021,15 +32039,15 @@ def decode_aarch32_instrs_VST4_m_A1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -32077,15 +32095,15 @@ def decode_aarch32_instrs_VST4_m_T1enc_A_txt (D : (BitVec 1)) (Rn : (BitVec 4)) 
       let alignment :=
         bif (BEq.beq align (0b00 : (BitVec 2)))
         then 1
-        else (Int.shiftl 4 (UInt0 align))
-      let ebytes := (Int.shiftl 1 (UInt0 size))
-      let elements := (ediv_nat 8 ebytes)
-      let d := (UInt0 (D ++ Vd))
+        else (Int.shiftl 4 (BitVec.toNat align))
+      let ebytes := (Int.shiftl 1 (BitVec.toNat size))
+      let elements := (Int.ediv 8 ebytes)
+      let d := (BitVec.toNat (D ++ Vd))
       let d2 := (d +i inc_name)
       let d3 := (d2 +i inc_name)
       let d4 := (d3 +i inc_name)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
       let wback : Bool := (bne m 15)
       let register_index : Bool := (Bool.and (bne m 15) (bne m 13))
       bif (Bool.or (BEq.beq n 15) (d4 >b 31))
@@ -32171,10 +32189,10 @@ def decode_aarch32_instrs_VSTM_A1enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let single_regs : Bool := false
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (ediv_nat (UInt0 imm8) 2)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (Int.ediv (BitVec.toNat imm8) 2)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -32206,10 +32224,10 @@ def decode_aarch32_instrs_VSTM_A2enc_A_txt (cond : (BitVec 4)) (P : (BitVec 1)) 
       let single_regs : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (Vd ++ D))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (UInt0 imm8)
+      let d := (BitVec.toNat (Vd ++ D))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (BitVec.toNat imm8)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -32236,10 +32254,10 @@ def decode_aarch32_instrs_VSTM_T1enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let single_regs : Bool := false
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (ediv_nat (UInt0 imm8) 2)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (Int.ediv (BitVec.toNat imm8) 2)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -32270,10 +32288,10 @@ def decode_aarch32_instrs_VSTM_T2enc_A_txt (P : (BitVec 1)) (U : (BitVec 1)) (D 
       let single_regs : Bool := true
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
-      let d := (UInt0 (Vd ++ D))
-      let n := (UInt0 Rn)
-      let imm32 : (BitVec 32) := (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
-      let regs := (UInt0 imm8)
+      let d := (BitVec.toNat (Vd ++ D))
+      let n := (BitVec.toNat Rn)
+      let imm32 : (BitVec 32) := (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
+      let regs := (BitVec.toNat imm8)
       bif (Bool.and (BEq.beq n 15) (Bool.or wback (bne (← (CurrentInstrSet ())) InstrSet_A32)))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -32318,32 +32336,32 @@ def decode_aarch32_instrs_VSTR_A1enc_A_txt (cond : (BitVec 4)) (U : (BitVec 1)) 
       bif (Bool.and (BEq.beq size (0b01 : (BitVec 2))) (bne cond (0xE : (BitVec 4))))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let imm32 : (BitVec 32) :=
         bif (BEq.beq esize 16)
-        then (zero_extend (imm8 ++ (0b0 : (BitVec 1))) 32)
-        else (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+        then (Sail.BitVec.zeroExtend (imm8 ++ (0b0 : (BitVec 1))) 32)
+        else (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let d ← (( do (undefined_range 0 31) ) : SailM Nat )
       let _ : Unit :=
         let b__0 := size
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
-          (let d : Nat := (UInt0 (Vd ++ D))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
-            (let d : Nat := (UInt0 (Vd ++ D))
+            (let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
-              (let d : Nat := (UInt0 (D ++ Vd))
+              (let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let d := d
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       bif (Bool.and (BEq.beq n 15) (bne (← (CurrentInstrSet ())) InstrSet_A32))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -32362,32 +32380,32 @@ def decode_aarch32_instrs_VSTR_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (Rn
       bif (Bool.and (BEq.beq size (0b01 : (BitVec 2))) (← (InITBlock ())))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
       let add : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let imm32 : (BitVec 32) :=
         bif (BEq.beq esize 16)
-        then (zero_extend (imm8 ++ (0b0 : (BitVec 1))) 32)
-        else (zero_extend (imm8 ++ (0b00 : (BitVec 2))) 32)
+        then (Sail.BitVec.zeroExtend (imm8 ++ (0b0 : (BitVec 1))) 32)
+        else (Sail.BitVec.zeroExtend (imm8 ++ (0b00 : (BitVec 2))) 32)
       let d ← (( do (undefined_range 0 31) ) : SailM Nat )
       let _ : Unit :=
         let b__0 := size
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
-          (let d : Nat := (UInt0 (Vd ++ D))
+          (let d : Nat := (BitVec.toNat (Vd ++ D))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
-            (let d : Nat := (UInt0 (Vd ++ D))
+            (let d : Nat := (BitVec.toNat (Vd ++ D))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
-              (let d : Nat := (UInt0 (D ++ Vd))
+              (let d : Nat := (BitVec.toNat (D ++ Vd))
               ())
             else ()))
       let d := d
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       bif (Bool.and (BEq.beq n 15) (bne (← (CurrentInstrSet ())) InstrSet_A32))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -32463,9 +32481,9 @@ def decode_aarch32_instrs_VSUB_f_A1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -32503,25 +32521,25 @@ def decode_aarch32_instrs_VSUB_f_A2enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -32564,9 +32582,9 @@ def decode_aarch32_instrs_VSUB_f_T1enc_A_txt (D : (BitVec 1)) (sz : (BitVec 1)) 
           ())
       let esize := esize
       let elements := elements
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -32603,25 +32621,25 @@ def decode_aarch32_instrs_VSUB_f_T2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let n : Nat := (UInt0 (Vn ++ N))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let n : Nat := (BitVec.toNat (Vn ++ N))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let n : Nat := (UInt0 (Vn ++ N))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let n : Nat := (BitVec.toNat (Vn ++ N))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let n : Nat := (UInt0 (N ++ Vn))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let n : Nat := (BitVec.toNat (N ++ Vn))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let n := n
@@ -32665,11 +32683,11 @@ def decode_aarch32_instrs_VSUBHN_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSUBHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -32684,11 +32702,11 @@ def decode_aarch32_instrs_VSUBHN_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSUBHN_Op_A_txt d elements esize m n))
   else (pure ())
 
@@ -32729,11 +32747,11 @@ def decode_aarch32_instrs_VSUB_i_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -32752,11 +32770,11 @@ def decode_aarch32_instrs_VSUB_i_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -32811,12 +32829,12 @@ def decode_aarch32_instrs_VSUBL_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       let is_vsubw : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSUBL_Op_A_txt d elements esize is_vsubw m n is_unsigned))
   else (pure ())
 
@@ -32833,12 +32851,12 @@ def decode_aarch32_instrs_VSUBL_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) (s
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let is_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
       let is_vsubw : Bool := (BEq.beq op (0b1 : (BitVec 1)))
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VSUBL_Op_A_txt d elements esize is_vsubw m n is_unsigned))
   else (pure ())
 
@@ -32872,8 +32890,8 @@ def decode_aarch32_instrs_VSWP_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -32893,8 +32911,8 @@ def decode_aarch32_instrs_VSWP_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -32929,7 +32947,7 @@ def execute_aarch32_instrs_VTBL_Op_A_txt (d__arg : Nat) (is_vtbl : Bool) (length
     for i in [loop_i_lower:loop_i_upper:1]i do
       let index := loop_vars
       loop_vars ← do
-        let index ← (pure (UInt0 (← (Elem_read (← (D_read m)) i 8))))
+        let index ← (pure (BitVec.toNat (← (Elem_read (← (D_read m)) i 8))))
         let index := index
         bif (index <b (8 *i length))
         then (D_set d (← (Elem_set (← (D_read d)) i 8 (← (Elem_read table index 8)))))
@@ -32947,10 +32965,10 @@ def decode_aarch32_instrs_VTBL_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
   then
     (do
       let is_vtbl : Bool := (BEq.beq op (0b0 : (BitVec 1)))
-      let length := ((UInt0 len) +i 1)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let length := ((BitVec.toNat len) +i 1)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       bif ((n +i length) >b 32)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -32962,10 +32980,10 @@ def decode_aarch32_instrs_VTBL_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
   then
     (do
       let is_vtbl : Bool := (BEq.beq op (0b0 : (BitVec 1)))
-      let length := ((UInt0 len) +i 1)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let length := ((BitVec.toNat len) +i 1)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       bif ((n +i length) >b 32)
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -33017,10 +33035,10 @@ def decode_aarch32_instrs_VTRN_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -33040,10 +33058,10 @@ def decode_aarch32_instrs_VTRN_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
              (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -33094,11 +33112,11 @@ def decode_aarch32_instrs_VTST_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       bif (BEq.beq size (0b11 : (BitVec 2)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -33120,11 +33138,11 @@ def decode_aarch32_instrs_VTST_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       bif (BEq.beq size (0b11 : (BitVec 2)))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let elements := (ediv_nat 64 esize)
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let elements := (Int.ediv 64 esize)
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       let regs :=
         bif (BEq.beq Q (0b0 : (BitVec 1)))
         then 1
@@ -33151,7 +33169,7 @@ def execute_aarch32_instrs_VUZP_Op_A_txt (d__arg : Nat) (esize : Nat) (m__arg : 
             (pure ((← (Q_read (Int.shiftr m 1))) ++ (← (Q_read (Int.shiftr d 1))))) ) : SailM
             (BitVec 256) )
           let loop_e_lower := 0
-          let loop_e_upper := ((ediv_nat 128 esize) -i 1)
+          let loop_e_upper := ((Int.ediv 128 esize) -i 1)
           let mut loop_vars_1 := ()
           for e in [loop_e_lower:loop_e_upper:1]i do
             let () := loop_vars_1
@@ -33172,7 +33190,7 @@ def execute_aarch32_instrs_VUZP_Op_A_txt (d__arg : Nat) (esize : Nat) (m__arg : 
           let zipped_d ← (( do (pure ((← (D_read m)) ++ (← (D_read d)))) ) : SailM
             (BitVec 128) )
           let loop_e_lower := 0
-          let loop_e_upper := ((ediv_nat 64 esize) -i 1)
+          let loop_e_upper := ((Int.ediv 64 esize) -i 1)
           let mut loop_vars := ()
           for e in [loop_e_lower:loop_e_upper:1]i do
             let () := loop_vars
@@ -33198,9 +33216,9 @@ def decode_aarch32_instrs_VUZP_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let quadword_operation : Bool := (BEq.beq Q (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VUZP_Op_A_txt d esize m quadword_operation))
   else (pure ())
 
@@ -33218,9 +33236,9 @@ def decode_aarch32_instrs_VUZP_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let quadword_operation : Bool := (BEq.beq Q (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VUZP_Op_A_txt d esize m quadword_operation))
   else (pure ())
 
@@ -33238,7 +33256,7 @@ def execute_aarch32_instrs_VZIP_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (quad
           let zipped_q ← (( do (undefined_bitvector 256) ) : SailM (BitVec 256) )
           let zipped_q ← (( do
             let loop_e_lower := 0
-            let loop_e_upper := ((ediv_nat 128 esize) -i 1)
+            let loop_e_upper := ((Int.ediv 128 esize) -i 1)
             let mut loop_vars_1 := zipped_q
             for e in [loop_e_lower:loop_e_upper:1]i do
               let zipped_q := loop_vars_1
@@ -33260,7 +33278,7 @@ def execute_aarch32_instrs_VZIP_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (quad
           let zipped_d ← (( do (undefined_bitvector 128) ) : SailM (BitVec 128) )
           let zipped_d ← (( do
             let loop_e_lower := 0
-            let loop_e_upper := ((ediv_nat 64 esize) -i 1)
+            let loop_e_upper := ((Int.ediv 64 esize) -i 1)
             let mut loop_vars := zipped_d
             for e in [loop_e_lower:loop_e_upper:1]i do
               let zipped_d := loop_vars
@@ -33286,9 +33304,9 @@ def decode_aarch32_instrs_VZIP_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let quadword_operation : Bool := (BEq.beq Q (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VZIP_Op_A_txt d esize m quadword_operation))
   else (pure ())
 
@@ -33306,9 +33324,9 @@ def decode_aarch32_instrs_VZIP_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
       then sailThrow ((Error_Undefined ()))
       else (pure ())
       let quadword_operation : Bool := (BEq.beq Q (0b1 : (BitVec 1)))
-      let esize := (Int.shiftl 8 (UInt0 size))
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let esize := (Int.shiftl 8 (BitVec.toNat size))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_VZIP_Op_A_txt d esize m quadword_operation))
   else (pure ())
 
@@ -33619,7 +33637,7 @@ def execute_aarch32_instrs_LDM_e_Op_AS_txt (increment_name : Bool) (n : Nat) (re
           let address ← ((
             bif increment_name
             then (R_read n)
-            else (pure (sub_vec_int (← (R_read n)) length)) ) : SailM (BitVec 32) )
+            else (pure (BitVec.subInt (← (R_read n)) length)) ) : SailM (BitVec 32) )
           let address : (BitVec 32) :=
             bif wordhigher
             then (BitVec.addInt address 4)
@@ -33647,7 +33665,7 @@ def execute_aarch32_instrs_LDM_e_Op_AS_txt (increment_name : Bool) (n : Nat) (re
               (← do
                 bif increment_name
                 then (pure (BitVec.addInt (← (R_read n)) length))
-                else (pure (sub_vec_int (← (R_read n)) length))))
+                else (pure (BitVec.subInt (← (R_read n)) length))))
           else (pure ())
           bif (Bool.and wback
                (BEq.beq (BitVec.join1 [(BitVec.access registers n)]) (0b1 : (BitVec 1))))
@@ -33660,7 +33678,7 @@ def decode_aarch32_instrs_LDM_e_A1enc_AS_txt (cond : (BitVec 4)) (P : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:40995.29-40995.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 15) := register_list
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       let increment_name : Bool := (BEq.beq U (0b1 : (BitVec 1)))
@@ -33691,7 +33709,7 @@ def execute_aarch32_instrs_LDM_u_Op_AS_txt (increment_name : Bool) (n : Nat) (re
           let address ← ((
             bif increment_name
             then (R_read n)
-            else (pure (sub_vec_int (← (R_read n)) length)) ) : SailM (BitVec 32) )
+            else (pure (BitVec.subInt (← (R_read n)) length)) ) : SailM (BitVec 32) )
           let address : (BitVec 32) :=
             bif wordhigher
             then (BitVec.addInt address 4)
@@ -33717,7 +33735,7 @@ def decode_aarch32_instrs_LDM_u_A1enc_AS_txt (cond : (BitVec 4)) (P : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:41055.29-41055.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 15) := register_list
       let increment_name : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wordhigher : Bool := (BEq.beq P U)
@@ -33757,7 +33775,7 @@ def decode_aarch32_instrs_MRS_A1enc_AS_txt (cond : (BitVec 4)) (R : (BitVec 1)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:41109.29-41109.30"
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let read_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -33769,7 +33787,7 @@ def decode_aarch32_instrs_MRS_T1enc_AS_txt (R : (BitVec 1)) (Rd : (BitVec 4)) : 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let read_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -33831,42 +33849,44 @@ def execute_aarch32_instrs_MRS_br_Op_AS_txt (SYSm : (BitVec 5)) (d : Nat) (read_
           bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 3) (0b00 : (BitVec 2)))
           then
             (do
-              let m := ((UInt0 (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
+              let m := ((BitVec.toNat (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
               (R_set d (← (Rmode_read m M32_User))))
           else
             (do
               bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 3) (0b01 : (BitVec 2)))
               then
                 (do
-                  let m := ((UInt0 (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
+                  let m := ((BitVec.toNat (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
                   (R_set d (← (Rmode_read m M32_FIQ))))
               else
                 (do
                   bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0x8 : (BitVec 4)))
                   then
                     (do
-                      let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                      let m := (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                       (R_set d (← (Rmode_read m M32_IRQ))))
                   else
                     (do
                       bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0x9 : (BitVec 4)))
                       then
                         (do
-                          let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                          let m := (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                           (R_set d (← (Rmode_read m M32_Svc))))
                       else
                         (do
                           bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0xA : (BitVec 4)))
                           then
                             (do
-                              let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                              let m :=
+                                (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                               (R_set d (← (Rmode_read m M32_Abort))))
                           else
                             (do
                               bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0xB : (BitVec 4)))
                               then
                                 (do
-                                  let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                                  let m :=
+                                    (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                                   (R_set d (← (Rmode_read m M32_Undef))))
                               else
                                 (do
@@ -33877,7 +33897,7 @@ def execute_aarch32_instrs_MRS_br_Op_AS_txt (SYSm : (BitVec 5)) (d : Nat) (read_
                                       then (AArch64_MonitorModeTrap ())
                                       else (pure ())
                                       let m :=
-                                        (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                                        (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                                       (R_set d (← (Rmode_read m M32_Monitor))))
                                   else
                                     (do
@@ -33894,7 +33914,7 @@ def decode_aarch32_instrs_MRS_br_A1enc_AS_txt (cond : (BitVec 4)) (R : (BitVec 1
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:41246.29-41246.30"
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let read_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -33907,7 +33927,7 @@ def decode_aarch32_instrs_MRS_br_T1enc_AS_txt (R : (BitVec 1)) (M1 : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
+      let d := (BitVec.toNat Rd)
       let read_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq d 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -33985,42 +34005,44 @@ def execute_aarch32_instrs_MSR_br_Op_AS_txt (SYSm : (BitVec 5)) (n : Nat) (write
           bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 3) (0b00 : (BitVec 2)))
           then
             (do
-              let m := ((UInt0 (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
+              let m := ((BitVec.toNat (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
               (Rmode_set m M32_User (← (R_read n))))
           else
             (do
               bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 3) (0b01 : (BitVec 2)))
               then
                 (do
-                  let m := ((UInt0 (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
+                  let m := ((BitVec.toNat (Sail.BitVec.extractLsb SYSm 2 0)) +i 8)
                   (Rmode_set m M32_FIQ (← (R_read n))))
               else
                 (do
                   bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0x8 : (BitVec 4)))
                   then
                     (do
-                      let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                      let m := (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                       (Rmode_set m M32_IRQ (← (R_read n))))
                   else
                     (do
                       bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0x9 : (BitVec 4)))
                       then
                         (do
-                          let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                          let m := (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                           (Rmode_set m M32_Svc (← (R_read n))))
                       else
                         (do
                           bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0xA : (BitVec 4)))
                           then
                             (do
-                              let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                              let m :=
+                                (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                               (Rmode_set m M32_Abort (← (R_read n))))
                           else
                             (do
                               bif (BEq.beq (Sail.BitVec.extractLsb b__0 4 1) (0xB : (BitVec 4)))
                               then
                                 (do
-                                  let m := (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                                  let m :=
+                                    (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                                   (Rmode_set m M32_Undef (← (R_read n))))
                               else
                                 (do
@@ -34031,7 +34053,7 @@ def execute_aarch32_instrs_MSR_br_Op_AS_txt (SYSm : (BitVec 5)) (n : Nat) (write
                                       then (AArch64_MonitorModeTrap ())
                                       else (pure ())
                                       let m :=
-                                        (14 -i (UInt0 (BitVec.join1 [(BitVec.access SYSm 0)])))
+                                        (14 -i (BitVec.toNat (BitVec.join1 [(BitVec.access SYSm 0)])))
                                       (Rmode_set m M32_Monitor (← (R_read n))))
                                   else
                                     (do
@@ -34048,7 +34070,7 @@ def decode_aarch32_instrs_MSR_br_A1enc_AS_txt (cond : (BitVec 4)) (R : (BitVec 1
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:41390.29-41390.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let write_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq n 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -34061,7 +34083,7 @@ def decode_aarch32_instrs_MSR_br_T1enc_AS_txt (R : (BitVec 1)) (Rn : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let write_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq n 15)
       then sailThrow ((Error_Unpredictable ()))
@@ -34113,7 +34135,7 @@ def decode_aarch32_instrs_MSR_r_A1enc_AS_txt (cond : (BitVec 4)) (R : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:41510.29-41510.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let write_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq mask (0x0 : (BitVec 4)))
       then sailThrow ((Error_Unpredictable ()))
@@ -34128,7 +34150,7 @@ def decode_aarch32_instrs_MSR_r_T1enc_AS_txt (R : (BitVec 1)) (Rn : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let write_spsr : Bool := (BEq.beq R (0b1 : (BitVec 1)))
       bif (BEq.beq mask (0x0 : (BitVec 4)))
       then sailThrow ((Error_Unpredictable ()))
@@ -34156,7 +34178,7 @@ def execute_aarch32_instrs_RFE_Op_AS_txt (increment_name : Bool) (n : Nat) (wbac
           let address ← ((
             bif increment_name
             then (R_read n)
-            else (pure (sub_vec_int (← (R_read n)) 8)) ) : SailM (BitVec 32) )
+            else (pure (BitVec.subInt (← (R_read n)) 8)) ) : SailM (BitVec 32) )
           let address : (BitVec 32) :=
             bif wordhigher
             then (BitVec.addInt address 4)
@@ -34169,7 +34191,7 @@ def execute_aarch32_instrs_RFE_Op_AS_txt (increment_name : Bool) (n : Nat) (wbac
               (← do
                 bif increment_name
                 then (pure (BitVec.addInt (← (R_read n)) 8))
-                else (pure (sub_vec_int (← (R_read n)) 8))))
+                else (pure (BitVec.subInt (← (R_read n)) 8))))
           else (pure ())
           (AArch32_ExceptionReturn new_pc_value spsr)))
 
@@ -34177,7 +34199,7 @@ def decode_aarch32_instrs_RFE_A1enc_AS_txt (P : (BitVec 1)) (U : (BitVec 1)) (W 
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       let increment_name : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wordhigher : Bool := (BEq.beq P U)
@@ -34191,7 +34213,7 @@ def decode_aarch32_instrs_RFE_T1enc_AS_txt (W : (BitVec 1)) (Rn : (BitVec 4)) : 
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       let increment_name : Bool := false
       let wordhigher : Bool := false
@@ -34208,7 +34230,7 @@ def decode_aarch32_instrs_RFE_T2enc_AS_txt (W : (BitVec 1)) (Rn : (BitVec 4)) : 
   bif (← (ConditionPassed ()))
   then
     (do
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let wback : Bool := (BEq.beq W (0b1 : (BitVec 1)))
       let increment_name : Bool := true
       let wordhigher : Bool := false
@@ -34300,7 +34322,7 @@ def execute_aarch32_instrs_SRS_OpA_AS_txt (increment_name : Bool) (mode : (BitVe
   let address : (BitVec 32) :=
     bif increment_name
     then base
-    else (sub_vec_int base 8)
+    else (BitVec.subInt base 8)
   let address : (BitVec 32) :=
     bif wordhigher
     then (BitVec.addInt address 4)
@@ -34312,7 +34334,7 @@ def execute_aarch32_instrs_SRS_OpA_AS_txt (increment_name : Bool) (mode : (BitVe
     (Rmode_set 13 mode
       (bif increment_name
       then (BitVec.addInt base 8)
-      else (sub_vec_int base 8)))
+      else (BitVec.subInt base 8)))
   else (pure ())
 
 def decode_aarch32_instrs_SRS_A1enc_AS_txt (P : (BitVec 1)) (U : (BitVec 1)) (W : (BitVec 1)) (mode : (BitVec 5)) : SailM Unit := do
@@ -34357,7 +34379,7 @@ def execute_aarch32_instrs_SRS_OpT_AS_txt (increment_name : Bool) (mode : (BitVe
   let address : (BitVec 32) :=
     bif increment_name
     then base
-    else (sub_vec_int base 8)
+    else (BitVec.subInt base 8)
   let address : (BitVec 32) :=
     bif wordhigher
     then (BitVec.addInt address 4)
@@ -34369,7 +34391,7 @@ def execute_aarch32_instrs_SRS_OpT_AS_txt (increment_name : Bool) (mode : (BitVe
     (Rmode_set 13 mode
       (bif increment_name
       then (BitVec.addInt base 8)
-      else (sub_vec_int base 8)))
+      else (BitVec.subInt base 8)))
   else (pure ())
 
 def decode_aarch32_instrs_SRS_T1enc_AS_txt (W : (BitVec 1)) (mode : (BitVec 5)) : SailM Unit := do
@@ -34409,7 +34431,7 @@ def execute_aarch32_instrs_STM_u_Op_AS_txt (increment_name : Bool) (n : Nat) (re
           let address ← ((
             bif increment_name
             then (R_read n)
-            else (pure (sub_vec_int (← (R_read n)) length)) ) : SailM (BitVec 32) )
+            else (pure (BitVec.subInt (← (R_read n)) length)) ) : SailM (BitVec 32) )
           let address : (BitVec 32) :=
             bif wordhigher
             then (BitVec.addInt address 4)
@@ -34437,7 +34459,7 @@ def decode_aarch32_instrs_STM_u_A1enc_AS_txt (cond : (BitVec 4)) (P : (BitVec 1)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:41928.29-41928.30"
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       let registers : (BitVec 16) := register_list
       let increment_name : Bool := (BEq.beq U (0b1 : (BitVec 1)))
       let wordhigher : Bool := (BEq.beq P U)
@@ -34498,7 +34520,7 @@ def decode_aarch32_instrs_VMRS_A1enc_AS_txt (cond : (BitVec 4)) (reg : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:41998.29-41998.30"
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       bif (Bool.not
            (let b__0 := reg
            bif (BEq.beq (Sail.BitVec.extractLsb b__0 3 1) (0b000 : (BitVec 3)))
@@ -34525,7 +34547,7 @@ def decode_aarch32_instrs_VMRS_T1enc_AS_txt (reg : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       bif (Bool.not
            (let b__0 := reg
            bif (BEq.beq (Sail.BitVec.extractLsb b__0 3 1) (0b000 : (BitVec 3)))
@@ -34576,7 +34598,7 @@ def decode_aarch32_instrs_VMSR_A1enc_AS_txt (cond : (BitVec 4)) (reg : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:42089.29-42089.30"
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       bif (Bool.and
            (Bool.not
              (let b__0 := reg
@@ -34602,7 +34624,7 @@ def decode_aarch32_instrs_VMSR_T1enc_AS_txt (reg : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       bif (Bool.and
            (Bool.not
              (let b__0 := reg
@@ -34645,8 +34667,8 @@ def decode_aarch32_instrs_AESD_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESD_Op_A_txt d m))
   else (pure ())
 
@@ -34667,8 +34689,8 @@ def decode_aarch32_instrs_AESD_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESD_Op_A_txt d m))
   else (pure ())
 
@@ -34693,8 +34715,8 @@ def decode_aarch32_instrs_AESE_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESE_Op_A_txt d m))
   else (pure ())
 
@@ -34715,8 +34737,8 @@ def decode_aarch32_instrs_AESE_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) 
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESE_Op_A_txt d m))
   else (pure ())
 
@@ -34739,8 +34761,8 @@ def decode_aarch32_instrs_AESIMC_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESIMC_Op_A_txt d m))
   else (pure ())
 
@@ -34761,8 +34783,8 @@ def decode_aarch32_instrs_AESIMC_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESIMC_Op_A_txt d m))
   else (pure ())
 
@@ -34785,8 +34807,8 @@ def decode_aarch32_instrs_AESMC_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESMC_Op_A_txt d m))
   else (pure ())
 
@@ -34807,8 +34829,8 @@ def decode_aarch32_instrs_AESMC_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_AESMC_Op_A_txt d m))
   else (pure ())
 
@@ -34822,8 +34844,8 @@ def execute_aarch32_instrs_CRC32_Op_A_txt (crc32c : Bool) (d : Nat) (m : Nat) (n
   let poly : (BitVec 32) :=
     (integer_subrange
       (bif crc32c
-      then (UInt0 (0x1EDC6F41 : (BitVec 32)))
-      else (UInt0 (0x04C11DB7 : (BitVec 32)))) 31 0)
+      then (BitVec.toNat (0x1EDC6F41 : (BitVec 32)))
+      else (BitVec.toNat (0x04C11DB7 : (BitVec 32)))) 31 0)
   let tempacc ← (( do (pure ((← (BitReverse acc)) ++ (Zeros (n := size)))) ) : SailM
     (BitVec (32 + size)) )
   let tempval ← (( do (pure ((← (BitReverse val_name)) ++ (Zeros (n := 32)))) ) : SailM
@@ -34838,10 +34860,10 @@ def decode_aarch32_instrs_CRC32_A1enc_A_txt (cond : (BitVec 4)) (sz : (BitVec 2)
       bif (Bool.not (← (HaveCRCExt ())))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let size := (Int.shiftl 8 (UInt0 sz))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let size := (Int.shiftl 8 (BitVec.toNat sz))
       let crc32c : Bool := (BEq.beq C (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -34865,10 +34887,10 @@ def decode_aarch32_instrs_CRC32_T1enc_A_txt (C : (BitVec 1)) (Rn : (BitVec 4)) (
       bif (Bool.not (← (HaveCRCExt ())))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 Rd)
-      let n := (UInt0 Rn)
-      let m := (UInt0 Rm)
-      let size := (Int.shiftl 8 (UInt0 sz))
+      let d := (BitVec.toNat Rd)
+      let n := (BitVec.toNat Rn)
+      let m := (BitVec.toNat Rm)
+      let size := (Int.shiftl 8 (BitVec.toNat sz))
       let crc32c : Bool := (BEq.beq C (0b1 : (BitVec 1)))
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq n 15)) (BEq.beq m 15))
       then sailThrow ((Error_Unpredictable ()))
@@ -35112,8 +35134,8 @@ def decode_aarch32_instrs_LDA_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:42802.29-42802.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35124,8 +35146,8 @@ def decode_aarch32_instrs_LDA_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) : 
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35136,15 +35158,15 @@ def decode_aarch32_instrs_LDA_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) : 
 def execute_aarch32_instrs_LDAB_Op_A_txt (n : Nat) (t : Nat) : SailM Unit := do
   let address ← (( do (R_read n) ) : SailM (BitVec 32) )
   let _ : Unit := (AArch32_SetLSInstructionSyndrome 1 false t true)
-  (R_set t (zero_extend (← (MemO_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemO_read address 1)) 32))
 
 def decode_aarch32_instrs_LDAB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:42864.29-42864.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35155,8 +35177,8 @@ def decode_aarch32_instrs_LDAB_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35175,8 +35197,8 @@ def decode_aarch32_instrs_LDAEX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:42927.29-42927.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35187,8 +35209,8 @@ def decode_aarch32_instrs_LDAEX_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35200,15 +35222,15 @@ def execute_aarch32_instrs_LDAEXB_Op_A_txt (n : Nat) (t : Nat) : SailM Unit := d
   let address ← (( do (R_read n) ) : SailM (BitVec 32) )
   (AArch32_SetExclusiveMonitors address 1)
   let _ : Unit := (AArch32_SetLSInstructionSyndrome 1 false t true)
-  (R_set t (zero_extend (← (MemO_read address 1)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemO_read address 1)) 32))
 
 def decode_aarch32_instrs_LDAEXB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:42990.29-42990.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35219,8 +35241,8 @@ def decode_aarch32_instrs_LDAEXB_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35250,9 +35272,9 @@ def decode_aarch32_instrs_LDAEXD_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:43057.29-43057.30"
-      let t := (UInt0 Rt)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or
            (Bool.or (BEq.beq (BitVec.join1 [(BitVec.access Rt 0)]) (0b1 : (BitVec 1)))
              (BEq.beq t2 15)) (BEq.beq n 15))
@@ -35265,9 +35287,9 @@ def decode_aarch32_instrs_LDAEXD_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq t 15) (BEq.beq t2 15)) (BEq.beq t t2)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35279,15 +35301,15 @@ def execute_aarch32_instrs_LDAEXH_Op_A_txt (n : Nat) (t : Nat) : SailM Unit := d
   let address ← (( do (R_read n) ) : SailM (BitVec 32) )
   (AArch32_SetExclusiveMonitors address 2)
   let _ : Unit := (AArch32_SetLSInstructionSyndrome 2 false t true)
-  (R_set t (zero_extend (← (MemO_read address 2)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemO_read address 2)) 32))
 
 def decode_aarch32_instrs_LDAEXH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:43123.29-43123.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35298,8 +35320,8 @@ def decode_aarch32_instrs_LDAEXH_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35310,15 +35332,15 @@ def decode_aarch32_instrs_LDAEXH_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
 def execute_aarch32_instrs_LDAH_Op_A_txt (n : Nat) (t : Nat) : SailM Unit := do
   let address ← (( do (R_read n) ) : SailM (BitVec 32) )
   let _ : Unit := (AArch32_SetLSInstructionSyndrome 2 false t true)
-  (R_set t (zero_extend (← (MemO_read address 2)) 32))
+  (R_set t (Sail.BitVec.zeroExtend (← (MemO_read address 2)) 32))
 
 def decode_aarch32_instrs_LDAH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:43185.29-43185.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35329,8 +35351,8 @@ def decode_aarch32_instrs_LDAH_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -35404,9 +35426,9 @@ def decode_aarch32_instrs_SHA1C_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1C_Op_A_txt d m n))
   else (pure ())
 
@@ -35429,9 +35451,9 @@ def decode_aarch32_instrs_SHA1C_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1C_Op_A_txt d m n))
   else (pure ())
 
@@ -35439,7 +35461,8 @@ def decode_aarch32_instrs_SHA1C_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
 def execute_aarch32_instrs_SHA1H_Op_A_txt (d : Nat) (m : Nat) : SailM Unit := do
   (CheckCryptoEnabled32 ())
   (Q_set (Int.shiftl d 1)
-    (zero_extend (← (ROL (Sail.BitVec.extractLsb (← (Q_read (Int.shiftl m 1))) 31 0) 30)) 128))
+    (Sail.BitVec.zeroExtend
+      (← (ROL (Sail.BitVec.extractLsb (← (Q_read (Int.shiftl m 1))) 31 0) 30)) 128))
 
 def decode_aarch32_instrs_SHA1H_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2)) (Vd : (BitVec 4)) (M : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
@@ -35455,8 +35478,8 @@ def decode_aarch32_instrs_SHA1H_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1H_Op_A_txt d m))
   else (pure ())
 
@@ -35477,8 +35500,8 @@ def decode_aarch32_instrs_SHA1H_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1H_Op_A_txt d m))
   else (pure ())
 
@@ -35528,9 +35551,9 @@ def decode_aarch32_instrs_SHA1M_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1M_Op_A_txt d m n))
   else (pure ())
 
@@ -35553,9 +35576,9 @@ def decode_aarch32_instrs_SHA1M_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1M_Op_A_txt d m n))
   else (pure ())
 
@@ -35605,9 +35628,9 @@ def decode_aarch32_instrs_SHA1P_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1P_Op_A_txt d m n))
   else (pure ())
 
@@ -35630,9 +35653,9 @@ def decode_aarch32_instrs_SHA1P_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1P_Op_A_txt d m n))
   else (pure ())
 
@@ -35663,9 +35686,9 @@ def decode_aarch32_instrs_SHA1SU0_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1SU0_Op_A_txt d m n))
   else (pure ())
 
@@ -35688,9 +35711,9 @@ def decode_aarch32_instrs_SHA1SU0_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1SU0_Op_A_txt d m n))
   else (pure ())
 
@@ -35722,8 +35745,8 @@ def decode_aarch32_instrs_SHA1SU1_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1SU1_Op_A_txt d m))
   else (pure ())
 
@@ -35744,8 +35767,8 @@ def decode_aarch32_instrs_SHA1SU1_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec 2
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA1SU1_Op_A_txt d m))
   else (pure ())
 
@@ -35775,9 +35798,9 @@ def decode_aarch32_instrs_SHA256H_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256H_Op_A_txt d m n))
   else (pure ())
 
@@ -35800,9 +35823,9 @@ def decode_aarch32_instrs_SHA256H_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4))
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256H_Op_A_txt d m n))
   else (pure ())
 
@@ -35832,9 +35855,9 @@ def decode_aarch32_instrs_SHA256H2_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256H2_Op_A_txt d m n))
   else (pure ())
 
@@ -35857,9 +35880,9 @@ def decode_aarch32_instrs_SHA256H2_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256H2_Op_A_txt d m n))
   else (pure ())
 
@@ -35899,8 +35922,8 @@ def decode_aarch32_instrs_SHA256SU0_A1enc_A_txt (D : (BitVec 1)) (size : (BitVec
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256SU0_Op_A_txt d m))
   else (pure ())
 
@@ -35921,8 +35944,8 @@ def decode_aarch32_instrs_SHA256SU0_T1enc_A_txt (D : (BitVec 1)) (size : (BitVec
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256SU0_Op_A_txt d m))
   else (pure ())
 
@@ -35982,9 +36005,9 @@ def decode_aarch32_instrs_SHA256SU1_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256SU1_Op_A_txt d m n))
   else (pure ())
 
@@ -36007,9 +36030,9 @@ def decode_aarch32_instrs_SHA256SU1_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4
            (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (D ++ Vd))
-      let n := (UInt0 (N ++ Vn))
-      let m := (UInt0 (M ++ Vm))
+      let d := (BitVec.toNat (D ++ Vd))
+      let n := (BitVec.toNat (N ++ Vn))
+      let m := (BitVec.toNat (M ++ Vm))
       (execute_aarch32_instrs_SHA256SU1_Op_A_txt d m n))
   else (pure ())
 
@@ -36024,8 +36047,8 @@ def decode_aarch32_instrs_STL_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) 
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:44146.29-44146.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36036,8 +36059,8 @@ def decode_aarch32_instrs_STL_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) : 
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36055,8 +36078,8 @@ def decode_aarch32_instrs_STLB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:44208.29-44208.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36067,8 +36090,8 @@ def decode_aarch32_instrs_STLB_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36084,17 +36107,17 @@ def execute_aarch32_instrs_STLEX_Op_A_txt (d : Nat) (n : Nat) (t : Nat) : SailM 
     (do
       let _ : Unit := (AArch32_SetLSInstructionSyndrome 4 false t true)
       (MemO_set address 4 (← (R_read t)))
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STLEX_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:44275.29-44275.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36108,9 +36131,9 @@ def decode_aarch32_instrs_STLEX_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) 
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36129,17 +36152,17 @@ def execute_aarch32_instrs_STLEXB_Op_A_txt (d : Nat) (n : Nat) (t : Nat) : SailM
     (do
       let _ : Unit := (AArch32_SetLSInstructionSyndrome 1 false t true)
       (MemO_set address 1 (Sail.BitVec.extractLsb (← (R_read t)) 7 0))
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STLEXB_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:44352.29-44352.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36153,9 +36176,9 @@ def decode_aarch32_instrs_STLEXB_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36178,18 +36201,18 @@ def execute_aarch32_instrs_STLEXD_Op_A_txt (d : Nat) (n : Nat) (t : Nat) (t2 : N
     (do
       let _ : Unit := (AArch32_SetLSInstructionSyndrome 8 false t true)
       (MemO_set address 8 value_name)
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STLEXD_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:44433.29-44433.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
       let t2 := (t +i 1)
-      let n := (UInt0 Rn)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or
            (Bool.or
              (Bool.or (BEq.beq d 15)
@@ -36207,10 +36230,10 @@ def decode_aarch32_instrs_STLEXD_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let t2 := (UInt0 Rt2)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let t2 := (BitVec.toNat Rt2)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq t2 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36229,17 +36252,17 @@ def execute_aarch32_instrs_STLEXH_Op_A_txt (d : Nat) (n : Nat) (t : Nat) : SailM
     (do
       let _ : Unit := (AArch32_SetLSInstructionSyndrome 2 false t true)
       (MemO_set address 2 (Sail.BitVec.extractLsb (← (R_read t)) 15 0))
-      (R_set d (zero_extend (0b0 : (BitVec 1)) 32)))
-  else (R_set d (zero_extend (0b1 : (BitVec 1)) 32))
+      (R_set d (Sail.BitVec.zeroExtend (0b0 : (BitVec 1)) 32)))
+  else (R_set d (Sail.BitVec.zeroExtend (0b1 : (BitVec 1)) 32))
 
 def decode_aarch32_instrs_STLEXH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4)) (Rd : (BitVec 4)) (Rt : (BitVec 4)) : SailM Unit := do
   bif (← (ConditionPassed ()))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:44509.29-44509.30"
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36253,9 +36276,9 @@ def decode_aarch32_instrs_STLEXH_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4))
   bif (← (ConditionPassed ()))
   then
     (do
-      let d := (UInt0 Rd)
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let d := (BitVec.toNat Rd)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (Bool.or (BEq.beq d 15) (BEq.beq t 15)) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36276,8 +36299,8 @@ def decode_aarch32_instrs_STLH_A1enc_A_txt (cond : (BitVec 4)) (Rn : (BitVec 4))
   then
     (do
       assert (bne cond (0xF : (BitVec 4))) "src/instrs32.sail:44581.29-44581.30"
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36288,8 +36311,8 @@ def decode_aarch32_instrs_STLH_T1enc_A_txt (Rn : (BitVec 4)) (Rt : (BitVec 4)) :
   bif (← (ConditionPassed ()))
   then
     (do
-      let t := (UInt0 Rt)
-      let n := (UInt0 Rn)
+      let t := (BitVec.toNat Rt)
+      let n := (BitVec.toNat Rn)
       bif (Bool.or (BEq.beq t 15) (BEq.beq n 15))
       then sailThrow ((Error_Unpredictable ()))
       else (pure ())
@@ -36353,8 +36376,8 @@ def decode_aarch32_instrs_VCVTA_asimd_A1enc_A_txt (D : (BitVec 1)) (size : (BitV
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -36394,8 +36417,8 @@ def decode_aarch32_instrs_VCVTA_asimd_T1enc_A_txt (D : (BitVec 1)) (size : (BitV
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -36423,7 +36446,7 @@ def decode_aarch32_instrs_VCVTA_vfp_A1enc_A_txt (D : (BitVec 1)) (RM : (BitVec 2
   else (pure ())
   let rounding ← (( do (FPDecodeRM RM) ) : SailM FPRounding )
   let is_unsigned : Bool := (BEq.beq op (0b0 : (BitVec 1)))
-  let d := (UInt0 (Vd ++ D))
+  let d := (BitVec.toNat (Vd ++ D))
   let esize : Int := 16
   let m ← (( do (undefined_range 0 31) ) : SailM Nat )
   let _ : Unit :=
@@ -36431,19 +36454,19 @@ def decode_aarch32_instrs_VCVTA_vfp_A1enc_A_txt (D : (BitVec 1)) (RM : (BitVec 2
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let m : Nat := (UInt0 (Vm ++ M))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let m : Nat := (UInt0 (Vm ++ M))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let m : Nat := (UInt0 (M ++ Vm))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let m := m
@@ -36460,7 +36483,7 @@ def decode_aarch32_instrs_VCVTA_vfp_T1enc_A_txt (D : (BitVec 1)) (RM : (BitVec 2
   else (pure ())
   let rounding ← (( do (FPDecodeRM RM) ) : SailM FPRounding )
   let is_unsigned : Bool := (BEq.beq op (0b0 : (BitVec 1)))
-  let d := (UInt0 (Vd ++ D))
+  let d := (BitVec.toNat (Vd ++ D))
   let esize : Int := 16
   let m ← (( do (undefined_range 0 31) ) : SailM Nat )
   let _ : Unit :=
@@ -36468,19 +36491,19 @@ def decode_aarch32_instrs_VCVTA_vfp_T1enc_A_txt (D : (BitVec 1)) (RM : (BitVec 2
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let m : Nat := (UInt0 (Vm ++ M))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let m : Nat := (UInt0 (Vm ++ M))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let m : Nat := (UInt0 (M ++ Vm))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let m := m
@@ -36579,9 +36602,9 @@ def decode_aarch32_instrs_VMAXNM_A1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) 
       ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -36608,25 +36631,25 @@ def decode_aarch32_instrs_VMAXNM_A2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let d : Nat := (UInt0 (Vd ++ D))
-      let n : Nat := (UInt0 (Vn ++ N))
-      let m : Nat := (UInt0 (Vm ++ M))
+      let d : Nat := (BitVec.toNat (Vd ++ D))
+      let n : Nat := (BitVec.toNat (Vn ++ N))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let d : Nat := (UInt0 (Vd ++ D))
-        let n : Nat := (UInt0 (Vn ++ N))
-        let m : Nat := (UInt0 (Vm ++ M))
+        let d : Nat := (BitVec.toNat (Vd ++ D))
+        let n : Nat := (BitVec.toNat (Vn ++ N))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let d : Nat := (UInt0 (D ++ Vd))
-          let n : Nat := (UInt0 (N ++ Vn))
-          let m : Nat := (UInt0 (M ++ Vm))
+          let d : Nat := (BitVec.toNat (D ++ Vd))
+          let n : Nat := (BitVec.toNat (N ++ Vn))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let n := n
@@ -36666,9 +36689,9 @@ def decode_aarch32_instrs_VMAXNM_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1)) 
       ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -36698,25 +36721,25 @@ def decode_aarch32_instrs_VMAXNM_T2enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let d : Nat := (UInt0 (Vd ++ D))
-      let n : Nat := (UInt0 (Vn ++ N))
-      let m : Nat := (UInt0 (Vm ++ M))
+      let d : Nat := (BitVec.toNat (Vd ++ D))
+      let n : Nat := (BitVec.toNat (Vn ++ N))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let d : Nat := (UInt0 (Vd ++ D))
-        let n : Nat := (UInt0 (Vn ++ N))
-        let m : Nat := (UInt0 (Vm ++ M))
+        let d : Nat := (BitVec.toNat (Vd ++ D))
+        let n : Nat := (BitVec.toNat (Vn ++ N))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let d : Nat := (UInt0 (D ++ Vd))
-          let n : Nat := (UInt0 (N ++ Vn))
-          let m : Nat := (UInt0 (M ++ Vm))
+          let d : Nat := (BitVec.toNat (D ++ Vd))
+          let n : Nat := (BitVec.toNat (N ++ Vn))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let n := n
@@ -36793,8 +36816,8 @@ def decode_aarch32_instrs_VRINTA_asimd_A1enc_A_txt (D : (BitVec 1)) (size : (Bit
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -36840,8 +36863,8 @@ def decode_aarch32_instrs_VRINTA_asimd_T1enc_A_txt (D : (BitVec 1)) (size : (Bit
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -36875,22 +36898,22 @@ def decode_aarch32_instrs_VRINTA_vfp_A1enc_A_txt (D : (BitVec 1)) (RM : (BitVec 
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let d : Nat := (UInt0 (Vd ++ D))
-      let m : Nat := (UInt0 (Vm ++ M))
+      let d : Nat := (BitVec.toNat (Vd ++ D))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let d : Nat := (UInt0 (Vd ++ D))
-        let m : Nat := (UInt0 (Vm ++ M))
+        let d : Nat := (BitVec.toNat (Vd ++ D))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let d : Nat := (UInt0 (D ++ Vd))
-          let m : Nat := (UInt0 (M ++ Vm))
+          let d : Nat := (BitVec.toNat (D ++ Vd))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let m := m
@@ -36916,22 +36939,22 @@ def decode_aarch32_instrs_VRINTA_vfp_T1enc_A_txt (D : (BitVec 1)) (RM : (BitVec 
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let d : Nat := (UInt0 (Vd ++ D))
-      let m : Nat := (UInt0 (Vm ++ M))
+      let d : Nat := (BitVec.toNat (Vd ++ D))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let d : Nat := (UInt0 (Vd ++ D))
-        let m : Nat := (UInt0 (Vm ++ M))
+        let d : Nat := (BitVec.toNat (Vd ++ D))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let d : Nat := (UInt0 (D ++ Vd))
-          let m : Nat := (UInt0 (M ++ Vm))
+          let d : Nat := (BitVec.toNat (D ++ Vd))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let m := m
@@ -37001,8 +37024,8 @@ def decode_aarch32_instrs_VRINTX_asimd_A1enc_A_txt (D : (BitVec 1)) (size : (Bit
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -37039,8 +37062,8 @@ def decode_aarch32_instrs_VRINTX_asimd_T1enc_A_txt (D : (BitVec 1)) (size : (Bit
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -37084,22 +37107,22 @@ def decode_aarch32_instrs_VRINTX_vfp_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVe
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -37128,22 +37151,22 @@ def decode_aarch32_instrs_VRINTX_vfp_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -37214,8 +37237,8 @@ def decode_aarch32_instrs_VRINTZ_asimd_A1enc_A_txt (D : (BitVec 1)) (size : (Bit
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -37252,8 +37275,8 @@ def decode_aarch32_instrs_VRINTZ_asimd_T1enc_A_txt (D : (BitVec 1)) (size : (Bit
       else ())
   let esize := esize
   let elements := elements
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b0 : (BitVec 1)))
     then 1
@@ -37300,22 +37323,22 @@ def decode_aarch32_instrs_VRINTZ_vfp_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVe
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -37348,22 +37371,22 @@ def decode_aarch32_instrs_VRINTZ_vfp_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 
         bif (BEq.beq b__0 (0b01 : (BitVec 2)))
         then
           (let esize : Int := 16
-          let d : Nat := (UInt0 (Vd ++ D))
-          let m : Nat := (UInt0 (Vm ++ M))
+          let d : Nat := (BitVec.toNat (Vd ++ D))
+          let m : Nat := (BitVec.toNat (Vm ++ M))
           ())
         else
           (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
           then
             (let esize : Int := 32
-            let d : Nat := (UInt0 (Vd ++ D))
-            let m : Nat := (UInt0 (Vm ++ M))
+            let d : Nat := (BitVec.toNat (Vd ++ D))
+            let m : Nat := (BitVec.toNat (Vm ++ M))
             ())
           else
             (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
             then
               (let esize : Int := 64
-              let d : Nat := (UInt0 (D ++ Vd))
-              let m : Nat := (UInt0 (M ++ Vm))
+              let d : Nat := (BitVec.toNat (D ++ Vd))
+              let m : Nat := (BitVec.toNat (M ++ Vm))
               ())
             else ()))
       let m := m
@@ -37409,25 +37432,25 @@ def decode_aarch32_instrs_VSEL_A1enc_A_txt (D : (BitVec 1)) (cc : (BitVec 2)) (V
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let d : Nat := (UInt0 (Vd ++ D))
-      let n : Nat := (UInt0 (Vn ++ N))
-      let m : Nat := (UInt0 (Vm ++ M))
+      let d : Nat := (BitVec.toNat (Vd ++ D))
+      let n : Nat := (BitVec.toNat (Vn ++ N))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let d : Nat := (UInt0 (Vd ++ D))
-        let n : Nat := (UInt0 (Vn ++ N))
-        let m : Nat := (UInt0 (Vm ++ M))
+        let d : Nat := (BitVec.toNat (Vd ++ D))
+        let n : Nat := (BitVec.toNat (Vn ++ N))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let d : Nat := (UInt0 (D ++ Vd))
-          let n : Nat := (UInt0 (N ++ Vn))
-          let m : Nat := (UInt0 (M ++ Vm))
+          let d : Nat := (BitVec.toNat (D ++ Vd))
+          let n : Nat := (BitVec.toNat (N ++ Vn))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let n := n
@@ -37455,25 +37478,25 @@ def decode_aarch32_instrs_VSEL_T1enc_A_txt (D : (BitVec 1)) (cc : (BitVec 2)) (V
     bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then
       (let esize : Int := 16
-      let d : Nat := (UInt0 (Vd ++ D))
-      let n : Nat := (UInt0 (Vn ++ N))
-      let m : Nat := (UInt0 (Vm ++ M))
+      let d : Nat := (BitVec.toNat (Vd ++ D))
+      let n : Nat := (BitVec.toNat (Vn ++ N))
+      let m : Nat := (BitVec.toNat (Vm ++ M))
       ())
     else
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then
         (let esize : Int := 32
-        let d : Nat := (UInt0 (Vd ++ D))
-        let n : Nat := (UInt0 (Vn ++ N))
-        let m : Nat := (UInt0 (Vm ++ M))
+        let d : Nat := (BitVec.toNat (Vd ++ D))
+        let n : Nat := (BitVec.toNat (Vn ++ N))
+        let m : Nat := (BitVec.toNat (Vm ++ M))
         ())
       else
         (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
         then
           (let esize : Int := 64
-          let d : Nat := (UInt0 (D ++ Vd))
-          let n : Nat := (UInt0 (N ++ Vn))
-          let m : Nat := (UInt0 (M ++ Vm))
+          let d : Nat := (BitVec.toNat (D ++ Vd))
+          let n : Nat := (BitVec.toNat (N ++ Vn))
+          let m : Nat := (BitVec.toNat (M ++ Vm))
           ())
         else ()))
   let n := n
@@ -37673,20 +37696,20 @@ def execute_aarch32_instrs_VDOT_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (n : 
                       then
                         (do
                           let element1 ←
-                            (pure (sint
-                                (← (Elem_read operand1 ((4 *i e) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toInt
+                                (← (Elem_read operand1 ((4 *i e) +i i) (Int.ediv esize 4)))))
                           let element2 ←
-                            (pure (sint
-                                (← (Elem_read operand2 ((4 *i e) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toInt
+                                (← (Elem_read operand2 ((4 *i e) +i i) (Int.ediv esize 4)))))
                           (pure (element1, element2)))
                       else
                         (do
                           let element1 ←
-                            (pure (UInt0
-                                (← (Elem_read operand1 ((4 *i e) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toNat
+                                (← (Elem_read operand1 ((4 *i e) +i i) (Int.ediv esize 4)))))
                           let element2 ←
-                            (pure (UInt0
-                                (← (Elem_read operand2 ((4 *i e) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toNat
+                                (← (Elem_read operand2 ((4 *i e) +i i) (Int.ediv esize 4)))))
                           (pure (element1, element2))) ) : SailM (Int × Int) )
                     let res : Int := (res +i (element1 *i element2))
                     (pure (element1, element2, res))
@@ -37713,9 +37736,9 @@ def decode_aarch32_instrs_VDOT_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let is_signed : Bool := (BEq.beq U (0b0 : (BitVec 1)))
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -37738,9 +37761,9 @@ def decode_aarch32_instrs_VDOT_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (V
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let is_signed : Bool := (BEq.beq U (0b0 : (BitVec 1)))
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -37788,20 +37811,20 @@ def execute_aarch32_instrs_VDOT_s_Op_A_txt (d : Nat) (esize : Nat) (index : Nat)
                       then
                         (do
                           let element1 ←
-                            (pure (sint
-                                (← (Elem_read operand1 ((4 *i e) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toInt
+                                (← (Elem_read operand1 ((4 *i e) +i i) (Int.ediv esize 4)))))
                           let element2 ←
-                            (pure (sint
-                                (← (Elem_read operand2 ((4 *i index) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toInt
+                                (← (Elem_read operand2 ((4 *i index) +i i) (Int.ediv esize 4)))))
                           (pure (element1, element2)))
                       else
                         (do
                           let element1 ←
-                            (pure (UInt0
-                                (← (Elem_read operand1 ((4 *i e) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toNat
+                                (← (Elem_read operand1 ((4 *i e) +i i) (Int.ediv esize 4)))))
                           let element2 ←
-                            (pure (UInt0
-                                (← (Elem_read operand2 ((4 *i index) +i i) (ediv_nat esize 4)))))
+                            (pure (BitVec.toNat
+                                (← (Elem_read operand2 ((4 *i index) +i i) (Int.ediv esize 4)))))
                           (pure (element1, element2))) ) : SailM (Int × Int) )
                     let res : Int := (res +i (element1 *i element2))
                     (pure (element1, element2, res))
@@ -37826,10 +37849,10 @@ def decode_aarch32_instrs_VDOT_s_A1enc_A_txt (op1 : (BitVec 1)) (D : (BitVec 1))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let is_signed : Bool := (BEq.beq U (0b0 : (BitVec 1)))
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (Sail.BitVec.extractLsb Vm 3 0))
-  let index := (UInt0 M)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (Sail.BitVec.extractLsb Vm 3 0))
+  let index := (BitVec.toNat M)
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -37850,10 +37873,10 @@ def decode_aarch32_instrs_VDOT_s_T1enc_A_txt (op1 : (BitVec 1)) (D : (BitVec 1))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let is_signed : Bool := (BEq.beq U (0b0 : (BitVec 1)))
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (Sail.BitVec.extractLsb Vm 3 0))
-  let index := (UInt0 M)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (Sail.BitVec.extractLsb Vm 3 0))
+  let index := (BitVec.toNat M)
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -37885,8 +37908,8 @@ def decode_aarch32_instrs_VJCVT_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1))
   bif (bne cond (0xE : (BitVec 4)))
   then sailThrow ((Error_Unpredictable ()))
   else (pure ())
-  let d := (UInt0 (Vd ++ D))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (Vd ++ D))
+  let m := (BitVec.toNat (M ++ Vm))
   (execute_aarch32_instrs_VJCVT_Op_A_txt d m)
 
 def decode_aarch32_instrs_VJCVT_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (M : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
@@ -37896,8 +37919,8 @@ def decode_aarch32_instrs_VJCVT_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (
   bif (← (InITBlock ()))
   then sailThrow ((Error_Unpredictable ()))
   else (pure ())
-  let d := (UInt0 (Vd ++ D))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (Vd ++ D))
+  let m := (BitVec.toNat (M ++ Vm))
   (execute_aarch32_instrs_VJCVT_Op_A_txt d m)
 
 /-- Type quantifiers: d__arg : Nat, elements : Int, esize : Nat, m : Nat, n : Nat, regs : Nat, regs
@@ -37999,10 +38022,10 @@ def decode_aarch32_instrs_VCMLA_A1enc_A_txt (rot : (BitVec 2)) (D : (BitVec 1)) 
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
-  let esize := (Int.shiftl 16 (UInt0 S))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
+  let esize := (Int.shiftl 16 (BitVec.toNat S))
   bif (Bool.and (Bool.not (HaveFP16Ext ())) (BEq.beq esize 16))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
@@ -38028,10 +38051,10 @@ def decode_aarch32_instrs_VCMLA_T1enc_A_txt (rot : (BitVec 2)) (D : (BitVec 1)) 
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
-  let esize := (Int.shiftl 16 (UInt0 S))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
+  let esize := (Int.shiftl 16 (BitVec.toNat S))
   bif (Bool.and (Bool.not (HaveFP16Ext ())) (BEq.beq esize 16))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
@@ -38143,13 +38166,13 @@ def decode_aarch32_instrs_VCMLA_idx_A1enc_A_txt (S : (BitVec 1)) (D : (BitVec 1)
          (BEq.beq (BitVec.join1 [(BitVec.access Vn 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
   let m :=
     bif (BEq.beq S (0b1 : (BitVec 1)))
-    then (UInt0 (M ++ Vm))
-    else (UInt0 Vm)
-  let esize := (Int.shiftl 16 (UInt0 S))
+    then (BitVec.toNat (M ++ Vm))
+    else (BitVec.toNat Vm)
+  let esize := (Int.shiftl 16 (BitVec.toNat S))
   bif (Bool.and (Bool.not (HaveFP16Ext ())) (BEq.beq esize 16))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
@@ -38161,7 +38184,7 @@ def decode_aarch32_instrs_VCMLA_idx_A1enc_A_txt (S : (BitVec 1)) (D : (BitVec 1)
   let index :=
     bif (BEq.beq S (0b1 : (BitVec 1)))
     then 0
-    else (UInt0 M)
+    else (BitVec.toNat M)
   assert (Bool.and (0 ≤b m) (Bool.and (m ≤b 31) (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)))) "src/instrs32.sail:46716.64-46716.65"
   (execute_aarch32_instrs_VCMLA_idx_Op_A_txt d elements esize index m n regs rot)
 
@@ -38177,13 +38200,13 @@ def decode_aarch32_instrs_VCMLA_idx_T1enc_A_txt (S : (BitVec 1)) (D : (BitVec 1)
          (BEq.beq (BitVec.join1 [(BitVec.access Vn 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
   let m :=
     bif (BEq.beq S (0b1 : (BitVec 1)))
-    then (UInt0 (M ++ Vm))
-    else (UInt0 Vm)
-  let esize := (Int.shiftl 16 (UInt0 S))
+    then (BitVec.toNat (M ++ Vm))
+    else (BitVec.toNat Vm)
+  let esize := (Int.shiftl 16 (BitVec.toNat S))
   bif (Bool.and (Bool.not (HaveFP16Ext ())) (BEq.beq esize 16))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
@@ -38195,7 +38218,7 @@ def decode_aarch32_instrs_VCMLA_idx_T1enc_A_txt (S : (BitVec 1)) (D : (BitVec 1)
   let index :=
     bif (BEq.beq S (0b1 : (BitVec 1)))
     then 0
-    else (UInt0 M)
+    else (BitVec.toNat M)
   assert (Bool.and (0 ≤b m) (Bool.and (m ≤b 31) (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)))) "src/instrs32.sail:46756.64-46756.65"
   (execute_aarch32_instrs_VCMLA_idx_Op_A_txt d elements esize index m n regs rot)
 
@@ -38267,10 +38290,10 @@ def decode_aarch32_instrs_VCADD_A1enc_A_txt (rot : (BitVec 1)) (D : (BitVec 1)) 
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
-  let esize := (Int.shiftl 16 (UInt0 S))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
+  let esize := (Int.shiftl 16 (BitVec.toNat S))
   bif (Bool.and (Bool.not (HaveFP16Ext ())) (BEq.beq esize 16))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
@@ -38296,10 +38319,10 @@ def decode_aarch32_instrs_VCADD_T1enc_A_txt (rot : (BitVec 1)) (D : (BitVec 1)) 
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
-  let esize := (Int.shiftl 16 (UInt0 S))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
+  let esize := (Int.shiftl 16 (BitVec.toNat S))
   bif (Bool.and (Bool.not (HaveFP16Ext ())) (BEq.beq esize 16))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
@@ -38352,8 +38375,8 @@ def execute_aarch32_instrs_VFMAL_Op_A_txt (Q : (BitVec 1)) (d : Nat) (datasize :
           for e in [loop_e_lower:loop_e_upper:1]i do
             let (element1, element2, result) := loop_vars_1
             loop_vars_1 ← do
-              let element1 ← (Elem_read operand1 ((2 *i r) +i e) (ediv_nat esize 2))
-              let element2 ← (Elem_read operand2 ((2 *i r) +i e) (ediv_nat esize 2))
+              let element1 ← (Elem_read operand1 ((2 *i r) +i e) (Int.ediv esize 2))
+              let element2 ← (Elem_read operand2 ((2 *i r) +i e) (Int.ediv esize 2))
               let element1 ← (( do
                 bif sub_op
                 then
@@ -38381,15 +38404,15 @@ def decode_aarch32_instrs_VFMAL_A1enc_A_txt (S : (BitVec 1)) (D : (BitVec 1)) (V
        (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
+  let d := (BitVec.toNat (D ++ Vd))
   let n :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (N ++ Vn))
-    else (UInt0 (Vn ++ N))
+    then (BitVec.toNat (N ++ Vn))
+    else (BitVec.toNat (Vn ++ N))
   let m :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (M ++ Vm))
-    else (UInt0 (Vm ++ M))
+    then (BitVec.toNat (M ++ Vm))
+    else (BitVec.toNat (Vm ++ M))
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -38414,15 +38437,15 @@ def decode_aarch32_instrs_VFMAL_T1enc_A_txt (S : (BitVec 1)) (D : (BitVec 1)) (V
        (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
+  let d := (BitVec.toNat (D ++ Vd))
   let n :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (N ++ Vn))
-    else (UInt0 (Vn ++ N))
+    then (BitVec.toNat (N ++ Vn))
+    else (BitVec.toNat (Vn ++ N))
   let m :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (M ++ Vm))
-    else (UInt0 (Vm ++ M))
+    then (BitVec.toNat (M ++ Vm))
+    else (BitVec.toNat (Vm ++ M))
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -38463,7 +38486,7 @@ def execute_aarch32_instrs_VFMAL_i_Op_A_txt (Q : (BitVec 1)) (d : Nat) (datasize
         let operand1 ← (pure (Sail.BitVec.extractLsb (← (D_read n)) (datasize -i 1) 0))
         let operand2 ← (pure (Sail.BitVec.extractLsb (← (D_read m)) (datasize -i 1) 0))
         (pure (operand1, operand2))) ) : SailM ((BitVec datasize) × (BitVec datasize)) )
-  let element2 ← (( do (Elem_read operand2 index (ediv_nat esize 2)) ) : SailM
+  let element2 ← (( do (Elem_read operand2 index (Int.ediv esize 2)) ) : SailM
     (BitVec (esize / 2)) )
   let (element1, operand3, result) ← (( do
     let loop_r_lower := 0
@@ -38480,7 +38503,7 @@ def execute_aarch32_instrs_VFMAL_i_Op_A_txt (Q : (BitVec 1)) (d : Nat) (datasize
           for e in [loop_e_lower:loop_e_upper:1]i do
             let (element1, result) := loop_vars_1
             loop_vars_1 ← do
-              let element1 ← (Elem_read operand1 ((2 *i r) +i e) (ediv_nat esize 2))
+              let element1 ← (Elem_read operand1 ((2 *i r) +i e) (Int.ediv esize 2))
               let element1 ← (( do
                 bif sub_op
                 then
@@ -38506,19 +38529,19 @@ def decode_aarch32_instrs_VFMAL_i_A1enc_A_txt (D : (BitVec 1)) (S : (BitVec 1)) 
        (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
+  let d := (BitVec.toNat (D ++ Vd))
   let n :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (N ++ Vn))
-    else (UInt0 (Vn ++ N))
+    then (BitVec.toNat (N ++ Vn))
+    else (BitVec.toNat (Vn ++ N))
   let m :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-    else (UInt0 ((Sail.BitVec.extractLsb Vm 2 0) ++ M))
+    then (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+    else (BitVec.toNat ((Sail.BitVec.extractLsb Vm 2 0) ++ M))
   let index :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
-    else (UInt0 (BitVec.join1 [(BitVec.access Vm 3)]))
+    then (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+    else (BitVec.toNat (BitVec.join1 [(BitVec.access Vm 3)]))
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -38548,19 +38571,19 @@ def decode_aarch32_instrs_VFMAL_i_T1enc_A_txt (D : (BitVec 1)) (S : (BitVec 1)) 
        (BEq.beq (BitVec.join1 [(BitVec.access Vd 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
+  let d := (BitVec.toNat (D ++ Vd))
   let n :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (N ++ Vn))
-    else (UInt0 (Vn ++ N))
+    then (BitVec.toNat (N ++ Vn))
+    else (BitVec.toNat (Vn ++ N))
   let m :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-    else (UInt0 ((Sail.BitVec.extractLsb Vm 2 0) ++ M))
+    then (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+    else (BitVec.toNat ((Sail.BitVec.extractLsb Vm 2 0) ++ M))
   let index :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
-    then (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
-    else (UInt0 (BitVec.join1 [(BitVec.access Vm 3)]))
+    then (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+    else (BitVec.toNat (BitVec.join1 [(BitVec.access Vm 3)]))
   let esize := 32
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
@@ -38628,9 +38651,9 @@ def decode_aarch32_instrs_VDOT_bf16_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2
@@ -38651,9 +38674,9 @@ def decode_aarch32_instrs_VDOT_bf16_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2
@@ -38706,10 +38729,10 @@ def decode_aarch32_instrs_VDOT_bf16_i_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec
          (BEq.beq (BitVec.join1 [(BitVec.access Vn 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 Vm)
-  let i := (UInt0 M)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat Vm)
+  let i := (BitVec.toNat M)
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2
@@ -38728,10 +38751,10 @@ def decode_aarch32_instrs_VDOT_bf16_i_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec
          (BEq.beq (BitVec.join1 [(BitVec.access Vn 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 Vm)
-  let i := (UInt0 M)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat Vm)
+  let i := (BitVec.toNat M)
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2
@@ -38757,9 +38780,9 @@ def decode_aarch32_instrs_VMMLA_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
        (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs := 2
   (execute_aarch32_instrs_VMMLA_Op_A_txt d m n)
 
@@ -38776,9 +38799,9 @@ def decode_aarch32_instrs_VMMLA_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (
        (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs := 2
   (execute_aarch32_instrs_VMMLA_Op_A_txt d m n)
 
@@ -38812,8 +38835,8 @@ def decode_aarch32_instrs_VCVT_A1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (M
   bif (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   (execute_aarch32_instrs_VCVT_Op_A_txt d m)
 
 def decode_aarch32_instrs_VCVT_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (M : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
@@ -38823,8 +38846,8 @@ def decode_aarch32_instrs_VCVT_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (M
   bif (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let m := (BitVec.toNat (M ++ Vm))
   (execute_aarch32_instrs_VCVT_Op_A_txt d m)
 
 /-- Type quantifiers: d : Nat, m : Nat, 0 ≤ m ∧ m ≤ 31 ∧ 0 ≤ d ∧ d ≤ 31 -/
@@ -38842,8 +38865,8 @@ def decode_aarch32_instrs_VCVTB_bf16_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVe
       bif (Bool.not (← (HaveAArch32BF16Ext ())))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VCVTB_bf16_Op_A_txt d m))
   else (pure ())
 
@@ -38854,8 +38877,8 @@ def decode_aarch32_instrs_VCVTB_bf16_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 
       bif (Bool.not (← (HaveAArch32BF16Ext ())))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VCVTB_bf16_Op_A_txt d m))
   else (pure ())
 
@@ -38874,8 +38897,8 @@ def decode_aarch32_instrs_VCVTT_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1))
       bif (Bool.not (← (HaveAArch32BF16Ext ())))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VCVTT_Op_A_txt d m))
   else (pure ())
 
@@ -38886,8 +38909,8 @@ def decode_aarch32_instrs_VCVTT_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 4)) (
       bif (Bool.not (← (HaveAArch32BF16Ext ())))
       then sailThrow ((Error_Undefined ()))
       else (pure ())
-      let d := (UInt0 (Vd ++ D))
-      let m := (UInt0 (Vm ++ M))
+      let d := (BitVec.toNat (Vd ++ D))
+      let m := (BitVec.toNat (Vm ++ M))
       (execute_aarch32_instrs_VCVTT_Op_A_txt d m))
   else (pure ())
 
@@ -38928,11 +38951,11 @@ def decode_aarch32_instrs_VFMA_bf_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4))
        (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
-  let elements := (ediv_nat 128 32)
-  let sel := (UInt0 Q)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
+  let elements := (Int.ediv 128 32)
+  let sel := (BitVec.toNat Q)
   (execute_aarch32_instrs_VFMA_bf_Op_A_txt d elements m n sel)
 
 def decode_aarch32_instrs_VFMA_bf_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (Vd : (BitVec 4)) (N : (BitVec 1)) (Q : (BitVec 1)) (M : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
@@ -38948,11 +38971,11 @@ def decode_aarch32_instrs_VFMA_bf_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4))
        (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
-  let elements := (ediv_nat 128 32)
-  let sel := (UInt0 Q)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
+  let elements := (Int.ediv 128 32)
+  let sel := (BitVec.toNat Q)
   (execute_aarch32_instrs_VFMA_bf_Op_A_txt d elements m n sel)
 
 /-- Type quantifiers: d : Nat, elements : Nat, i : Nat, m : Nat, n : Nat, sel : Nat, sel ∈ {0, 1}
@@ -38992,12 +39015,12 @@ def decode_aarch32_instrs_VFMA_bfs_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)
        (BEq.beq (BitVec.join1 [(BitVec.access Vn 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-  let i := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
-  let elements := (ediv_nat 128 32)
-  let sel := (UInt0 Q)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+  let i := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+  let elements := (Int.ediv 128 32)
+  let sel := (BitVec.toNat Q)
   (execute_aarch32_instrs_VFMA_bfs_Op_A_txt d elements i m n sel)
 
 def decode_aarch32_instrs_VFMA_bfs_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (Vd : (BitVec 4)) (N : (BitVec 1)) (Q : (BitVec 1)) (M : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
@@ -39011,12 +39034,12 @@ def decode_aarch32_instrs_VFMA_bfs_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)
        (BEq.beq (BitVec.join1 [(BitVec.access Vn 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (Sail.BitVec.extractLsb Vm 2 0))
-  let i := (UInt0 (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
-  let elements := (ediv_nat 128 32)
-  let sel := (UInt0 Q)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (Sail.BitVec.extractLsb Vm 2 0))
+  let i := (BitVec.toNat (M ++ (BitVec.join1 [(BitVec.access Vm 3)])))
+  let elements := (Int.ediv 128 32)
+  let sel := (BitVec.toNat Q)
   (execute_aarch32_instrs_VFMA_bfs_Op_A_txt d elements i m n sel)
 
 /-- Type quantifiers: d : Nat, m : Nat, n : Nat, k_op1_unsigned : Bool, k_op2_unsigned : Bool, 0 ≤
@@ -39063,9 +39086,9 @@ def decode_aarch32_instrs_MMLA_A1enc_A_txt (B : (BitVec 1)) (D : (BitVec 1)) (Vn
        (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   (execute_aarch32_instrs_MMLA_Op_A_txt d m n op1_unsigned op2_unsigned)
 
 def decode_aarch32_instrs_MMLA_T1enc_A_txt (B : (BitVec 1)) (D : (BitVec 1)) (Vn : (BitVec 4)) (Vd : (BitVec 4)) (N : (BitVec 1)) (M : (BitVec 1)) (U : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
@@ -39106,9 +39129,9 @@ def decode_aarch32_instrs_MMLA_T1enc_A_txt (B : (BitVec 1)) (D : (BitVec 1)) (Vn
        (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   (execute_aarch32_instrs_MMLA_Op_A_txt d m n op1_unsigned op2_unsigned)
 
 /-- Type quantifiers: d : Nat, m : Nat, n : Nat, regs : Nat, regs ∈ {1, 2} ∧
@@ -39145,8 +39168,10 @@ def execute_aarch32_instrs_VUSDOT_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (regs :
                 for b in [loop_b_lower:loop_b_upper:1]i do
                   let (element1, element2, res) := loop_vars_2
                   loop_vars_2 ← do
-                    let element1 ← (pure (UInt0 (← (Elem_read operand1 ((4 *i e) +i b) 8))))
-                    let element2 ← (pure (sint (← (Elem_read operand2 ((4 *i e) +i b) 8))))
+                    let element1 ←
+                      (pure (BitVec.toNat (← (Elem_read operand1 ((4 *i e) +i b) 8))))
+                    let element2 ←
+                      (pure (BitVec.toInt (← (Elem_read operand2 ((4 *i e) +i b) 8))))
                     let res : (BitVec 32) := (BitVec.addInt res (element1 *i element2))
                     (pure (element1, element2, res))
                 (pure loop_vars_2) ) : SailM (Int × Int × (BitVec 32)) )
@@ -39169,9 +39194,9 @@ def decode_aarch32_instrs_VUSDOT_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2
@@ -39192,9 +39217,9 @@ def decode_aarch32_instrs_VUSDOT_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) 
          (BEq.beq (BitVec.join1 [(BitVec.access Vm 0)]) (0b1 : (BitVec 1)))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 (M ++ Vm))
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat (M ++ Vm))
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2
@@ -39261,10 +39286,10 @@ def decode_aarch32_instrs_DOT_A1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (Vd
   else (pure ())
   let op1_unsigned : Bool := (BEq.beq U (0b0 : (BitVec 1)))
   let op2_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 Vm)
-  let i := (UInt0 M)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat Vm)
+  let i := (BitVec.toNat M)
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2
@@ -39285,10 +39310,10 @@ def decode_aarch32_instrs_DOT_T1enc_A_txt (D : (BitVec 1)) (Vn : (BitVec 4)) (Vd
   else (pure ())
   let op1_unsigned : Bool := (BEq.beq U (0b0 : (BitVec 1)))
   let op2_unsigned : Bool := (BEq.beq U (0b1 : (BitVec 1)))
-  let d := (UInt0 (D ++ Vd))
-  let n := (UInt0 (N ++ Vn))
-  let m := (UInt0 Vm)
-  let i := (UInt0 M)
+  let d := (BitVec.toNat (D ++ Vd))
+  let n := (BitVec.toNat (N ++ Vn))
+  let m := (BitVec.toNat Vm)
+  let i := (BitVec.toNat M)
   let regs :=
     bif (BEq.beq Q (0b1 : (BitVec 1)))
     then 2

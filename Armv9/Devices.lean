@@ -104,8 +104,8 @@ def __GIC_ClearPendingInterrupt (intid : (BitVec 32)) : SailM Unit := do
 
 def gic_write_ram (offset : (BitVec 16)) (data : (BitVec 32)) : SailM Unit := do
   let accdesc ← do (CreateAccDescGPR MemOp_STORE false true false)
-  let pa := (zero_extend (GIC_BASE ++ offset) 56)
-  match (← (sail_mem_write (write_request accdesc none 4 (zero_extend pa 64) pa data))) with
+  let pa := (Sail.BitVec.zeroExtend (GIC_BASE ++ offset) 56)
+  match (← (sail_mem_write (write_request accdesc none 4 (Sail.BitVec.zeroExtend pa 64) pa data))) with
   | .Ok _ => (pure ())
   | .Err _ => assert false "src/devices.sail:145.26-145.27"
 

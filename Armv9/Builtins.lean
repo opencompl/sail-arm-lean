@@ -136,7 +136,7 @@ def ASR_C (x : (BitVec k_N)) (shift : Nat) : ((BitVec k_N) × (BitVec 1)) :=
 /-- Type quantifiers: k_N : Nat, shift : Int, k_N > 0 -/
 def ROR_C (x : (BitVec k_N)) (shift : Int) : SailM ((BitVec k_N) × (BitVec 1)) := do
   assert (shift >b 0) "src/builtins.sail:100.20-100.21"
-  let m := (emod_nat shift (Sail.BitVec.length x))
+  let m := (Nat.div shift (Sail.BitVec.length x))
   let result : (BitVec k_N) := ((x >>> m) ||| (x <<< ((Sail.BitVec.length x) -i m)))
   let carry_out : (BitVec 1) :=
     (BitVec.join1 [(BitVec.access result ((Sail.BitVec.length x) -i 1))])
@@ -147,7 +147,7 @@ def ROR (x : (BitVec k_N)) (shift : Nat) : (BitVec k_N) :=
   bif (BEq.beq shift 0)
   then x
   else
-    (let m := (emod_nat shift (Sail.BitVec.length x))
+    (let m := (Nat.div shift (Sail.BitVec.length x))
     ((x >>> m) ||| (x <<< ((Sail.BitVec.length x) -i m))))
 
 /-- Type quantifiers: k_M : Nat, N : Nat, k_is_unsigned : Bool, k_M ≥ 0 ∧ N ≥ 0 -/
@@ -156,7 +156,7 @@ def Extend (x : (BitVec k_M)) (N : Nat) (is_unsigned : Bool) : SailM (BitVec N) 
   then
     (do
       assert (Bool.and ((Sail.BitVec.length x) ≥b 0) (N ≥b (Sail.BitVec.length x))) "src/builtins.sail:121.47-121.48"
-      (pure (zero_extend x N)))
+      (pure (Sail.BitVec.zeroExtend x N)))
   else
     (do
       assert (Bool.and ((Sail.BitVec.length x) >b 0) (N ≥b (Sail.BitVec.length x))) "src/builtins.sail:124.46-124.47"
@@ -166,11 +166,11 @@ def Extend (x : (BitVec k_M)) (N : Nat) (is_unsigned : Bool) : SailM (BitVec N) 
 def asl_Int (x : (BitVec k_N)) (is_unsigned : Bool) : SailM Int := do
   let result ← do
     bif is_unsigned
-    then (pure (UInt0 x))
+    then (pure (BitVec.toNat x))
     else
       (do
         assert ((Sail.BitVec.length x) >b 0) "src/builtins.sail:134.33-134.34"
-        (pure (sint x)))
+        (pure (BitVec.toInt x)))
   (pure result)
 
 /-- Type quantifiers: k_N : Nat, k_N ≥ 0 -/
