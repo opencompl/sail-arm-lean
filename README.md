@@ -8,67 +8,85 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 2793158  
-Definitions: 65572  
+Lines: 2793177  
+Definitions: 65575  
 Inductive definitions: 884  
 Abbreviations: 3441  
 
 # Warnings and Errors
 
-Errors found: 2  
-Warnings found: 12  
+Errors found: 92  
+Warnings found: 0  
 
 ## Error Classes
 
-- 1x unknown identifier 'undefined_real'
+- 38x application type mismatch
+- 30x type mismatch
+- 4x don't know how to synthesize placeholder
+- 2x unknown identifier 'AArch64_S2Walk'
+- 2x unexpected identifier; expected 'do'
+- 2x invalid `do` notation, expected type is not a monad application
+- 1x unknown identifier 'sail_translation_start'
+- 1x unknown identifier 'sail_translation_end'
+- 1x unknown identifier 'sail_tlbi'
+- 1x unknown identifier 'sail_take_exception'
+- 1x unknown identifier 'sail_cache_op'
+- 1x unknown identifier 'GPTWalk'
+- 1x unknown identifier 'AArch64_AutoGen_ArchitectureReset'
+- 1x unexpected token 'at'; expected '_' or identifier
+- 1x maximum recursion depth has been reached
+- 1x invalid field notation, type is not of the form (C ...) where C is a constant
+- 1x failed to synthesize
+- 1x failed to prove termination, possible solutions:
+- 1x don't know how to synthesize placeholder for argument 'α'
 - 1x Lean exited with code 1
-Unpacked in 14218 ms
-Completed successfully!
-✔ [1337/1375] Built Armv9.Sail.IntRange
-✔ [1338/1375] Built Armv9.Sail.BitVec
-✔ [1339/1375] Built Armv9.Sail.Real
-✔ [1340/1375] Built Armv9.Sail.Sail
-✔ [1341/1375] Built Armv9.Defs
-✔ [1342/1375] Built Armv9.ArmExtras
-✔ [1343/1375] Built Armv9.Specialization
-⚠ [1344/1375] Built Armv9.Flow
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Flow.lean:112:4: The declaration '__id' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-✔ [1345/1375] Built Armv9.Arith
-✔ [1346/1375] Built Armv9.Trace
-✔ [1347/1375] Built Armv9.Vector
-✔ [1348/1375] Built Armv9.String
-✔ [1349/1375] Built Armv9.ReverseEndianness
-✔ [1350/1375] Built Armv9.Option
-✔ [1351/1375] Built Armv9.MonoRewrites
-✔ [1352/1375] Built Armv9.Result
-⚠ [1353/1375] Built Armv9.Common
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Common.lean:128:4: The declaration '__monomorphize' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-⚠ [1354/1375] Built Armv9.ReadWrite
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/ReadWrite.lean:149:4: The declaration '__monomorphize_reads' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/ReadWrite.lean:151:4: The declaration '__monomorphize_writes' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-✖ [1355/1375] Building Armv9.Prelude
-trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Prelude.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Prelude.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/Prelude.c --json
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:130:4: The declaration 'Replicate__1' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:253:4: The declaration '__UNKNOWN_bits' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:256:4: The declaration '__UNKNOWN_integer' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:259:4: The declaration '__UNKNOWN_boolean' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:263:3: unknown identifier 'undefined_real'
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:265:4: The declaration '__UNKNOWN_string' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:268:4: The declaration '__UNKNOWN_bit' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:271:4: The declaration '__UNKNOWN_signal' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:278:4: The declaration '__GetVerbosity' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
-note: this linter can be disabled with `set_option linter.style.nameCheck false`
+has type
+  BitVec 64 × DescriptorType × FaultRecord × ℤ × ℤ × AddressDescriptor × TTWState : Type
+but is expected to have type
+  SailME ?m.48712098 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100516:12: application type mismatch
+  @ite ?m.48818528 fun x => ?m.48818521
+argument
+  fun x => ?m.48818521
+has type
+  (x : ?m.48818517) → ?m.48818522 x : Sort (imax ?u.48818516 ?u.48818519)
+but is expected to have type
+  Prop : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100518:12: type mismatch
+  loop_vars
+has type
+  BitVec 64 ×
+    DescriptorType × FaultRecord × ℤ × ℤ × Bool × FaultRecord × AddressDescriptor × AddressDescriptor × TTWState : Type
+but is expected to have type
+  SailME ?m.48812654 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101916:8: application type mismatch
+  @ite ?m.49034400 fun x => ?m.49034393
+argument
+  fun x => ?m.49034393
+has type
+  (x : ?m.49034389) → ?m.49034394 x : Sort (imax ?u.49034388 ?u.49034391)
+but is expected to have type
+  Prop : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101918:8: type mismatch
+  loop_vars
+has type
+  BitVec 3 ×
+    BitVec 1 ×
+      BitVec 1 ×
+        BitVec 32 ×
+          BitVec 4 ×
+            FaultRecord ×
+              BitVec 1 ×
+                BitVec 1 ×
+                  BitVec 1 ×
+                    BitVec 1 ×
+                      Bool × FaultRecord × AddressDescriptor × BitVec 3 × AddressDescriptor × TTWState × BitVec 1 : Type
+but is expected to have type
+  SailME ?m.49026134 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101917:15: invalid field notation, type is not of the form (C ...) where C is a constant
+  walkstate
+has type
+  ?m.49050201
 error: Lean exited with code 1
 Some required builds logged failures:
-- Armv9.Prelude
+- Armv9.V8Base

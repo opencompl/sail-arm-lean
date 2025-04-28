@@ -48635,8 +48635,8 @@ def execute_aarch64_instrs_system_tme_tstart (VL : Nat) (t : Nat) : SailM Unit :
   let IsEL1Regime ← (( do (undefined_bool ()) ) : SailM Bool )
   let tme ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
   let tmt ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
-  let ? ← do (pure (← readReg PSTATE).EL)
-  bif (BEq.beq ? EL0)
+  let questionMark ← do (pure (← readReg PSTATE).EL)
+  bif (BEq.beq questionMark EL0)
   then
     (do
       let IsEL1Regime ← (( do (pure (BEq.beq (← (S1TranslationRegime__1 ())) EL1)) ) : SailM
@@ -48654,7 +48654,7 @@ def execute_aarch64_instrs_system_tme_tstart (VL : Nat) (t : Nat) : SailM Unit :
           (pure ())))
   else
     (do
-      bif (BEq.beq ? EL1)
+      bif (BEq.beq questionMark EL1)
       then
         (do
           let tme ← (pure (_get_SCTLR_EL1_Type_TME (← readReg SCTLR_EL1)))
@@ -48662,7 +48662,7 @@ def execute_aarch64_instrs_system_tme_tstart (VL : Nat) (t : Nat) : SailM Unit :
           (pure ()))
       else
         (do
-          bif (BEq.beq ? EL2)
+          bif (BEq.beq questionMark EL2)
           then
             (do
               let tme ← (pure (_get_SCTLR_EL2_Type_TME (← readReg SCTLR_EL2)))
@@ -48670,7 +48670,7 @@ def execute_aarch64_instrs_system_tme_tstart (VL : Nat) (t : Nat) : SailM Unit :
               (pure ()))
           else
             (do
-              bif (BEq.beq ? EL3)
+              bif (BEq.beq questionMark EL3)
               then
                 (do
                   let tme ← (pure (_get_SCTLR_EL3_Type_TME (← readReg SCTLR_EL3)))

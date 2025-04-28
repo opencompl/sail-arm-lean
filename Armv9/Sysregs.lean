@@ -915,20 +915,20 @@ def TakeReset (cold : Bool) : SailM Unit := do
       (AArch64_TakeReset cold))
   else
     (do
-      let ? := (HighestEL ())
-      bif (BEq.beq ? EL3)
+      let questionMark := (HighestEL ())
+      bif (BEq.beq questionMark EL3)
       then
         assert (BEq.beq (_get_ID_AA64PFR0_EL1_Type_EL3 (← readReg ID_AA64PFR0_EL1))
           (0x2 : (BitVec 4))) "src/reset.sail:1420.51-1420.52"
       else
         (do
-          bif (BEq.beq ? EL2)
+          bif (BEq.beq questionMark EL2)
           then
             assert (BEq.beq (_get_ID_AA64PFR0_EL1_Type_EL2 (← readReg ID_AA64PFR0_EL1))
               (0x2 : (BitVec 4))) "src/reset.sail:1423.51-1423.52"
           else
             (do
-              bif (BEq.beq ? EL1)
+              bif (BEq.beq questionMark EL1)
               then
                 assert (BEq.beq (_get_ID_AA64PFR0_EL1_Type_EL1 (← readReg ID_AA64PFR0_EL1))
                   (0x2 : (BitVec 4))) "src/reset.sail:1426.51-1426.52"
