@@ -25,3 +25,53 @@ Warnings found: 12
 - 1x unknown identifier 'undefined_real'
 - 1x unknown identifier 'ediv_nat'
 - 1x Lean exited with code 1
+✔ [1339/1375] Built Armv9.Sail.Real
+✔ [1340/1375] Built Armv9.Sail.Sail
+✔ [1341/1375] Built Armv9.Defs
+✔ [1342/1375] Built Armv9.ArmExtras
+✔ [1343/1375] Built Armv9.Specialization
+⚠ [1344/1375] Built Armv9.Flow
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Flow.lean:112:4: The declaration '__id' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+✔ [1345/1375] Built Armv9.Arith
+✔ [1346/1375] Built Armv9.Trace
+✔ [1347/1375] Built Armv9.Vector
+✔ [1348/1375] Built Armv9.String
+✔ [1349/1375] Built Armv9.ReverseEndianness
+✔ [1350/1375] Built Armv9.Option
+✔ [1351/1375] Built Armv9.MonoRewrites
+✔ [1352/1375] Built Armv9.Result
+⚠ [1353/1375] Built Armv9.Common
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Common.lean:128:4: The declaration '__monomorphize' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+⚠ [1354/1375] Built Armv9.ReadWrite
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/ReadWrite.lean:149:4: The declaration '__monomorphize_reads' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/ReadWrite.lean:151:4: The declaration '__monomorphize_writes' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+✖ [1355/1375] Building Armv9.Prelude
+trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Prelude.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Prelude.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/Prelude.c --json
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:130:4: The declaration 'Replicate__1' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:163:3: unknown identifier 'zero_extend'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:236:3: unknown identifier 'append_str'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:240:3: unknown identifier 'append_str'
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:253:4: The declaration '__UNKNOWN_bits' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:256:4: The declaration '__UNKNOWN_integer' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:259:4: The declaration '__UNKNOWN_boolean' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:263:3: unknown identifier 'undefined_real'
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:265:4: The declaration '__UNKNOWN_string' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:268:4: The declaration '__UNKNOWN_bit' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:271:4: The declaration '__UNKNOWN_signal' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:276:3: unknown identifier 'ediv_nat'
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Prelude.lean:278:4: The declaration '__GetVerbosity' contains '__', which does not follow the mathlib naming conventions. Consider using single underscores instead.
+note: this linter can be disabled with `set_option linter.style.nameCheck false`
+error: Lean exited with code 1
+Some required builds logged failures:
+- Armv9.Prelude
