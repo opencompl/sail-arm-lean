@@ -22,7 +22,7 @@ Warnings found: 12
 
 - 1x unknown identifier 'undefined_real'
 - 1x Lean exited with code 1
-Unpacked in 14297 ms
+Unpacked in 14436 ms
 Completed successfully!
 ✔ [1337/1375] Built Armv9.Sail.IntRange
 ✔ [1338/1375] Built Armv9.Sail.BitVec
