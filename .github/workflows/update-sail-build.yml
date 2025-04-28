@@ -63,7 +63,7 @@ jobs:
     - name: Build the Sail ARM v9.4a Model for Lean
       continue-on-error: true
       run: |
-        git clone https://github.com/ineol/sail-arm.git -b push-klnnlzrtlkzo
+        git clone https://github.com/opencompl/sail-arm.git -b push-klnnlzrtlkzo
         ls
         cd sail-arm
         ls
