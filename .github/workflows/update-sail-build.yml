@@ -70,7 +70,7 @@ jobs:
         patch -p1 <  ../.github/workflows/sail-arm.patch
         cd arm-v9.4-a
         eval $(opam config env)
-        make lean
+        make lean VERBOSE_FLAG=
         cd ../..
 
     - name: Compress files
