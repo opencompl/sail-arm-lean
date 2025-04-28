@@ -25,7 +25,7 @@ Warnings found: 12
 - 1x unknown identifier 'undefined_real'
 - 1x unknown identifier 'ediv_nat'
 - 1x Lean exited with code 1
-✔ [1339/1375] Built Armv9.Sail.Real
+✔ [1339/1375] Built Armv9.Sail.BitVec
 ✔ [1340/1375] Built Armv9.Sail.Sail
 ✔ [1341/1375] Built Armv9.Defs
 ✔ [1342/1375] Built Armv9.ArmExtras
