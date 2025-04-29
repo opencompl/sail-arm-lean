@@ -7216,9 +7216,9 @@ def execute_aarch64_instrs_memory_atomicops_cas_single (acquire : Bool) (datasiz
         then (0b1 : (BitVec 1))
         else (0b0 : (BitVec 1))
       let excl : (BitVec 1) := (0b0 : (BitVec 1))
-      let at : (BitVec 1) := (0b1 : (BitVec 1))
+      let at' : (BitVec 1) := (0b1 : (BitVec 1))
       let is_load : Bool := true
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_cas_aarch64_instrs_memory_atomicops_cas_single (Rt : (BitVec 5)) (Rn : (BitVec 5)) (o0 : (BitVec 1)) (Rs : (BitVec 5)) (L : (BitVec 1)) (size : (BitVec 2)) : SailM Unit := do
@@ -7322,9 +7322,9 @@ def execute_aarch64_instrs_memory_atomicops_cas_pair (acquire : Bool) (datasize 
         then (0b1 : (BitVec 1))
         else (0b0 : (BitVec 1))
       let excl : (BitVec 1) := (0b0 : (BitVec 1))
-      let at : (BitVec 1) := (0b1 : (BitVec 1))
+      let at' : (BitVec 1) := (0b1 : (BitVec 1))
       let is_load : Bool := true
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_casp_aarch64_instrs_memory_atomicops_cas_pair (Rt : (BitVec 5)) (Rn : (BitVec 5)) (Rt2 : (BitVec 5)) (o0 : (BitVec 1)) (Rs : (BitVec 5)) (L : (BitVec 1)) (sz : (BitVec 1)) : SailM Unit := do
@@ -24346,8 +24346,8 @@ def execute_aarch64_instrs_memory_atomicops_ld (acquire : Bool) (datasize : Nat)
         then (0b1 : (BitVec 1))
         else (0b0 : (BitVec 1))
       let excl : (BitVec 1) := (0b0 : (BitVec 1))
-      let at : (BitVec 1) := (0b1 : (BitVec 1))
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      let at' : (BitVec 1) := (0b1 : (BitVec 1))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_ldadd_aarch64_instrs_memory_atomicops_ld (Rt : (BitVec 5)) (Rn : (BitVec 5)) (opc : (BitVec 3)) (Rs : (BitVec 5)) (R : (BitVec 1)) (A : (BitVec 1)) (size : (BitVec 2)) : SailM Unit := do
@@ -26042,9 +26042,9 @@ def execute_aarch64_instrs_memory_ordered_rcpc (datasize : Nat) (n : Nat) (offse
     (do
       let ar : (BitVec 1) := (0b1 : (BitVec 1))
       let excl : (BitVec 1) := (0b0 : (BitVec 1))
-      let at : (BitVec 1) := (0b0 : (BitVec 1))
+      let at' : (BitVec 1) := (0b0 : (BitVec 1))
       let is_load : Bool := true
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_ldapr_aarch64_instrs_memory_ordered_rcpc (Rt : (BitVec 5)) (Rn : (BitVec 5)) (Rs : (BitVec 5)) (size : (BitVec 2)) : SailM Unit := do
@@ -27189,9 +27189,9 @@ def execute_aarch64_instrs_memory_ordered (datasize : Nat) (limitedordered : Boo
     (do
       let ar : (BitVec 1) := (0b1 : (BitVec 1))
       let excl : (BitVec 1) := (0b0 : (BitVec 1))
-      let at : (BitVec 1) := (0b0 : (BitVec 1))
+      let at' : (BitVec 1) := (0b0 : (BitVec 1))
       let is_load : Bool := (BEq.beq memop MemOp_LOAD)
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_ldar_aarch64_instrs_memory_ordered (Rt : (BitVec 5)) (Rn : (BitVec 5)) (Rt2 : (BitVec 5)) (o0 : (BitVec 1)) (Rs : (BitVec 5)) (L : (BitVec 1)) (size : (BitVec 2)) : SailM Unit := do
@@ -27629,9 +27629,9 @@ def execute_aarch64_instrs_memory_exclusive_pair (acqrel : Bool) (datasize : Nat
         then (0b1 : (BitVec 1))
         else (0b0 : (BitVec 1))
       let excl : (BitVec 1) := (0b1 : (BitVec 1))
-      let at : (BitVec 1) := (0b0 : (BitVec 1))
+      let at' : (BitVec 1) := (0b0 : (BitVec 1))
       let is_load : Bool := (BEq.beq memop MemOp_LOAD)
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_ldaxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (BitVec 5)) (Rt2 : (BitVec 5)) (o0 : (BitVec 1)) (Rs : (BitVec 5)) (L : (BitVec 1)) (sz : (BitVec 1)) : SailM Unit := do
@@ -28079,9 +28079,9 @@ def execute_aarch64_instrs_memory_exclusive_single (acqrel : Bool) (datasize : N
         then (0b1 : (BitVec 1))
         else (0b0 : (BitVec 1))
       let excl : (BitVec 1) := (0b1 : (BitVec 1))
-      let at : (BitVec 1) := (0b0 : (BitVec 1))
+      let at' : (BitVec 1) := (0b0 : (BitVec 1))
       let is_load : Bool := (BEq.beq memop MemOp_LOAD)
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_ldaxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : (BitVec 5)) (Rt2 : (BitVec 5)) (o0 : (BitVec 1)) (Rs : (BitVec 5)) (L : (BitVec 1)) (size : (BitVec 2)) : SailM Unit := do
@@ -48255,9 +48255,9 @@ def execute_aarch64_instrs_memory_atomicops_swp (acquire : Bool) (datasize : Nat
         then (0b1 : (BitVec 1))
         else (0b0 : (BitVec 1))
       let excl : (BitVec 1) := (0b0 : (BitVec 1))
-      let at : (BitVec 1) := (0b1 : (BitVec 1))
+      let at' : (BitVec 1) := (0b1 : (BitVec 1))
       let is_load : Bool := true
-      (SPESampleExtendedLoadStore ar excl at is_load))
+      (SPESampleExtendedLoadStore ar excl at' is_load))
   else (pure ())
 
 def decode_swp_aarch64_instrs_memory_atomicops_swp (Rt : (BitVec 5)) (Rn : (BitVec 5)) (Rs : (BitVec 5)) (R : (BitVec 1)) (A : (BitVec 1)) (size : (BitVec 2)) : SailM Unit := do

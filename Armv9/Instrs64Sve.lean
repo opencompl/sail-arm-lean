@@ -39541,8 +39541,8 @@ def execute_ADCLB_Z_ZZZ__ (VL : Nat) (da : Nat) (esize : Nat) (m : Nat) (n : Nat
         let element1 ← (( do (Elem_read result ((2 *i p) +i 0) esize) ) : SailM (BitVec esize) )
         let element2 ← (( do (Elem_read operand ((2 *i p) +i 0) esize) ) : SailM (BitVec esize) )
         let carry_in ← (( do
-          (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]) ) :
-          SailM (BitVec 1) )
+          (pure (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]))
+          ) : SailM (BitVec 1) )
         let _ : Unit :=
           let (tup__0, tup__1) :=
             ((AddWithCarry element1 element2 carry_in) : ((BitVec esize) × (BitVec 4)))
@@ -39596,8 +39596,8 @@ def execute_ADCLT_Z_ZZZ__ (VL : Nat) (da : Nat) (esize : Nat) (m : Nat) (n : Nat
         let element1 ← (( do (Elem_read result ((2 *i p) +i 0) esize) ) : SailM (BitVec esize) )
         let element2 ← (( do (Elem_read operand ((2 *i p) +i 1) esize) ) : SailM (BitVec esize) )
         let carry_in ← (( do
-          (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]) ) :
-          SailM (BitVec 1) )
+          (pure (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]))
+          ) : SailM (BitVec 1) )
         let _ : Unit :=
           let (tup__0, tup__1) :=
             ((AddWithCarry element1 element2 carry_in) : ((BitVec esize) × (BitVec 4)))
@@ -39651,8 +39651,8 @@ def execute_SBCLB_Z_ZZZ__ (VL : Nat) (da : Nat) (esize : Nat) (m : Nat) (n : Nat
         let element1 ← (( do (Elem_read result ((2 *i p) +i 0) esize) ) : SailM (BitVec esize) )
         let element2 ← (( do (Elem_read operand ((2 *i p) +i 0) esize) ) : SailM (BitVec esize) )
         let carry_in ← (( do
-          (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]) ) :
-          SailM (BitVec 1) )
+          (pure (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]))
+          ) : SailM (BitVec 1) )
         let _ : Unit :=
           let (tup__0, tup__1) :=
             ((AddWithCarry element1 (Complement.complement element2) carry_in) : ((BitVec esize) × (BitVec 4)))
@@ -39706,8 +39706,8 @@ def execute_SBCLT_Z_ZZZ__ (VL : Nat) (da : Nat) (esize : Nat) (m : Nat) (n : Nat
         let element1 ← (( do (Elem_read result ((2 *i p) +i 0) esize) ) : SailM (BitVec esize) )
         let element2 ← (( do (Elem_read operand ((2 *i p) +i 1) esize) ) : SailM (BitVec esize) )
         let carry_in ← (( do
-          (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]) ) :
-          SailM (BitVec 1) )
+          (pure (BitVec.join1 [(BitVec.access (← (Elem_read carries ((2 *i p) +i 1) esize)) 0)]))
+          ) : SailM (BitVec 1) )
         let _ : Unit :=
           let (tup__0, tup__1) :=
             ((AddWithCarry element1 (Complement.complement element2) carry_in) : ((BitVec esize) × (BitVec 4)))

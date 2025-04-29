@@ -1,7 +1,7 @@
 installing leantar 0.1.15
 Attempting to download 6527 file(s)
 Decompressing 6527 file(s)
-Unpacked in 14725 ms
+Unpacked in 14662 ms
 Completed successfully!
 ✔ [1337/1375] Built Armv9.Sail.IntRange
 ✔ [1338/1375] Built Armv9.Sail.BitVec
@@ -25,77 +25,6 @@ Completed successfully!
 ✔ [1356/1375] Built Armv9.Builtins
 ✖ [1357/1375] Building Armv9.V8Base
 trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/V8Base.c --json
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:37176:9: application type mismatch
-  cond (HaveEL EL3 && __do_lift✝) (BitVec.join1 [BitVec.access filter 26])
-argument
-  BitVec.join1 [BitVec.access filter 26]
-has type
-  BitVec [BitVec.access filter 26].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:37180:9: application type mismatch
-  cond (HaveEL EL3 && __do_lift✝) (BitVec.join1 [BitVec.access filter 24])
-argument
-  BitVec.join1 [BitVec.access filter 24]
-has type
-  BitVec [BitVec.access filter 24].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:37184:9: application type mismatch
-  cond __do_lift✝ (BitVec.join1 [BitVec.access filter 22])
-argument
-  BitVec.join1 [BitVec.access filter 22]
-has type
-  BitVec [BitVec.access filter 22].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:37188:9: application type mismatch
-  cond __do_lift✝ (BitVec.join1 [BitVec.access filter 21])
-argument
-  BitVec.join1 [BitVec.access filter 21]
-has type
-  BitVec [BitVec.access filter 21].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:37192:9: application type mismatch
-  cond __do_lift✝ (BitVec.join1 [BitVec.access filter 20])
-argument
-  BitVec.join1 [BitVec.access filter 20]
-has type
-  BitVec [BitVec.access filter 20].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:46784:6: type mismatch
-  BitVec.join1 [BitVec.access spsr 21]
-has type
-  BitVec [BitVec.access spsr 21].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:52428:11: application type mismatch
-  bif !privileged then ?m.11566927 else pure __do_lift✝.EL
-argument
-  pure __do_lift✝.EL
-has type
-  ?m.11566930 (BitVec 2) : Type ?u.11566928
-but is expected to have type
-  BitVec 2 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:52467:11: application type mismatch
-  bif !privileged then ?m.11603123 else pure __do_lift✝.EL
-argument
-  pure __do_lift✝.EL
-has type
-  ?m.11603126 (BitVec 2) : Type ?u.11603124
-but is expected to have type
-  BitVec 2 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:52483:11: application type mismatch
-  bif !privileged then ?m.11619026 else pure __do_lift✝.EL
-argument
-  pure __do_lift✝.EL
-has type
-  ?m.11619029 (BitVec 2) : Type ?u.11619027
-but is expected to have type
-  BitVec 2 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:56937:3: unknown identifier 'sail_take_exception'
 error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:60776:102: unexpected identifier; expected 'do'
 error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:60768:22: don't know how to synthesize placeholder
 context:
@@ -129,10 +58,10 @@ fraction✝¹ : BitVec 52
 exp✝¹ exp✝ : ℤ
 fraction✝ : BitVec 52
 exp :
-  ?m.13525286 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
+  ?m.13522158 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
     fraction✝¹ exp✝¹ exp✝ fraction✝
 fraction :
-  ?m.13525287 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
+  ?m.13522159 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
     fraction✝¹ exp✝¹ exp✝ fraction✝
 ⊢ Type
 error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:60768:22: don't know how to synthesize placeholder
@@ -167,10 +96,10 @@ fraction✝¹ : BitVec 52
 exp✝¹ exp✝ : ℤ
 fraction✝ : BitVec 52
 exp :
-  ?m.13525286 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
+  ?m.13522158 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
     fraction✝¹ exp✝¹ exp✝ fraction✝
 fraction :
-  ?m.13525287 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
+  ?m.13522159 operand fpcr_in estimate fptype✝ sign✝ value_name✝ x✝¹ altfp __discr✝¹ tup__0 tup__1 tup__2 x✝ result
     fraction✝¹ exp✝¹ exp✝ fraction✝
 ⊢ Type
 error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:60771:23: don't know how to synthesize placeholder
@@ -278,368 +207,74 @@ has type
 but is expected to have type
   SailM Unit : Type
 error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:63556:24: unknown identifier 'GPTWalk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:64306:11: application type mismatch
-  bif __do_lift✝¹ then ?m.14531260 else pure 0
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:67424:36: unexpected identifier; expected 'do'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74460:32: unknown identifier 'AArch64_S2Walk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74469:34: unknown identifier 'AArch64_S2Walk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74577:20: application type mismatch
+  @ite ?m.18253303 fun x => ?m.18253296
 argument
-  pure 0
+  fun x => ?m.18253296
 has type
-  ?m.14531263 (BitVec 1) : Type ?u.14531261
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:64537:11: application type mismatch
-  bif __do_lift✝² && __do_lift✝¹ then ?m.14654516 else pure 0
-argument
-  pure 0
-has type
-  ?m.14654519 (BitVec 1) : Type ?u.14654517
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:64754:13: application type mismatch
-  bif varange == VARange_LOWER then ?m.14840033 else pure (_get_TCR2_EL2_Type_AMEC1 __do_lift✝)
-argument
-  pure (_get_TCR2_EL2_Type_AMEC1 __do_lift✝)
-has type
-  ?m.14840036 (BitVec 1) : Type ?u.14840034
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:64873:11: application type mismatch
-  bif __do_lift✝¹ then ?m.14950437 else pure 0
-argument
-  pure 0
-has type
-  ?m.14950440 (BitVec 1) : Type ?u.14950438
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:65864:21: application type mismatch
-  cond (_get_TCR_EL1_Type_TBI1 __do_lift✝¹ == 1 || _get_TCR_EL1_Type_TBI0 __do_lift✝ == 1)
-    (BitVec.join1 [BitVec.access ptr 55])
-argument
-  BitVec.join1 [BitVec.access ptr 55]
-has type
-  BitVec [BitVec.access ptr 55].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:65875:21: application type mismatch
-  cond
-    (_get_TCR_EL1_Type_TBI1 __do_lift✝³ == 1 && _get_TCR_EL1_Type_TBID1 __do_lift✝² == 0 ||
-      _get_TCR_EL1_Type_TBI0 __do_lift✝¹ == 1 && _get_TCR_EL1_Type_TBID0 __do_lift✝ == 0)
-    (BitVec.join1 [BitVec.access ptr 55])
-argument
-  BitVec.join1 [BitVec.access ptr 55]
-has type
-  BitVec [BitVec.access ptr 55].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:65885:21: application type mismatch
-  cond (_get_TCR_EL2_Type_TBI1 __do_lift✝¹ == 1 || _get_TCR_EL2_Type_TBI0 __do_lift✝ == 1)
-    (BitVec.join1 [BitVec.access ptr 55])
-argument
-  BitVec.join1 [BitVec.access ptr 55]
-has type
-  BitVec [BitVec.access ptr 55].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:65896:21: application type mismatch
-  cond
-    (_get_TCR_EL2_Type_TBI1 __do_lift✝³ == 1 && _get_TCR_EL2_Type_TBID1 __do_lift✝² == 0 ||
-      _get_TCR_EL2_Type_TBI0 __do_lift✝¹ == 1 && _get_TCR_EL2_Type_TBID0 __do_lift✝ == 0)
-    (BitVec.join1 [BitVec.access ptr 55])
-argument
-  BitVec.join1 [BitVec.access ptr 55]
-has type
-  BitVec [BitVec.access ptr 55].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:65900:11: application type mismatch
-  cond tbi (BitVec.join1 [BitVec.access ptr 55])
-argument
-  BitVec.join1 [BitVec.access ptr 55]
-has type
-  BitVec [BitVec.access ptr 55].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:65904:9: application type mismatch
-  cond (__do_lift✝¹ && __do_lift✝) (BitVec.join1 [BitVec.access ptr 55])
-argument
-  BitVec.join1 [BitVec.access ptr 55]
-has type
-  BitVec [BitVec.access ptr 55].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:67418:36: unexpected identifier; expected 'do'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71355:16: type mismatch
-  BitVec.join1 [BitVec.access descriptor 103]
-has type
-  BitVec [BitVec.access descriptor 103].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71395:12: type mismatch
-  BitVec.join1 [BitVec.access descriptor 6]
-has type
-  BitVec [BitVec.access descriptor 6].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71399:12: type mismatch
-  BitVec.join1 [BitVec.access descriptor 16]
-has type
-  BitVec [BitVec.access descriptor 16].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71510:11: application type mismatch
-  bif _get_TCR_EL1_Type_A1 __do_lift✝² == 0 then ?m.17812682 else pure (_get_TTBR1_EL1_Type_ASID __do_lift✝)
-argument
-  pure (_get_TTBR1_EL1_Type_ASID __do_lift✝)
-has type
-  ?m.17812685 (BitVec 16) : Type ?u.17812683
-but is expected to have type
-  BitVec 16 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71539:9: application type mismatch
-  bif __do_lift✝¹ then ?m.17813108 else pure 0
-argument
-  pure 0
-has type
-  ?m.17813111 (BitVec 1) : Type ?u.17813109
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71549:11: application type mismatch
-  bif _get_TCR_EL2_Type_A1 __do_lift✝² == 0 then ?m.17829422 else pure (_get_TTBR1_EL2_Type_ASID __do_lift✝)
-argument
-  pure (_get_TTBR1_EL2_Type_ASID __do_lift✝)
-has type
-  ?m.17829425 (BitVec 16) : Type ?u.17829423
-but is expected to have type
-  BitVec 16 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71578:9: application type mismatch
-  bif __do_lift✝¹ then ?m.17839602 else pure 0
-argument
-  pure 0
-has type
-  ?m.17839605 (BitVec 1) : Type ?u.17839603
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71669:8: type mismatch
-  BitVec.join1 [BitVec.access descriptor 103]
-has type
-  BitVec [BitVec.access descriptor 103].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71830:10: type mismatch
-  BitVec.join1 [BitVec.access descriptor 111]
-has type
-  BitVec [BitVec.access descriptor 111].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:71840:13: application type mismatch
-  bif tgx == TGx_4KB && level == 0 then pure 0 else BitVec.join1 [BitVec.access descriptor 52]
-argument
-  BitVec.join1 [BitVec.access descriptor 52]
-has type
-  BitVec [BitVec.access descriptor 52].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72004:14: type mismatch
-  BitVec.join1 [BitVec.access descriptor 127]
-has type
-  BitVec [BitVec.access descriptor 127].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72008:14: type mismatch
-  BitVec.join1 [BitVec.access descriptor 5]
-has type
-  BitVec [BitVec.access descriptor 5].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72051:22: type mismatch
-  BitVec.join1 [BitVec.access descriptor 127]
-has type
-  BitVec [BitVec.access descriptor 127].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72055:22: type mismatch
-  BitVec.join1 [BitVec.access descriptor 5]
-has type
-  BitVec [BitVec.access descriptor 5].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72115:8: type mismatch
-  BitVec.join1 [BitVec.access descriptor 114]
-has type
-  BitVec [BitVec.access descriptor 114].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72122:12: type mismatch
-  BitVec.join1 [BitVec.access descriptor 52]
-has type
-  BitVec [BitVec.access descriptor 52].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72297:14: type mismatch
-  BitVec.join1 [BitVec.access descriptor 127]
-has type
-  BitVec [BitVec.access descriptor 127].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72301:14: type mismatch
-  BitVec.join1 [BitVec.access descriptor 63]
-has type
-  BitVec [BitVec.access descriptor 63].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72333:8: type mismatch
-  BitVec.join1 [BitVec.access descriptor 114]
-has type
-  BitVec [BitVec.access descriptor 114].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72340:12: type mismatch
-  BitVec.join1 [BitVec.access descriptor 52]
-has type
-  BitVec [BitVec.access descriptor 52].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72349:7: invalid `do` notation, expected type is not a monad application
-  BitVec 1
-You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72527:11: application type mismatch
-  bif __do_lift✝¹ then ?m.17993382 else pure 0
-argument
-  pure 0
-has type
-  ?m.17993385 (BitVec 1) : Type ?u.17993383
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72540:9: application type mismatch
-  bif __do_lift✝² && __do_lift✝¹ then ?m.18004949 else pure 0
-argument
-  pure 0
-has type
-  ?m.18004952 (BitVec 1) : Type ?u.18004950
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:72729:11: application type mismatch
-  bif __do_lift✝¹ then ?m.18131803 else pure 0
-argument
-  pure 0
-has type
-  ?m.18131806 (BitVec 1) : Type ?u.18131804
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:73848:16: type mismatch
-  BitVec.join1 [BitVec.access descriptor 103]
-has type
-  BitVec [BitVec.access descriptor 103].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:73883:15: application type mismatch
-  bif ipa.paspace == PAS_Secure then ?m.18211385 else pure (_get_VTTBR_EL2_Type_CnP __do_lift✝)
-argument
-  pure (_get_VTTBR_EL2_Type_CnP __do_lift✝)
-has type
-  ?m.18211388 (BitVec 1) : Type ?u.18211386
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74118:14: type mismatch
-  BitVec.join1 [BitVec.access descriptor 115]
-has type
-  BitVec [BitVec.access descriptor 115].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74122:14: type mismatch
-  BitVec.join1 [BitVec.access descriptor 51]
-has type
-  BitVec [BitVec.access descriptor 51].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74176:18: type mismatch
-  BitVec.join1 [BitVec.access descriptor 127]
-has type
-  BitVec [BitVec.access descriptor 127].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74180:18: type mismatch
-  BitVec.join1 [BitVec.access descriptor 55]
-has type
-  BitVec [BitVec.access descriptor 55].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74240:11: invalid `do` notation, expected type is not a monad application
-  BitVec 1
-You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74452:32: unknown identifier 'AArch64_S2Walk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74461:34: unknown identifier 'AArch64_S2Walk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74569:20: application type mismatch
-  @ite ?m.18283047 fun x => ?m.18283040
-argument
-  fun x => ?m.18283040
-has type
-  (x : ?m.18283036) → ?m.18283041 x : Sort (imax ?u.18283035 ?u.18283038)
+  (x : ?m.18253292) → ?m.18253297 x : Sort (imax ?u.18253291 ?u.18253294)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74571:20: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74579:20: type mismatch
   loop_vars
 has type
   AddressDescriptor × BitVec 128 × FaultRecord × BitVec 128 × BitVec 128 × Bool × TTWState : Type
 but is expected to have type
-  SailME ?m.18277848 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74727:12: failed to synthesize
+  SailME ?m.18248104 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74735:12: failed to synthesize
   MonadExcept (FaultRecord × AddressDescriptor × TTWState × BitVec (((fun x y => x - y) (↑N) 1).toNat - 0 + 1))
     (SailME (FaultRecord × AddressDescriptor × TTWState × BitVec N))
 
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74984:24: application type mismatch
-  @ite ?m.18345110 fun x => ?m.18345103
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74992:24: application type mismatch
+  @ite ?m.18315366 fun x => ?m.18315359
 argument
-  fun x => ?m.18345103
+  fun x => ?m.18315359
 has type
-  (x : ?m.18345099) → ?m.18345104 x : Sort (imax ?u.18345098 ?u.18345101)
+  (x : ?m.18315355) → ?m.18315360 x : Sort (imax ?u.18315354 ?u.18315357)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74986:24: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74994:24: type mismatch
   loop_vars_1
 has type
   Bool ×
     FullAddress × BitVec N × DescriptorType × FaultRecord × BitVec N × Bool × FaultRecord × BitVec 2 × TTWState : Type
 but is expected to have type
-  SailME ?m.18338364 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74996:12: application type mismatch
-  @ite ?m.18348999 fun x => ?m.18348992
+  SailME ?m.18308620 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75004:12: application type mismatch
+  @ite ?m.18319255 fun x => ?m.18319248
 argument
-  fun x => ?m.18348992
+  fun x => ?m.18319248
 has type
-  (x : ?m.18348988) → ?m.18348993 x : Sort (imax ?u.18348987 ?u.18348990)
+  (x : ?m.18319244) → ?m.18319249 x : Sort (imax ?u.18319243 ?u.18319246)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74998:12: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75006:12: type mismatch
   loop_vars
 has type
   Bool ×
     FullAddress × BitVec N × DescriptorType × FaultRecord × Bool × Bool × BitVec 2 × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.18334731 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75358:28: application type mismatch
-  @ite ?m.18373869 fun x => ?m.18373862
+  SailME ?m.18304987 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75366:28: application type mismatch
+  @ite ?m.18344125 fun x => ?m.18344118
 argument
-  fun x => ?m.18373862
+  fun x => ?m.18344118
 has type
-  (x : ?m.18373858) → ?m.18373863 x : Sort (imax ?u.18373857 ?u.18373860)
+  (x : ?m.18344114) → ?m.18344119 x : Sort (imax ?u.18344113 ?u.18344116)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75360:28: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75368:28: type mismatch
   loop_vars
 has type
   AccessDescriptor ×
     AddressDescriptor × BitVec 128 × FaultRecord × BitVec 128 × BitVec 128 × Bool × Bool × TTWState : Type
 but is expected to have type
-  SailME ?m.18367384 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75537:3: unknown identifier 'sail_translation_end'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75540:3: unknown identifier 'sail_translation_start'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:78229:2: type mismatch
-  BitVec.join1 [BitVec.access pred n.toNat]
-has type
-  BitVec [BitVec.access pred n.toNat].length : Type
-but is expected to have type
-  SailM (BitVec 1) : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79007:9: failed to prove termination, possible solutions:
+  SailME ?m.18337640 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79015:9: failed to prove termination, possible solutions:
   - Use `have`-expressions to prove the remaining goals
   - Use `termination_by` to specify a different well-founded relation
   - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
@@ -654,83 +289,48 @@ half : ℤ := (↑(BitVec.length input)).ediv 2
         (Sail.BitVec.extractLsb input (↑(BitVec.length input) - 1).toNat
           ((↑(BitVec.length input)).ediv 2).toNat)).toNat <
     (BitVec.length input).toNat
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90048:2: maximum recursion depth has been reached
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90056:2: maximum recursion depth has been reached
 use `set_option maxRecDepth <num>` to increase limit
 use `set_option diagnostics true` to get diagnostic information
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92050:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:97058:70: unexpected token 'at'; expected '_' or identifier
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:97489:3: unknown identifier 'sail_tlbi'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:98278:3: unknown identifier 'sail_cache_op'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:99224:11: application type mismatch
-  bif __do_lift✝¹ then ?m.48464846 else pure 0
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92058:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100087:12: application type mismatch
+  @ite ?m.48781285 fun x => ?m.48781278
 argument
-  pure 0
+  fun x => ?m.48781278
 has type
-  ?m.48464849 (BitVec 1) : Type ?u.48464847
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:99278:13: application type mismatch
-  bif __do_lift✝² then ?m.48530727 else pure 0
-argument
-  pure 0
-has type
-  ?m.48530730 (BitVec 1) : Type ?u.48530728
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:99716:9: application type mismatch
-  bif __do_lift✝¹ then ?m.48627869 else pure 0
-argument
-  pure 0
-has type
-  ?m.48627872 (BitVec 1) : Type ?u.48627870
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:99906:9: application type mismatch
-  bif __do_lift✝¹ then ?m.48681315 else pure 0
-argument
-  pure 0
-has type
-  ?m.48681318 (BitVec 1) : Type ?u.48681316
-but is expected to have type
-  BitVec 1 : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100079:12: application type mismatch
-  @ite ?m.48716097 fun x => ?m.48716090
-argument
-  fun x => ?m.48716090
-has type
-  (x : ?m.48716086) → ?m.48716091 x : Sort (imax ?u.48716085 ?u.48716088)
+  (x : ?m.48781274) → ?m.48781279 x : Sort (imax ?u.48781273 ?u.48781276)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100081:12: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100089:12: type mismatch
   loop_vars
 has type
   BitVec 64 × DescriptorType × FaultRecord × ℤ × ℤ × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.48712098 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100516:12: application type mismatch
-  @ite ?m.48818528 fun x => ?m.48818521
+  SailME ?m.48777286 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100524:12: application type mismatch
+  @ite ?m.48883716 fun x => ?m.48883709
 argument
-  fun x => ?m.48818521
+  fun x => ?m.48883709
 has type
-  (x : ?m.48818517) → ?m.48818522 x : Sort (imax ?u.48818516 ?u.48818519)
+  (x : ?m.48883705) → ?m.48883710 x : Sort (imax ?u.48883704 ?u.48883707)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100518:12: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100526:12: type mismatch
   loop_vars
 has type
   BitVec 64 ×
     DescriptorType × FaultRecord × ℤ × ℤ × Bool × FaultRecord × AddressDescriptor × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.48812654 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101916:8: application type mismatch
-  @ite ?m.49034400 fun x => ?m.49034393
+  SailME ?m.48877842 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101924:8: application type mismatch
+  @ite ?m.49099588 fun x => ?m.49099581
 argument
-  fun x => ?m.49034393
+  fun x => ?m.49099581
 has type
-  (x : ?m.49034389) → ?m.49034394 x : Sort (imax ?u.49034388 ?u.49034391)
+  (x : ?m.49099577) → ?m.49099582 x : Sort (imax ?u.49099576 ?u.49099579)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101918:8: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101926:8: type mismatch
   loop_vars
 has type
   BitVec 3 ×
@@ -745,11 +345,11 @@ has type
                     BitVec 1 ×
                       Bool × FaultRecord × AddressDescriptor × BitVec 3 × AddressDescriptor × TTWState × BitVec 1 : Type
 but is expected to have type
-  SailME ?m.49026134 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101917:15: invalid field notation, type is not of the form (C ...) where C is a constant
+  SailME ?m.49091322 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101925:15: invalid field notation, type is not of the form (C ...) where C is a constant
   walkstate
 has type
-  ?m.49050201
+  ?m.49115389
 error: Lean exited with code 1
 Some required builds logged failures:
 - Armv9.V8Base

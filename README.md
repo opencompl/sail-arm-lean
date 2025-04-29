@@ -8,32 +8,25 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 2793177  
-Definitions: 65575  
+Lines: 2793200  
+Definitions: 65580  
 Inductive definitions: 884  
-Abbreviations: 3441  
+Abbreviations: 3446  
 
 # Warnings and Errors
 
-Errors found: 92  
+Errors found: 31  
 Warnings found: 0  
 
 ## Error Classes
 
-- 38x application type mismatch
-- 30x type mismatch
+- 8x type mismatch
+- 7x application type mismatch
 - 4x don't know how to synthesize placeholder
 - 2x unknown identifier 'AArch64_S2Walk'
 - 2x unexpected identifier; expected 'do'
-- 2x invalid `do` notation, expected type is not a monad application
-- 1x unknown identifier 'sail_translation_start'
-- 1x unknown identifier 'sail_translation_end'
-- 1x unknown identifier 'sail_tlbi'
-- 1x unknown identifier 'sail_take_exception'
-- 1x unknown identifier 'sail_cache_op'
 - 1x unknown identifier 'GPTWalk'
 - 1x unknown identifier 'AArch64_AutoGen_ArchitectureReset'
-- 1x unexpected token 'at'; expected '_' or identifier
 - 1x maximum recursion depth has been reached
 - 1x invalid field notation, type is not of the form (C ...) where C is a constant
 - 1x failed to synthesize
@@ -43,31 +36,31 @@ Warnings found: 0
 has type
   BitVec 64 × DescriptorType × FaultRecord × ℤ × ℤ × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.48712098 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100516:12: application type mismatch
-  @ite ?m.48818528 fun x => ?m.48818521
+  SailME ?m.48777286 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100524:12: application type mismatch
+  @ite ?m.48883716 fun x => ?m.48883709
 argument
-  fun x => ?m.48818521
+  fun x => ?m.48883709
 has type
-  (x : ?m.48818517) → ?m.48818522 x : Sort (imax ?u.48818516 ?u.48818519)
+  (x : ?m.48883705) → ?m.48883710 x : Sort (imax ?u.48883704 ?u.48883707)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100518:12: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100526:12: type mismatch
   loop_vars
 has type
   BitVec 64 ×
     DescriptorType × FaultRecord × ℤ × ℤ × Bool × FaultRecord × AddressDescriptor × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.48812654 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101916:8: application type mismatch
-  @ite ?m.49034400 fun x => ?m.49034393
+  SailME ?m.48877842 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101924:8: application type mismatch
+  @ite ?m.49099588 fun x => ?m.49099581
 argument
-  fun x => ?m.49034393
+  fun x => ?m.49099581
 has type
-  (x : ?m.49034389) → ?m.49034394 x : Sort (imax ?u.49034388 ?u.49034391)
+  (x : ?m.49099577) → ?m.49099582 x : Sort (imax ?u.49099576 ?u.49099579)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101918:8: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101926:8: type mismatch
   loop_vars
 has type
   BitVec 3 ×
@@ -82,11 +75,11 @@ has type
                     BitVec 1 ×
                       Bool × FaultRecord × AddressDescriptor × BitVec 3 × AddressDescriptor × TTWState × BitVec 1 : Type
 but is expected to have type
-  SailME ?m.49026134 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101917:15: invalid field notation, type is not of the form (C ...) where C is a constant
+  SailME ?m.49091322 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101925:15: invalid field notation, type is not of the form (C ...) where C is a constant
   walkstate
 has type
-  ?m.49050201
+  ?m.49115389
 error: Lean exited with code 1
 Some required builds logged failures:
 - Armv9.V8Base
