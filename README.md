@@ -15,71 +15,65 @@ Abbreviations: 3446
 
 # Warnings and Errors
 
-Errors found: 30  
+Errors found: 8  
 Warnings found: 0  
 
 ## Error Classes
 
-- 7x type mismatch
-- 7x application type mismatch
-- 4x don't know how to synthesize placeholder
 - 2x unknown identifier 'AArch64_S2Walk'
-- 2x unexpected identifier; expected 'do'
 - 1x unknown identifier 'GPTWalk'
 - 1x unknown identifier 'AArch64_AutoGen_ArchitectureReset'
 - 1x maximum recursion depth has been reached
-- 1x invalid field notation, type is not of the form (C ...) where C is a constant
 - 1x failed to synthesize
 - 1x failed to prove termination, possible solutions:
-- 1x don't know how to synthesize placeholder for argument 'α'
 - 1x Lean exited with code 1
-has type
-  BitVec 64 × DescriptorType × FaultRecord × ℤ × ℤ × AddressDescriptor × TTWState : Type
-but is expected to have type
-  SailME ?m.48776773 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100521:12: application type mismatch
-  @ite ?m.48883203 fun x => ?m.48883196
-argument
-  fun x => ?m.48883196
-has type
-  (x : ?m.48883192) → ?m.48883197 x : Sort (imax ?u.48883191 ?u.48883194)
-but is expected to have type
-  Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100523:12: type mismatch
-  loop_vars
-has type
-  BitVec 64 ×
-    DescriptorType × FaultRecord × ℤ × ℤ × Bool × FaultRecord × AddressDescriptor × AddressDescriptor × TTWState : Type
-but is expected to have type
-  SailME ?m.48877329 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101921:8: application type mismatch
-  @ite ?m.49099075 fun x => ?m.49099068
-argument
-  fun x => ?m.49099068
-has type
-  (x : ?m.49099064) → ?m.49099069 x : Sort (imax ?u.49099063 ?u.49099066)
-but is expected to have type
-  Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101923:8: type mismatch
-  loop_vars
-has type
-  BitVec 3 ×
-    BitVec 1 ×
-      BitVec 1 ×
-        BitVec 32 ×
-          BitVec 4 ×
-            FaultRecord ×
-              BitVec 1 ×
-                BitVec 1 ×
-                  BitVec 1 ×
-                    BitVec 1 ×
-                      Bool × FaultRecord × AddressDescriptor × BitVec 3 × AddressDescriptor × TTWState × BitVec 1 : Type
-but is expected to have type
-  SailME ?m.49090809 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101922:15: invalid field notation, type is not of the form (C ...) where C is a constant
-  walkstate
-has type
-  ?m.49114876
+✔ [1339/1375] Built Armv9.Sail.Sail
+✔ [1340/1375] Built Armv9.Defs
+✔ [1341/1375] Built Armv9.Specialization
+✔ [1342/1375] Built Armv9.ArmExtras
+✔ [1343/1375] Built Armv9.Real
+✔ [1344/1375] Built Armv9.Flow
+✔ [1345/1375] Built Armv9.Arith
+✔ [1346/1375] Built Armv9.Trace
+✔ [1347/1375] Built Armv9.Vector
+✔ [1348/1375] Built Armv9.String
+✔ [1349/1375] Built Armv9.ReverseEndianness
+✔ [1350/1375] Built Armv9.Option
+✔ [1351/1375] Built Armv9.MonoRewrites
+✔ [1352/1375] Built Armv9.Result
+✔ [1353/1375] Built Armv9.Common
+✔ [1354/1375] Built Armv9.ReadWrite
+✔ [1355/1375] Built Armv9.Prelude
+✔ [1356/1375] Built Armv9.Builtins
+✖ [1357/1375] Building Armv9.V8Base
+trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/V8Base.c --json
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:63553:24: unknown identifier 'GPTWalk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74457:32: unknown identifier 'AArch64_S2Walk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74466:34: unknown identifier 'AArch64_S2Walk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74732:12: failed to synthesize
+  MonadExcept (FaultRecord × AddressDescriptor × TTWState × BitVec (((fun x y => x - y) (↑N) 1).toNat - 0 + 1))
+    (SailME (FaultRecord × AddressDescriptor × TTWState × BitVec N))
+
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79012:9: failed to prove termination, possible solutions:
+  - Use `have`-expressions to prove the remaining goals
+  - Use `termination_by` to specify a different well-founded relation
+  - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
+op : ReduceOp
+esize : ℕ
+altfp : Bool
+k_N : ℕ
+input : BitVec k_N
+h✝ : ¬(BitVec.length input == esize) = true
+half : ℤ := (↑(BitVec.length input)).ediv 2
+⊢ (BitVec.length
+        (Sail.BitVec.extractLsb input (↑(BitVec.length input) - 1).toNat
+          ((↑(BitVec.length input)).ediv 2).toNat)).toNat <
+    (BitVec.length input).toNat
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90053:2: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92055:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
 error: Lean exited with code 1
 Some required builds logged failures:
 - Armv9.V8Base

@@ -8469,9 +8469,9 @@ def execute_aarch64_instrs_memory_mcpymset_cpy (d : Nat) (n : Nat) (options_name
       (do
         let (B, cpysize, readdata, stagecpysize) ← (( do
           let mut loop_vars_1 := (B, cpysize, readdata, stagecpysize)
-          while
-          (λ (B, cpysize, readdata, stagecpysize) => (bne (BitVec.toInt stagecpysize) 0))
-          loop_vars_1 do
+          while (λ (B, cpysize, readdata, stagecpysize) => (bne (BitVec.toInt stagecpysize) 0))
+            loop_vars_1
+            do
             let (B, cpysize, readdata, stagecpysize) := loop_vars_1
             loop_vars_1 ← do
               let B ← (CPYSizeChoice toaddress fromaddress cpysize)
@@ -8510,10 +8510,10 @@ def execute_aarch64_instrs_memory_mcpymset_cpy (d : Nat) (n : Nat) (options_name
       (do
         let (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) ← (( do
           let mut loop_vars := (B, cpysize, fromaddress, readdata, stagecpysize, toaddress)
-          while
-          (λ (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) =>
+          while (λ (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) =>
             ((BitVec.toNat stagecpysize) >b 0))
-          loop_vars do
+            loop_vars
+            do
             let (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) := loop_vars
             loop_vars ← do
               let B ← (CPYSizeChoice toaddress fromaddress cpysize)
@@ -9450,9 +9450,9 @@ def execute_aarch64_instrs_memory_mcpymset_cpyf (d : Nat) (n : Nat) (options_nam
       (do
         let (B, cpysize, readdata, stagecpysize) ← (( do
           let mut loop_vars_1 := (B, cpysize, readdata, stagecpysize)
-          while
-          (λ (B, cpysize, readdata, stagecpysize) => (bne (BitVec.toInt stagecpysize) 0))
-          loop_vars_1 do
+          while (λ (B, cpysize, readdata, stagecpysize) => (bne (BitVec.toInt stagecpysize) 0))
+            loop_vars_1
+            do
             let (B, cpysize, readdata, stagecpysize) := loop_vars_1
             loop_vars_1 ← do
               let B ← (CPYSizeChoice toaddress fromaddress cpysize)
@@ -9479,10 +9479,10 @@ def execute_aarch64_instrs_memory_mcpymset_cpyf (d : Nat) (n : Nat) (options_nam
       (do
         let (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) ← (( do
           let mut loop_vars := (B, cpysize, fromaddress, readdata, stagecpysize, toaddress)
-          while
-          (λ (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) =>
+          while (λ (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) =>
             ((BitVec.toNat stagecpysize) >b 0))
-          loop_vars do
+            loop_vars
+            do
             let (B, cpysize, fromaddress, readdata, stagecpysize, toaddress) := loop_vars
             loop_vars ← do
               let B ← (CPYSizeChoice toaddress fromaddress cpysize)
@@ -41239,9 +41239,9 @@ def execute_aarch64_instrs_memory_mcpymset_set (d : Nat) (n : Nat) (options_name
       (do
         let (B, setsize, stagesetsize, toaddress) ← (( do
           let mut loop_vars := (B, setsize, stagesetsize, toaddress)
-          while
-          (λ (B, setsize, stagesetsize, toaddress) => ((BitVec.toNat stagesetsize) >b 0))
-          loop_vars do
+          while (λ (B, setsize, stagesetsize, toaddress) => ((BitVec.toNat stagesetsize) >b 0))
+            loop_vars
+            do
             let (B, setsize, stagesetsize, toaddress) := loop_vars
             loop_vars ← do
               let B ← (SETSizeChoice toaddress setsize 1)
@@ -41615,10 +41615,10 @@ def execute_aarch64_instrs_memory_mcpymset_setg (d : Nat) (n : Nat) (options_nam
       (do
         let (B, setsize, stagesetsize, tag, tagaddr, tagstep) ← (( do
           let mut loop_vars_2 := (B, setsize, stagesetsize, tag, tagaddr, tagstep)
-          while
-          (λ (B, setsize, stagesetsize, tag, tagaddr, tagstep) =>
+          while (λ (B, setsize, stagesetsize, tag, tagaddr, tagstep) =>
             ((BitVec.toInt stagesetsize) <b 0))
-          loop_vars_2 do
+            loop_vars_2
+            do
             let (B, setsize, stagesetsize, tag, tagaddr, tagstep) := loop_vars_2
             loop_vars_2 ← do
               let B ← (SETSizeChoice toaddress setsize 16)
@@ -41653,10 +41653,10 @@ def execute_aarch64_instrs_memory_mcpymset_setg (d : Nat) (n : Nat) (options_nam
       (do
         let (B, setsize, stagesetsize, tag, tagaddr, tagstep, toaddress) ← (( do
           let mut loop_vars := (B, setsize, stagesetsize, tag, tagaddr, tagstep, toaddress)
-          while
-          (λ (B, setsize, stagesetsize, tag, tagaddr, tagstep, toaddress) =>
+          while (λ (B, setsize, stagesetsize, tag, tagaddr, tagstep, toaddress) =>
             ((BitVec.toNat stagesetsize) >b 0))
-          loop_vars do
+            loop_vars
+            do
             let (B, setsize, stagesetsize, tag, tagaddr, tagstep, toaddress) := loop_vars
             loop_vars ← do
               let B ← (SETSizeChoice toaddress setsize 16)

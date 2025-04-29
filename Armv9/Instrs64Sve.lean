@@ -23436,10 +23436,10 @@ def execute_PNEXT_P_P_P__ (VL : Nat) (dn : Nat) (esize : Nat) (v : Nat) : SailM 
   let next ← (( do (pure ((← (LastActiveElement operand esize)) +i 1)) ) : SailM Int )
   let next ← (( do
     let mut loop_vars := next
-    while
-    (← (λ next => do
+    while (← (λ next => do
         (pure (Bool.and (next <b elements) (Bool.not (← (ActivePredicateElement mask next esize))))))
-      loop_vars) do
+        loop_vars)
+      do
       let next := loop_vars
       loop_vars := ((next +i 1) : Int)
     (pure loop_vars) ) : SailM Int )
