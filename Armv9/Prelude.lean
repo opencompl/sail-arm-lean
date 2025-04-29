@@ -278,9 +278,3 @@ def PL_of_VL (vl : Nat) : Nat :=
 def __GetVerbosity (_ : Unit) : (BitVec 64) :=
   (0x0000000000000000 : (BitVec 64))
 
-def check_cycle_count (_ : Unit) : Unit :=
-  ()
-
-def get_cycle_count (_ : Unit) : Int :=
-  0
-

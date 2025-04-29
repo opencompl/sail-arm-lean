@@ -1,14 +1,14 @@
 installing leantar 0.1.15
 Attempting to download 6527 file(s)
 Decompressing 6527 file(s)
-Unpacked in 14662 ms
+Unpacked in 13757 ms
 Completed successfully!
 ✔ [1337/1375] Built Armv9.Sail.IntRange
 ✔ [1338/1375] Built Armv9.Sail.BitVec
 ✔ [1339/1375] Built Armv9.Sail.Sail
 ✔ [1340/1375] Built Armv9.Defs
-✔ [1341/1375] Built Armv9.ArmExtras
-✔ [1342/1375] Built Armv9.Specialization
+✔ [1341/1375] Built Armv9.Specialization
+✔ [1342/1375] Built Armv9.ArmExtras
 ✔ [1343/1375] Built Armv9.Real
 ✔ [1344/1375] Built Armv9.Flow
 ✔ [1345/1375] Built Armv9.Arith
@@ -200,81 +200,75 @@ fraction✝ : BitVec 52
 exp✝ exp : ℤ
 fraction : BitVec 52
 ⊢ Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:62224:2: type mismatch
-  __WakeupRequest ()
-has type
-  Unit : Type
-but is expected to have type
-  SailM Unit : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:63556:24: unknown identifier 'GPTWalk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:67424:36: unexpected identifier; expected 'do'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74460:32: unknown identifier 'AArch64_S2Walk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74469:34: unknown identifier 'AArch64_S2Walk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74577:20: application type mismatch
-  @ite ?m.18253303 fun x => ?m.18253296
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:63553:24: unknown identifier 'GPTWalk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:67421:36: unexpected identifier; expected 'do'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74457:32: unknown identifier 'AArch64_S2Walk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74466:34: unknown identifier 'AArch64_S2Walk'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74574:20: application type mismatch
+  @ite ?m.18252790 fun x => ?m.18252783
 argument
-  fun x => ?m.18253296
+  fun x => ?m.18252783
 has type
-  (x : ?m.18253292) → ?m.18253297 x : Sort (imax ?u.18253291 ?u.18253294)
+  (x : ?m.18252779) → ?m.18252784 x : Sort (imax ?u.18252778 ?u.18252781)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74579:20: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74576:20: type mismatch
   loop_vars
 has type
   AddressDescriptor × BitVec 128 × FaultRecord × BitVec 128 × BitVec 128 × Bool × TTWState : Type
 but is expected to have type
-  SailME ?m.18248104 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74735:12: failed to synthesize
+  SailME ?m.18247591 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74732:12: failed to synthesize
   MonadExcept (FaultRecord × AddressDescriptor × TTWState × BitVec (((fun x y => x - y) (↑N) 1).toNat - 0 + 1))
     (SailME (FaultRecord × AddressDescriptor × TTWState × BitVec N))
 
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74992:24: application type mismatch
-  @ite ?m.18315366 fun x => ?m.18315359
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74989:24: application type mismatch
+  @ite ?m.18314853 fun x => ?m.18314846
 argument
-  fun x => ?m.18315359
+  fun x => ?m.18314846
 has type
-  (x : ?m.18315355) → ?m.18315360 x : Sort (imax ?u.18315354 ?u.18315357)
+  (x : ?m.18314842) → ?m.18314847 x : Sort (imax ?u.18314841 ?u.18314844)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74994:24: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74991:24: type mismatch
   loop_vars_1
 has type
   Bool ×
     FullAddress × BitVec N × DescriptorType × FaultRecord × BitVec N × Bool × FaultRecord × BitVec 2 × TTWState : Type
 but is expected to have type
-  SailME ?m.18308620 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75004:12: application type mismatch
-  @ite ?m.18319255 fun x => ?m.18319248
+  SailME ?m.18308107 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75001:12: application type mismatch
+  @ite ?m.18318742 fun x => ?m.18318735
 argument
-  fun x => ?m.18319248
+  fun x => ?m.18318735
 has type
-  (x : ?m.18319244) → ?m.18319249 x : Sort (imax ?u.18319243 ?u.18319246)
+  (x : ?m.18318731) → ?m.18318736 x : Sort (imax ?u.18318730 ?u.18318733)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75006:12: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75003:12: type mismatch
   loop_vars
 has type
   Bool ×
     FullAddress × BitVec N × DescriptorType × FaultRecord × Bool × Bool × BitVec 2 × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.18304987 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75366:28: application type mismatch
-  @ite ?m.18344125 fun x => ?m.18344118
+  SailME ?m.18304474 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75363:28: application type mismatch
+  @ite ?m.18343612 fun x => ?m.18343605
 argument
-  fun x => ?m.18344118
+  fun x => ?m.18343605
 has type
-  (x : ?m.18344114) → ?m.18344119 x : Sort (imax ?u.18344113 ?u.18344116)
+  (x : ?m.18343601) → ?m.18343606 x : Sort (imax ?u.18343600 ?u.18343603)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75368:28: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:75365:28: type mismatch
   loop_vars
 has type
   AccessDescriptor ×
     AddressDescriptor × BitVec 128 × FaultRecord × BitVec 128 × BitVec 128 × Bool × Bool × TTWState : Type
 but is expected to have type
-  SailME ?m.18337640 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79015:9: failed to prove termination, possible solutions:
+  SailME ?m.18337127 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79012:9: failed to prove termination, possible solutions:
   - Use `have`-expressions to prove the remaining goals
   - Use `termination_by` to specify a different well-founded relation
   - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
@@ -289,48 +283,48 @@ half : ℤ := (↑(BitVec.length input)).ediv 2
         (Sail.BitVec.extractLsb input (↑(BitVec.length input) - 1).toNat
           ((↑(BitVec.length input)).ediv 2).toNat)).toNat <
     (BitVec.length input).toNat
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90056:2: maximum recursion depth has been reached
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90053:2: maximum recursion depth has been reached
 use `set_option maxRecDepth <num>` to increase limit
 use `set_option diagnostics true` to get diagnostic information
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92058:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100087:12: application type mismatch
-  @ite ?m.48781285 fun x => ?m.48781278
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92055:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100084:12: application type mismatch
+  @ite ?m.48780772 fun x => ?m.48780765
 argument
-  fun x => ?m.48781278
+  fun x => ?m.48780765
 has type
-  (x : ?m.48781274) → ?m.48781279 x : Sort (imax ?u.48781273 ?u.48781276)
+  (x : ?m.48780761) → ?m.48780766 x : Sort (imax ?u.48780760 ?u.48780763)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100089:12: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100086:12: type mismatch
   loop_vars
 has type
   BitVec 64 × DescriptorType × FaultRecord × ℤ × ℤ × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.48777286 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100524:12: application type mismatch
-  @ite ?m.48883716 fun x => ?m.48883709
+  SailME ?m.48776773 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100521:12: application type mismatch
+  @ite ?m.48883203 fun x => ?m.48883196
 argument
-  fun x => ?m.48883709
+  fun x => ?m.48883196
 has type
-  (x : ?m.48883705) → ?m.48883710 x : Sort (imax ?u.48883704 ?u.48883707)
+  (x : ?m.48883192) → ?m.48883197 x : Sort (imax ?u.48883191 ?u.48883194)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100526:12: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:100523:12: type mismatch
   loop_vars
 has type
   BitVec 64 ×
     DescriptorType × FaultRecord × ℤ × ℤ × Bool × FaultRecord × AddressDescriptor × AddressDescriptor × TTWState : Type
 but is expected to have type
-  SailME ?m.48877842 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101924:8: application type mismatch
-  @ite ?m.49099588 fun x => ?m.49099581
+  SailME ?m.48877329 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101921:8: application type mismatch
+  @ite ?m.49099075 fun x => ?m.49099068
 argument
-  fun x => ?m.49099581
+  fun x => ?m.49099068
 has type
-  (x : ?m.49099577) → ?m.49099582 x : Sort (imax ?u.49099576 ?u.49099579)
+  (x : ?m.49099064) → ?m.49099069 x : Sort (imax ?u.49099063 ?u.49099066)
 but is expected to have type
   Prop : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101926:8: type mismatch
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101923:8: type mismatch
   loop_vars
 has type
   BitVec 3 ×
@@ -345,11 +339,11 @@ has type
                     BitVec 1 ×
                       Bool × FaultRecord × AddressDescriptor × BitVec 3 × AddressDescriptor × TTWState × BitVec 1 : Type
 but is expected to have type
-  SailME ?m.49091322 PUnit.{1} : Type
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101925:15: invalid field notation, type is not of the form (C ...) where C is a constant
+  SailME ?m.49090809 PUnit.{1} : Type
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:101922:15: invalid field notation, type is not of the form (C ...) where C is a constant
   walkstate
 has type
-  ?m.49115389
+  ?m.49114876
 error: Lean exited with code 1
 Some required builds logged failures:
 - Armv9.V8Base
