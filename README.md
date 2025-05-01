@@ -8,25 +8,26 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 2793195  
-Definitions: 65579  
+Lines: 2793202  
+Definitions: 65581  
 Inductive definitions: 884  
 Abbreviations: 3446  
 
 # Warnings and Errors
 
-Errors found: 8  
+Errors found: 5  
 Warnings found: 0  
 
 ## Error Classes
 
-- 2x unknown identifier 'AArch64_S2Walk'
-- 1x unknown identifier 'GPTWalk'
 - 1x unknown identifier 'AArch64_AutoGen_ArchitectureReset'
 - 1x maximum recursion depth has been reached
 - 1x failed to synthesize
 - 1x failed to prove termination, possible solutions:
 - 1x Lean exited with code 1
+Completed successfully!
+✔ [1337/1375] Built Armv9.Sail.IntRange
+✔ [1338/1375] Built Armv9.Sail.BitVec
 ✔ [1339/1375] Built Armv9.Sail.Sail
 ✔ [1340/1375] Built Armv9.Defs
 ✔ [1341/1375] Built Armv9.Specialization
@@ -47,15 +48,12 @@ Warnings found: 0
 ✔ [1356/1375] Built Armv9.Builtins
 ✖ [1357/1375] Building Armv9.V8Base
 trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/V8Base.c --json
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:63553:24: unknown identifier 'GPTWalk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74457:32: unknown identifier 'AArch64_S2Walk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74466:34: unknown identifier 'AArch64_S2Walk'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74732:12: failed to synthesize
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74739:12: failed to synthesize
   MonadExcept (FaultRecord × AddressDescriptor × TTWState × BitVec (((fun x y => x - y) (↑N) 1).toNat - 0 + 1))
     (SailME (FaultRecord × AddressDescriptor × TTWState × BitVec N))
 
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79012:9: failed to prove termination, possible solutions:
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79019:9: failed to prove termination, possible solutions:
   - Use `have`-expressions to prove the remaining goals
   - Use `termination_by` to specify a different well-founded relation
   - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
@@ -70,10 +68,10 @@ half : ℤ := (↑(BitVec.length input)).ediv 2
         (Sail.BitVec.extractLsb input (↑(BitVec.length input) - 1).toNat
           ((↑(BitVec.length input)).ediv 2).toNat)).toNat <
     (BitVec.length input).toNat
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90053:2: maximum recursion depth has been reached
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90060:2: maximum recursion depth has been reached
 use `set_option maxRecDepth <num>` to increase limit
 use `set_option diagnostics true` to get diagnostic information
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92055:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92062:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
 error: Lean exited with code 1
 Some required builds logged failures:
 - Armv9.V8Base
