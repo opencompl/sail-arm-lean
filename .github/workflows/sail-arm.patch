@@ -97,6 +97,9 @@ index ea6c766..7efcabe 100644
 -    return((GPCNoFault(), result))
 -}
 -
++function GPTWalk (pa, accdesc) = {
++  throw(Error_Undefined());
++}
  val SetTLBIncludesGPT : forall 'gpt_range. (TLBContext, int('gpt_range)) -> unit
  
  val TLBIncludesGPT : TLBContext -> bool
@@ -280,6 +283,9 @@ index ea6c766..7efcabe 100644
 -    return((fault, walkaddress, walkstate, descriptor))
 -}
 -
++function AArch64_S2Walk (fault_in, ipa, walkparams, accdesc, s1level, N) = {
++  throw(Error_Undefined());
++}
  val AArch64_SettingAccessFlagPermitted : FaultRecord -> bool
  
  function AArch64_SettingAccessFlagPermitted fault = {
