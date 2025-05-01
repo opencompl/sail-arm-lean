@@ -8,23 +8,26 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 2793202  
+Lines: 2793208  
 Definitions: 65581  
 Inductive definitions: 884  
 Abbreviations: 3446  
 
 # Warnings and Errors
 
-Errors found: 5  
-Warnings found: 0  
+Errors found: 4  
+Warnings found: 2  
 
 ## Error Classes
 
 - 1x unknown identifier 'AArch64_AutoGen_ArchitectureReset'
 - 1x maximum recursion depth has been reached
 - 1x failed to synthesize
-- 1x failed to prove termination, possible solutions:
 - 1x Lean exited with code 1
+installing leantar 0.1.15
+Attempting to download 6527 file(s)
+Decompressing 6527 file(s)
+Unpacked in 13959 ms
 Completed successfully!
 ✔ [1337/1375] Built Armv9.Sail.IntRange
 ✔ [1338/1375] Built Armv9.Sail.BitVec
@@ -53,21 +56,8 @@ error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/ar
     (SailME (FaultRecord × AddressDescriptor × TTWState × BitVec N))
 
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79019:9: failed to prove termination, possible solutions:
-  - Use `have`-expressions to prove the remaining goals
-  - Use `termination_by` to specify a different well-founded relation
-  - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
-op : ReduceOp
-esize : ℕ
-altfp : Bool
-k_N : ℕ
-input : BitVec k_N
-h✝ : ¬(BitVec.length input == esize) = true
-half : ℤ := (↑(BitVec.length input)).ediv 2
-⊢ (BitVec.length
-        (Sail.BitVec.extractLsb input (↑(BitVec.length input) - 1).toNat
-          ((↑(BitVec.length input)).ediv 2).toNat)).toNat <
-    (BitVec.length input).toNat
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:78997:4: declaration uses 'sorry'
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:78997:4: declaration uses 'sorry'
 error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90060:2: maximum recursion depth has been reached
 use `set_option maxRecDepth <num>` to increase limit
 use `set_option diagnostics true` to get diagnostic information
