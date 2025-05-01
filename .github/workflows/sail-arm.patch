@@ -1,8 +1,8 @@
 diff --git a/arm-v9.4-a/src/fetch.sail b/arm-v9.4-a/src/fetch.sail
-index 466fa7a..2bbff9f 100644
+index 466fa7adb5..2bbff9f835 100644
 --- a/arm-v9.4-a/src/fetch.sail
 +++ b/arm-v9.4-a/src/fetch.sail
-@@ -358,7 +358,6 @@ function __TopLevel () = {
+@@ -358,7 +358,6 @@
          if not_bool(interrupt_taken) then {
              if Branchtypetaken == BranchType_RESET then {
                  CheckResetCatch();
@@ -11,14 +11,13 @@ index 466fa7a..2bbff9f 100644
              __InstructionExecute()
          };
 diff --git a/arm-v9.4-a/src/v8_base.sail b/arm-v9.4-a/src/v8_base.sail
-index ea6c766..7efcabe 100644
+index ea6c766b02..2412c1ea8b 100644
 --- a/arm-v9.4-a/src/v8_base.sail
 +++ b/arm-v9.4-a/src/v8_base.sail
-@@ -19791,85 +19791,6 @@ register __tlb_enabled : bool = false
- 
+@@ -19792,82 +19792,7 @@
  val GPTWalk : (bits(56), AccessDescriptor) -> (GPCFRecord, GPTEntry)
  
--function GPTWalk (pa, accdesc) = {
+ function GPTWalk (pa, accdesc) = {
 -    gpi_index : int = undefined;
 -    gpttlbline : GPTTLBLine = undefined;
 -    let pgs : PGSe = DecodePGS(GPCCR_EL3[PGS]);
@@ -95,15 +94,11 @@ index ea6c766..7efcabe 100644
 -        GPTTLBCache(pgs, result)
 -    };
 -    return((GPCNoFault(), result))
--}
--
-+function GPTWalk (pa, accdesc) = {
-+  throw(Error_Undefined());
-+}
- val SetTLBIncludesGPT : forall 'gpt_range. (TLBContext, int('gpt_range)) -> unit
++   throw(Error_Undefined());
+ }
  
- val TLBIncludesGPT : TLBContext -> bool
-@@ -25106,20 +25027,7 @@ function AArch64_PhysicalAddressSize (d128, encoded_ps, tgx) = {
+ val SetTLBIncludesGPT : forall 'gpt_range. (TLBContext, int('gpt_range)) -> unit
+@@ -25106,20 +25031,7 @@
            ps = 56
        }
      };
@@ -125,11 +120,10 @@ index ea6c766..7efcabe 100644
  }
  
  val AArch64_OAOutOfRange : (bits(56), bits(1), bits(3), TGx) -> bool
-@@ -27034,160 +26942,6 @@ val S2TLBLookup : TLBContext -> TLBLine
- val AArch64_S2Walk : forall 'N, 'N in {32, 64, 128}.
+@@ -27035,158 +26947,8 @@
    (FaultRecord, AddressDescriptor, S2TTWParams, AccessDescriptor, option(int), int('N)) -> (FaultRecord, AddressDescriptor, TTWState, bits('N))
  
--function AArch64_S2Walk (fault_in, ipa, walkparams, accdesc, s1level, N) = {
+ function AArch64_S2Walk (fault_in, ipa, walkparams, accdesc, s1level, N) = {
 -    fault : FaultRecord = fault_in;
 -    let ipa_64 : bits(64) = ZeroExtend(ipa.paddress.address, 64);
 -    tlbcontext : TLBContext = undefined;
@@ -282,10 +276,8 @@ index ea6c766..7efcabe 100644
 -    };
 -    return((fault, walkaddress, walkstate, descriptor))
 -}
--
-+function AArch64_S2Walk (fault_in, ipa, walkparams, accdesc, s1level, N) = {
-+  throw(Error_Undefined());
-+}
++  throw(Error_Undefined())
++} 
+ 
  val AArch64_SettingAccessFlagPermitted : FaultRecord -> bool
  
- function AArch64_SettingAccessFlagPermitted fault = {
