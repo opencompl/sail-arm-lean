@@ -41,7 +41,7 @@ errors = list(map(lambda x: x[x.rfind(": ")+2:-1], errors))
 errors = [[errors.count(x), x] for x in set(errors)]
 errors.sort(reverse=True)
 
-print(f"# RISC-V Lean Statistics\n")
+print(f"# Statistics\n")
 
 print(f"Lines: {total_lines}  ")
 print(f"Definitions: {total_defs}  ")
