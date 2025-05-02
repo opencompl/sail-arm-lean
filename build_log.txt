@@ -1,7 +1,7 @@
 installing leantar 0.1.15
 Attempting to download 6527 file(s)
 Decompressing 6527 file(s)
-Unpacked in 14520 ms
+Unpacked in 13786 ms
 Completed successfully!
 ✔ [1337/1375] Built Armv9.Sail.IntRange
 ✔ [1338/1375] Built Armv9.Sail.BitVec
@@ -23,19 +23,14 @@ Completed successfully!
 ✔ [1354/1375] Built Armv9.ReadWrite
 ✔ [1355/1375] Built Armv9.Prelude
 ✔ [1356/1375] Built Armv9.Builtins
-✖ [1357/1375] Building Armv9.V8Base
-trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/V8Base.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/V8Base.c --json
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:74739:12: failed to synthesize
-  MonadExcept (FaultRecord × AddressDescriptor × TTWState × BitVec (((fun x y => x - y) (↑N) 1).toNat - 0 + 1))
-    (SailME (FaultRecord × AddressDescriptor × TTWState × BitVec N))
-
-Additional diagnostic information may be available using the `set_option diagnostics true` command.
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:78997:4: declaration uses 'sorry'
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:78997:4: declaration uses 'sorry'
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:90060:2: maximum recursion depth has been reached
-use `set_option maxRecDepth <num>` to increase limit
-use `set_option diagnostics true` to get diagnostic information
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:92062:8: unknown identifier 'AArch64_AutoGen_ArchitectureReset'
+⚠ [1357/1375] Built Armv9.V8Base
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79075:4: declaration uses 'sorry'
+warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79075:4: declaration uses 'sorry'
+✔ [1358/1375] Built Armv9.Stubs
+✔ [1359/1375] Built Armv9.Interrupts
+✖ [1360/1375] Building Armv9.Interface
+trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Interface.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Interface.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Interface.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/Interface.c --json
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Interface.lean:110:3: unknown identifier 'sail_return_exception'
 error: Lean exited with code 1
 Some required builds logged failures:
-- Armv9.V8Base
+- Armv9.Interface

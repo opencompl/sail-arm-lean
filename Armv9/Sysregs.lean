@@ -1,7 +1,7 @@
 import Armv9.SysregsAutogen
 
 set_option maxHeartbeats 1_000_000_000
-set_option maxRecDepth 10_000
+set_option maxRecDepth 1_000_000
 set_option linter.unusedVariables false
 set_option match.ignoreUnusedAlts true
 
@@ -283,8 +283,8 @@ def CacheConfigRead (cache_sel : (BitVec 4)) : SailM (BitVec 64) := do
 
 /-- Type quantifiers: crm : Int, crn : Int, op0 : Int, op1 : Int, op2 : Int, t : Int -/
 def AArch64_SysRegRead (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : Int) (t : Int) : SailM Unit := SailME.run do
-  let index ← (( do (undefined_int ()) ) : SailME _ Int )
-  let n ← (( do (undefined_int ()) ) : SailME _ Int )
+  let index ← (( do (undefined_int ()) ) : SailME Unit Int )
+  let n ← (( do (undefined_int ()) ) : SailME Unit Int )
   bif (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq op1 3)) (BEq.beq crn 13))
   then
     (do
@@ -374,7 +374,7 @@ def AArch64_SysRegRead (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : In
           else (AArch64_SystemAccessTrap EL2 (BitVec.toNat (0x18 : (BitVec 8)))))
       else (pure ()))
   else (pure ())
-  let temp ← (( do (X_read t 64) ) : SailME _ (BitVec 64) )
+  let temp ← (( do (X_read t 64) ) : SailME Unit (BitVec 64) )
   (AArch64_AutoGen_SysRegRead (← readReg PSTATE).EL (integer_subrange op0 1 0)
     (integer_subrange op1 2 0) (integer_subrange crn 3 0) (integer_subrange op2 2 0)
     (integer_subrange crm 3 0) t)
@@ -427,7 +427,7 @@ def AArch64_SysRegRead (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : In
            (BEq.beq crm 14))))
   then
     (do
-      let mask ← (( do (PMUCounterMask ()) ) : SailME _ (BitVec 64) )
+      let mask ← (( do (PMUCounterMask ()) ) : SailME Unit (BitVec 64) )
       (X_set t 64 ((← (X_read t 64)) &&& mask)))
   else (pure ())
   bif (Bool.and
@@ -548,13 +548,13 @@ def AArch64_SysRegRead (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : In
     (do
       bif (BEq.beq crm 8)
       then
-        throw (← do
+        SailME.throw (← do
             (X_set t 64 (Sail.BitVec.updateSubrange (← (X_read t 64)) 7 0 (0xFF : (BitVec 8)))))
       else
         (do
           bif (BEq.beq crm 9)
           then
-            throw (← do
+            SailME.throw (← do
                 (X_set t 64
                   (Sail.BitVec.updateSubrange (← (X_read t 64)) 7 0
                     (Sail.BitVec.extractLsb (← readReg DBGCLAIMCLR_EL1) 7 0))))
@@ -566,14 +566,14 @@ def AArch64_SysRegRead (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : In
     (do
       bif (BEq.beq crm 8)
       then
-        throw (← do
+        SailME.throw (← do
             (X_set t 64
               (Sail.BitVec.updateSubrange (← (X_read t 64)) 31 0 (← readReg __trcclaim_tags))))
       else
         (do
           bif (BEq.beq crm 9)
           then
-            throw (← do
+            SailME.throw (← do
                 (X_set t 64
                   (Sail.BitVec.updateSubrange (← (X_read t 64)) 31 0 (← readReg __trcclaim_tags))))
           else (pure ())))
@@ -972,8 +972,8 @@ def TakeReset (cold : Bool) : SailM Unit := do
 
 /-- Type quantifiers: crm : Int, crn : Int, op0 : Int, op1 : Int, op2 : Int, t : Int -/
 def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : Int) (t : Int) : SailM Unit := SailME.run do
-  let n ← (( do (undefined_int ()) ) : SailME _ Int )
-  let tempxt ← (( do (X_read t 64) ) : SailME _ (BitVec 64) )
+  let n ← (( do (undefined_int ()) ) : SailME Unit Int )
+  let tempxt ← (( do (X_read t 64) ) : SailME Unit (BitVec 64) )
   let tempxt : (BitVec 64) :=
     bif (Bool.and (Bool.and (Bool.and (BEq.beq op0 2) (BEq.beq crn 0)) (BEq.beq op1 0))
          (BEq.beq op2 5))
@@ -1002,7 +1002,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
               (Bit (_get_ICV_CTLR_EL1_Type_A3V (← readReg ICV_CTLR_EL1)))))
         (pure (BitVec.update tempxt 14
             (Bit (_get_ICV_CTLR_EL1_Type_SEIS (← readReg ICV_CTLR_EL1))))))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   let tempxt ← (( do
     bif (Bool.and
          (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 12)) (BEq.beq op1 6))
@@ -1026,7 +1026,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
               (Bit (_get_ICC_CTLR_EL3_Type_A3V (← readReg ICC_CTLR_EL3)))))
         (pure (BitVec.update tempxt 14
             (Bit (_get_ICC_CTLR_EL3_Type_SEIS (← readReg ICC_CTLR_EL3))))))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   let tempxt ← (( do
     bif (Bool.and
          (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 12)) (BEq.beq op1 4))
@@ -1045,7 +1045,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
                       (integer_subrange
                         (6 -i (BitVec.toNat
                             (_get_ICH_VTR_EL2_Type_PREbits (← readReg ICH_VTR_EL2)))) 2 0))))
-              else (pure tempxt) ) : SailME _ (BitVec 64) )
+              else (pure tempxt) ) : SailME Unit (BitVec 64) )
             let tempxt ← (( do
               bif (BEq.beq (← (CurrentSecurityState ())) SS_Secure)
               then
@@ -1069,12 +1069,12 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
                           (integer_subrange
                             (7 -i (BitVec.toNat
                                 (_get_ICH_VTR_EL2_Type_PREbits (← readReg ICH_VTR_EL2)))) 2 0))))
-                  else (pure tempxt)) ) : SailME _ (BitVec 64) )
+                  else (pure tempxt)) ) : SailME Unit (BitVec 64) )
             bif (BEq.beq (_get_ICC_SRE_EL1_Type_SRE (← readReg ICC_SRE_EL1_NS)) (0b1 : (BitVec 1)))
             then (pure (Sail.BitVec.updateSubrange tempxt 3 2 (0b10 : (BitVec 2))))
             else (pure tempxt))
         else (pure tempxt))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   let tempxt ← (( do
     bif (Bool.and
          (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 12)) (BEq.beq op1 0))
@@ -1090,7 +1090,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
                   (6 -i (BitVec.toNat (_get_ICH_VTR_EL2_Type_PREbits (← readReg ICH_VTR_EL2)))) 2
                   0))))
         else (pure tempxt))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   let tempxt ← (( do
     bif (Bool.and
          (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 12)) (BEq.beq op1 0))
@@ -1127,7 +1127,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
           (do
             (pure (Sail.BitVec.updateSubrange tempxt 2 0
                 (_get_ICV_BPR1_EL1_Type_BinaryPoint (← readReg ICV_BPR1_EL1))))))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   bif (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq op1 3)) (BEq.beq crn 13))
   then
     (do
@@ -1151,7 +1151,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
               else (pure ()))
           else (pure ())))
   else (pure ())
-  let mask ← (( do (PMUCounterMask ()) ) : SailME _ (BitVec 64) )
+  let mask ← (( do (PMUCounterMask ()) ) : SailME Unit (BitVec 64) )
   let tempxt ← (( do
     bif (Bool.and
          (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 9)) (BEq.beq op1 3))
@@ -1163,13 +1163,13 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
           then
             (do
               (pure ((← readReg PMOVSSET_EL0) &&& (Complement.complement (tempxt &&& mask)))))
-          else (pure tempxt) ) : SailME _ (BitVec 64) )
+          else (pure tempxt) ) : SailME Unit (BitVec 64) )
         bif (BEq.beq crm 14)
         then
           (do
             (pure ((← readReg PMOVSSET_EL0) ||| (tempxt &&& mask))))
         else (pure tempxt))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   let tempxt ← (( do
     bif (Bool.and
          (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 9)) (BEq.beq op1 3))
@@ -1181,13 +1181,13 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
           then
             (do
               (pure ((← readReg PMCNTENSET_EL0) &&& (Complement.complement (tempxt &&& mask)))))
-          else (pure tempxt) ) : SailME _ (BitVec 64) )
+          else (pure tempxt) ) : SailME Unit (BitVec 64) )
         bif (BEq.beq op2 1)
         then
           (do
             (pure ((← readReg PMCNTENSET_EL0) ||| (tempxt &&& mask))))
         else (pure tempxt))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   let tempxt ← (( do
     bif (Bool.and
          (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 9)) (BEq.beq op1 0))
@@ -1199,13 +1199,13 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
           then
             (do
               (pure ((← readReg PMINTENSET_EL1) &&& (Complement.complement (tempxt &&& mask)))))
-          else (pure tempxt) ) : SailME _ (BitVec 64) )
+          else (pure tempxt) ) : SailME Unit (BitVec 64) )
         bif (BEq.beq op2 1)
         then
           (do
             (pure ((← readReg PMINTENSET_EL1) ||| (tempxt &&& mask))))
         else (pure tempxt))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
   bif (Bool.and
        (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq crn 9)) (BEq.beq op1 3))
          (BEq.beq op2 0)) (BEq.beq crm 12))
@@ -1286,7 +1286,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
               (pure (Sail.BitVec.updateSubrange tempxt 7 0
                   ((Sail.BitVec.extractLsb (← readReg DBGCLAIMCLR_EL1) 7 0) ||| (Sail.BitVec.extractLsb
                       tempxt 7 0)))))
-          else (pure tempxt) ) : SailME _ (BitVec 64) )
+          else (pure tempxt) ) : SailME Unit (BitVec 64) )
         bif (BEq.beq crm 9)
         then
           (do
@@ -1294,9 +1294,9 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
                 ((Sail.BitVec.extractLsb (← readReg DBGCLAIMCLR_EL1) 7 0) &&& (Complement.complement
                     (Sail.BitVec.extractLsb tempxt 7 0))))))
         else (pure tempxt))
-    else (pure tempxt) ) : SailME _ (BitVec 64) )
-  let tempxt2 ← (( do (undefined_bitvector 64) ) : SailME _ (BitVec 64) )
-  let restore_xt ← (( do (undefined_bool ()) ) : SailME _ Bool )
+    else (pure tempxt) ) : SailME Unit (BitVec 64) )
+  let tempxt2 ← (( do (undefined_bitvector 64) ) : SailME Unit (BitVec 64) )
+  let restore_xt ← (( do (undefined_bool ()) ) : SailME Unit Bool )
   let (restore_xt, tempxt2) ← (( do
     bif (bne tempxt (← (X_read t 64)))
     then
@@ -1307,7 +1307,7 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
         (pure (restore_xt, tempxt2)))
     else
       (let restore_xt : Bool := false
-      (pure (restore_xt, tempxt2))) ) : SailME _ (Bool × (BitVec 64)) )
+      (pure (restore_xt, tempxt2))) ) : SailME Unit (Bool × (BitVec 64)) )
   (AArch64_AutoGen_SysRegWrite (← readReg PSTATE).EL (integer_subrange op0 1 0)
     (integer_subrange op1 2 0) (integer_subrange crn 3 0) (integer_subrange op2 2 0)
     (integer_subrange crm 3 0) t)
@@ -1344,14 +1344,14 @@ def AArch64_SysRegWrite (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : I
     (do
       bif (BEq.beq crm 8)
       then
-        throw (← do
+        SailME.throw (← do
             writeReg __trcclaim_tags ((← readReg __trcclaim_tags) ||| (Sail.BitVec.extractLsb
                 tempxt 31 0)))
       else
         (do
           bif (BEq.beq crm 9)
           then
-            throw (← do
+            SailME.throw (← do
                 writeReg __trcclaim_tags ((← readReg __trcclaim_tags) &&& (Complement.complement
                     (Sail.BitVec.extractLsb tempxt 31 0))))
           else (pure ())))
