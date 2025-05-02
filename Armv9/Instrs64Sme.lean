@@ -35085,7 +35085,7 @@ def execute_ZERO_ZA2_RI_1 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
       let vec := loop_vars
       loop_vars ← do
         let vec := vec
-        sorry -- E_for foreach (i from 0 to sub_atom(nvec, 1) by 1 order inc) { ZAvector_set(add_atom(vec, i), VL, Zeros(VL)) not translatable yet.
+        for i in [0:(nvec -i 1):1]i do (ZAvector_set (vec +i i) VL (Zeros (n := VL)))
         (pure (vec +i vstride))
     (pure loop_vars) ) : SailM Int )
   (pure ())
@@ -35125,7 +35125,7 @@ def execute_ZERO_ZA2_RI_2 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
       let vec := loop_vars
       loop_vars ← do
         let vec := vec
-        sorry -- E_for foreach (i from 0 to sub_atom(nvec, 1) by 1 order inc) { ZAvector_set(add_atom(vec, i), VL, Zeros(VL)) not translatable yet.
+        for i in [0:(nvec -i 1):1]i do (ZAvector_set (vec +i i) VL (Zeros (n := VL)))
         (pure (vec +i vstride))
     (pure loop_vars) ) : SailM Int )
   (pure ())
@@ -35165,7 +35165,7 @@ def execute_ZERO_ZA2_RI_4 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
       let vec := loop_vars
       loop_vars ← do
         let vec := vec
-        sorry -- E_for foreach (i from 0 to sub_atom(nvec, 1) by 1 order inc) { ZAvector_set(add_atom(vec, i), VL, Zeros(VL)) not translatable yet.
+        for i in [0:(nvec -i 1):1]i do (ZAvector_set (vec +i i) VL (Zeros (n := VL)))
         (pure (vec +i vstride))
     (pure loop_vars) ) : SailM Int )
   (pure ())
@@ -35205,7 +35205,7 @@ def execute_ZERO_ZA4_RI_1 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
       let vec := loop_vars
       loop_vars ← do
         let vec := vec
-        sorry -- E_for foreach (i from 0 to sub_atom(nvec, 1) by 1 order inc) { ZAvector_set(add_atom(vec, i), VL, Zeros(VL)) not translatable yet.
+        for i in [0:(nvec -i 1):1]i do (ZAvector_set (vec +i i) VL (Zeros (n := VL)))
         (pure (vec +i vstride))
     (pure loop_vars) ) : SailM Int )
   (pure ())
@@ -35245,7 +35245,7 @@ def execute_ZERO_ZA4_RI_2 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
       let vec := loop_vars
       loop_vars ← do
         let vec := vec
-        sorry -- E_for foreach (i from 0 to sub_atom(nvec, 1) by 1 order inc) { ZAvector_set(add_atom(vec, i), VL, Zeros(VL)) not translatable yet.
+        for i in [0:(nvec -i 1):1]i do (ZAvector_set (vec +i i) VL (Zeros (n := VL)))
         (pure (vec +i vstride))
     (pure loop_vars) ) : SailM Int )
   (pure ())
@@ -35285,7 +35285,7 @@ def execute_ZERO_ZA4_RI_4 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
       let vec := loop_vars
       loop_vars ← do
         let vec := vec
-        sorry -- E_for foreach (i from 0 to sub_atom(nvec, 1) by 1 order inc) { ZAvector_set(add_atom(vec, i), VL, Zeros(VL)) not translatable yet.
+        for i in [0:(nvec -i 1):1]i do (ZAvector_set (vec +i i) VL (Zeros (n := VL)))
         (pure (vec +i vstride))
     (pure loop_vars) ) : SailM Int )
   (pure ())
