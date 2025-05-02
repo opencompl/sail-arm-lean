@@ -1457,11 +1457,9 @@ def sail_model_init (x_0 : Unit) : SailM Unit := do
   writeReg __CTIBase (integer_subrange (BitVec.toNat (0x22020000 : (BitVec 32))) (56 -i 1) 0)
   writeReg __CNTControlBase (integer_subrange (BitVec.toNat (0x16200000 : (BitVec 32))) (56 -i 1) 0)
   writeReg __ExtDebugBase (integer_subrange (BitVec.toNat (0x22010000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __GICCPUInterfaceBase (integer_subrange (BitVec.toNat (0x13082000 : (BitVec 32)))
-    (56 -i 1) 0)
+  writeReg __GICCPUInterfaceBase (integer_subrange (BitVec.toNat (0x13082000 : (BitVec 32))) (56 -i 1) 0)
   writeReg __GICDistBase (integer_subrange (BitVec.toNat (0x2C010000 : (BitVec 32))) (56 -i 1) 0)
-  writeReg __GICITSControlBase (integer_subrange (BitVec.toNat (0x2C120000 : (BitVec 32))) (56 -i 1)
-    0)
+  writeReg __GICITSControlBase (integer_subrange (BitVec.toNat (0x2C120000 : (BitVec 32))) (56 -i 1) 0)
   writeReg __PMUBase (integer_subrange (BitVec.toNat (0x22030000 : (BitVec 32))) (56 -i 1) 0)
   writeReg __syncAbortOnReadNormCache true
   writeReg __syncAbortOnReadNormNonCache true
