@@ -73,13 +73,6 @@ jobs:
         make lean VERBOSE_FLAG=
         cd ../..
 
-    - name: Compress files
-      continue-on-error: true
-      run: |
-        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9.lean
-        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/DecodeEnd.lean
-        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean
-
     - name: Use Lean to build the model and record errors
       continue-on-error: true
       run: |
@@ -93,6 +86,13 @@ jobs:
         cp README.md.template README.md
         ./report.py >> README.md
         cd ../../../..
+  
+    - name: Compress files
+      continue-on-error: true
+      run: |
+        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9.lean
+        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/DecodeEnd.lean
+        sed -i -e 's/        /\t/g' sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean
 
     - name: Add build errors
       continue-on-error: true
