@@ -25,7 +25,7 @@ Warnings found: 2
 installing leantar 0.1.15
 Attempting to download 6527 file(s)
 Decompressing 6527 file(s)
-Unpacked in 13803 ms
+Unpacked in 14087 ms
 Completed successfully!
 ✔ [1337/1375] Built Armv9.Sail.IntRange
 ✔ [1338/1375] Built Armv9.Sail.BitVec
