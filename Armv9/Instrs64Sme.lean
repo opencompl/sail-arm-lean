@@ -132,8 +132,8 @@ def execute_FMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let element1 ← (( do
@@ -153,7 +153,7 @@ def execute_FMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_FMOPA_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -214,8 +214,8 @@ def execute_FMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let element1 ← (( do
@@ -235,7 +235,7 @@ def execute_FMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_FMOPS_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -296,8 +296,8 @@ def execute_FMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let element1 ← (( do
@@ -317,7 +317,7 @@ def execute_FMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_FMOPA_ZA_PP_ZZ_64 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF64F64 ())))
+  bif (! (← (HaveSMEF64F64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -378,8 +378,8 @@ def execute_FMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let element1 ← (( do
@@ -399,7 +399,7 @@ def execute_FMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_FMOPS_ZA_PP_ZZ_64 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF64F64 ())))
+  bif (! (← (HaveSMEF64F64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -464,7 +464,7 @@ def execute_BFMOPA_ZA32_PP_ZZ__ (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
               )
             let sum ← (( do (Elem_read operand3 ((row *i dim) +i col) 32) ) : SailM (BitVec 32) )
             let sum ← (( do
-              bif (Bool.or (Bool.and prow_0 pcol_0) (Bool.and prow_1 pcol_1))
+              bif ((prow_0 && pcol_0) || (prow_1 && pcol_1))
               then
                 (do
                   let erow_0 ← (( do
@@ -511,7 +511,7 @@ def execute_BFMOPA_ZA32_PP_ZZ__ (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
 
 def decode_BFMOPA_ZA32_PP_ZZ__ (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let a := (BitVec.toNat Pn)
@@ -575,7 +575,7 @@ def execute_BFMOPS_ZA32_PP_ZZ__ (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
               )
             let sum ← (( do (Elem_read operand3 ((row *i dim) +i col) 32) ) : SailM (BitVec 32) )
             let sum ← (( do
-              bif (Bool.or (Bool.and prow_0 pcol_0) (Bool.and prow_1 pcol_1))
+              bif ((prow_0 && pcol_0) || (prow_1 && pcol_1))
               then
                 (do
                   let erow_0 ← (( do
@@ -622,7 +622,7 @@ def execute_BFMOPS_ZA32_PP_ZZ__ (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
 
 def decode_BFMOPS_ZA32_PP_ZZ__ (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let a := (BitVec.toNat Pn)
@@ -686,7 +686,7 @@ def execute_FMOPA_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
               )
             let sum ← (( do (Elem_read operand3 ((row *i dim) +i col) 32) ) : SailM (BitVec 32) )
             let sum ← (( do
-              bif (Bool.or (Bool.and prow_0 pcol_0) (Bool.and prow_1 pcol_1))
+              bif ((prow_0 && pcol_0) || (prow_1 && pcol_1))
               then
                 (do
                   let erow_0 ← (( do
@@ -732,7 +732,7 @@ def execute_FMOPA_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
 
 def decode_FMOPA_ZA32_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let a := (BitVec.toNat Pn)
@@ -796,7 +796,7 @@ def execute_FMOPS_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
               )
             let sum ← (( do (Elem_read operand3 ((row *i dim) +i col) 32) ) : SailM (BitVec 32) )
             let sum ← (( do
-              bif (Bool.or (Bool.and prow_0 pcol_0) (Bool.and prow_1 pcol_1))
+              bif ((prow_0 && pcol_0) || (prow_1 && pcol_1))
               then
                 (do
                   let erow_0 ← (( do
@@ -842,7 +842,7 @@ def execute_FMOPS_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_32 : Nat) (a : Nat) (b : Nat
 
 def decode_FMOPS_ZA32_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let a := (BitVec.toNat Pn)
@@ -910,9 +910,8 @@ def execute_SMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -939,7 +938,7 @@ def execute_SMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_SMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1012,9 +1011,8 @@ def execute_SUMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1041,7 +1039,7 @@ def execute_SUMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_SUMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1114,9 +1112,8 @@ def execute_USMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1143,7 +1140,7 @@ def execute_USMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_USMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1216,9 +1213,8 @@ def execute_UMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1245,7 +1241,7 @@ def execute_UMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_UMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1318,9 +1314,8 @@ def execute_SMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1347,7 +1342,7 @@ def execute_SMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_SMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1420,9 +1415,8 @@ def execute_SUMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1449,7 +1443,7 @@ def execute_SUMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_SUMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1522,9 +1516,8 @@ def execute_USMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1551,7 +1544,7 @@ def execute_USMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_USMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1624,9 +1617,8 @@ def execute_UMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1653,7 +1645,7 @@ def execute_UMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_UMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -1726,9 +1718,8 @@ def execute_SMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1755,7 +1746,7 @@ def execute_SMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_SMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -1828,9 +1819,8 @@ def execute_SUMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1857,7 +1847,7 @@ def execute_SUMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_SUMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -1930,9 +1920,8 @@ def execute_USMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -1959,7 +1948,7 @@ def execute_USMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_USMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -2032,9 +2021,8 @@ def execute_UMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -2061,7 +2049,7 @@ def execute_UMOPA_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_UMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -2134,9 +2122,8 @@ def execute_SMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -2163,7 +2150,7 @@ def execute_SMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_SMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -2236,9 +2223,8 @@ def execute_SUMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -2265,7 +2251,7 @@ def execute_SUMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_SUMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -2338,9 +2324,8 @@ def execute_USMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -2367,7 +2352,7 @@ def execute_USMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : N
 
 def decode_USMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -2440,9 +2425,8 @@ def execute_UMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4)))
-                           (← (ActivePredicateElement mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
+                      bif ((← (ActivePredicateElement mask1 ((4 *i row) +i k) (Int.ediv esize 4))) && (← (ActivePredicateElement
+                               mask2 ((4 *i col) +i k) (Int.ediv esize 4))))
                       then
                         (do
                           let prod ←
@@ -2469,7 +2453,7 @@ def execute_UMOPS_ZA_PP_ZZ_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_UMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -2530,7 +2514,7 @@ def execute_MOVA_ZA_P_RZ_B (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_ZA_P_RZ_B (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Zn : (BitVec 5)) (off4 : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2539,7 +2523,7 @@ def decode_MOVA_ZA_P_RZ_B (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let d := 0
   let offset := (BitVec.toNat off4)
   let esize := 8
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA_P_RZ_B 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_ZA_P_RZ_B 256 d esize g n offset s vertical)
@@ -2582,7 +2566,7 @@ def execute_MOVA_ZA_P_RZ_H (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_ZA_P_RZ_H (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Zn : (BitVec 5)) (ZAd : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2591,7 +2575,7 @@ def decode_MOVA_ZA_P_RZ_H (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let d := (BitVec.toNat ZAd)
   let offset := (BitVec.toNat off3)
   let esize := 16
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA_P_RZ_H 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_ZA_P_RZ_H 256 d esize g n offset s vertical)
@@ -2634,7 +2618,7 @@ def execute_MOVA_ZA_P_RZ_W (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_ZA_P_RZ_W (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Zn : (BitVec 5)) (ZAd : (BitVec 2)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2643,7 +2627,7 @@ def decode_MOVA_ZA_P_RZ_W (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let d := (BitVec.toNat ZAd)
   let offset := (BitVec.toNat off2)
   let esize := 32
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA_P_RZ_W 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_ZA_P_RZ_W 256 d esize g n offset s vertical)
@@ -2687,7 +2671,7 @@ def execute_MOVA_ZA_P_RZ_D (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_ZA_P_RZ_D (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Zn : (BitVec 5)) (ZAd : (BitVec 3)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2696,7 +2680,7 @@ def decode_MOVA_ZA_P_RZ_D (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let d := (BitVec.toNat ZAd)
   let offset := (BitVec.toNat o1)
   let esize := 64
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA_P_RZ_D 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_ZA_P_RZ_D 256 d esize g n offset s vertical)
@@ -2739,7 +2723,7 @@ def execute_MOVA_ZA_P_RZ_Q (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_ZA_P_RZ_Q (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Zn : (BitVec 5)) (ZAd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2748,7 +2732,7 @@ def decode_MOVA_ZA_P_RZ_Q (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let d := (BitVec.toNat ZAd)
   let offset := 0
   let esize := 128
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA_P_RZ_Q 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_ZA_P_RZ_Q 256 d esize g n offset s vertical)
@@ -2791,7 +2775,7 @@ def execute_MOVA_Z_P_RZA_B (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_Z_P_RZA_B (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (off4 : (BitVec 4)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2800,7 +2784,7 @@ def decode_MOVA_Z_P_RZA_B (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let offset := (BitVec.toNat off4)
   let esize := 8
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_Z_P_RZA_B 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_Z_P_RZA_B 256 d esize g n offset s vertical)
@@ -2843,7 +2827,7 @@ def execute_MOVA_Z_P_RZA_H (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_Z_P_RZA_H (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (ZAn : (BitVec 1)) (off3 : (BitVec 3)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2852,7 +2836,7 @@ def decode_MOVA_Z_P_RZA_H (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let offset := (BitVec.toNat off3)
   let esize := 16
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_Z_P_RZA_H 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_Z_P_RZA_H 256 d esize g n offset s vertical)
@@ -2895,7 +2879,7 @@ def execute_MOVA_Z_P_RZA_W (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_Z_P_RZA_W (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (ZAn : (BitVec 2)) (off2 : (BitVec 2)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2904,7 +2888,7 @@ def decode_MOVA_Z_P_RZA_W (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let offset := (BitVec.toNat off2)
   let esize := 32
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_Z_P_RZA_W 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_Z_P_RZA_W 256 d esize g n offset s vertical)
@@ -2947,7 +2931,7 @@ def execute_MOVA_Z_P_RZA_D (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_Z_P_RZA_D (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (ZAn : (BitVec 3)) (o1 : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -2956,7 +2940,7 @@ def decode_MOVA_Z_P_RZA_D (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let offset := (BitVec.toNat o1)
   let esize := 64
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_Z_P_RZA_D 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_Z_P_RZA_D 256 d esize g n offset s vertical)
@@ -2999,7 +2983,7 @@ def execute_MOVA_Z_P_RZA_Q (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
 
 def decode_MOVA_Z_P_RZA_Q (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (ZAn : (BitVec 4)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let g := (BitVec.toNat Pg)
@@ -3008,7 +2992,7 @@ def decode_MOVA_Z_P_RZA_Q (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) 
   let offset := 0
   let esize := 128
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_Z_P_RZA_Q 128 d esize g n offset s vertical)
   | 256 => (execute_MOVA_Z_P_RZA_Q 256 d esize g n offset s vertical)
@@ -3030,14 +3014,14 @@ def execute_LDR_ZA_RI__ (SVL : Nat) (n : Nat) (offset : Nat) (v : Nat) : SailM U
   let vec := (Nat.div ((BitVec.toNat vbase) +i offset) dim)
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSME MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
-  bif (Bool.and (← (HaveTME ())) ((← readReg TSTATE).depth >b 0))
+  bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
   then (FailTransaction TMFailure_ERR false)
   else (pure ())
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
         (CheckSPAlignment ())
@@ -3046,7 +3030,7 @@ def execute_LDR_ZA_RI__ (SVL : Nat) (n : Nat) (offset : Nat) (v : Nat) : SailM U
       (do
         (X_read n 64)) ) : SailM (BitVec 64) )
   let aligned : Bool := (IsAligned__1 (BitVec.addInt base moffs) 16)
-  bif (Bool.and (Bool.not aligned) (← (AlignmentEnforced ())))
+  bif ((! aligned) && (← (AlignmentEnforced ())))
   then (AArch64_Abort (BitVec.addInt base moffs) (← (AlignmentFault accdesc)))
   else (pure ())
   let (moffs, result) ← (( do
@@ -3068,7 +3052,7 @@ def execute_LDR_ZA_RI__ (SVL : Nat) (n : Nat) (offset : Nat) (v : Nat) : SailM U
 
 def decode_LDR_ZA_RI__ (Rv : (BitVec 2)) (Rn : (BitVec 5)) (off4 : (BitVec 4)) : SailM Unit := do
   let SVL ← do (CurrentSVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3094,14 +3078,14 @@ def execute_STR_ZA_RI__ (SVL : Nat) (n : Nat) (offset : Nat) (v : Nat) : SailM U
   let vec := (Nat.div ((BitVec.toNat vbase) +i offset) dim)
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSME MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
-  bif (Bool.and (← (HaveTME ())) ((← readReg TSTATE).depth >b 0))
+  bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
   then (FailTransaction TMFailure_ERR false)
   else (pure ())
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
         (CheckSPAlignment ())
@@ -3111,7 +3095,7 @@ def execute_STR_ZA_RI__ (SVL : Nat) (n : Nat) (offset : Nat) (v : Nat) : SailM U
         (X_read n 64)) ) : SailM (BitVec 64) )
   let src ← (( do (ZAvector_read vec SVL) ) : SailM (BitVec SVL) )
   let aligned : Bool := (IsAligned__1 (BitVec.addInt base moffs) 16)
-  bif (Bool.and (Bool.not aligned) (← (AlignmentEnforced ())))
+  bif ((! aligned) && (← (AlignmentEnforced ())))
   then (AArch64_Abort (BitVec.addInt base moffs) (← (AlignmentFault accdesc)))
   else (pure ())
   let moffs ← (( do
@@ -3130,7 +3114,7 @@ def execute_STR_ZA_RI__ (SVL : Nat) (n : Nat) (offset : Nat) (v : Nat) : SailM U
 
 def decode_STR_ZA_RI__ (Rv : (BitVec 2)) (Rn : (BitVec 5)) (off4 : (BitVec 4)) : SailM Unit := do
   let SVL ← do (CurrentSVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3170,11 +3154,11 @@ def execute_LD1B_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3204,7 +3188,7 @@ def execute_LD1B_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_LD1B_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (off4 : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3214,7 +3198,7 @@ def decode_LD1B_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := 0
   let offset := (BitVec.toNat off4)
   let esize := 8
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_LD1B_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_LD1B_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3249,11 +3233,11 @@ def execute_LD1H_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3283,7 +3267,7 @@ def execute_LD1H_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_LD1H_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3293,7 +3277,7 @@ def decode_LD1H_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := (BitVec.toNat ZAt)
   let offset := (BitVec.toNat off3)
   let esize := 16
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_LD1H_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_LD1H_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3328,11 +3312,11 @@ def execute_LD1W_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3362,7 +3346,7 @@ def execute_LD1W_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_LD1W_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 2)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3372,7 +3356,7 @@ def decode_LD1W_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := (BitVec.toNat ZAt)
   let offset := (BitVec.toNat off2)
   let esize := 32
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_LD1W_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_LD1W_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3407,11 +3391,11 @@ def execute_LD1D_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3441,7 +3425,7 @@ def execute_LD1D_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_LD1D_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 3)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3451,7 +3435,7 @@ def decode_LD1D_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := (BitVec.toNat ZAt)
   let offset := (BitVec.toNat o1)
   let esize := 64
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_LD1D_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_LD1D_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3487,11 +3471,11 @@ def execute_LD1Q_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3521,7 +3505,7 @@ def execute_LD1Q_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_LD1Q_ZA_P_RRR__ (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3531,7 +3515,7 @@ def decode_LD1Q_ZA_P_RRR__ (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let t := (BitVec.toNat ZAt)
   let offset := 0
   let esize := 128
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_LD1Q_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_LD1Q_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3565,11 +3549,11 @@ def execute_ST1B_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3595,7 +3579,7 @@ def execute_ST1B_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_ST1B_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (off4 : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3605,7 +3589,7 @@ def decode_ST1B_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := 0
   let offset := (BitVec.toNat off4)
   let esize := 8
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_ST1B_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_ST1B_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3639,11 +3623,11 @@ def execute_ST1H_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3669,7 +3653,7 @@ def execute_ST1H_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_ST1H_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3679,7 +3663,7 @@ def decode_ST1H_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := (BitVec.toNat ZAt)
   let offset := (BitVec.toNat off3)
   let esize := 16
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_ST1H_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_ST1H_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3713,11 +3697,11 @@ def execute_ST1W_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3743,7 +3727,7 @@ def execute_ST1W_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_ST1W_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 2)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3753,7 +3737,7 @@ def decode_ST1W_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := (BitVec.toNat ZAt)
   let offset := (BitVec.toNat off2)
   let esize := 32
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_ST1W_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_ST1W_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3787,11 +3771,11 @@ def execute_ST1D_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3817,7 +3801,7 @@ def execute_ST1D_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_ST1D_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 3)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3827,7 +3811,7 @@ def decode_ST1D_ZA_P_RRR__ (msz : (BitVec 2)) (Rm : (BitVec 5)) (V : (BitVec 1))
   let t := (BitVec.toNat ZAt)
   let offset := (BitVec.toNat o1)
   let esize := 64
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_ST1D_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_ST1D_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3862,11 +3846,11 @@ def execute_ST1Q_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
   let accdesc ← (( do (CreateAccDescSME MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
-        bif (Bool.or (← (AnyActiveElement mask esize))
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((← (AnyActiveElement mask esize)) || (← (ConstrainUnpredictableBool
+                 Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (SP_read ()))
@@ -3892,7 +3876,7 @@ def execute_ST1Q_ZA_P_RRR__ (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : Na
 
 def decode_ST1Q_ZA_P_RRR__ (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Pg : (BitVec 3)) (Rn : (BitVec 5)) (ZAt : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -3902,7 +3886,7 @@ def decode_ST1Q_ZA_P_RRR__ (Rm : (BitVec 5)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let t := (BitVec.toNat ZAt)
   let offset := 0
   let esize := 128
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_ST1Q_ZA_P_RRR__ 128 esize g m n offset s t vertical)
   | 256 => (execute_ST1Q_ZA_P_RRR__ 256 esize g m n offset s t vertical)
@@ -3947,8 +3931,8 @@ def execute_ADDHA_ZA_PP_Z_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
             let res ← (( do (Elem_read operand_acc ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
             let res ← (( do
-              bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                   (← (ActivePredicateElement mask2 col esize)))
+              bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                       mask2 col esize)))
               then (pure (res + element))
               else (pure res) ) : SailM (BitVec esize) )
             (Elem_set result ((row *i dim) +i col) esize res)
@@ -3958,7 +3942,7 @@ def execute_ADDHA_ZA_PP_Z_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
 
 def decode_ADDHA_ZA_PP_Z_32 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -4015,8 +3999,8 @@ def execute_ADDHA_ZA_PP_Z_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
             let res ← (( do (Elem_read operand_acc ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
             let res ← (( do
-              bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                   (← (ActivePredicateElement mask2 col esize)))
+              bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                       mask2 col esize)))
               then (pure (res + element))
               else (pure res) ) : SailM (BitVec esize) )
             (Elem_set result ((row *i dim) +i col) esize res)
@@ -4026,7 +4010,7 @@ def execute_ADDHA_ZA_PP_Z_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
 
 def decode_ADDHA_ZA_PP_Z_64 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -4083,8 +4067,8 @@ def execute_ADDVA_ZA_PP_Z_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
             let res ← (( do (Elem_read operand_acc ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
             let res ← (( do
-              bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                   (← (ActivePredicateElement mask2 col esize)))
+              bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                       mask2 col esize)))
               then (pure (res + element))
               else (pure res) ) : SailM (BitVec esize) )
             (Elem_set result ((row *i dim) +i col) esize res)
@@ -4094,7 +4078,7 @@ def execute_ADDVA_ZA_PP_Z_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
 
 def decode_ADDVA_ZA_PP_Z_32 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -4151,8 +4135,8 @@ def execute_ADDVA_ZA_PP_Z_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
             let res ← (( do (Elem_read operand_acc ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
             let res ← (( do
-              bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                   (← (ActivePredicateElement mask2 col esize)))
+              bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                       mask2 col esize)))
               then (pure (res + element))
               else (pure res) ) : SailM (BitVec esize) )
             (Elem_set result ((row *i dim) +i col) esize res)
@@ -4162,7 +4146,7 @@ def execute_ADDVA_ZA_PP_Z_64 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Nat
 
 def decode_ADDVA_ZA_PP_Z_64 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (ZAda : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEI16I64 ())))
+  bif (! (← (HaveSMEI16I64 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -4190,7 +4174,7 @@ def execute_ZERO_ZA_I__ (SVL : Nat) (dim_dim_esize : Nat) (esize : Nat) (mask : 
   let SVL := SVL
   let dim := (Int.ediv SVL esize)
   let result : (BitVec dim_dim_esize) := (Zeros (n := dim_dim_esize))
-  bif (Bool.and (← (HaveTME ())) ((← readReg TSTATE).depth >b 0))
+  bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
   then (FailTransaction TMFailure_ERR false)
   else (pure ())
   let loop_i_lower := 0
@@ -4199,14 +4183,14 @@ def execute_ZERO_ZA_I__ (SVL : Nat) (dim_dim_esize : Nat) (esize : Nat) (mask : 
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.join1 [(BitVec.access mask i)]) (0b1 : (BitVec 1)))
+      bif ((BitVec.join1 [(BitVec.access mask i)]) == (0b1 : (BitVec 1)))
       then (ZAtile_set SVL i esize dim_dim_esize result)
       else (pure ())
   (pure loop_vars)
 
 def decode_ZERO_ZA_I__ (imm8 : (BitVec 8)) : SailM Unit := do
   let SVL ← do (CurrentSVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let mask : (BitVec 8) := imm8
@@ -4248,7 +4232,7 @@ def execute_MOVA_ZA2_Z_B1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA2_Z_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4257,7 +4241,7 @@ def decode_MOVA_ZA2_Z_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
   let d := 0
   let offset := (BitVec.toNat (off3 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA2_Z_B1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA2_Z_B1 256 d esize n nreg offset s vertical)
@@ -4290,7 +4274,7 @@ def execute_MOVA_ZA2_Z_H1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA2_Z_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 4)) (ZAd : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4299,7 +4283,7 @@ def decode_MOVA_ZA2_Z_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
   let d := (BitVec.toNat ZAd)
   let offset := (BitVec.toNat (off2 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA2_Z_H1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA2_Z_H1 256 d esize n nreg offset s vertical)
@@ -4332,7 +4316,7 @@ def execute_MOVA_ZA2_Z_W1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA2_Z_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 4)) (ZAd : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4341,7 +4325,7 @@ def decode_MOVA_ZA2_Z_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
   let d := (BitVec.toNat ZAd)
   let offset := (BitVec.toNat (o1 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA2_Z_W1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA2_Z_W1 256 d esize n nreg offset s vertical)
@@ -4374,7 +4358,7 @@ def execute_MOVA_ZA2_Z_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA2_Z_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 4)) (ZAd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4383,7 +4367,7 @@ def decode_MOVA_ZA2_Z_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
   let d := (BitVec.toNat ZAd)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA2_Z_D1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA2_Z_D1 256 d esize n nreg offset s vertical)
@@ -4416,7 +4400,7 @@ def execute_MOVA_ZA4_Z_B1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA4_Z_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 3)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4425,7 +4409,7 @@ def decode_MOVA_ZA4_Z_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := 0
   let offset := (BitVec.toNat (off2 ++ (0b00 : (BitVec 2))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA4_Z_B1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA4_Z_B1 256 d esize n nreg offset s vertical)
@@ -4458,7 +4442,7 @@ def execute_MOVA_ZA4_Z_H1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA4_Z_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 3)) (ZAd : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4467,7 +4451,7 @@ def decode_MOVA_ZA4_Z_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat ZAd)
   let offset := (BitVec.toNat (o1 ++ (0b00 : (BitVec 2))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA4_Z_H1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA4_Z_H1 256 d esize n nreg offset s vertical)
@@ -4500,7 +4484,7 @@ def execute_MOVA_ZA4_Z_W1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA4_Z_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 3)) (ZAd : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4509,7 +4493,7 @@ def decode_MOVA_ZA4_Z_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat ZAd)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA4_Z_W1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA4_Z_W1 256 d esize n nreg offset s vertical)
@@ -4526,7 +4510,7 @@ def decode_MOVA_ZA4_Z_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
 def execute_MOVA_ZA4_Z_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : Nat) (offset : Nat) (s : Nat) (vertical : Bool) : SailM Unit := do
   (CheckStreamingSVEAndZAEnabled ())
   let VL := VL
-  bif (Bool.and (Bool.and (BEq.beq nreg 4) (BEq.beq esize 64)) (BEq.beq VL 128))
+  bif (((nreg == 4) && (esize == 64)) && (VL == 128))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let slices := (Int.ediv VL esize)
@@ -4545,7 +4529,7 @@ def execute_MOVA_ZA4_Z_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : N
 
 def decode_MOVA_ZA4_Z_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (Zn : (BitVec 3)) (ZAd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4554,7 +4538,7 @@ def decode_MOVA_ZA4_Z_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) 
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat ZAd)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_ZA4_Z_D1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_ZA4_Z_D1 256 d esize n nreg offset s vertical)
@@ -4589,7 +4573,7 @@ def execute_MOVA_ZA_MZ2_1 (VL : Nat) (n : Nat) (nreg : Nat) (offset : Nat) (v : 
 
 def decode_MOVA_ZA_MZ2_1 (Rv : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -4630,7 +4614,7 @@ def execute_MOVA_ZA_MZ4_1 (VL : Nat) (n : Nat) (nreg : Nat) (offset : Nat) (v : 
 
 def decode_MOVA_ZA_MZ4_1 (Rv : (BitVec 2)) (Zn : (BitVec 3)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -4670,7 +4654,7 @@ def execute_MOVA_MZ2_ZA_B1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ2_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (off3 : (BitVec 3)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4679,7 +4663,7 @@ def decode_MOVA_MZ2_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := 0
   let offset := (BitVec.toNat (off3 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ2_ZA_B1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ2_ZA_B1 256 d esize n nreg offset s vertical)
@@ -4713,7 +4697,7 @@ def execute_MOVA_MZ2_ZA_H1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ2_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 1)) (off2 : (BitVec 2)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4722,7 +4706,7 @@ def decode_MOVA_MZ2_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := (BitVec.toNat ZAn)
   let offset := (BitVec.toNat (off2 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ2_ZA_H1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ2_ZA_H1 256 d esize n nreg offset s vertical)
@@ -4756,7 +4740,7 @@ def execute_MOVA_MZ2_ZA_W1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ2_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 2)) (o1 : (BitVec 1)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4765,7 +4749,7 @@ def decode_MOVA_MZ2_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := (BitVec.toNat ZAn)
   let offset := (BitVec.toNat (o1 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ2_ZA_W1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ2_ZA_W1 256 d esize n nreg offset s vertical)
@@ -4799,7 +4783,7 @@ def execute_MOVA_MZ2_ZA_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ2_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 3)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4808,7 +4792,7 @@ def decode_MOVA_MZ2_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := (BitVec.toNat ZAn)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ2_ZA_D1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ2_ZA_D1 256 d esize n nreg offset s vertical)
@@ -4842,7 +4826,7 @@ def execute_MOVA_MZ4_ZA_B1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ4_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (off2 : (BitVec 2)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4851,7 +4835,7 @@ def decode_MOVA_MZ4_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := 0
   let offset := (BitVec.toNat (off2 ++ (0b00 : (BitVec 2))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ4_ZA_B1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ4_ZA_B1 256 d esize n nreg offset s vertical)
@@ -4885,7 +4869,7 @@ def execute_MOVA_MZ4_ZA_H1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ4_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 1)) (o1 : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4894,7 +4878,7 @@ def decode_MOVA_MZ4_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := (BitVec.toNat ZAn)
   let offset := (BitVec.toNat (o1 ++ (0b00 : (BitVec 2))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ4_ZA_H1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ4_ZA_H1 256 d esize n nreg offset s vertical)
@@ -4928,7 +4912,7 @@ def execute_MOVA_MZ4_ZA_W1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ4_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 2)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4937,7 +4921,7 @@ def decode_MOVA_MZ4_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := (BitVec.toNat ZAn)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ4_ZA_W1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ4_ZA_W1 256 d esize n nreg offset s vertical)
@@ -4954,7 +4938,7 @@ def decode_MOVA_MZ4_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
 def execute_MOVA_MZ4_ZA_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : Nat) (offset : Nat) (s : Nat) (vertical : Bool) : SailM Unit := do
   (CheckStreamingSVEAndZAEnabled ())
   let VL := VL
-  bif (Bool.and (Bool.and (BEq.beq nreg 4) (BEq.beq esize 64)) (BEq.beq VL 128))
+  bif (((nreg == 4) && (esize == 64)) && (VL == 128))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let slices := (Int.ediv VL esize)
@@ -4974,7 +4958,7 @@ def execute_MOVA_MZ4_ZA_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : 
 
 def decode_MOVA_MZ4_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -4983,7 +4967,7 @@ def decode_MOVA_MZ4_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2))
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := (BitVec.toNat ZAn)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVA_MZ4_ZA_D1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVA_MZ4_ZA_D1 256 d esize n nreg offset s vertical)
@@ -5019,7 +5003,7 @@ def execute_MOVA_MZ_ZA2_1 (VL : Nat) (d : Nat) (nreg : Nat) (offset : Nat) (v : 
 
 def decode_MOVA_MZ_ZA2_1 (Rv : (BitVec 2)) (off3 : (BitVec 3)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -5061,7 +5045,7 @@ def execute_MOVA_MZ_ZA4_1 (VL : Nat) (d : Nat) (nreg : Nat) (offset : Nat) (v : 
 
 def decode_MOVA_MZ_ZA4_1 (Rv : (BitVec 2)) (off3 : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -5102,21 +5086,20 @@ def execute_LD1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5162,7 +5145,7 @@ def execute_LD1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1B_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5207,21 +5190,20 @@ def execute_LD1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5267,7 +5249,7 @@ def execute_LD1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1H_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5312,21 +5294,20 @@ def execute_LD1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5372,7 +5353,7 @@ def execute_LD1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1W_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5417,21 +5398,20 @@ def execute_LD1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5477,7 +5457,7 @@ def execute_LD1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1D_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5521,21 +5501,20 @@ def execute_LD1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5581,7 +5560,7 @@ def execute_LD1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1B_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5626,21 +5605,20 @@ def execute_LD1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5686,7 +5664,7 @@ def execute_LD1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1H_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5731,21 +5709,20 @@ def execute_LD1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5791,7 +5768,7 @@ def execute_LD1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1W_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5836,21 +5813,20 @@ def execute_LD1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -5896,7 +5872,7 @@ def execute_LD1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_LD1D_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -5940,21 +5916,20 @@ def execute_LDNT1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6000,7 +5975,7 @@ def execute_LDNT1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1B_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6045,21 +6020,20 @@ def execute_LDNT1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6105,7 +6079,7 @@ def execute_LDNT1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1H_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6150,21 +6124,20 @@ def execute_LDNT1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6210,7 +6183,7 @@ def execute_LDNT1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1W_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6255,21 +6228,20 @@ def execute_LDNT1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6315,7 +6287,7 @@ def execute_LDNT1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1D_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6359,21 +6331,20 @@ def execute_LDNT1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6419,7 +6390,7 @@ def execute_LDNT1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1B_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6464,21 +6435,20 @@ def execute_LDNT1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6524,7 +6494,7 @@ def execute_LDNT1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1H_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6569,21 +6539,20 @@ def execute_LDNT1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6629,7 +6598,7 @@ def execute_LDNT1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1W_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6674,21 +6643,20 @@ def execute_LDNT1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6734,7 +6702,7 @@ def execute_LDNT1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_LDNT1D_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6777,21 +6745,20 @@ def execute_ST1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6825,7 +6792,7 @@ def execute_ST1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1B_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6869,21 +6836,20 @@ def execute_ST1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -6917,7 +6883,7 @@ def execute_ST1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1H_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -6961,21 +6927,20 @@ def execute_ST1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7009,7 +6974,7 @@ def execute_ST1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1W_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7053,21 +7018,20 @@ def execute_ST1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7101,7 +7065,7 @@ def execute_ST1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1D_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7144,21 +7108,20 @@ def execute_ST1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7192,7 +7155,7 @@ def execute_ST1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1B_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7236,21 +7199,20 @@ def execute_ST1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7284,7 +7246,7 @@ def execute_ST1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1H_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7328,21 +7290,20 @@ def execute_ST1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7376,7 +7337,7 @@ def execute_ST1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1W_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7420,21 +7381,20 @@ def execute_ST1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7468,7 +7428,7 @@ def execute_ST1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n : 
 
 def decode_ST1D_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7511,21 +7471,20 @@ def execute_STNT1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7559,7 +7518,7 @@ def execute_STNT1B_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1B_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7603,21 +7562,20 @@ def execute_STNT1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7651,7 +7609,7 @@ def execute_STNT1H_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1H_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7695,21 +7653,20 @@ def execute_STNT1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7743,7 +7700,7 @@ def execute_STNT1W_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1W_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7787,21 +7744,20 @@ def execute_STNT1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7835,7 +7791,7 @@ def execute_STNT1D_MZx_P_BR_2x8 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1D_MZx_P_BR_2x8 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7878,21 +7834,20 @@ def execute_STNT1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -7926,7 +7881,7 @@ def execute_STNT1B_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1B_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -7970,21 +7925,20 @@ def execute_STNT1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -8018,7 +7972,7 @@ def execute_STNT1H_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1H_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8062,21 +8016,20 @@ def execute_STNT1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -8110,7 +8063,7 @@ def execute_STNT1W_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1W_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8154,21 +8107,20 @@ def execute_STNT1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let (base, offset) ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure (base, offset)))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
         let base ←
-          bif (BEq.beq n 31)
+          bif (n == 31)
           then (SP_read ())
           else (X_read n 64)
         let offset ← (X_read m 64)
@@ -8202,7 +8154,7 @@ def execute_STNT1D_MZx_P_BR_4x4 (VL : Nat) (esize : Nat) (g : Nat) (m : Nat) (n 
 
 def decode_STNT1D_MZx_P_BR_4x4 (Rm : (BitVec 5)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8240,24 +8192,23 @@ def execute_LD1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -8302,7 +8253,7 @@ def execute_LD1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1B_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8340,24 +8291,23 @@ def execute_LD1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -8402,7 +8352,7 @@ def execute_LD1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1H_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8440,24 +8390,23 @@ def execute_LD1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -8502,7 +8451,7 @@ def execute_LD1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1W_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8540,24 +8489,23 @@ def execute_LD1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -8602,7 +8550,7 @@ def execute_LD1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1D_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8640,24 +8588,23 @@ def execute_LDNT1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -8702,7 +8649,7 @@ def execute_LDNT1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1B_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8740,24 +8687,23 @@ def execute_LDNT1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -8802,7 +8748,7 @@ def execute_LDNT1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1H_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8840,24 +8786,23 @@ def execute_LDNT1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -8902,7 +8847,7 @@ def execute_LDNT1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1W_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -8940,24 +8885,23 @@ def execute_LDNT1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9002,7 +8946,7 @@ def execute_LDNT1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1D_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9040,24 +8984,23 @@ def execute_LD1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9102,7 +9045,7 @@ def execute_LD1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1B_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9140,24 +9083,23 @@ def execute_LD1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9202,7 +9144,7 @@ def execute_LD1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1H_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9240,24 +9182,23 @@ def execute_LD1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9302,7 +9243,7 @@ def execute_LD1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1W_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9340,24 +9281,23 @@ def execute_LD1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9402,7 +9342,7 @@ def execute_LD1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_LD1D_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9440,24 +9380,23 @@ def execute_LDNT1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9502,7 +9441,7 @@ def execute_LDNT1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1B_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9540,24 +9479,23 @@ def execute_LDNT1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9602,7 +9540,7 @@ def execute_LDNT1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1H_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9640,24 +9578,23 @@ def execute_LDNT1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9702,7 +9639,7 @@ def execute_LDNT1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1W_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9740,24 +9677,23 @@ def execute_LDNT1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (Vector (BitVec VL) 4) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let values_name ← (( do
@@ -9802,7 +9738,7 @@ def execute_LDNT1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_LDNT1D_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9839,24 +9775,23 @@ def execute_ST1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -9889,7 +9824,7 @@ def execute_ST1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1B_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -9926,24 +9861,23 @@ def execute_ST1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -9976,7 +9910,7 @@ def execute_ST1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1H_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10013,24 +9947,23 @@ def execute_ST1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10063,7 +9996,7 @@ def execute_ST1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1W_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10100,24 +10033,23 @@ def execute_ST1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10150,7 +10082,7 @@ def execute_ST1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1D_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10187,24 +10119,23 @@ def execute_ST1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10237,7 +10168,7 @@ def execute_ST1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1B_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10274,24 +10205,23 @@ def execute_ST1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10324,7 +10254,7 @@ def execute_ST1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1H_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10361,24 +10291,23 @@ def execute_ST1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10411,7 +10340,7 @@ def execute_ST1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1W_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10448,24 +10377,23 @@ def execute_ST1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10498,7 +10426,7 @@ def execute_ST1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nreg
 
 def decode_ST1D_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10535,24 +10463,23 @@ def execute_STNT1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10585,7 +10512,7 @@ def execute_STNT1B_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1B_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10622,24 +10549,23 @@ def execute_STNT1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10672,7 +10598,7 @@ def execute_STNT1H_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1H_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10709,24 +10635,23 @@ def execute_STNT1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10759,7 +10684,7 @@ def execute_STNT1W_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1W_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10796,24 +10721,23 @@ def execute_STNT1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10846,7 +10770,7 @@ def execute_STNT1D_MZx_P_BI_2x8 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1D_MZx_P_BI_2x8 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10883,24 +10807,23 @@ def execute_STNT1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -10933,7 +10856,7 @@ def execute_STNT1B_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1B_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -10970,24 +10893,23 @@ def execute_STNT1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -11020,7 +10942,7 @@ def execute_STNT1H_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1H_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -11057,24 +10979,23 @@ def execute_STNT1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -11107,7 +11028,7 @@ def execute_STNT1W_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1W_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -11144,24 +11065,23 @@ def execute_STNT1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
     (BitVec (PL * nreg)) )
   let contiguous : Bool := true
   let nontemporal : Bool := true
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSVE MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
   let base ← (( do
-    bif (Bool.not (← (AnyActiveElement mask esize)))
+    bif (! (← (AnyActiveElement mask esize)))
     then
       (do
-        bif (Bool.and (BEq.beq n 31)
-             (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
+        bif ((n == 31) && (← (ConstrainUnpredictableBool Unpredictable_CHECKSPNONEACTIVE)))
         then (CheckSPAlignment ())
         else (pure ())
         (pure base))
     else
       (do
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (CheckSPAlignment ())
         else (pure ())
-        bif (BEq.beq n 31)
+        bif (n == 31)
         then (SP_read ())
         else (X_read n 64)) ) : SailM (BitVec 64) )
   let (src, t) ← (( do
@@ -11194,7 +11114,7 @@ def execute_STNT1D_MZx_P_BI_4x4 (VL : Nat) (esize : Nat) (g : Nat) (n : Nat) (nr
 
 def decode_STNT1D_MZx_P_BI_4x4 (imm4 : (BitVec 4)) (msz : (BitVec 2)) (PNg : (BitVec 3)) (Rn : (BitVec 5)) (T : (BitVec 1)) (N : (BitVec 1)) (Zt : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -11256,10 +11176,10 @@ def execute_FADD_ZA_ZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offs
 
 def decode_FADD_ZA_ZW_2x2 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11319,10 +11239,10 @@ def execute_FSUB_ZA_ZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offs
 
 def decode_FSUB_ZA_ZW_2x2 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11382,10 +11302,10 @@ def execute_FADD_ZA_ZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offs
 
 def decode_FADD_ZA_ZW_4x4 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11445,10 +11365,10 @@ def execute_FSUB_ZA_ZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offs
 
 def decode_FSUB_ZA_ZW_4x4 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11518,10 +11438,10 @@ def execute_FMLA_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLA_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11593,10 +11513,10 @@ def execute_FMLS_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLS_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11668,10 +11588,10 @@ def execute_FMLA_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLA_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11743,10 +11663,10 @@ def execute_FMLS_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLS_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11818,10 +11738,10 @@ def execute_FMLA_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLA_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11893,10 +11813,10 @@ def execute_FMLS_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLS_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -11968,10 +11888,10 @@ def execute_FMLA_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLA_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12043,10 +11963,10 @@ def execute_FMLS_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FMLS_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEF64F64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12123,7 +12043,7 @@ def execute_FMLA_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLA_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12201,7 +12121,7 @@ def execute_FMLS_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLS_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12278,7 +12198,7 @@ def execute_FMLA_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLA_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEF64F64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12355,7 +12275,7 @@ def execute_FMLS_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLS_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEF64F64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12433,7 +12353,7 @@ def execute_FMLA_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLA_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12511,7 +12431,7 @@ def execute_FMLS_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLS_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12588,7 +12508,7 @@ def execute_FMLA_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLA_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEF64F64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12665,7 +12585,7 @@ def execute_FMLS_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLS_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEF64F64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEF64F64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12734,7 +12654,7 @@ def execute_BFDOT_ZA_ZZW_2x2 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_BFDOT_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12800,7 +12720,7 @@ def execute_BFDOT_ZA_ZZV_2x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_BFDOT_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12866,7 +12786,7 @@ def execute_FDOT_ZA_ZZW_2x2 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset 
 
 def decode_FDOT_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12932,7 +12852,7 @@ def execute_FDOT_ZA_ZZV_2x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset 
 
 def decode_FDOT_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -12998,7 +12918,7 @@ def execute_BFDOT_ZA_ZZW_4x4 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_BFDOT_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13064,7 +12984,7 @@ def execute_BFDOT_ZA_ZZV_4x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_BFDOT_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13130,7 +13050,7 @@ def execute_FDOT_ZA_ZZW_4x4 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset 
 
 def decode_FDOT_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13196,7 +13116,7 @@ def execute_FDOT_ZA_ZZV_4x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset 
 
 def decode_FDOT_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13267,7 +13187,7 @@ def execute_BFDOT_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_BFDOT_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13339,7 +13259,7 @@ def execute_BFDOT_ZA_ZZi_4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_BFDOT_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13411,7 +13331,7 @@ def execute_FDOT_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FDOT_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13483,7 +13403,7 @@ def execute_FDOT_ZA_ZZi_4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_FDOT_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13554,7 +13474,7 @@ def execute_BFVDOT_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (offs
 
 def decode_BFVDOT_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13624,7 +13544,7 @@ def execute_FVDOT_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (offse
 
 def decode_FVDOT_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13705,7 +13625,7 @@ def execute_BFMLAL_ZA_ZZV_1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset 
 
 def decode_BFMLAL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13787,7 +13707,7 @@ def execute_BFMLAL_ZA_ZZW_2x2 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLAL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13869,7 +13789,7 @@ def execute_BFMLAL_ZA_ZZV_2x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLAL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -13951,7 +13871,7 @@ def execute_BFMLAL_ZA_ZZW_4x4 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLAL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14033,7 +13953,7 @@ def execute_BFMLAL_ZA_ZZV_4x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLAL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14115,7 +14035,7 @@ def execute_BFMLSL_ZA_ZZV_1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset 
 
 def decode_BFMLSL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14197,7 +14117,7 @@ def execute_BFMLSL_ZA_ZZW_2x2 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLSL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14279,7 +14199,7 @@ def execute_BFMLSL_ZA_ZZV_2x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLSL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14361,7 +14281,7 @@ def execute_BFMLSL_ZA_ZZW_4x4 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLSL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14443,7 +14363,7 @@ def execute_BFMLSL_ZA_ZZV_4x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offse
 
 def decode_BFMLSL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14529,7 +14449,7 @@ def execute_BFMLAL_ZA_ZZi_1 (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_BFMLAL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14615,7 +14535,7 @@ def execute_BFMLAL_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLAL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14701,7 +14621,7 @@ def execute_BFMLAL_ZA_ZZi_4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLAL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14788,7 +14708,7 @@ def execute_BFMLSL_ZA_ZZi_1 (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_BFMLSL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14874,7 +14794,7 @@ def execute_BFMLSL_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLSL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -14960,7 +14880,7 @@ def execute_BFMLSL_ZA_ZZi_4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLSL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15043,7 +14963,7 @@ def execute_FMLAL_ZA_ZZV_1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset :
 
 def decode_FMLAL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15125,7 +15045,7 @@ def execute_FMLAL_ZA_ZZW_2x2 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLAL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15207,7 +15127,7 @@ def execute_FMLAL_ZA_ZZV_2x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLAL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15289,7 +15209,7 @@ def execute_FMLAL_ZA_ZZW_4x4 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLAL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15371,7 +15291,7 @@ def execute_FMLAL_ZA_ZZV_4x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLAL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15457,7 +15377,7 @@ def execute_FMLAL_ZA_ZZi_1 (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_FMLAL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15543,7 +15463,7 @@ def execute_FMLAL_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_FMLAL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15629,7 +15549,7 @@ def execute_FMLAL_ZA_ZZi_4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_FMLAL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15712,7 +15632,7 @@ def execute_FMLSL_ZA_ZZV_1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset :
 
 def decode_FMLSL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15794,7 +15714,7 @@ def execute_FMLSL_ZA_ZZW_2x2 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLSL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15876,7 +15796,7 @@ def execute_FMLSL_ZA_ZZV_2x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLSL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -15958,7 +15878,7 @@ def execute_FMLSL_ZA_ZZW_4x4 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLSL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -16040,7 +15960,7 @@ def execute_FMLSL_ZA_ZZV_4x1 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (offset
 
 def decode_FMLSL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -16126,7 +16046,7 @@ def execute_FMLSL_ZA_ZZi_1 (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_FMLSL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -16212,7 +16132,7 @@ def execute_FMLSL_ZA_ZZi_2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_FMLSL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -16298,7 +16218,7 @@ def execute_FMLSL_ZA_ZZi_4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_FMLSL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -16341,7 +16261,7 @@ def execute_FMAX_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:16715.53-16715.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:16715.53-16715.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMax element1 element2 (← (FPCR_read ()))))))))
@@ -16357,7 +16277,7 @@ def execute_FMAX_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMAX_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16397,7 +16317,7 @@ def execute_FMAX_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:16778.53-16778.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:16778.53-16778.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMax element1 element2 (← (FPCR_read ()))))))))
@@ -16413,7 +16333,7 @@ def execute_FMAX_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMAX_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16453,7 +16373,7 @@ def execute_FMIN_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:16841.53-16841.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:16841.53-16841.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMin element1 element2 (← (FPCR_read ()))))))))
@@ -16469,7 +16389,7 @@ def execute_FMIN_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMIN_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16509,7 +16429,7 @@ def execute_FMIN_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:16904.53-16904.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:16904.53-16904.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMin element1 element2 (← (FPCR_read ()))))))))
@@ -16525,7 +16445,7 @@ def execute_FMIN_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMIN_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16565,7 +16485,7 @@ def execute_FMAX_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:16967.53-16967.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:16967.53-16967.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMax element1 element2 (← (FPCR_read ()))))))))
@@ -16581,7 +16501,7 @@ def execute_FMAX_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMAX_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16621,7 +16541,7 @@ def execute_FMAX_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17030.53-17030.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17030.53-17030.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMax element1 element2 (← (FPCR_read ()))))))))
@@ -16637,7 +16557,7 @@ def execute_FMAX_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMAX_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16677,7 +16597,7 @@ def execute_FMIN_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17093.53-17093.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17093.53-17093.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMin element1 element2 (← (FPCR_read ()))))))))
@@ -16693,7 +16613,7 @@ def execute_FMIN_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMIN_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16733,7 +16653,7 @@ def execute_FMIN_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17156.53-17156.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17156.53-17156.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMin element1 element2 (← (FPCR_read ()))))))))
@@ -16749,7 +16669,7 @@ def execute_FMIN_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_FMIN_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16789,7 +16709,7 @@ def execute_FMAXNM_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17219.53-17219.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17219.53-17219.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMaxNum element1 element2 (← (FPCR_read ()))))))))
@@ -16805,7 +16725,7 @@ def execute_FMAXNM_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMAXNM_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16845,7 +16765,7 @@ def execute_FMAXNM_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17282.53-17282.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17282.53-17282.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMaxNum element1 element2 (← (FPCR_read ()))))))))
@@ -16861,7 +16781,7 @@ def execute_FMAXNM_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMAXNM_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16901,7 +16821,7 @@ def execute_FMINNM_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17345.53-17345.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17345.53-17345.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMinNum element1 element2 (← (FPCR_read ()))))))))
@@ -16917,7 +16837,7 @@ def execute_FMINNM_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMINNM_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -16957,7 +16877,7 @@ def execute_FMINNM_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17408.53-17408.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17408.53-17408.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMinNum element1 element2 (← (FPCR_read ()))))))))
@@ -16973,7 +16893,7 @@ def execute_FMINNM_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMINNM_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -17013,7 +16933,7 @@ def execute_FMAXNM_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17471.53-17471.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17471.53-17471.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMaxNum element1 element2 (← (FPCR_read ()))))))))
@@ -17029,7 +16949,7 @@ def execute_FMAXNM_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMAXNM_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -17069,7 +16989,7 @@ def execute_FMAXNM_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17534.53-17534.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17534.53-17534.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMaxNum element1 element2 (← (FPCR_read ()))))))))
@@ -17085,7 +17005,7 @@ def execute_FMAXNM_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMAXNM_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -17125,7 +17045,7 @@ def execute_FMINNM_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17597.53-17597.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17597.53-17597.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMinNum element1 element2 (← (FPCR_read ()))))))))
@@ -17141,7 +17061,7 @@ def execute_FMINNM_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMINNM_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -17181,7 +17101,7 @@ def execute_FMINNM_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
           loop_vars_1 ← do
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17660.53-17660.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17660.53-17660.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMinNum element1 element2 (← (FPCR_read ()))))))))
@@ -17197,7 +17117,7 @@ def execute_FMINNM_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nre
 
 def decode_FMINNM_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -17241,7 +17161,7 @@ def execute_FCLAMP_MZ_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17725.53-17725.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17725.53-17725.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMinNum (← (FPMaxNum element1 element3 (← (FPCR_read ())))) element2
@@ -17258,7 +17178,7 @@ def execute_FCLAMP_MZ_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
 
 def decode_FCLAMP_MZ_ZZ_2 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -17303,7 +17223,7 @@ def execute_FCLAMP_MZ_ZZ_4 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
             let element1 ← (( do (Elem_read operand1 e esize) ) : SailM (BitVec esize) )
             let element2 ← (( do (Elem_read operand2 e esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 e esize) ) : SailM (BitVec esize) )
-            assert (Bool.or (Bool.or (BEq.beq esize 16) (BEq.beq esize 32)) (BEq.beq esize 64)) "src/instrs64_sme.sail:17792.53-17792.54"
+            assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sme.sail:17792.53-17792.54"
             (pure (vectorUpdate results r
                 (← (Elem_set (GetElem?.getElem! results r) e esize
                     (← (FPMinNum (← (FPMaxNum element1 element3 (← (FPCR_read ())))) element2
@@ -17320,7 +17240,7 @@ def execute_FCLAMP_MZ_ZZ_4 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
 
 def decode_FCLAMP_MZ_ZZ_4 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -17363,7 +17283,7 @@ def execute_BFCVT_Z_MZ2__ (VL : Nat) (d : Nat) (n : Nat) : SailM Unit := do
 
 def decode_BFCVT_Z_MZ2__ (Zn : (BitVec 4)) (N : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17405,7 +17325,7 @@ def execute_FCVT_Z_MZ2__ (VL : Nat) (d : Nat) (n : Nat) : SailM Unit := do
 
 def decode_FCVT_Z_MZ2__ (Zn : (BitVec 4)) (N : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17445,7 +17365,7 @@ def execute_BFCVTN_Z_MZ2__ (VL : Nat) (d : Nat) (n : Nat) : SailM Unit := do
 
 def decode_BFCVTN_Z_MZ2__ (Zn : (BitVec 4)) (N : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17487,7 +17407,7 @@ def execute_FCVTN_Z_MZ2__ (VL : Nat) (d : Nat) (n : Nat) : SailM Unit := do
 
 def decode_FCVTN_Z_MZ2__ (Zn : (BitVec 4)) (N : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17538,7 +17458,7 @@ def execute_FCVTZU_MZ_Z_2 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding 
 
 def decode_FCVTZU_MZ_Z_2 (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17592,7 +17512,7 @@ def execute_FCVTZU_MZ_Z_4 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding 
 
 def decode_FCVTZU_MZ_Z_4 (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -17646,7 +17566,7 @@ def execute_FCVTZS_MZ_Z_2 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding 
 
 def decode_FCVTZS_MZ_Z_2 (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17700,7 +17620,7 @@ def execute_FCVTZS_MZ_Z_4 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding 
 
 def decode_FCVTZS_MZ_Z_4 (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -17754,7 +17674,7 @@ def execute_UCVTF_MZ_Z_2 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding :
 
 def decode_UCVTF_MZ_Z_2 (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17808,7 +17728,7 @@ def execute_UCVTF_MZ_Z_4 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding :
 
 def decode_UCVTF_MZ_Z_4 (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -17862,7 +17782,7 @@ def execute_SCVTF_MZ_Z_2 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding :
 
 def decode_SCVTF_MZ_Z_2 (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -17916,7 +17836,7 @@ def execute_SCVTF_MZ_Z_4 (VL : Nat) (d : Nat) (n : Nat) (nreg : Nat) (rounding :
 
 def decode_SCVTF_MZ_Z_4 (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -17970,7 +17890,7 @@ def execute_FRINTA_MZ_Z_2 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTA_MZ_Z_2 (size : (BitVec 2)) (Zn : (BitVec 4)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -18024,7 +17944,7 @@ def execute_FRINTM_MZ_Z_2 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTM_MZ_Z_2 (size : (BitVec 2)) (Zn : (BitVec 4)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -18078,7 +17998,7 @@ def execute_FRINTN_MZ_Z_2 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTN_MZ_Z_2 (size : (BitVec 2)) (Zn : (BitVec 4)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -18132,7 +18052,7 @@ def execute_FRINTP_MZ_Z_2 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTP_MZ_Z_2 (size : (BitVec 2)) (Zn : (BitVec 4)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b0 : (BitVec 1))))
@@ -18186,7 +18106,7 @@ def execute_FRINTA_MZ_Z_4 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTA_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -18240,7 +18160,7 @@ def execute_FRINTM_MZ_Z_4 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTM_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -18294,7 +18214,7 @@ def execute_FRINTN_MZ_Z_4 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTN_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -18348,7 +18268,7 @@ def execute_FRINTP_MZ_Z_4 (VL : Nat) (d : Nat) (exact : Bool) (n : Nat) (nreg : 
 
 def decode_FRINTP_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
@@ -18408,10 +18328,10 @@ def execute_ADD_ZA_ZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offse
 
 def decode_ADD_ZA_ZW_2x2 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18471,10 +18391,10 @@ def execute_SUB_ZA_ZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offse
 
 def decode_SUB_ZA_ZW_2x2 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18534,10 +18454,10 @@ def execute_ADD_ZA_ZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offse
 
 def decode_ADD_ZA_ZW_4x4 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18597,10 +18517,10 @@ def execute_SUB_ZA_ZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (offse
 
 def decode_SUB_ZA_ZW_4x4 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18659,10 +18579,10 @@ def execute_ADD_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_ADD_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18722,10 +18642,10 @@ def execute_SUB_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_SUB_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18785,10 +18705,10 @@ def execute_ADD_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_ADD_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18848,10 +18768,10 @@ def execute_SUB_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_SUB_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18911,10 +18831,10 @@ def execute_ADD_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_ADD_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -18974,10 +18894,10 @@ def execute_SUB_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_SUB_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19037,10 +18957,10 @@ def execute_ADD_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_ADD_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19100,10 +19020,10 @@ def execute_SUB_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_SUB_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19180,10 +19100,10 @@ def execute_UDOT_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_UDOT_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19260,10 +19180,10 @@ def execute_SDOT_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_SDOT_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19340,7 +19260,7 @@ def execute_USDOT_ZA_ZZW_S2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_USDOT_ZA_ZZW_S2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19417,10 +19337,10 @@ def execute_UDOT_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_UDOT_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19497,10 +19417,10 @@ def execute_SDOT_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_SDOT_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19577,7 +19497,7 @@ def execute_USDOT_ZA_ZZV_S2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_USDOT_ZA_ZZV_S2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19654,7 +19574,7 @@ def execute_SUDOT_ZA_ZZV_S2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SUDOT_ZA_ZZV_S2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19731,10 +19651,10 @@ def execute_UDOT_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_UDOT_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19811,10 +19731,10 @@ def execute_SDOT_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_SDOT_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19891,7 +19811,7 @@ def execute_USDOT_ZA_ZZW_S4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_USDOT_ZA_ZZW_S4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -19968,10 +19888,10 @@ def execute_UDOT_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_UDOT_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20048,10 +19968,10 @@ def execute_SDOT_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_SDOT_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20128,7 +20048,7 @@ def execute_USDOT_ZA_ZZV_S4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_USDOT_ZA_ZZV_S4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20205,7 +20125,7 @@ def execute_SUDOT_ZA_ZZV_S4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SUDOT_ZA_ZZV_S4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20287,7 +20207,7 @@ def execute_UDOT_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UDOT_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20370,7 +20290,7 @@ def execute_SDOT_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SDOT_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20453,7 +20373,7 @@ def execute_USDOT_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_USDOT_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20536,7 +20456,7 @@ def execute_SUDOT_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_SUDOT_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20618,7 +20538,7 @@ def execute_UDOT_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UDOT_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20700,7 +20620,7 @@ def execute_SDOT_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SDOT_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20783,7 +20703,7 @@ def execute_UDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20866,7 +20786,7 @@ def execute_SDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -20949,7 +20869,7 @@ def execute_USDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_USDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21032,7 +20952,7 @@ def execute_SUDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_SUDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21114,7 +21034,7 @@ def execute_UDOT_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UDOT_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21196,7 +21116,7 @@ def execute_SDOT_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SDOT_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21278,7 +21198,7 @@ def execute_UVDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_UVDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21359,7 +21279,7 @@ def execute_SVDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_SVDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21440,7 +21360,7 @@ def execute_USVDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_USVDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21521,7 +21441,7 @@ def execute_SUVDOT_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SUVDOT_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21601,7 +21521,7 @@ def execute_UVDOT_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_UVDOT_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21681,7 +21601,7 @@ def execute_SVDOT_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_SVDOT_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i1 : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21758,7 +21678,7 @@ def execute_UDOT_ZA32_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UDOT_ZA32_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21835,7 +21755,7 @@ def execute_SDOT_ZA32_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SDOT_ZA32_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21912,7 +21832,7 @@ def execute_UDOT_ZA32_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UDOT_ZA32_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -21989,7 +21909,7 @@ def execute_SDOT_ZA32_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SDOT_ZA32_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22066,7 +21986,7 @@ def execute_UDOT_ZA32_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UDOT_ZA32_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22143,7 +22063,7 @@ def execute_SDOT_ZA32_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SDOT_ZA32_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22220,7 +22140,7 @@ def execute_UDOT_ZA32_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UDOT_ZA32_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22297,7 +22217,7 @@ def execute_SDOT_ZA32_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SDOT_ZA32_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22379,7 +22299,7 @@ def execute_UDOT_ZA32_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_UDOT_ZA32_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22462,7 +22382,7 @@ def execute_SDOT_ZA32_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_SDOT_ZA32_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22545,7 +22465,7 @@ def execute_UDOT_ZA32_ZZi_4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_UDOT_ZA32_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22628,7 +22548,7 @@ def execute_SDOT_ZA32_ZZi_4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (
 
 def decode_SDOT_ZA32_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22710,7 +22630,7 @@ def execute_UVDOT_ZA32_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UVDOT_ZA32_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22791,7 +22711,7 @@ def execute_SVDOT_ZA32_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SVDOT_ZA32_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i2 : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -22870,10 +22790,10 @@ def execute_UMLALL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_UMLALL_ZA_ZZV_1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -22952,10 +22872,10 @@ def execute_UMLSLL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_UMLSLL_ZA_ZZV_1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23034,10 +22954,10 @@ def execute_SMLALL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_SMLALL_ZA_ZZV_1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23116,10 +23036,10 @@ def execute_SMLSLL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg :
 
 def decode_SMLSLL_ZA_ZZV_1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23198,7 +23118,7 @@ def execute_USMLALL_ZA_ZZV_S (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_USMLALL_ZA_ZZV_S (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -23276,10 +23196,10 @@ def execute_UMLALL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLALL_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23357,10 +23277,10 @@ def execute_UMLSLL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLSLL_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23438,10 +23358,10 @@ def execute_SMLALL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLALL_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23519,10 +23439,10 @@ def execute_SMLSLL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLSLL_ZA_ZZW_2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23600,7 +23520,7 @@ def execute_USMLALL_ZA_ZZW_S2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nr
 
 def decode_USMLALL_ZA_ZZW_S2x2 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -23678,10 +23598,10 @@ def execute_UMLALL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLALL_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23759,10 +23679,10 @@ def execute_UMLSLL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLSLL_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23840,10 +23760,10 @@ def execute_SMLALL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLALL_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -23921,10 +23841,10 @@ def execute_SMLSLL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLSLL_ZA_ZZV_2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24002,7 +23922,7 @@ def execute_USMLALL_ZA_ZZV_S2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nr
 
 def decode_USMLALL_ZA_ZZV_S2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -24080,7 +24000,7 @@ def execute_SUMLALL_ZA_ZZV_S2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nr
 
 def decode_SUMLALL_ZA_ZZV_S2x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -24158,10 +24078,10 @@ def execute_UMLALL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLALL_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24239,10 +24159,10 @@ def execute_UMLSLL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLSLL_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24320,10 +24240,10 @@ def execute_SMLALL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLALL_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24401,10 +24321,10 @@ def execute_SMLSLL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLSLL_ZA_ZZW_4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24482,7 +24402,7 @@ def execute_USMLALL_ZA_ZZW_S4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nr
 
 def decode_USMLALL_ZA_ZZW_S4x4 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -24560,10 +24480,10 @@ def execute_UMLALL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLALL_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24641,10 +24561,10 @@ def execute_UMLSLL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_UMLSLL_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24722,10 +24642,10 @@ def execute_SMLALL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLALL_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24803,10 +24723,10 @@ def execute_SMLSLL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_SMLSLL_ZA_ZZV_4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.and (BEq.beq sz (0b1 : (BitVec 1))) (Bool.not (← (HaveSMEI16I64 ()))))
+  bif ((sz == (0b1 : (BitVec 1))) && (! (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 32 (BitVec.toNat sz))
@@ -24884,7 +24804,7 @@ def execute_USMLALL_ZA_ZZV_S4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nr
 
 def decode_USMLALL_ZA_ZZV_S4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -24962,7 +24882,7 @@ def execute_SUMLALL_ZA_ZZV_S4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nr
 
 def decode_SUMLALL_ZA_ZZV_S4x1 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25045,7 +24965,7 @@ def execute_UMLALL_ZA_ZZi_S (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_UMLALL_ZA_ZZi_S (Zm : (BitVec 4)) (i4h : (BitVec 1)) (Rv : (BitVec 2)) (i4l : (BitVec 3)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25129,7 +25049,7 @@ def execute_UMLSLL_ZA_ZZi_S (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_UMLSLL_ZA_ZZi_S (Zm : (BitVec 4)) (i4h : (BitVec 1)) (Rv : (BitVec 2)) (i4l : (BitVec 3)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25213,7 +25133,7 @@ def execute_SMLALL_ZA_ZZi_S (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_SMLALL_ZA_ZZi_S (Zm : (BitVec 4)) (i4h : (BitVec 1)) (Rv : (BitVec 2)) (i4l : (BitVec 3)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25297,7 +25217,7 @@ def execute_SMLSLL_ZA_ZZi_S (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_SMLSLL_ZA_ZZi_S (Zm : (BitVec 4)) (i4h : (BitVec 1)) (Rv : (BitVec 2)) (i4l : (BitVec 3)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25381,7 +25301,7 @@ def execute_USMLALL_ZA_ZZi_S (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_USMLALL_ZA_ZZi_S (Zm : (BitVec 4)) (i4h : (BitVec 1)) (Rv : (BitVec 2)) (i4l : (BitVec 3)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25465,7 +25385,7 @@ def execute_SUMLALL_ZA_ZZi_S (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SUMLALL_ZA_ZZi_S (Zm : (BitVec 4)) (i4h : (BitVec 1)) (Rv : (BitVec 2)) (i4l : (BitVec 3)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25550,7 +25470,7 @@ def execute_UMLALL_ZA_ZZi_D (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_UMLALL_ZA_ZZi_D (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -25635,7 +25555,7 @@ def execute_UMLSLL_ZA_ZZi_D (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_UMLSLL_ZA_ZZi_D (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -25720,7 +25640,7 @@ def execute_SMLALL_ZA_ZZi_D (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_SMLALL_ZA_ZZi_D (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -25805,7 +25725,7 @@ def execute_SMLSLL_ZA_ZZi_D (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n 
 
 def decode_SMLSLL_ZA_ZZi_D (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -25888,7 +25808,7 @@ def execute_UMLALL_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLALL_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -25971,7 +25891,7 @@ def execute_UMLSLL_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLSLL_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26054,7 +25974,7 @@ def execute_SMLALL_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLALL_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26137,7 +26057,7 @@ def execute_SMLSLL_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLSLL_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26220,7 +26140,7 @@ def execute_USMLALL_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat)
 
 def decode_USMLALL_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26303,7 +26223,7 @@ def execute_SUMLALL_ZA_ZZi_S2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat)
 
 def decode_SUMLALL_ZA_ZZi_S2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26387,7 +26307,7 @@ def execute_UMLALL_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLALL_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -26471,7 +26391,7 @@ def execute_UMLSLL_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLSLL_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -26555,7 +26475,7 @@ def execute_SMLALL_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLALL_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -26639,7 +26559,7 @@ def execute_SMLSLL_ZA_ZZi_D2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLSLL_ZA_ZZi_D2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -26722,7 +26642,7 @@ def execute_UMLALL_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLALL_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26805,7 +26725,7 @@ def execute_UMLSLL_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLSLL_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26888,7 +26808,7 @@ def execute_SMLALL_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLALL_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -26971,7 +26891,7 @@ def execute_SMLSLL_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLSLL_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27054,7 +26974,7 @@ def execute_USMLALL_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat)
 
 def decode_USMLALL_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27137,7 +27057,7 @@ def execute_SUMLALL_ZA_ZZi_S4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat)
 
 def decode_SUMLALL_ZA_ZZi_S4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i4h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i4l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27221,7 +27141,7 @@ def execute_UMLALL_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLALL_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -27305,7 +27225,7 @@ def execute_UMLSLL_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_UMLSLL_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -27389,7 +27309,7 @@ def execute_SMLALL_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLALL_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -27473,7 +27393,7 @@ def execute_SMLSLL_ZA_ZZi_D4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) 
 
 def decode_SMLSLL_ZA_ZZi_D4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (Bool.and (← (HaveSME2 ())) (← (HaveSMEI16I64 ()))))
+  bif (! ((← (HaveSME2 ())) && (← (HaveSMEI16I64 ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 64
@@ -27553,7 +27473,7 @@ def execute_UMLAL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_UMLAL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27632,7 +27552,7 @@ def execute_UMLSL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_UMLSL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27711,7 +27631,7 @@ def execute_SMLAL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_SMLAL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27790,7 +27710,7 @@ def execute_SMLSL_ZA_ZZV_1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg : 
 
 def decode_SMLSL_ZA_ZZV_1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27868,7 +27788,7 @@ def execute_UMLAL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLAL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -27946,7 +27866,7 @@ def execute_UMLSL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLSL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28024,7 +27944,7 @@ def execute_SMLAL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLAL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28102,7 +28022,7 @@ def execute_SMLSL_ZA_ZZW_2x2 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLSL_ZA_ZZW_2x2 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28180,7 +28100,7 @@ def execute_UMLAL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLAL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28258,7 +28178,7 @@ def execute_UMLSL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLSL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28336,7 +28256,7 @@ def execute_SMLAL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLAL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28414,7 +28334,7 @@ def execute_SMLSL_ZA_ZZV_2x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLSL_ZA_ZZV_2x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28492,7 +28412,7 @@ def execute_UMLAL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLAL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28570,7 +28490,7 @@ def execute_UMLSL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLSL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28648,7 +28568,7 @@ def execute_SMLAL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLAL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28726,7 +28646,7 @@ def execute_SMLSL_ZA_ZZW_4x4 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLSL_ZA_ZZW_4x4 (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28804,7 +28724,7 @@ def execute_UMLAL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLAL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28882,7 +28802,7 @@ def execute_UMLSL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_UMLSL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -28960,7 +28880,7 @@ def execute_SMLAL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLAL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29038,7 +28958,7 @@ def execute_SMLSL_ZA_ZZV_4x1 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nreg 
 
 def decode_SMLSL_ZA_ZZV_4x1 (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29122,7 +29042,7 @@ def execute_UMLAL_ZA_ZZi_1 (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n :
 
 def decode_UMLAL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29207,7 +29127,7 @@ def execute_UMLSL_ZA_ZZi_1 (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n :
 
 def decode_UMLSL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29292,7 +29212,7 @@ def execute_SMLAL_ZA_ZZi_1 (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n :
 
 def decode_SMLAL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29377,7 +29297,7 @@ def execute_SMLSL_ZA_ZZi_1 (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n :
 
 def decode_SMLSL_ZA_ZZi_1 (Zm : (BitVec 4)) (i3h : (BitVec 1)) (Rv : (BitVec 2)) (i3l : (BitVec 2)) (Zn : (BitVec 5)) (U : (BitVec 1)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29461,7 +29381,7 @@ def execute_UMLAL_ZA_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UMLAL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29545,7 +29465,7 @@ def execute_UMLSL_ZA_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UMLSL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29629,7 +29549,7 @@ def execute_SMLAL_ZA_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SMLAL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29713,7 +29633,7 @@ def execute_SMLSL_ZA_ZZi_2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SMLSL_ZA_ZZi_2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29797,7 +29717,7 @@ def execute_UMLAL_ZA_ZZi_4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UMLAL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29881,7 +29801,7 @@ def execute_UMLSL_ZA_ZZi_4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_UMLSL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -29965,7 +29885,7 @@ def execute_SMLAL_ZA_ZZi_4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SMLAL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -30049,7 +29969,7 @@ def execute_SMLSL_ZA_ZZi_4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_SMLSL_ZA_ZZi_4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (U : (BitVec 1)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -30109,7 +30029,7 @@ def execute_UMAX_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMAX_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30167,7 +30087,7 @@ def execute_SMAX_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMAX_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30225,7 +30145,7 @@ def execute_UMAX_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMAX_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30283,7 +30203,7 @@ def execute_SMAX_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMAX_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30341,7 +30261,7 @@ def execute_UMAX_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMAX_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30399,7 +30319,7 @@ def execute_SMAX_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMAX_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30457,7 +30377,7 @@ def execute_UMAX_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMAX_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30515,7 +30435,7 @@ def execute_SMAX_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMAX_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30573,7 +30493,7 @@ def execute_UMIN_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMIN_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30631,7 +30551,7 @@ def execute_SMIN_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMIN_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30689,7 +30609,7 @@ def execute_UMIN_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMIN_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30747,7 +30667,7 @@ def execute_SMIN_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMIN_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30805,7 +30725,7 @@ def execute_UMIN_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMIN_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30863,7 +30783,7 @@ def execute_SMIN_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMIN_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30921,7 +30841,7 @@ def execute_UMIN_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_UMIN_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -30979,7 +30899,7 @@ def execute_SMIN_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg 
 
 def decode_SMIN_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31045,7 +30965,7 @@ def execute_URSHL_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_URSHL_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31110,7 +31030,7 @@ def execute_SRSHL_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_SRSHL_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31175,7 +31095,7 @@ def execute_URSHL_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_URSHL_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31240,7 +31160,7 @@ def execute_SRSHL_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_SRSHL_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31305,7 +31225,7 @@ def execute_URSHL_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_URSHL_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31370,7 +31290,7 @@ def execute_SRSHL_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_SRSHL_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31435,7 +31355,7 @@ def execute_URSHL_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_URSHL_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31500,7 +31420,7 @@ def execute_SRSHL_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg
 
 def decode_SRSHL_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31556,7 +31476,7 @@ def execute_SQDMULH_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nr
 
 def decode_SQDMULH_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31612,7 +31532,7 @@ def execute_SQDMULH_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nr
 
 def decode_SQDMULH_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31668,7 +31588,7 @@ def execute_SQDMULH_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nr
 
 def decode_SQDMULH_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31724,7 +31644,7 @@ def execute_SQDMULH_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nr
 
 def decode_SQDMULH_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31778,7 +31698,7 @@ def execute_ADD_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg :
 
 def decode_ADD_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31832,7 +31752,7 @@ def execute_ADD_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (esize : Nat) (m : Nat) (nreg :
 
 def decode_ADD_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31892,7 +31812,7 @@ def execute_UCLAMP_MZ_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
 
 def decode_UCLAMP_MZ_ZZ_2 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -31953,7 +31873,7 @@ def execute_SCLAMP_MZ_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
 
 def decode_SCLAMP_MZ_ZZ_2 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -32014,7 +31934,7 @@ def execute_UCLAMP_MZ_ZZ_4 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
 
 def decode_UCLAMP_MZ_ZZ_4 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -32075,7 +31995,7 @@ def execute_SCLAMP_MZ_ZZ_4 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat
 
 def decode_SCLAMP_MZ_ZZ_4 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -32139,10 +32059,10 @@ def execute_UUNPK_MZ_Z_2 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : Na
 
 def decode_UUNPK_MZ_Z_2 (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b00 : (BitVec 2)))
+  bif (size == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -32206,10 +32126,10 @@ def execute_SUNPK_MZ_Z_2 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : Na
 
 def decode_SUNPK_MZ_Z_2 (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b00 : (BitVec 2)))
+  bif (size == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -32273,10 +32193,10 @@ def execute_UUNPK_MZ_Z_4 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : Na
 
 def decode_UUNPK_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 4)) (Zd : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b00 : (BitVec 2)))
+  bif (size == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -32340,10 +32260,10 @@ def execute_SUNPK_MZ_Z_4 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : Na
 
 def decode_SUNPK_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 4)) (Zd : (BitVec 3)) (U : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b00 : (BitVec 2)))
+  bif (size == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -32391,7 +32311,7 @@ def execute_SQRSHR_Z_MZ2__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift :
 
 def decode_SQRSHR_Z_MZ2__ (imm4 : (BitVec 4)) (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -32438,7 +32358,7 @@ def execute_UQRSHR_Z_MZ2__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift :
 
 def decode_UQRSHR_Z_MZ2__ (imm4 : (BitVec 4)) (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -32485,7 +32405,7 @@ def execute_SQRSHRU_Z_MZ2__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift 
 
 def decode_SQRSHRU_Z_MZ2__ (imm4 : (BitVec 4)) (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -32532,15 +32452,15 @@ def execute_SQRSHRN_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift 
 
 def decode_SQRSHRN_Z_MZ4__ (tsize : (BitVec 2)) (imm5 : (BitVec 5)) (N : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize : Int := 8
   let b__0 := tsize
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then
       (let esize : Int := 8
       (pure ()))
@@ -32591,15 +32511,15 @@ def execute_UQRSHRN_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift 
 
 def decode_UQRSHRN_Z_MZ4__ (tsize : (BitVec 2)) (imm5 : (BitVec 5)) (N : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize : Int := 8
   let b__0 := tsize
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then
       (let esize : Int := 8
       (pure ()))
@@ -32650,15 +32570,15 @@ def execute_SQRSHRUN_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift
 
 def decode_SQRSHRUN_Z_MZ4__ (tsize : (BitVec 2)) (imm5 : (BitVec 5)) (N : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize : Int := 8
   let b__0 := tsize
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then
       (let esize : Int := 8
       (pure ()))
@@ -32709,15 +32629,15 @@ def execute_SQRSHR_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift :
 
 def decode_SQRSHR_Z_MZ4__ (tsize : (BitVec 2)) (imm5 : (BitVec 5)) (N : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize : Int := 8
   let b__0 := tsize
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then
       (let esize : Int := 8
       (pure ()))
@@ -32768,15 +32688,15 @@ def execute_UQRSHR_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift :
 
 def decode_UQRSHR_Z_MZ4__ (tsize : (BitVec 2)) (imm5 : (BitVec 5)) (N : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize : Int := 8
   let b__0 := tsize
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then
       (let esize : Int := 8
       (pure ()))
@@ -32827,15 +32747,15 @@ def execute_SQRSHRU_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (shift 
 
 def decode_SQRSHRU_Z_MZ4__ (tsize : (BitVec 2)) (imm5 : (BitVec 5)) (N : (BitVec 1)) (Zn : (BitVec 3)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize : Int := 8
   let b__0 := tsize
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then
       (let esize : Int := 8
       (pure ()))
@@ -32883,7 +32803,7 @@ def execute_SQCVT_Z_MZ2__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM U
 
 def decode_SQCVT_Z_MZ2__ (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -32926,7 +32846,7 @@ def execute_UQCVT_Z_MZ2__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM U
 
 def decode_UQCVT_Z_MZ2__ (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -32969,7 +32889,7 @@ def execute_SQCVTU_Z_MZ2__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM 
 
 def decode_SQCVTU_Z_MZ2__ (Zn : (BitVec 4)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -33012,7 +32932,7 @@ def execute_SQCVTN_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM 
 
 def decode_SQCVTN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat sz))
@@ -33020,56 +32940,19 @@ def decode_SQCVTN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (
   let d := (BitVec.toNat Zd)
   match VL with
   | 128 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 128 128) (BEq.beq 128 256)) (BEq.beq 128 512))
-                    (BEq.beq 128 1024)) (BEq.beq 128 2048))))))) "src/instrs64_sme.sail:34431.103-34431.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34431.103-34431.104"
       (execute_SQCVTN_Z_MZ4__ 128 d esize n))
   | 256 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 256 128) (BEq.beq 256 256)) (BEq.beq 256 512))
-                    (BEq.beq 256 1024)) (BEq.beq 256 2048))))))) "src/instrs64_sme.sail:34435.103-34435.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34435.103-34435.104"
       (execute_SQCVTN_Z_MZ4__ 256 d esize n))
   | 512 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 512 128) (BEq.beq 512 256)) (BEq.beq 512 512))
-                    (BEq.beq 512 1024)) (BEq.beq 512 2048))))))) "src/instrs64_sme.sail:34439.103-34439.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34439.103-34439.104"
       (execute_SQCVTN_Z_MZ4__ 512 d esize n))
   | 1024 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 1024 128) (BEq.beq 1024 256)) (BEq.beq 1024 512))
-                    (BEq.beq 1024 1024)) (BEq.beq 1024 2048))))))) "src/instrs64_sme.sail:34443.104-34443.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34443.104-34443.105"
       (execute_SQCVTN_Z_MZ4__ 1024 d esize n))
   | 2048 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 2048 128) (BEq.beq 2048 256)) (BEq.beq 2048 512))
-                    (BEq.beq 2048 1024)) (BEq.beq 2048 2048))))))) "src/instrs64_sme.sail:34447.104-34447.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34447.104-34447.105"
       (execute_SQCVTN_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
 
@@ -33102,7 +32985,7 @@ def execute_UQCVTN_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM 
 
 def decode_UQCVTN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat sz))
@@ -33110,56 +32993,19 @@ def decode_UQCVTN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (
   let d := (BitVec.toNat Zd)
   match VL with
   | 128 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 128 128) (BEq.beq 128 256)) (BEq.beq 128 512))
-                    (BEq.beq 128 1024)) (BEq.beq 128 2048))))))) "src/instrs64_sme.sail:34495.103-34495.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34495.103-34495.104"
       (execute_UQCVTN_Z_MZ4__ 128 d esize n))
   | 256 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 256 128) (BEq.beq 256 256)) (BEq.beq 256 512))
-                    (BEq.beq 256 1024)) (BEq.beq 256 2048))))))) "src/instrs64_sme.sail:34499.103-34499.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34499.103-34499.104"
       (execute_UQCVTN_Z_MZ4__ 256 d esize n))
   | 512 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 512 128) (BEq.beq 512 256)) (BEq.beq 512 512))
-                    (BEq.beq 512 1024)) (BEq.beq 512 2048))))))) "src/instrs64_sme.sail:34503.103-34503.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34503.103-34503.104"
       (execute_UQCVTN_Z_MZ4__ 512 d esize n))
   | 1024 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 1024 128) (BEq.beq 1024 256)) (BEq.beq 1024 512))
-                    (BEq.beq 1024 1024)) (BEq.beq 1024 2048))))))) "src/instrs64_sme.sail:34507.104-34507.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34507.104-34507.105"
       (execute_UQCVTN_Z_MZ4__ 1024 d esize n))
   | 2048 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 2048 128) (BEq.beq 2048 256)) (BEq.beq 2048 512))
-                    (BEq.beq 2048 1024)) (BEq.beq 2048 2048))))))) "src/instrs64_sme.sail:34511.104-34511.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34511.104-34511.105"
       (execute_UQCVTN_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
 
@@ -33192,7 +33038,7 @@ def execute_SQCVTUN_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM
 
 def decode_SQCVTUN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat sz))
@@ -33200,56 +33046,19 @@ def decode_SQCVTUN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) 
   let d := (BitVec.toNat Zd)
   match VL with
   | 128 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 128 128) (BEq.beq 128 256)) (BEq.beq 128 512))
-                    (BEq.beq 128 1024)) (BEq.beq 128 2048))))))) "src/instrs64_sme.sail:34559.103-34559.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34559.103-34559.104"
       (execute_SQCVTUN_Z_MZ4__ 128 d esize n))
   | 256 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 256 128) (BEq.beq 256 256)) (BEq.beq 256 512))
-                    (BEq.beq 256 1024)) (BEq.beq 256 2048))))))) "src/instrs64_sme.sail:34563.103-34563.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34563.103-34563.104"
       (execute_SQCVTUN_Z_MZ4__ 256 d esize n))
   | 512 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 512 128) (BEq.beq 512 256)) (BEq.beq 512 512))
-                    (BEq.beq 512 1024)) (BEq.beq 512 2048))))))) "src/instrs64_sme.sail:34567.103-34567.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34567.103-34567.104"
       (execute_SQCVTUN_Z_MZ4__ 512 d esize n))
   | 1024 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 1024 128) (BEq.beq 1024 256)) (BEq.beq 1024 512))
-                    (BEq.beq 1024 1024)) (BEq.beq 1024 2048))))))) "src/instrs64_sme.sail:34571.104-34571.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34571.104-34571.105"
       (execute_SQCVTUN_Z_MZ4__ 1024 d esize n))
   | 2048 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 2048 128) (BEq.beq 2048 256)) (BEq.beq 2048 512))
-                    (BEq.beq 2048 1024)) (BEq.beq 2048 2048))))))) "src/instrs64_sme.sail:34575.104-34575.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34575.104-34575.105"
       (execute_SQCVTUN_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
 
@@ -33282,7 +33091,7 @@ def execute_SQCVT_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM U
 
 def decode_SQCVT_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat sz))
@@ -33290,56 +33099,19 @@ def decode_SQCVT_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U
   let d := (BitVec.toNat Zd)
   match VL with
   | 128 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 128 128) (BEq.beq 128 256)) (BEq.beq 128 512))
-                    (BEq.beq 128 1024)) (BEq.beq 128 2048))))))) "src/instrs64_sme.sail:34623.103-34623.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34623.103-34623.104"
       (execute_SQCVT_Z_MZ4__ 128 d esize n))
   | 256 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 256 128) (BEq.beq 256 256)) (BEq.beq 256 512))
-                    (BEq.beq 256 1024)) (BEq.beq 256 2048))))))) "src/instrs64_sme.sail:34627.103-34627.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34627.103-34627.104"
       (execute_SQCVT_Z_MZ4__ 256 d esize n))
   | 512 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 512 128) (BEq.beq 512 256)) (BEq.beq 512 512))
-                    (BEq.beq 512 1024)) (BEq.beq 512 2048))))))) "src/instrs64_sme.sail:34631.103-34631.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34631.103-34631.104"
       (execute_SQCVT_Z_MZ4__ 512 d esize n))
   | 1024 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 1024 128) (BEq.beq 1024 256)) (BEq.beq 1024 512))
-                    (BEq.beq 1024 1024)) (BEq.beq 1024 2048))))))) "src/instrs64_sme.sail:34635.104-34635.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34635.104-34635.105"
       (execute_SQCVT_Z_MZ4__ 1024 d esize n))
   | 2048 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 2048 128) (BEq.beq 2048 256)) (BEq.beq 2048 512))
-                    (BEq.beq 2048 1024)) (BEq.beq 2048 2048))))))) "src/instrs64_sme.sail:34639.104-34639.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34639.104-34639.105"
       (execute_SQCVT_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
 
@@ -33372,7 +33144,7 @@ def execute_UQCVT_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM U
 
 def decode_UQCVT_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat sz))
@@ -33380,56 +33152,19 @@ def decode_UQCVT_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U
   let d := (BitVec.toNat Zd)
   match VL with
   | 128 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 128 128) (BEq.beq 128 256)) (BEq.beq 128 512))
-                    (BEq.beq 128 1024)) (BEq.beq 128 2048))))))) "src/instrs64_sme.sail:34687.103-34687.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34687.103-34687.104"
       (execute_UQCVT_Z_MZ4__ 128 d esize n))
   | 256 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 256 128) (BEq.beq 256 256)) (BEq.beq 256 512))
-                    (BEq.beq 256 1024)) (BEq.beq 256 2048))))))) "src/instrs64_sme.sail:34691.103-34691.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34691.103-34691.104"
       (execute_UQCVT_Z_MZ4__ 256 d esize n))
   | 512 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 512 128) (BEq.beq 512 256)) (BEq.beq 512 512))
-                    (BEq.beq 512 1024)) (BEq.beq 512 2048))))))) "src/instrs64_sme.sail:34695.103-34695.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34695.103-34695.104"
       (execute_UQCVT_Z_MZ4__ 512 d esize n))
   | 1024 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 1024 128) (BEq.beq 1024 256)) (BEq.beq 1024 512))
-                    (BEq.beq 1024 1024)) (BEq.beq 1024 2048))))))) "src/instrs64_sme.sail:34699.104-34699.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34699.104-34699.105"
       (execute_UQCVT_Z_MZ4__ 1024 d esize n))
   | 2048 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 2048 128) (BEq.beq 2048 256)) (BEq.beq 2048 512))
-                    (BEq.beq 2048 1024)) (BEq.beq 2048 2048))))))) "src/instrs64_sme.sail:34703.104-34703.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34703.104-34703.105"
       (execute_UQCVT_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
 
@@ -33462,7 +33197,7 @@ def execute_SQCVTU_Z_MZ4__ (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM 
 
 def decode_SQCVTU_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat sz))
@@ -33470,56 +33205,19 @@ def decode_SQCVTU_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (
   let d := (BitVec.toNat Zd)
   match VL with
   | 128 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 128 128) (BEq.beq 128 256)) (BEq.beq 128 512))
-                    (BEq.beq 128 1024)) (BEq.beq 128 2048))))))) "src/instrs64_sme.sail:34751.103-34751.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34751.103-34751.104"
       (execute_SQCVTU_Z_MZ4__ 128 d esize n))
   | 256 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 256 128) (BEq.beq 256 256)) (BEq.beq 256 512))
-                    (BEq.beq 256 1024)) (BEq.beq 256 2048))))))) "src/instrs64_sme.sail:34755.103-34755.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34755.103-34755.104"
       (execute_SQCVTU_Z_MZ4__ 256 d esize n))
   | 512 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or (Bool.or (Bool.or (BEq.beq 512 128) (BEq.beq 512 256)) (BEq.beq 512 512))
-                    (BEq.beq 512 1024)) (BEq.beq 512 2048))))))) "src/instrs64_sme.sail:34759.103-34759.104"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34759.103-34759.104"
       (execute_SQCVTU_Z_MZ4__ 512 d esize n))
   | 1024 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 1024 128) (BEq.beq 1024 256)) (BEq.beq 1024 512))
-                    (BEq.beq 1024 1024)) (BEq.beq 1024 2048))))))) "src/instrs64_sme.sail:34763.104-34763.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34763.104-34763.105"
       (execute_SQCVTU_Z_MZ4__ 1024 d esize n))
   | 2048 => (do
-      assert (Bool.and (0 ≤b n)
-        (Bool.and (n ≤b 31)
-          (Bool.and (Bool.or (BEq.beq esize 8) (BEq.beq esize 16))
-            (Bool.and (0 ≤b d)
-              (Bool.and (d ≤b 31)
-                (Bool.or
-                  (Bool.or
-                    (Bool.or (Bool.or (BEq.beq 2048 128) (BEq.beq 2048 256)) (BEq.beq 2048 512))
-                    (BEq.beq 2048 1024)) (BEq.beq 2048 2048))))))) "src/instrs64_sme.sail:34767.104-34767.105"
+      assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34767.104-34767.105"
       (execute_SQCVTU_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
 
@@ -33559,7 +33257,7 @@ def execute_ZIP_MZ_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) :
 
 def decode_ZIP_MZ_ZZ_2 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -33592,7 +33290,7 @@ def execute_UZP_MZ_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) :
       loop_vars ← do
         let base := (r *i pairs)
         let operand ← (( do
-          bif (BEq.beq r 0)
+          bif (r == 0)
           then (Z_read n VL)
           else (Z_read m VL) ) : SailM (BitVec VL) )
         let (result0, result1) ← (( do
@@ -33615,7 +33313,7 @@ def execute_UZP_MZ_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) :
 
 def decode_UZP_MZ_ZZ_2 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -33668,7 +33366,7 @@ def execute_ZIP_MZ_ZZ_2Q (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) 
 
 def decode_ZIP_MZ_ZZ_2Q (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 128
@@ -33703,7 +33401,7 @@ def execute_UZP_MZ_ZZ_2Q (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) 
       loop_vars ← do
         let base := (r *i pairs)
         let operand ← (( do
-          bif (BEq.beq r 0)
+          bif (r == 0)
           then (Z_read n VL)
           else (Z_read m VL) ) : SailM (BitVec VL) )
         let (result0, result1) ← (( do
@@ -33726,7 +33424,7 @@ def execute_UZP_MZ_ZZ_2Q (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) 
 
 def decode_UZP_MZ_ZZ_2Q (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 128
@@ -33785,7 +33483,7 @@ def execute_ZIP_MZ_Z_4 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM Unit
 
 def decode_ZIP_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -33847,7 +33545,7 @@ def execute_UZP_MZ_Z_4 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM Unit
 
 def decode_UZP_MZ_Z_4 (size : (BitVec 2)) (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -33905,7 +33603,7 @@ def execute_ZIP_MZ_Z_4Q (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM Uni
 
 def decode_ZIP_MZ_Z_4Q (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 128
@@ -33967,7 +33665,7 @@ def execute_UZP_MZ_Z_4Q (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) : SailM Uni
 
 def decode_UZP_MZ_Z_4Q (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 128
@@ -34036,7 +33734,7 @@ def execute_SEL_MZ_P_ZZ_2 (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat)
 
 def decode_SEL_MZ_P_ZZ_2 (size : (BitVec 2)) (Zm : (BitVec 4)) (PNg : (BitVec 3)) (Zn : (BitVec 4)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -34108,7 +33806,7 @@ def execute_SEL_MZ_P_ZZ_4 (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat)
 
 def decode_SEL_MZ_P_ZZ_4 (size : (BitVec 2)) (Zm : (BitVec 3)) (PNg : (BitVec 3)) (Zn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -34163,8 +33861,8 @@ def execute_BMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let res : Int := (BitCount (Complement.complement (element1 ^^^ element2)))
@@ -34183,7 +33881,7 @@ def execute_BMOPA_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_BMOPA_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -34244,8 +33942,8 @@ def execute_BMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let res : Int := (BitCount (Complement.complement (element1 ^^^ element2)))
@@ -34264,7 +33962,7 @@ def execute_BMOPS_ZA_PP_ZZ_32 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_BMOPS_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -34333,9 +34031,8 @@ def execute_SMOPA_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2)))
-                           (← (ActivePredicateElement mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
+                      bif ((← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2))) && (← (ActivePredicateElement
+                               mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
                       then
                         (do
                           let prod ←
@@ -34362,7 +34059,7 @@ def execute_SMOPA_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
 
 def decode_SMOPA_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -34434,9 +34131,8 @@ def execute_UMOPA_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2)))
-                           (← (ActivePredicateElement mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
+                      bif ((← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2))) && (← (ActivePredicateElement
+                               mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
                       then
                         (do
                           let prod ←
@@ -34463,7 +34159,7 @@ def execute_UMOPA_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
 
 def decode_UMOPA_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -34535,9 +34231,8 @@ def execute_SMOPS_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2)))
-                           (← (ActivePredicateElement mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
+                      bif ((← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2))) && (← (ActivePredicateElement
+                               mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
                       then
                         (do
                           let prod ←
@@ -34564,7 +34259,7 @@ def execute_SMOPS_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
 
 def decode_SMOPS_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -34636,9 +34331,8 @@ def execute_UMOPS_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
                   let (prod, sum) := loop_vars_2
                   loop_vars_2 ← do
                     let (prod, sum) ← (( do
-                      bif (Bool.and
-                           (← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2)))
-                           (← (ActivePredicateElement mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
+                      bif ((← (ActivePredicateElement mask1 ((2 *i row) +i k) (Int.ediv esize 2))) && (← (ActivePredicateElement
+                               mask2 ((2 *i col) +i k) (Int.ediv esize 2))))
                       then
                         (do
                           let prod ←
@@ -34665,7 +34359,7 @@ def execute_UMOPS_ZA32_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : 
 
 def decode_UMOPS_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 32
@@ -34731,10 +34425,10 @@ def execute_LUTI2_Z_ZTZ__ (VL : Nat) (d : Nat) (esize : Nat) (imm : Nat) (isize 
 
 def decode_LUTI2_Z_ZTZ__ (i4 : (BitVec 4)) (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b11 : (BitVec 2)))
+  bif (size == (0b11 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -34792,10 +34486,10 @@ def execute_LUTI4_Z_ZTZ__ (VL : Nat) (d : Nat) (esize : Nat) (imm : Nat) (isize 
 
 def decode_LUTI4_Z_ZTZ__ (i3 : (BitVec 3)) (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b11 : (BitVec 2)))
+  bif (size == (0b11 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -34857,10 +34551,10 @@ def execute_LUTI2_MZ2_ZTZ_1 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI2_MZ2_ZTZ_1 (i3 : (BitVec 3)) (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b11 : (BitVec 2)))
+  bif (size == (0b11 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -34923,10 +34617,10 @@ def execute_LUTI4_MZ2_ZTZ_1 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI4_MZ2_ZTZ_1 (i2 : (BitVec 2)) (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b11 : (BitVec 2)))
+  bif (size == (0b11 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -34989,10 +34683,10 @@ def execute_LUTI2_MZ4_ZTZ_1 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI2_MZ4_ZTZ_1 (i2 : (BitVec 2)) (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (BEq.beq size (0b11 : (BitVec 2)))
+  bif (size == (0b11 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -35055,10 +34749,10 @@ def execute_LUTI4_MZ4_ZTZ_1 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI4_MZ4_ZTZ_1 (i1 : (BitVec 1)) (size : (BitVec 2)) (Zn : (BitVec 5)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.or (BEq.beq size (0b00 : (BitVec 2))) (BEq.beq size (0b11 : (BitVec 2))))
+  bif ((size == (0b00 : (BitVec 2))) || (size == (0b11 : (BitVec 2))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -35085,14 +34779,14 @@ def execute_LDR_ZT_BR__ (n : Nat) : SailM Unit := do
   let result ← (( do (undefined_bitvector 512) ) : SailM (BitVec 512) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSME MemOp_LOAD nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
-  bif (Bool.and (← (HaveTME ())) ((← readReg TSTATE).depth >b 0))
+  bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
   then (FailTransaction TMFailure_ERR false)
   else (pure ())
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
         (CheckSPAlignment ())
@@ -35101,7 +34795,7 @@ def execute_LDR_ZT_BR__ (n : Nat) : SailM Unit := do
       (do
         (X_read n 64)) ) : SailM (BitVec 64) )
   let aligned : Bool := (IsAligned__1 base 16)
-  bif (Bool.and (Bool.not aligned) (← (AlignmentEnforced ())))
+  bif ((! aligned) && (← (AlignmentEnforced ())))
   then (AArch64_Abort base (← (AlignmentFault accdesc)))
   else (pure ())
   let result ← (( do
@@ -35116,7 +34810,7 @@ def execute_LDR_ZT_BR__ (n : Nat) : SailM Unit := do
   (ZT0_set 512 result)
 
 def decode_LDR_ZT_BR__ (Rn : (BitVec 5)) : SailM Unit := do
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -35131,14 +34825,14 @@ def execute_STR_ZT_BR__ (n : Nat) : SailM Unit := do
   let table ← (( do (ZT0_read 512) ) : SailM (BitVec 512) )
   let contiguous : Bool := true
   let nontemporal : Bool := false
-  let tagchecked : Bool := (bne n 31)
+  let tagchecked : Bool := (n != 31)
   let accdesc ← (( do (CreateAccDescSME MemOp_STORE nontemporal contiguous tagchecked) ) : SailM
     AccessDescriptor )
-  bif (Bool.and (← (HaveTME ())) ((← readReg TSTATE).depth >b 0))
+  bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
   then (FailTransaction TMFailure_ERR false)
   else (pure ())
   let base ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then
       (do
         (CheckSPAlignment ())
@@ -35147,7 +34841,7 @@ def execute_STR_ZT_BR__ (n : Nat) : SailM Unit := do
       (do
         (X_read n 64)) ) : SailM (BitVec 64) )
   let aligned : Bool := (IsAligned__1 base 16)
-  bif (Bool.and (Bool.not aligned) (← (AlignmentEnforced ())))
+  bif ((! aligned) && (← (AlignmentEnforced ())))
   then (AArch64_Abort base (← (AlignmentFault accdesc)))
   else (pure ())
   let loop_e_lower := 0
@@ -35160,7 +34854,7 @@ def execute_STR_ZT_BR__ (n : Nat) : SailM Unit := do
   (pure loop_vars)
 
 def decode_STR_ZT_BR__ (Rn : (BitVec 5)) : SailM Unit := do
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -35169,13 +34863,13 @@ def decode_STR_ZT_BR__ (Rn : (BitVec 5)) : SailM Unit := do
 def execute_ZERO_ZT_I__ (_ : Unit) : SailM Unit := do
   (CheckSMEEnabled ())
   (CheckSMEZT0Enabled ())
-  bif (Bool.and (← (HaveTME ())) ((← readReg TSTATE).depth >b 0))
+  bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
   then (FailTransaction TMFailure_ERR false)
   else (pure ())
   (ZT0_set 512 (Zeros (n := 512)))
 
 def decode_ZERO_ZT_I__ (_ : Unit) : SailM Unit := do
-  bif (Bool.not (← (HaveSME2 ())))
+  bif (! (← (HaveSME2 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   (execute_ZERO_ZT_I__ ())
@@ -35189,7 +34883,7 @@ def execute_MOVT_R_ZT__ (offset : Nat) (t : Nat) : SailM Unit := do
   (X_set t 64 (← (Elem_read operand offset 64)))
 
 def decode_MOVT_R_ZT__ (off3 : (BitVec 3)) (Rt : (BitVec 5)) : SailM Unit := do
-  bif (Bool.or (Bool.not (← (HaveSME2 ()))) (Bool.not (← (Halted ()))))
+  bif ((! (← (HaveSME2 ()))) || (! (← (Halted ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let t := (BitVec.toNat Rt)
@@ -35206,7 +34900,7 @@ def execute_MOVT_ZT_R__ (offset : Nat) (t : Nat) : SailM Unit := do
   (ZT0_set 512 result)
 
 def decode_MOVT_ZT_R__ (off3 : (BitVec 3)) (Rt : (BitVec 5)) : SailM Unit := do
-  bif (Bool.or (Bool.not (← (HaveSME2 ()))) (Bool.not (← (Halted ()))))
+  bif ((! (← (HaveSME2 ()))) || (! (← (Halted ()))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let t := (BitVec.toNat Rt)
@@ -35222,7 +34916,7 @@ def execute_RDSVL_R_I__ (SVL : Nat) (d : Nat) (imm : Int) : SailM Unit := do
 
 def decode_RDSVL_R_I__ (imm6 : (BitVec 6)) (Rd : (BitVec 5)) : SailM Unit := do
   let SVL ← do (CurrentSVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let d := (BitVec.toNat Rd)
@@ -35242,17 +34936,17 @@ def execute_ADDSPL_R_RI__ (SVL : Nat) (d : Nat) (imm : Int) (n : Nat) : SailM Un
   let SVL := SVL
   let len := (imm *i (Int.ediv SVL 64))
   let operand1 ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then (SP_read ())
     else (X_read n 64) ) : SailM (BitVec 64) )
   let result : (BitVec 64) := (BitVec.addInt operand1 len)
-  bif (BEq.beq d 31)
+  bif (d == 31)
   then (SP_set result)
   else (X_set d 64 result)
 
 def decode_ADDSPL_R_RI__ (Rn : (BitVec 5)) (imm6 : (BitVec 6)) (Rd : (BitVec 5)) : SailM Unit := do
   let SVL ← do (CurrentSVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -35273,17 +34967,17 @@ def execute_ADDSVL_R_RI__ (SVL : Nat) (d : Nat) (imm : Int) (n : Nat) : SailM Un
   let SVL := SVL
   let len := (imm *i (Int.ediv SVL 8))
   let operand1 ← (( do
-    bif (BEq.beq n 31)
+    bif (n == 31)
     then (SP_read ())
     else (X_read n 64) ) : SailM (BitVec 64) )
   let result : (BitVec 64) := (BitVec.addInt operand1 len)
-  bif (BEq.beq d 31)
+  bif (d == 31)
   then (SP_set result)
   else (X_set d 64 result)
 
 def decode_ADDSVL_R_RI__ (Rn : (BitVec 5)) (imm6 : (BitVec 6)) (Rd : (BitVec 5)) : SailM Unit := do
   let SVL ← do (CurrentSVL_read ())
-  bif (Bool.not (← (HaveSME ())))
+  bif (! (← (HaveSME ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Rn)
@@ -35321,7 +35015,7 @@ def execute_ZERO_ZA1_RI_2 (VL : Nat) (ngrp : Nat) (offset : Nat) (v : Nat) : Sai
 
 def decode_ZERO_ZA1_RI_2 (Rv : (BitVec 2)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35359,7 +35053,7 @@ def execute_ZERO_ZA1_RI_4 (VL : Nat) (ngrp : Nat) (offset : Nat) (v : Nat) : Sai
 
 def decode_ZERO_ZA1_RI_4 (Rv : (BitVec 2)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35398,7 +35092,7 @@ def execute_ZERO_ZA2_RI_1 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
 
 def decode_ZERO_ZA2_RI_1 (Rv : (BitVec 2)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35438,7 +35132,7 @@ def execute_ZERO_ZA2_RI_2 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
 
 def decode_ZERO_ZA2_RI_2 (Rv : (BitVec 2)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35478,7 +35172,7 @@ def execute_ZERO_ZA2_RI_4 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
 
 def decode_ZERO_ZA2_RI_4 (Rv : (BitVec 2)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35518,7 +35212,7 @@ def execute_ZERO_ZA4_RI_1 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
 
 def decode_ZERO_ZA4_RI_1 (Rv : (BitVec 2)) (off2 : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35558,7 +35252,7 @@ def execute_ZERO_ZA4_RI_2 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
 
 def decode_ZERO_ZA4_RI_2 (Rv : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35598,7 +35292,7 @@ def execute_ZERO_ZA4_RI_4 (VL : Nat) (ngrp : Nat) (nvec : Nat) (offset : Nat) (v
 
 def decode_ZERO_ZA4_RI_4 (Rv : (BitVec 2)) (o1 : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -35658,10 +35352,10 @@ def execute_LUTI2_MZ2_ZTZ_8 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI2_MZ2_ZTZ_8 (i3 : (BitVec 3)) (size : (BitVec 2)) (Zn : (BitVec 5)) (D : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.or (BEq.beq size (0b10 : (BitVec 2))) (BEq.beq size (0b11 : (BitVec 2))))
+  bif ((size == (0b10 : (BitVec 2))) || (size == (0b11 : (BitVec 2))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -35724,10 +35418,10 @@ def execute_LUTI4_MZ2_ZTZ_8 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI4_MZ2_ZTZ_8 (i2 : (BitVec 2)) (size : (BitVec 2)) (Zn : (BitVec 5)) (D : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.or (BEq.beq size (0b10 : (BitVec 2))) (BEq.beq size (0b11 : (BitVec 2))))
+  bif ((size == (0b10 : (BitVec 2))) || (size == (0b11 : (BitVec 2))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -35790,10 +35484,10 @@ def execute_LUTI2_MZ4_ZTZ_4 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI2_MZ4_ZTZ_4 (i2 : (BitVec 2)) (size : (BitVec 2)) (Zn : (BitVec 5)) (D : (BitVec 1)) (Zd : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (Bool.or (BEq.beq size (0b10 : (BitVec 2))) (BEq.beq size (0b11 : (BitVec 2))))
+  bif ((size == (0b10 : (BitVec 2))) || (size == (0b11 : (BitVec 2))))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -35856,10 +35550,10 @@ def execute_LUTI4_MZ4_ZTZ_4 (VL : Nat) (d__arg : Nat) (dstride : Nat) (esize : N
 
 def decode_LUTI4_MZ4_ZTZ_4 (i1 : (BitVec 1)) (size : (BitVec 2)) (Zn : (BitVec 5)) (D : (BitVec 1)) (Zd : (BitVec 2)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
-  bif (bne size (0b01 : (BitVec 2)))
+  bif (size != (0b01 : (BitVec 2)))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := (Int.shiftl 8 (BitVec.toNat size))
@@ -35894,7 +35588,7 @@ def execute_MOVAZ_Z_RZA_B (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (offset :
 
 def decode_MOVAZ_Z_RZA_B (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (off4 : (BitVec 4)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -35902,7 +35596,7 @@ def decode_MOVAZ_Z_RZA_B (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (
   let offset := (BitVec.toNat off4)
   let esize := 8
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_Z_RZA_B 128 d esize n offset s vertical)
   | 256 => (execute_MOVAZ_Z_RZA_B 256 d esize n offset s vertical)
@@ -35929,7 +35623,7 @@ def execute_MOVAZ_Z_RZA_H (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (offset :
 
 def decode_MOVAZ_Z_RZA_H (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 1)) (off3 : (BitVec 3)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -35937,7 +35631,7 @@ def decode_MOVAZ_Z_RZA_H (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (
   let offset := (BitVec.toNat off3)
   let esize := 16
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_Z_RZA_H 128 d esize n offset s vertical)
   | 256 => (execute_MOVAZ_Z_RZA_H 256 d esize n offset s vertical)
@@ -35964,7 +35658,7 @@ def execute_MOVAZ_Z_RZA_W (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (offset :
 
 def decode_MOVAZ_Z_RZA_W (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 2)) (off2 : (BitVec 2)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -35972,7 +35666,7 @@ def decode_MOVAZ_Z_RZA_W (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (
   let offset := (BitVec.toNat off2)
   let esize := 32
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_Z_RZA_W 128 d esize n offset s vertical)
   | 256 => (execute_MOVAZ_Z_RZA_W 256 d esize n offset s vertical)
@@ -35999,7 +35693,7 @@ def execute_MOVAZ_Z_RZA_D (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (offset :
 
 def decode_MOVAZ_Z_RZA_D (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 3)) (o1 : (BitVec 1)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36007,7 +35701,7 @@ def decode_MOVAZ_Z_RZA_D (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (
   let offset := (BitVec.toNat o1)
   let esize := 64
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_Z_RZA_D 128 d esize n offset s vertical)
   | 256 => (execute_MOVAZ_Z_RZA_D 256 d esize n offset s vertical)
@@ -36033,7 +35727,7 @@ def execute_MOVAZ_Z_RZA_Q (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (offset :
 
 def decode_MOVAZ_Z_RZA_Q (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 4)) (Zd : (BitVec 5)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36041,7 +35735,7 @@ def decode_MOVAZ_Z_RZA_Q (size : (BitVec 2)) (Q : (BitVec 1)) (V : (BitVec 1)) (
   let offset := 0
   let esize := 128
   let d := (BitVec.toNat Zd)
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_Z_RZA_Q 128 d esize n offset s vertical)
   | 256 => (execute_MOVAZ_Z_RZA_Q 256 d esize n offset s vertical)
@@ -36076,7 +35770,7 @@ def execute_MOVAZ_MZ2_ZA_B1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ2_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (off3 : (BitVec 3)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36085,7 +35779,7 @@ def decode_MOVAZ_MZ2_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := 0
   let offset := (BitVec.toNat (off3 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ2_ZA_B1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ2_ZA_B1 256 d esize n nreg offset s vertical)
@@ -36120,7 +35814,7 @@ def execute_MOVAZ_MZ2_ZA_H1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ2_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 1)) (off2 : (BitVec 2)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36129,7 +35823,7 @@ def decode_MOVAZ_MZ2_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := (BitVec.toNat ZAn)
   let offset := (BitVec.toNat (off2 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ2_ZA_H1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ2_ZA_H1 256 d esize n nreg offset s vertical)
@@ -36164,7 +35858,7 @@ def execute_MOVAZ_MZ2_ZA_W1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ2_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 2)) (o1 : (BitVec 1)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36173,7 +35867,7 @@ def decode_MOVAZ_MZ2_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := (BitVec.toNat ZAn)
   let offset := (BitVec.toNat (o1 ++ (0b0 : (BitVec 1))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ2_ZA_W1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ2_ZA_W1 256 d esize n nreg offset s vertical)
@@ -36208,7 +35902,7 @@ def execute_MOVAZ_MZ2_ZA_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ2_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 3)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36217,7 +35911,7 @@ def decode_MOVAZ_MZ2_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b0 : (BitVec 1))))
   let n := (BitVec.toNat ZAn)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ2_ZA_D1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ2_ZA_D1 256 d esize n nreg offset s vertical)
@@ -36252,7 +35946,7 @@ def execute_MOVAZ_MZ4_ZA_B1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ4_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (off2 : (BitVec 2)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36261,7 +35955,7 @@ def decode_MOVAZ_MZ4_ZA_B1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := 0
   let offset := (BitVec.toNat (off2 ++ (0b00 : (BitVec 2))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ4_ZA_B1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ4_ZA_B1 256 d esize n nreg offset s vertical)
@@ -36296,7 +35990,7 @@ def execute_MOVAZ_MZ4_ZA_H1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ4_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 1)) (o1 : (BitVec 1)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36305,7 +35999,7 @@ def decode_MOVAZ_MZ4_ZA_H1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := (BitVec.toNat ZAn)
   let offset := (BitVec.toNat (o1 ++ (0b00 : (BitVec 2))))
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ4_ZA_H1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ4_ZA_H1 256 d esize n nreg offset s vertical)
@@ -36340,7 +36034,7 @@ def execute_MOVAZ_MZ4_ZA_W1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ4_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 2)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36349,7 +36043,7 @@ def decode_MOVAZ_MZ4_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := (BitVec.toNat ZAn)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ4_ZA_W1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ4_ZA_W1 256 d esize n nreg offset s vertical)
@@ -36366,7 +36060,7 @@ def decode_MOVAZ_MZ4_ZA_W1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
 def execute_MOVAZ_MZ4_ZA_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg : Nat) (offset : Nat) (s : Nat) (vertical : Bool) : SailM Unit := do
   (CheckStreamingSVEAndZAEnabled ())
   let VL := VL
-  bif (Bool.and (Bool.and (BEq.beq nreg 4) (BEq.beq esize 64)) (BEq.beq VL 128))
+  bif (((nreg == 4) && (esize == 64)) && (VL == 128))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let slices := (Int.ediv VL esize)
@@ -36387,7 +36081,7 @@ def execute_MOVAZ_MZ4_ZA_D1 (VL : Nat) (d : Nat) (esize : Nat) (n : Nat) (nreg :
 
 def decode_MOVAZ_MZ4_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)) (ZAn : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let s := (BitVec.toNat ((0b011 : (BitVec 3)) ++ Rs))
@@ -36396,7 +36090,7 @@ def decode_MOVAZ_MZ4_ZA_D1 (size : (BitVec 2)) (V : (BitVec 1)) (Rs : (BitVec 2)
   let d := (BitVec.toNat (Zd ++ (0b00 : (BitVec 2))))
   let n := (BitVec.toNat ZAn)
   let offset := 0
-  let vertical : Bool := (BEq.beq V (0b1 : (BitVec 1)))
+  let vertical : Bool := (V == (0b1 : (BitVec 1)))
   match VL with
   | 128 => (execute_MOVAZ_MZ4_ZA_D1 128 d esize n nreg offset s vertical)
   | 256 => (execute_MOVAZ_MZ4_ZA_D1 256 d esize n nreg offset s vertical)
@@ -36434,7 +36128,7 @@ def execute_MOVAZ_MZ_ZA2_1 (VL : Nat) (d : Nat) (nreg : Nat) (offset : Nat) (v :
 
 def decode_MOVAZ_MZ_ZA2_1 (Rv : (BitVec 2)) (off3 : (BitVec 3)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -36478,7 +36172,7 @@ def execute_MOVAZ_MZ_ZA4_1 (VL : Nat) (d : Nat) (nreg : Nat) (offset : Nat) (v :
 
 def decode_MOVAZ_MZ_ZA4_1 (Rv : (BitVec 2)) (off3 : (BitVec 3)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSME2p1 ())))
+  bif (! (← (HaveSME2p1 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -36531,8 +36225,8 @@ def execute_FMOPA_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let element1 ← (( do
@@ -36552,7 +36246,7 @@ def execute_FMOPA_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_FMOPA_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -36613,8 +36307,8 @@ def execute_FMOPS_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
             let element2 ← (( do (Elem_read operand2 col esize) ) : SailM (BitVec esize) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) esize) ) : SailM
               (BitVec esize) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row esize))
-                 (← (ActivePredicateElement mask2 col esize)))
+            bif ((← (ActivePredicateElement mask1 row esize)) && (← (ActivePredicateElement
+                     mask2 col esize)))
             then
               (do
                 let element1 ← (( do
@@ -36634,7 +36328,7 @@ def execute_FMOPS_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_esize : Nat) (a : Nat) (b : Na
 
 def decode_FMOPS_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let esize := 16
@@ -36693,8 +36387,8 @@ def execute_BFMOPA_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_16 : Nat) (a : Nat) (b : Nat)
             let element2 ← (( do (Elem_read operand2 col 16) ) : SailM (BitVec 16) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) 16) ) : SailM
               (BitVec 16) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row 16))
-                 (← (ActivePredicateElement mask2 col 16)))
+            bif ((← (ActivePredicateElement mask1 row 16)) && (← (ActivePredicateElement mask2
+                     col 16)))
             then
               (do
                 let element1 ← (( do
@@ -36714,7 +36408,7 @@ def execute_BFMOPA_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_16 : Nat) (a : Nat) (b : Nat)
 
 def decode_BFMOPA_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let a := (BitVec.toNat Pn)
@@ -36772,8 +36466,8 @@ def execute_BFMOPS_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_16 : Nat) (a : Nat) (b : Nat)
             let element2 ← (( do (Elem_read operand2 col 16) ) : SailM (BitVec 16) )
             let element3 ← (( do (Elem_read operand3 ((row *i dim) +i col) 16) ) : SailM
               (BitVec 16) )
-            bif (Bool.and (← (ActivePredicateElement mask1 row 16))
-                 (← (ActivePredicateElement mask2 col 16)))
+            bif ((← (ActivePredicateElement mask1 row 16)) && (← (ActivePredicateElement mask2
+                     col 16)))
             then
               (do
                 let element1 ← (( do
@@ -36793,7 +36487,7 @@ def execute_BFMOPS_ZA_PP_ZZ_16 (VL : Nat) (dim_dim_16 : Nat) (a : Nat) (b : Nat)
 
 def decode_BFMOPS_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3)) (Zn : (BitVec 5)) (S : (BitVec 1)) (ZAda : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let a := (BitVec.toNat Pn)
@@ -36859,7 +36553,7 @@ def execute_FADD_ZA_ZW_2x2_16 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (o
 
 def decode_FADD_ZA_ZW_2x2_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -36919,7 +36613,7 @@ def execute_FSUB_ZA_ZW_2x2_16 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (o
 
 def decode_FSUB_ZA_ZW_2x2_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -36978,7 +36672,7 @@ def execute_BFADD_ZA_ZW_2x2_16 (VL : Nat) (m : Nat) (nreg : Nat) (offset : Nat) 
 
 def decode_BFADD_ZA_ZW_2x2_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37036,7 +36730,7 @@ def execute_BFSUB_ZA_ZW_2x2_16 (VL : Nat) (m : Nat) (nreg : Nat) (offset : Nat) 
 
 def decode_BFSUB_ZA_ZW_2x2_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37095,7 +36789,7 @@ def execute_FADD_ZA_ZW_4x4_16 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (o
 
 def decode_FADD_ZA_ZW_4x4_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37155,7 +36849,7 @@ def execute_FSUB_ZA_ZW_4x4_16 (VL : Nat) (esize : Nat) (m : Nat) (nreg : Nat) (o
 
 def decode_FSUB_ZA_ZW_4x4_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37214,7 +36908,7 @@ def execute_BFADD_ZA_ZW_4x4_16 (VL : Nat) (m : Nat) (nreg : Nat) (offset : Nat) 
 
 def decode_BFADD_ZA_ZW_4x4_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37272,7 +36966,7 @@ def execute_BFSUB_ZA_ZW_4x4_16 (VL : Nat) (m : Nat) (nreg : Nat) (offset : Nat) 
 
 def decode_BFSUB_ZA_ZW_4x4_16 (sz : (BitVec 1)) (Rv : (BitVec 2)) (Zm : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37341,7 +37035,7 @@ def execute_FMLA_ZA_ZZW_2x2_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLA_ZA_ZZW_2x2_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37413,7 +37107,7 @@ def execute_FMLS_ZA_ZZW_2x2_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLS_ZA_ZZW_2x2_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37485,7 +37179,7 @@ def execute_BFMLA_ZA_ZZW_2x2_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLA_ZA_ZZW_2x2_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37556,7 +37250,7 @@ def execute_BFMLS_ZA_ZZW_2x2_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLS_ZA_ZZW_2x2_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37627,7 +37321,7 @@ def execute_FMLA_ZA_ZZV_2x1_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLA_ZA_ZZV_2x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37699,7 +37393,7 @@ def execute_FMLS_ZA_ZZV_2x1_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLS_ZA_ZZV_2x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37771,7 +37465,7 @@ def execute_BFMLA_ZA_ZZV_2x1_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLA_ZA_ZZV_2x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37842,7 +37536,7 @@ def execute_BFMLS_ZA_ZZV_2x1_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLS_ZA_ZZV_2x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37913,7 +37607,7 @@ def execute_FMLA_ZA_ZZW_4x4_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLA_ZA_ZZW_4x4_16 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -37985,7 +37679,7 @@ def execute_FMLS_ZA_ZZW_4x4_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLS_ZA_ZZW_4x4_16 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38057,7 +37751,7 @@ def execute_BFMLA_ZA_ZZW_4x4_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLA_ZA_ZZW_4x4_16 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38128,7 +37822,7 @@ def execute_BFMLS_ZA_ZZW_4x4_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLS_ZA_ZZW_4x4_16 (sz : (BitVec 1)) (Zm : (BitVec 3)) (Rv : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38199,7 +37893,7 @@ def execute_FMLA_ZA_ZZV_4x1_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLA_ZA_ZZV_4x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38271,7 +37965,7 @@ def execute_FMLS_ZA_ZZV_4x1_16 (VL : Nat) (esize : Nat) (m : Nat) (n : Nat) (nre
 
 def decode_FMLS_ZA_ZZV_4x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38343,7 +38037,7 @@ def execute_BFMLA_ZA_ZZV_4x1_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLA_ZA_ZZV_4x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38414,7 +38108,7 @@ def execute_BFMLS_ZA_ZZV_4x1_16 (VL : Nat) (m : Nat) (n : Nat) (nreg : Nat) (off
 
 def decode_BFMLS_ZA_ZZV_4x1_16 (sz : (BitVec 1)) (Zm : (BitVec 4)) (Rv : (BitVec 2)) (Zn : (BitVec 5)) (S : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38491,7 +38185,7 @@ def execute_FMLA_ZA_ZZi_H2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLA_ZA_ZZi_H2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38570,7 +38264,7 @@ def execute_FMLS_ZA_ZZi_H2xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLS_ZA_ZZi_H2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38647,7 +38341,7 @@ def execute_BFMLA_ZA_ZZi_H2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLA_ZA_ZZi_H2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38724,7 +38418,7 @@ def execute_BFMLS_ZA_ZZi_H2xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLS_ZA_ZZi_H2xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 4)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38803,7 +38497,7 @@ def execute_FMLA_ZA_ZZi_H4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLA_ZA_ZZi_H4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38882,7 +38576,7 @@ def execute_FMLS_ZA_ZZi_H4xi (VL : Nat) (esize : Nat) (index : Nat) (m : Nat) (n
 
 def decode_FMLS_ZA_ZZi_H4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -38959,7 +38653,7 @@ def execute_BFMLA_ZA_ZZi_H4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLA_ZA_ZZi_H4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -39036,7 +38730,7 @@ def execute_BFMLS_ZA_ZZi_H4xi (VL : Nat) (index : Nat) (m : Nat) (n : Nat) (nreg
 
 def decode_BFMLS_ZA_ZZi_H4xi (Zm : (BitVec 4)) (Rv : (BitVec 2)) (i3h : (BitVec 2)) (Zn : (BitVec 3)) (S : (BitVec 1)) (i3l : (BitVec 1)) (off3 : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let v := (BitVec.toNat ((0b010 : (BitVec 3)) ++ Rv))
@@ -39095,7 +38789,7 @@ def execute_BFMAX_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMAX_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39149,7 +38843,7 @@ def execute_BFMAX_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMAX_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39203,7 +38897,7 @@ def execute_BFMIN_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMIN_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39257,7 +38951,7 @@ def execute_BFMIN_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMIN_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39311,7 +39005,7 @@ def execute_BFMAX_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMAX_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39365,7 +39059,7 @@ def execute_BFMAX_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMAX_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39419,7 +39113,7 @@ def execute_BFMIN_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMIN_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39473,7 +39167,7 @@ def execute_BFMIN_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sail
 
 def decode_BFMIN_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39527,7 +39221,7 @@ def execute_BFMAXNM_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMAXNM_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39581,7 +39275,7 @@ def execute_BFMAXNM_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMAXNM_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39635,7 +39329,7 @@ def execute_BFMINNM_MZ_ZZW_2x2 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMINNM_MZ_ZZW_2x2 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39689,7 +39383,7 @@ def execute_BFMINNM_MZ_ZZV_2x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMINNM_MZ_ZZV_2x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b0 : (BitVec 1))))
@@ -39743,7 +39437,7 @@ def execute_BFMAXNM_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMAXNM_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39797,7 +39491,7 @@ def execute_BFMAXNM_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMAXNM_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39851,7 +39545,7 @@ def execute_BFMINNM_MZ_ZZW_4x4 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMINNM_MZ_ZZW_4x4 (size : (BitVec 2)) (Zm : (BitVec 3)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39905,7 +39599,7 @@ def execute_BFMINNM_MZ_ZZV_4x1 (VL : Nat) (dn : Nat) (m : Nat) (nreg : Nat) : Sa
 
 def decode_BFMINNM_MZ_ZZV_4x1 (size : (BitVec 2)) (Zm : (BitVec 4)) (Zdn : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let dn := (BitVec.toNat (Zdn ++ (0b00 : (BitVec 2))))
@@ -39943,7 +39637,7 @@ def execute_FCVT_MZ2_Z__ (VL : Nat) (d : Nat) (n : Nat) : SailM Unit := do
 
 def decode_FCVT_MZ2_Z__ (Zn : (BitVec 5)) (Zd : (BitVec 4)) (L : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Zn)
@@ -39987,7 +39681,7 @@ def execute_FCVTL_MZ2_Z__ (VL : Nat) (d : Nat) (n : Nat) : SailM Unit := do
 
 def decode_FCVTL_MZ2_Z__ (Zn : (BitVec 5)) (Zd : (BitVec 4)) (L : (BitVec 1)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEF16F16 ())))
+  bif (! (← (HaveSMEF16F16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Zn)
@@ -40043,7 +39737,7 @@ def execute_BFCLAMP_MZ_ZZ_2 (VL : Nat) (d : Nat) (m : Nat) (n : Nat) (nreg : Nat
 
 def decode_BFCLAMP_MZ_ZZ_2 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 4)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Zn)
@@ -40101,7 +39795,7 @@ def execute_BFCLAMP_MZ_ZZ_4 (VL : Nat) (d : Nat) (m : Nat) (n : Nat) (nreg : Nat
 
 def decode_BFCLAMP_MZ_ZZ_4 (size : (BitVec 2)) (Zm : (BitVec 5)) (Zn : (BitVec 5)) (Zd : (BitVec 3)) : SailM Unit := do
   let VL ← do (CurrentVL_read ())
-  bif (Bool.not (← (HaveSMEB16B16 ())))
+  bif (! (← (HaveSMEB16B16 ())))
   then sailThrow ((Error_Undefined ()))
   else (pure ())
   let n := (BitVec.toNat Zn)

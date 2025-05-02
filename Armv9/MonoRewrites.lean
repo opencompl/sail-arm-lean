@@ -108,23 +108,23 @@ def extsv {m : _} (v : (BitVec k_n)) : (BitVec m) :=
 
 /-- Type quantifiers: j : Int, i : Int, k_n : Nat, k_n ≥ 0 -/
 def is_zero_subrange (xs : (BitVec k_n)) (i : Int) (j : Int) : Bool :=
-  (BEq.beq (xs &&& (slice_mask (n := (Sail.BitVec.length xs)) j ((i -i j) +i 1)))
-    (extzv (m := (Sail.BitVec.length xs)) (0b0 : (BitVec 1))))
+  ((xs &&& (slice_mask (n := (Sail.BitVec.length xs)) j ((i -i j) +i 1))) == (extzv
+      (m := (Sail.BitVec.length xs)) (0b0 : (BitVec 1))))
 
 /-- Type quantifiers: l : Int, i : Int, k_n : Nat, k_n ≥ 0 -/
 def is_zeros_slice (xs : (BitVec k_n)) (i : Int) (l : Int) : Bool :=
-  (BEq.beq (xs &&& (slice_mask (n := (Sail.BitVec.length xs)) i l))
-    (extzv (m := (Sail.BitVec.length xs)) (0b0 : (BitVec 1))))
+  ((xs &&& (slice_mask (n := (Sail.BitVec.length xs)) i l)) == (extzv (m := (Sail.BitVec.length xs))
+      (0b0 : (BitVec 1))))
 
 /-- Type quantifiers: j : Int, i : Int, k_n : Nat, k_n ≥ 0 -/
 def is_ones_subrange (xs : (BitVec k_n)) (i : Int) (j : Int) : Bool :=
   let m : (BitVec k_n) := (slice_mask (n := (Sail.BitVec.length xs)) j ((i -i j) +i 1))
-  (BEq.beq (xs &&& m) m)
+  ((xs &&& m) == m)
 
 /-- Type quantifiers: j : Int, i : Int, k_n : Nat, k_n ≥ 0 -/
 def is_ones_slice (xs : (BitVec k_n)) (i : Int) (j : Int) : Bool :=
   let m : (BitVec k_n) := (slice_mask (n := (Sail.BitVec.length xs)) i j)
-  (BEq.beq (xs &&& m) m)
+  ((xs &&& m) == m)
 
 /-- Type quantifiers: l' : Int, i' : Int, l : Int, i : Int, k_n : Nat, k_m : Nat, r : Nat, k_n ≥ 0
   ∧ k_m ≥ 0 ∧ r ≥ 0 -/
@@ -147,7 +147,7 @@ def subrange_zeros_concat (xs : (BitVec k_n)) (hi : Int) (lo : Int) (l' : Int) :
 def subrange_subrange_eq (xs : (BitVec k_n)) (i : Int) (j : Int) (ys : (BitVec k_n)) (i' : Int) (j' : Int) : Bool :=
   let xs := ((xs &&& (slice_mask (n := (Sail.BitVec.length ys)) j ((i -i j) +i 1))) >>> j)
   let ys := ((ys &&& (slice_mask (n := (Sail.BitVec.length ys)) j' ((i' -i j') +i 1))) >>> j')
-  (BEq.beq xs ys)
+  (xs == ys)
 
 /-- Type quantifiers: k_n : Nat, i : Int, j : Int, k_m : Nat, i' : Int, j' : Int, s : Nat, s ≥ 0
   ∧ k_n ≥ 0 ∧ k_m ≥ 0 -/

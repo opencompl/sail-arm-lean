@@ -96,17 +96,17 @@ open ATAccess
 
 /-- Type quantifiers: k_ex7102081# : Bool, k_ex7102080# : Bool -/
 def implies (p : Bool) (q : Bool) : Bool :=
-  (Bool.or (Bool.not p) q)
+  ((! p) || q)
 
 /-- Type quantifiers: k_ex7102083# : Bool, k_ex7102082# : Bool -/
 def iff (p : Bool) (q : Bool) : Bool :=
-  (Bool.and (implies p q) (implies q p))
+  ((implies p q) && (implies q p))
 
 /-- Type quantifiers: n : Int, i : Int, j : Int -/
 def in_range (n : Int) (i : Int) (j : Int) : Bool :=
   bif (i <b j)
-  then (Bool.and (i ≤b n) (n ≤b j))
-  else (Bool.and (j ≤b n) (n ≤b i))
+  then ((i ≤b n) && (n ≤b j))
+  else ((j ≤b n) && (n ≤b i))
 
 def min_real (n : real) (m : real) : real :=
   bif (lteq_real n m)
@@ -140,17 +140,17 @@ def Zeros {n : _} : (BitVec n) :=
 
 /-- Type quantifiers: k_n : Nat, k_n ≥ 0 -/
 def IsZero (x : (BitVec k_n)) : Bool :=
-  (BEq.beq x (BitVec.zero (Sail.BitVec.length x)))
+  (x == (BitVec.zero (Sail.BitVec.length x)))
 
 /-- Type quantifiers: k_n : Nat, k_n ≥ 0 -/
 def IsOnes (x : (BitVec k_n)) : Bool :=
-  (BEq.beq x (sail_ones (Sail.BitVec.length x)))
+  (x == (sail_ones (Sail.BitVec.length x)))
 
 def Bit (b : (BitVec 1)) : (BitVec 1) :=
   (BitVec.access b 0)
 
 def Bits (b : (BitVec 1)) : (BitVec 1) :=
-  bif (BEq.beq b 1#1)
+  bif (b == 1#1)
   then (0b1 : (BitVec 1))
   else (0b0 : (BitVec 1))
 

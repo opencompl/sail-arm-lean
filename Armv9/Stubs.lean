@@ -101,15 +101,11 @@ def AArch32_SetLSInstructionSyndrome (size : Int) (sign_extend : Bool) (Rt : Int
 /-- Type quantifiers: crm : Int, crn : Int, op0 : Int, op1 : Int, op2 : Int -/
 def AArch64_CheckNVCondsIfCurrentEL (op0 : Int) (op1 : Int) (crn : Int) (crm : Int) (op2 : Int) : SailM Bool := do
   let is_reg_current_el : Bool :=
-    (Bool.and
-      (Bool.and (Bool.and (Bool.and (BEq.beq op0 3) (BEq.beq op1 0)) (BEq.beq crn 4))
-        (BEq.beq crm 2)) (BEq.beq op2 2))
+    (((((op0 == 3) && (op1 == 0)) && (crn == 4)) && (crm == 2)) && (op2 == 2))
   let have_nv_trap_conds ← (( do
-    (pure (Bool.and
-        (Bool.and (Bool.and (← (HaveNVExt ())) (BEq.beq (← readReg PSTATE).EL EL1))
-          (← (EL2Enabled ())))
-        (BEq.beq (BitVec.slice (← readReg HCR_EL2) 42 1) (0b1 : (BitVec 1))))) ) : SailM Bool )
-  (pure (Bool.and is_reg_current_el have_nv_trap_conds))
+    (pure ((((← (HaveNVExt ())) && ((← readReg PSTATE).EL == EL1)) && (← (EL2Enabled ()))) && ((BitVec.slice
+            (← readReg HCR_EL2) 42 1) == (0b1 : (BitVec 1))))) ) : SailM Bool )
+  (pure (is_reg_current_el && have_nv_trap_conds))
 
 def BPIALL (_ : Unit) : Unit :=
   ()

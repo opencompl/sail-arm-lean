@@ -97,7 +97,7 @@ open ATAccess
 def __GIC_ClearPendingInterrupt (intid : (BitVec 32)) : SailM Unit := do
   match (← readReg __GIC_Pending) with
   | .some pending_intid => (do
-      bif (BEq.beq (__GIC_InterruptID pending_intid) intid)
+      bif ((__GIC_InterruptID pending_intid) == intid)
       then writeReg __GIC_Pending none
       else (pure ()))
   | _ => (pure ())

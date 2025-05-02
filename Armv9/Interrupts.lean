@@ -99,11 +99,8 @@ def AArch64_PendingUnmaskedVirtualInterrupts (mask_in : (BitVec 3)) : SailM (Boo
   let mask : (BitVec 3) := mask_in
   let pending ← (( do (undefined_bitvector 3) ) : SailM (BitVec 3) )
   let (mask, pending) ← (( do
-    bif (Bool.and
-         (Bool.and
-           (Bool.or (BEq.beq (← readReg PSTATE).EL EL0) (BEq.beq (← readReg PSTATE).EL EL1))
-           (← (EL2Enabled ())))
-         (BEq.beq (_get_HCR_EL2_Type_TGE (← readReg HCR_EL2)) (0b0 : (BitVec 1))))
+    bif (((((← readReg PSTATE).EL == EL0) || ((← readReg PSTATE).EL == EL1)) && (← (EL2Enabled
+               ()))) && ((_get_HCR_EL2_Type_TGE (← readReg HCR_EL2)) == (0b0 : (BitVec 1))))
     then
       (do
         let pending ←
@@ -112,38 +109,32 @@ def AArch64_PendingUnmaskedVirtualInterrupts (mask_in : (BitVec 3)) : SailM (Boo
                   (← readReg HCR_EL2)) ++ ((_get_HCR_EL2_Type_IMO (← readReg HCR_EL2)) ++ (_get_HCR_EL2_Type_FMO
                     (← readReg HCR_EL2))))))
         let mask ← (( do
-          bif (Bool.and (← (HaveFeatNMI ()))
-               (BEq.beq (_get_SCTLRType_NMI (← (SCTLR_read__1 ()))) (0b1 : (BitVec 1))))
+          bif ((← (HaveFeatNMI ())) && ((_get_SCTLRType_NMI (← (SCTLR_read__1 ()))) == (0b1 : (BitVec 1))))
           then
             (do
               let allintmask ← (( do
                 (pure ((← readReg PSTATE).ALLINT ||| ((← readReg PSTATE).SP &&& (_get_SCTLRType_SPINTMASK
                         (← (SCTLR_read__1 ())))))) ) : SailM (BitVec 1) )
               let mask ← (( do
-                bif (Bool.and (← (IsHCRXEL2Enabled ()))
-                     (Bool.or (BEq.beq (← readReg PSTATE).EL EL0)
-                       (BEq.beq allintmask (0b0 : (BitVec 1)))))
+                bif ((← (IsHCRXEL2Enabled ())) && (((← readReg PSTATE).EL == EL0) || (allintmask == (0b0 : (BitVec 1)))))
                 then
                   (do
                     let mask ← (( do
-                      bif (BEq.beq (_get_HCRX_EL2_Type_VFNMI (← readReg HCRX_EL2))
-                           (0b1 : (BitVec 1)))
+                      bif ((_get_HCRX_EL2_Type_VFNMI (← readReg HCRX_EL2)) == (0b1 : (BitVec 1)))
                       then (pure (BitVec.update mask 0 (Bit (0b0 : (BitVec 1)))))
                       else (pure mask) ) : SailM (BitVec 3) )
-                    bif (BEq.beq (_get_HCRX_EL2_Type_VINMI (← readReg HCRX_EL2))
-                         (0b1 : (BitVec 1)))
+                    bif ((_get_HCRX_EL2_Type_VINMI (← readReg HCRX_EL2)) == (0b1 : (BitVec 1)))
                     then (pure (BitVec.update mask 1 (Bit (0b0 : (BitVec 1)))))
                     else (pure mask))
                 else (pure mask) ) : SailM (BitVec 3) )
-              bif (Bool.and (BEq.beq (← readReg PSTATE).EL EL1)
-                   (BEq.beq allintmask (0b1 : (BitVec 1))))
+              bif (((← readReg PSTATE).EL == EL1) && (allintmask == (0b1 : (BitVec 1))))
               then
                 (do
                   let mask ← (( do
-                    bif (BEq.beq (_get_HCR_EL2_Type_FMO (← readReg HCR_EL2)) (0b1 : (BitVec 1)))
+                    bif ((_get_HCR_EL2_Type_FMO (← readReg HCR_EL2)) == (0b1 : (BitVec 1)))
                     then (pure (BitVec.update mask 0 (Bit (0b1 : (BitVec 1)))))
                     else (pure mask) ) : SailM (BitVec 3) )
-                  bif (BEq.beq (_get_HCR_EL2_Type_IMO (← readReg HCR_EL2)) (0b1 : (BitVec 1)))
+                  bif ((_get_HCR_EL2_Type_IMO (← readReg HCR_EL2)) == (0b1 : (BitVec 1)))
                   then (pure (BitVec.update mask 1 (Bit (0b1 : (BitVec 1)))))
                   else (pure mask))
               else (pure mask))
@@ -153,13 +144,13 @@ def AArch64_PendingUnmaskedVirtualInterrupts (mask_in : (BitVec 3)) : SailM (Boo
       (let pending : (BitVec 3) := (0b000 : (BitVec 3))
       (pure (mask, pending))) ) : SailM ((BitVec 3) × (BitVec 3)) )
   let unmasked_pending : (BitVec 3) := (pending &&& (Complement.complement mask))
-  (pure ((BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 2)]) (0b1 : (BitVec 1))), (BEq.beq
-      (BitVec.join1 [(BitVec.access unmasked_pending 1)]) (0b1 : (BitVec 1))), (BEq.beq
-      (BitVec.join1 [(BitVec.access unmasked_pending 0)]) (0b1 : (BitVec 1)))))
+  (pure (((BitVec.join1 [(BitVec.access unmasked_pending 2)]) == (0b1 : (BitVec 1))), ((BitVec.join1 [(BitVec.access
+          unmasked_pending 1)]) == (0b1 : (BitVec 1))), ((BitVec.join1 [(BitVec.access
+          unmasked_pending 0)]) == (0b1 : (BitVec 1)))))
 
 def AArch32_PendingUnmaskedVirtualInterrupts (_ : Unit) : SailM (Bool × Bool × Bool) := do
-  bif (Bool.or (Bool.and (HaveEL EL2) (Bool.not (← (ELUsingAArch32 EL2))))
-       (Bool.and (HaveEL EL3) (Bool.not (← (ELUsingAArch32 EL3)))))
+  bif (((HaveEL EL2) && (! (← (ELUsingAArch32 EL2)))) || ((HaveEL EL3) && (! (← (ELUsingAArch32
+               EL3)))))
   then
     (AArch64_PendingUnmaskedVirtualInterrupts
       ((← readReg PSTATE).A ++ ((← readReg PSTATE).I ++ (← readReg PSTATE).F)))
@@ -170,11 +161,8 @@ def AArch32_PendingUnmaskedVirtualInterrupts (_ : Unit) : SailM (Bool × Bool ×
         SailM (BitVec 3) )
       let pending ← (( do (undefined_bitvector 3) ) : SailM (BitVec 3) )
       let pending ← (( do
-        bif (Bool.and
-             (Bool.and
-               (Bool.or (BEq.beq (← readReg PSTATE).EL EL0) (BEq.beq (← readReg PSTATE).EL EL1))
-               (← (EL2Enabled ())))
-             (BEq.beq (_get_HCR_Type_TGE (← (HCR_read ()))) (0b0 : (BitVec 1))))
+        bif (((((← readReg PSTATE).EL == EL0) || ((← readReg PSTATE).EL == EL1)) && (← (EL2Enabled
+                   ()))) && ((_get_HCR_Type_TGE (← (HCR_read ()))) == (0b0 : (BitVec 1))))
         then
           (do
             (pure (((_get_HCR_Type_VA (← (HCR_read ()))) ++ ((_get_HCR_Type_VI (← (HCR_read ()))) ++ (_get_HCR_Type_VF
@@ -182,9 +170,9 @@ def AArch32_PendingUnmaskedVirtualInterrupts (_ : Unit) : SailM (Bool × Bool ×
                       (← (HCR_read ()))) ++ (_get_HCR_Type_FMO (← (HCR_read ()))))))))
         else (pure (0b000 : (BitVec 3))) ) : SailM (BitVec 3) )
       let unmasked_pending : (BitVec 3) := (pending &&& (Complement.complement mask))
-      (pure ((BEq.beq (BitVec.join1 [(BitVec.access unmasked_pending 2)]) (0b1 : (BitVec 1))), (BEq.beq
-          (BitVec.join1 [(BitVec.access unmasked_pending 1)]) (0b1 : (BitVec 1))), (BEq.beq
-          (BitVec.join1 [(BitVec.access unmasked_pending 0)]) (0b1 : (BitVec 1))))))
+      (pure (((BitVec.join1 [(BitVec.access unmasked_pending 2)]) == (0b1 : (BitVec 1))), ((BitVec.join1 [(BitVec.access
+              unmasked_pending 1)]) == (0b1 : (BitVec 1))), ((BitVec.join1 [(BitVec.access
+              unmasked_pending 0)]) == (0b1 : (BitVec 1))))))
 
 def TakePendingInterrupts (interrupt_req : InterruptReq) : SailM Bool := do
   let interrupt_pend ← (( do (undefined_bool ()) ) : SailM Bool )
@@ -211,31 +199,31 @@ def TakePendingInterrupts (interrupt_req : InterruptReq) : SailM Bool := do
       let FIQ : Bool := tup__2
       (pure ())
       let AA : Bool :=
-        bif (Bool.not interrupt_req.take_SE)
+        bif (! interrupt_req.take_SE)
         then false
         else AA
       let vAA : Bool :=
-        bif (Bool.not interrupt_req.take_vSE)
+        bif (! interrupt_req.take_vSE)
         then false
         else vAA
       let IRQ : Bool :=
-        bif (Bool.not interrupt_req.take_IRQ)
+        bif (! interrupt_req.take_IRQ)
         then false
         else IRQ
       let vIRQ : Bool :=
-        bif (Bool.not interrupt_req.take_vIRQ)
+        bif (! interrupt_req.take_vIRQ)
         then false
         else vIRQ
       let FIQ : Bool :=
-        bif (Bool.not interrupt_req.take_FIQ)
+        bif (! interrupt_req.take_FIQ)
         then false
         else FIQ
       let vFIQ : Bool :=
-        bif (Bool.not interrupt_req.take_vFIQ)
+        bif (! interrupt_req.take_vFIQ)
         then false
         else vFIQ
       let interrupt_taken : Bool :=
-        bif (Bool.or (Bool.or (Bool.or (Bool.or (Bool.or AA FIQ) IRQ) vAA) vFIQ) vIRQ)
+        bif (((((AA || FIQ) || IRQ) || vAA) || vFIQ) || vIRQ)
         then true
         else false
       bif vFIQ
@@ -279,35 +267,35 @@ def TakePendingInterrupts (interrupt_req : InterruptReq) : SailM Bool := do
       let FIQ : Bool := tup__2
       (pure ())
       let SE : Bool :=
-        bif (Bool.not interrupt_req.take_SE)
+        bif (! interrupt_req.take_SE)
         then false
         else SE
       let vSE : Bool :=
-        bif (Bool.not interrupt_req.take_vSE)
+        bif (! interrupt_req.take_vSE)
         then false
         else vSE
       let IRQ : Bool :=
-        bif (Bool.not interrupt_req.take_IRQ)
+        bif (! interrupt_req.take_IRQ)
         then false
         else IRQ
       let vIRQ : Bool :=
-        bif (Bool.not interrupt_req.take_vIRQ)
+        bif (! interrupt_req.take_vIRQ)
         then false
         else vIRQ
       let FIQ : Bool :=
-        bif (Bool.not interrupt_req.take_FIQ)
+        bif (! interrupt_req.take_FIQ)
         then false
         else FIQ
       let vFIQ : Bool :=
-        bif (Bool.not interrupt_req.take_vFIQ)
+        bif (! interrupt_req.take_vFIQ)
         then false
         else vFIQ
       let (FIQ, IRQ, SE, interrupt_taken, vFIQ, vIRQ, vSE) ← (( do
-        bif (Bool.or (Bool.or (Bool.or (Bool.or (Bool.or SE FIQ) IRQ) vSE) vFIQ) vIRQ)
+        bif (((((SE || FIQ) || IRQ) || vSE) || vFIQ) || vIRQ)
         then
           (do
             let (FIQ, IRQ, SE, vFIQ, vIRQ, vSE) ← (( do
-              bif (Bool.and (← (HaveTME ())) ((← readReg TSTATE).depth >b 0))
+              bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
               then
                 (do
                   let (tup__0, tup__1, tup__2) ← do
@@ -325,32 +313,31 @@ def TakePendingInterrupts (interrupt_req : InterruptReq) : SailM Bool := do
                   let FIQ : Bool := tup__2
                   (pure ())
                   let SE : Bool :=
-                    bif (Bool.not interrupt_req.take_SE)
+                    bif (! interrupt_req.take_SE)
                     then false
                     else SE
                   let vSE : Bool :=
-                    bif (Bool.not interrupt_req.take_vSE)
+                    bif (! interrupt_req.take_vSE)
                     then false
                     else vSE
                   let IRQ : Bool :=
-                    bif (Bool.not interrupt_req.take_IRQ)
+                    bif (! interrupt_req.take_IRQ)
                     then false
                     else IRQ
                   let vIRQ : Bool :=
-                    bif (Bool.not interrupt_req.take_vIRQ)
+                    bif (! interrupt_req.take_vIRQ)
                     then false
                     else vIRQ
                   let FIQ : Bool :=
-                    bif (Bool.not interrupt_req.take_FIQ)
+                    bif (! interrupt_req.take_FIQ)
                     then false
                     else FIQ
                   let vFIQ : Bool :=
-                    bif (Bool.not interrupt_req.take_vFIQ)
+                    bif (! interrupt_req.take_vFIQ)
                     then false
                     else vFIQ
-                  let interrupt_pend : Bool :=
-                    (Bool.or (Bool.or (Bool.or (Bool.or (Bool.or SE FIQ) IRQ) vSE) vFIQ) vIRQ)
-                  (FailTransaction__1 TMFailure_IMP interrupt_pend (Bool.not interrupt_pend)
+                  let interrupt_pend : Bool := (((((SE || FIQ) || IRQ) || vSE) || vFIQ) || vIRQ)
+                  (FailTransaction__1 TMFailure_IMP interrupt_pend (! interrupt_pend)
                     (Zeros (n := 15)))
                   (pure (FIQ, IRQ, SE, vFIQ, vIRQ, vSE)))
               else (pure (FIQ, IRQ, SE, vFIQ, vIRQ, vSE)) ) : SailM

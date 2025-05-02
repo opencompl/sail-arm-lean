@@ -109,7 +109,7 @@ def IsZeroBit (x : (BitVec k_N)) : (BitVec 1) :=
 /-- Type quantifiers: k_N : Int, shift : Int -/
 def LSL_C (x : (BitVec k_N)) (shift : Int) : ((BitVec k_N) × (BitVec 1)) :=
   let carry_out :=
-    bif (Bool.and (shift >b 0) (shift ≤b (Sail.BitVec.length x)))
+    bif ((shift >b 0) && (shift ≤b (Sail.BitVec.length x)))
     then (BitVec.access x ((Sail.BitVec.length x) -i shift))
     else 0#1
   ((x <<< shift), (BitVec.join1 [carry_out]))
@@ -117,7 +117,7 @@ def LSL_C (x : (BitVec k_N)) (shift : Int) : ((BitVec k_N) × (BitVec 1)) :=
 /-- Type quantifiers: k_N : Int, shift : Int -/
 def LSR_C (x : (BitVec k_N)) (shift : Int) : ((BitVec k_N) × (BitVec 1)) :=
   let carry_out :=
-    bif (Bool.and (shift >b 0) (shift ≤b (Sail.BitVec.length x)))
+    bif ((shift >b 0) && (shift ≤b (Sail.BitVec.length x)))
     then (BitVec.access x (shift -i 1))
     else 0#1
   ((x >>> shift), (BitVec.join1 [carry_out]))
@@ -125,7 +125,7 @@ def LSR_C (x : (BitVec k_N)) (shift : Int) : ((BitVec k_N) × (BitVec 1)) :=
 /-- Type quantifiers: k_N : Nat, shift : Nat, k_N ≥ 0 ∧ shift ≥ 0 -/
 def ASR_C (x : (BitVec k_N)) (shift : Nat) : ((BitVec k_N) × (BitVec 1)) :=
   let carry_out :=
-    bif (Bool.or (BEq.beq shift 0) (BEq.beq (Sail.BitVec.length x) 0))
+    bif ((shift == 0) || ((Sail.BitVec.length x) == 0))
     then 0#1
     else
       (bif (shift ≥b (Sail.BitVec.length x))
@@ -144,7 +144,7 @@ def ROR_C (x : (BitVec k_N)) (shift : Int) : SailM ((BitVec k_N) × (BitVec 1)) 
 
 /-- Type quantifiers: k_N : Nat, shift : Nat, k_N > 0 ∧ shift ≥ 0 -/
 def ROR (x : (BitVec k_N)) (shift : Nat) : (BitVec k_N) :=
-  bif (BEq.beq shift 0)
+  bif (shift == 0)
   then x
   else
     (let m := (Nat.div shift (Sail.BitVec.length x))
@@ -155,11 +155,11 @@ def Extend (x : (BitVec k_M)) (N : Nat) (is_unsigned : Bool) : SailM (BitVec N) 
   bif is_unsigned
   then
     (do
-      assert (Bool.and ((Sail.BitVec.length x) ≥b 0) (N ≥b (Sail.BitVec.length x))) "src/builtins.sail:121.47-121.48"
+      assert (((Sail.BitVec.length x) ≥b 0) && (N ≥b (Sail.BitVec.length x))) "src/builtins.sail:121.47-121.48"
       (pure (Sail.BitVec.zeroExtend x N)))
   else
     (do
-      assert (Bool.and ((Sail.BitVec.length x) >b 0) (N ≥b (Sail.BitVec.length x))) "src/builtins.sail:124.46-124.47"
+      assert (((Sail.BitVec.length x) >b 0) && (N ≥b (Sail.BitVec.length x))) "src/builtins.sail:124.46-124.47"
       (pure (sign_extend x N)))
 
 /-- Type quantifiers: k_N : Nat, k_is_unsigned : Bool, k_N ≥ 0 -/
@@ -181,7 +181,7 @@ def LowestSetBit (x : (BitVec k_N)) : Int := ExceptM.run do
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.join1 [(BitVec.access x i)]) (0b1 : (BitVec 1)))
+      bif ((BitVec.join1 [(BitVec.access x i)]) == (0b1 : (BitVec 1)))
       then throw (i : Int)
       else (pure ())
   (pure loop_vars)
@@ -195,7 +195,7 @@ def HighestSetBit (x : (BitVec k_N)) : Int := ExceptM.run do
   for i in [loop_i_upper:loop_i_lower:-1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.join1 [(BitVec.access x i)]) (0b1 : (BitVec 1)))
+      bif ((BitVec.join1 [(BitVec.access x i)]) == (0b1 : (BitVec 1)))
       then throw (i : Int)
       else (pure ())
   (pure loop_vars)
@@ -211,7 +211,7 @@ def BitCount (x : (BitVec k_N)) : Int := Id.run do
     for i in [loop_i_lower:loop_i_upper:1]i do
       let result := loop_vars
       loop_vars :=
-        bif (BEq.beq (BitVec.join1 [(BitVec.access x i)]) (0b1 : (BitVec 1)))
+        bif ((BitVec.join1 [(BitVec.access x i)]) == (0b1 : (BitVec 1)))
         then (result +i 1)
         else result
     (pure loop_vars) ) : Id Int )
@@ -232,13 +232,13 @@ def CountLeadingSignBits (x : (BitVec k_N)) : Int :=
   size ≥ 0 ∧
   (e * size) ≤ (e * size + size - 1) ∨ not((e ≥ 0 ∧ ((e + 1) * size) ≤ k_N)) -/
 def Elem_read (vector_name : (BitVec k_N)) (e : Int) (size : Nat) : SailM (BitVec size) := do
-  assert (Bool.and (e ≥b 0) (((e +i 1) *i size) ≤b (Sail.BitVec.length vector_name))) "src/builtins.sail:195.40-195.41"
+  assert ((e ≥b 0) && (((e +i 1) *i size) ≤b (Sail.BitVec.length vector_name))) "src/builtins.sail:195.40-195.41"
   (pure (Sail.BitVec.extractLsb vector_name (((e *i size) +i size) -i 1) (e *i size)))
 
 /-- Type quantifiers: k_N : Nat, e : Int, size : Nat, k_N ≥ 0 ∧
   size ≥ 0 ∧ (e * size) ≤ ((e + 1) * size - 1) ∨ not((e ≥ 0 ∧ ((e + 1) * size) ≤ k_N)) -/
 def Elem_set (vector_name__arg : (BitVec k_N)) (e : Int) (size : Nat) (value_name : (BitVec size)) : SailM (BitVec k_N) := do
   let vector_name : (BitVec k_N) := vector_name__arg
-  assert (Bool.and (e ≥b 0) (((e +i 1) *i size) ≤b (Sail.BitVec.length vector_name__arg))) "src/builtins.sail:205.40-205.41"
+  assert ((e ≥b 0) && (((e +i 1) *i size) ≤b (Sail.BitVec.length vector_name__arg))) "src/builtins.sail:205.40-205.41"
   (pure (Sail.BitVec.updateSubrange vector_name (((e +i 1) *i size) -i 1) (e *i size) value_name))
 

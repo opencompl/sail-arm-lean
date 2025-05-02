@@ -8,53 +8,74 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 2793345  
-Definitions: 65583  
+Lines: 2637382  
+Definitions: 65584  
 Inductive definitions: 884  
-Abbreviations: 3446  
+Abbreviations: 3447  
 
 # Warnings and Errors
 
-Errors found: 2  
-Warnings found: 2  
+Errors found: 173321  
+Warnings found: 873  
 
 ## Error Classes
 
-- 1x unknown identifier 'sail_return_exception'
-- 1x Lean exited with code 1
-installing leantar 0.1.15
-Attempting to download 6527 file(s)
-Decompressing 6527 file(s)
-Unpacked in 13526 ms
-Completed successfully!
-✔ [1337/1375] Built Armv9.Sail.IntRange
-✔ [1338/1375] Built Armv9.Sail.BitVec
-✔ [1339/1375] Built Armv9.Sail.Sail
-✔ [1340/1375] Built Armv9.Defs
-✔ [1341/1375] Built Armv9.Specialization
-✔ [1342/1375] Built Armv9.ArmExtras
-✔ [1343/1375] Built Armv9.Real
-✔ [1344/1375] Built Armv9.Flow
-✔ [1345/1375] Built Armv9.Arith
-✔ [1346/1375] Built Armv9.Trace
-✔ [1347/1375] Built Armv9.Vector
-✔ [1348/1375] Built Armv9.String
-✔ [1349/1375] Built Armv9.ReverseEndianness
-✔ [1350/1375] Built Armv9.Option
-✔ [1351/1375] Built Armv9.MonoRewrites
-✔ [1352/1375] Built Armv9.Result
-✔ [1353/1375] Built Armv9.Common
-✔ [1354/1375] Built Armv9.ReadWrite
-✔ [1355/1375] Built Armv9.Prelude
-✔ [1356/1375] Built Armv9.Builtins
-⚠ [1357/1375] Built Armv9.V8Base
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79075:4: declaration uses 'sorry'
-warning: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/V8Base.lean:79075:4: declaration uses 'sorry'
-✔ [1358/1375] Built Armv9.Stubs
-✔ [1359/1375] Built Armv9.Interrupts
-✖ [1360/1375] Building Armv9.Interface
-trace: .> LEAN_PATH=/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Cli/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/batteries/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/Qq/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/aesop/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/importGraph/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/plausible/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/packages/mathlib/.lake/build/lib/lean:/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Interface.lean -R /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9 -o /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Interface.olean -i /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/lib/lean/Armv9/Interface.ilean -c /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/.lake/build/ir/Armv9/Interface.c --json
-error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/Interface.lean:110:3: unknown identifier 'sail_return_exception'
-error: Lean exited with code 1
+- 87085x tabs are not allowed; please configure your editor to expand them
+- 84423x unexpected command
+- 1405x elaboration function for 'num' has not been implemented
+- 383x (↥) must have a function type, not
+- 21x failed to synthesize
+- 1x omega could not prove the goal:
+- 1x elaboration function for 'do' has not been implemented
+- 1x could not synthesize default value for field 'step_pos' of 'IntRange' using tactics
+- 1x Lean exited with code 134
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113471:70: elaboration function for 'num' has not been implemented
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113474:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113473:6: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113475:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113474:2: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113476:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113475:26: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113477:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113476:3: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113478:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113477:6: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113479:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113478:95: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113480:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113479:84: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113481:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113480:43: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113482:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113481:7: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113483:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113482:3: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113484:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113483:63: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113485:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113484:4: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113486:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113485:7: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113487:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113486:67: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113488:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113487:44: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113489:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113488:78: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113490:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113489:4: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113491:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113490:69: elaboration function for 'num' has not been implemented
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113492:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113491:51: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113493:0: tabs are not allowed; please configure your editor to expand them
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113492:3: unexpected command
+error: /home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean:113494:0: tabs are not allowed; please configure your editor to expand them
+info: stdout:
+{"severity":"error","pos":{"line":113493,"column":6},"kind":"[anonymous]","keepFullRange":false,"isSilent":false,"fileName":"/home/runner/work/sail-arm-lean/sail-arm-lean/sail-arm/arm-v9.4-a/lean/armv9/Armv9/SysregsAutogen.lean"
+
+info: stderr:
+Stack overflow detected. Aborting.
+error: Lean exited with code 134
 Some required builds logged failures:
-- Armv9.Interface
+- Armv9.SysregsAutogen

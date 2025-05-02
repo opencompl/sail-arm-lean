@@ -102,11 +102,11 @@ open ATAccess
 
 /-- Type quantifiers: k_ex7101837# : Bool, k_ex7101836# : Bool -/
 def neq_bool (x : Bool) (y : Bool) : Bool :=
-  (Bool.not (BEq.beq x y))
+  (! (x == y))
 
 /-- Type quantifiers: k_n : Nat, y : Nat, k_n ≥ 0 ∧ y ≥ 0 -/
 def eq_bits_int (x : (BitVec k_n)) (y : Nat) : Bool :=
-  (BEq.beq (BitVec.toNat x) y)
+  ((BitVec.toNat x) == y)
 
 /-- Type quantifiers: x : Int -/
 def __id (x : Int) : Int :=

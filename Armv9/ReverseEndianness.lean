@@ -97,18 +97,18 @@ open ATAccess
 /-- Type quantifiers: k_n : Nat, k_n ∈ {8, 16, 32, 64, 128} -/
 def reverse_endianness (xs : (BitVec k_n)) : (BitVec k_n) :=
   let len := (Sail.BitVec.length xs)
-  bif (BEq.beq len 8)
+  bif (len == 8)
   then xs
   else
-    (bif (BEq.beq len 16)
+    (bif (len == 16)
     then ((Sail.BitVec.extractLsb xs 7 0) ++ (Sail.BitVec.extractLsb xs 15 8))
     else
-      (bif (BEq.beq len 32)
+      (bif (len == 32)
       then
         ((Sail.BitVec.extractLsb xs 7 0) ++ ((Sail.BitVec.extractLsb xs 15 8) ++ ((Sail.BitVec.extractLsb
                 xs 23 16) ++ (Sail.BitVec.extractLsb xs 31 24))))
       else
-        (bif (BEq.beq len 64)
+        (bif (len == 64)
         then
           ((Sail.BitVec.extractLsb xs 7 0) ++ ((Sail.BitVec.extractLsb xs 15 8) ++ ((Sail.BitVec.extractLsb
                   xs 23 16) ++ ((Sail.BitVec.extractLsb xs 31 24) ++ ((Sail.BitVec.extractLsb xs 39
