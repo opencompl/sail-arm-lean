@@ -1,31 +1,3 @@
-# ARM ISA Semantics for Lean (arm-v9.4-a)
-
-These semantics are generated from the official ARM SPEC available at
-https://github.com/rems-project/sail-arm.
-
-⚠️ While this repository covers the full ARM, our Lean backend for sail
-is still work-in-progress. As a result, our semantics are still full of warnings
-and errors. Similarly, our output is not yet polished for readability.
-# Statistics
-
-Lines: 799101  
-Definitions: 33957  
-Inductive definitions: 89  
-Abbreviations: 937  
-
-# Warnings and Errors
-
-Errors found: 7  
-Warnings found: 0  
-
-## Error Classes
-
-- 2x unknown identifier 'lteq_real'
-- 1x unknown identifier 'undefined_real'
-- 1x unknown identifier 'round_up'
-- 1x unknown identifier 'round_down'
-- 1x unknown identifier 'lt_real'
-- 1x Lean exited with code 1
 ✔ [2/39] Built Armv9.Sail.IntRange
 ✔ [3/39] Built Armv9.Sail.BitVec
 ✔ [4/39] Built Armv9.Sail.Sail
