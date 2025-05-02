@@ -60,4 +60,5 @@ print("## Error Classes\n")
 for error in errors:
     print(f"- {error[0]}x {error[1]}")
 
+print("")
 
