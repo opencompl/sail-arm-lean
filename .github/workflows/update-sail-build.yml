@@ -38,7 +38,7 @@ jobs:
     - name: Setup opam
       if: steps.cache-opam-restore.outputs.cache-hit != 'true'
       run: |
-        opam init --yes --no-setup --shell=sh --compiler=${{ matrix.version }}
+        opam init --yes --no-setup --shell=sh --compiler=5.1.0
         opam install dune
 
     - name: Save cached opam
