@@ -11,12 +11,7 @@ env:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        version: [5.2.1]
-        os: [ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: [ip-172-31-20-78]
 
     steps:
     - uses: actions/checkout@v4
