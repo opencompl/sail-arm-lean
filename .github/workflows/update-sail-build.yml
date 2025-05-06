@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    runs-on: [ip-172-31-20-78]
+    runs-on: [self-hosted]
 
     steps:
     - uses: actions/checkout@v4
