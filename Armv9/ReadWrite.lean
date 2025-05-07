@@ -134,7 +134,8 @@ def undefined_Explicit_access_kind (_ : Unit) : SailM Explicit_access_kind := do
   : Type, k_n > 0 ∧ k_vasize > 0 -/
 def mem_read_request_is_exclusive (request : (Mem_read_request k_n k_vasize k_pa k_translation_summary k_arch_ak)) : Bool :=
   match request.access_kind with
-  | .AK_explicit eak => (match eak.variety with
+  | .AK_explicit eak =>
+    (match eak.variety with
     | AV_exclusive => true
     | _ => false)
   | _ => false
@@ -154,7 +155,8 @@ def __monomorphize_writes : Bool := false
   : Type, k_n > 0 ∧ k_vasize > 0 -/
 def mem_write_request_is_exclusive (request : (Mem_write_request k_n k_vasize k_pa k_translation_summary k_arch_ak)) : Bool :=
   match request.access_kind with
-  | .AK_explicit eak => (match eak.variety with
+  | .AK_explicit eak =>
+    (match eak.variety with
     | AV_exclusive => true
     | _ => false)
   | _ => false

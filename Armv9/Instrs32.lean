@@ -13982,8 +13982,8 @@ def execute_aarch32_instrs_VABS_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elemen
   else
     (do
       match esize with
-      | 16 => (S_set d
-          ((Zeros (n := 16)) ++ (← (FPAbs (Sail.BitVec.extractLsb (← (S_read m)) 15 0)))))
+      | 16 =>
+        (S_set d ((Zeros (n := 16)) ++ (← (FPAbs (Sail.BitVec.extractLsb (← (S_read m)) 15 0)))))
       | 32 => (S_set d (← (FPAbs (← (S_read m)))))
       | 64 => (D_set d (← (FPAbs (← (D_read m)))))
       | _ => (pure ()))
@@ -14307,7 +14307,8 @@ def execute_aarch32_instrs_VADD_f_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elem
   else
     (do
       match esize with
-      | 16 => (S_set d
+      | 16 =>
+        (S_set d
           ((Zeros (n := 16)) ++ (← (FPAdd (Sail.BitVec.extractLsb (← (S_read n)) 15 0)
                 (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ()))))))
       | 32 => (S_set d (← (FPAdd (← (S_read n)) (← (S_read m)) (← (FPSCR_read ())))))
@@ -14910,13 +14911,16 @@ def execute_aarch32_instrs_VBIF_Op_A_txt (d : Nat) (m : Nat) (n : Nat) (operatio
     let () := loop_vars
     loop_vars ← do
       match operation with
-      | VBitOps_VBIF => (D_set (d +i r)
+      | VBitOps_VBIF =>
+        (D_set (d +i r)
           (((← (D_read (d +i r))) &&& (← (D_read (m +i r)))) ||| ((← (D_read (n +i r))) &&& (Complement.complement
                 (← (D_read (m +i r)))))))
-      | VBitOps_VBIT => (D_set (d +i r)
+      | VBitOps_VBIT =>
+        (D_set (d +i r)
           (((← (D_read (n +i r))) &&& (← (D_read (m +i r)))) ||| ((← (D_read (d +i r))) &&& (Complement.complement
                 (← (D_read (m +i r)))))))
-      | VBitOps_VBSL => (D_set (d +i r)
+      | VBitOps_VBSL =>
+        (D_set (d +i r)
           (((← (D_read (n +i r))) &&& (← (D_read (d +i r)))) ||| ((← (D_read (m +i r))) &&& (Complement.complement
                 (← (D_read (d +i r)))))))
   (pure loop_vars)
@@ -15376,7 +15380,8 @@ def execute_aarch32_instrs_VCGE_r_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
                 match vtype with
                 | VCGEType_signed => (pure ((BitVec.toInt op1) ≥b (BitVec.toInt op2)))
                 | VCGEType_unsigned => (pure ((BitVec.toNat op1) ≥b (BitVec.toNat op2)))
-                | VCGEType_fp => (do
+                | VCGEType_fp =>
+                  (do
                     assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs32.sail:21435.59-21435.60"
                     (FPCompareGE op1 op2 (← (StandardFPSCRValue ())))) ) : SailM Bool )
               let test_passed := test_passed
@@ -15646,7 +15651,8 @@ def execute_aarch32_instrs_VCGT_r_Op_A_txt (d__arg : Nat) (elements : Int) (esiz
                 match vtype with
                 | VCGTtype_signed => (pure ((BitVec.toInt op1) >b (BitVec.toInt op2)))
                 | VCGTtype_unsigned => (pure ((BitVec.toNat op1) >b (BitVec.toNat op2)))
-                | VCGTtype_fp => (do
+                | VCGTtype_fp =>
+                  (do
                     assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs32.sail:21741.59-21741.60"
                     (FPCompareGT op1 op2 (← (StandardFPSCRValue ())))) ) : SailM Bool )
               let test_passed := test_passed
@@ -16125,20 +16131,23 @@ def execute_aarch32_instrs_VCMP_Op_A_txt (d : Nat) (esize : Nat) (m : Int) (quie
   let nzcv ← (( do (undefined_bitvector 4) ) : SailM (BitVec 4) )
   let nzcv ← (( do
     match esize with
-    | 16 => (do
+    | 16 =>
+      (do
         let op16 ← (( do
           bif with_zero
           then (FPZero (0b0 : (BitVec 1)) 16)
           else (pure (Sail.BitVec.extractLsb (← (S_read m)) 15 0)) ) : SailM (BitVec 16) )
         (FPCompare (Sail.BitVec.extractLsb (← (S_read d)) 15 0) op16 quiet_nan_exc
           (← (FPSCR_read ()))))
-    | 32 => (do
+    | 32 =>
+      (do
         let op32 ← (( do
           bif with_zero
           then (FPZero (0b0 : (BitVec 1)) 32)
           else (S_read m) ) : SailM (BitVec 32) )
         (FPCompare (← (S_read d)) op32 quiet_nan_exc (← (FPSCR_read ()))))
-    | 64 => (do
+    | 64 =>
+      (do
         let op64 ← (( do
           bif with_zero
           then (FPZero (0b0 : (BitVec 1)) 64)
@@ -16723,26 +16732,28 @@ def execute_aarch32_instrs_VCVT_iv_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (r
   then
     (do
       match esize with
-      | 16 => (S_set d
+      | 16 =>
+        (S_set d
           (← (FPToFixed (Sail.BitVec.extractLsb (← (S_read m)) 15 0) 0 is_unsigned
               (← (FPSCR_read ())) rounding 32)))
-      | 32 => (S_set d
-          (← (FPToFixed (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
-      | 64 => (S_set d
-          (← (FPToFixed (← (D_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
+      | 32 =>
+        (S_set d (← (FPToFixed (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
+      | 64 =>
+        (S_set d (← (FPToFixed (← (D_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
       | _ => (pure ()))
   else
     (do
       match esize with
-      | 16 => (do
+      | 16 =>
+        (do
           let fp16 ← (( do
             (FixedToFP (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 16) ) : SailM
             (BitVec 16) )
           (S_set d ((Zeros (n := 16)) ++ fp16)))
-      | 32 => (S_set d
-          (← (FixedToFP (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
-      | 64 => (D_set d
-          (← (FixedToFP (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 64)))
+      | 32 =>
+        (S_set d (← (FixedToFP (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
+      | 64 =>
+        (D_set d (← (FixedToFP (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 64)))
       | _ => (pure ()))
 
 def decode_aarch32_instrs_VCVT_iv_A1enc_A_txt (cond : (BitVec 4)) (D : (BitVec 1)) (opc2 : (BitVec 3)) (Vd : (BitVec 4)) (size : (BitVec 2)) (op : (BitVec 1)) (M : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
@@ -17102,17 +17113,20 @@ def execute_aarch32_instrs_VCVT_xv_Op_A_txt (d : Nat) (fp_size : Nat) (frac_bits
     (do
       let result ← (( do (undefined_bitvector size) ) : SailM (BitVec size) )
       match fp_size with
-      | 16 => (do
+      | 16 =>
+        (do
           let result ← (( do
             (FPToFixed (Sail.BitVec.extractLsb (← (S_read d)) 15 0) frac_bits is_unsigned
               (← (FPSCR_read ())) FPRounding_ZERO size) ) : SailM (BitVec size) )
           (S_set d (← (Extend result 32 is_unsigned))))
-      | 32 => (do
+      | 32 =>
+        (do
           let result ← (( do
             (FPToFixed (← (S_read d)) frac_bits is_unsigned (← (FPSCR_read ())) FPRounding_ZERO
               size) ) : SailM (BitVec size) )
           (S_set d (← (Extend result 32 is_unsigned))))
-      | 64 => (do
+      | 64 =>
+        (do
           let result ← (( do
             (FPToFixed (← (D_read d)) frac_bits is_unsigned (← (FPSCR_read ())) FPRounding_ZERO
               size) ) : SailM (BitVec size) )
@@ -17121,15 +17135,18 @@ def execute_aarch32_instrs_VCVT_xv_Op_A_txt (d : Nat) (fp_size : Nat) (frac_bits
   else
     (do
       match fp_size with
-      | 16 => (do
+      | 16 =>
+        (do
           let fp16 ← (( do
             (FixedToFP (Sail.BitVec.extractLsb (← (S_read d)) (size -i 1) 0) frac_bits is_unsigned
               (← (FPSCR_read ())) FPRounding_TIEEVEN 16) ) : SailM (BitVec 16) )
           (S_set d ((Zeros (n := 16)) ++ fp16)))
-      | 32 => (S_set d
+      | 32 =>
+        (S_set d
           (← (FixedToFP (Sail.BitVec.extractLsb (← (S_read d)) (size -i 1) 0) frac_bits
               is_unsigned (← (FPSCR_read ())) FPRounding_TIEEVEN 32)))
-      | 64 => (D_set d
+      | 64 =>
+        (D_set d
           (← (FixedToFP (Sail.BitVec.extractLsb (← (D_read d)) (size -i 1) 0) frac_bits
               is_unsigned (← (FPSCR_read ())) FPRounding_TIEEVEN 64)))
       | _ => (pure ()))
@@ -17236,7 +17253,8 @@ def decode_aarch32_instrs_VCVT_xv_T1enc_A_txt (D : (BitVec 1)) (op : (BitVec 1))
 def execute_aarch32_instrs_VDIV_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (S_set d
+  | 16 =>
+    (S_set d
       ((Zeros (n := 16)) ++ (← (FPDiv (Sail.BitVec.extractLsb (← (S_read n)) 15 0)
             (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ()))))))
   | 32 => (S_set d (← (FPDiv (← (S_read n)) (← (S_read m)) (← (FPSCR_read ())))))
@@ -17730,7 +17748,8 @@ def execute_aarch32_instrs_VFMA_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elemen
   else
     (do
       match esize with
-      | 16 => (do
+      | 16 =>
+        (do
           let op16 ← (( do
             bif op1_neg
             then (FPNeg (Sail.BitVec.extractLsb (← (S_read n)) 15 0))
@@ -17738,13 +17757,15 @@ def execute_aarch32_instrs_VFMA_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elemen
           (S_set d
             ((Zeros (n := 16)) ++ (← (FPMulAdd (Sail.BitVec.extractLsb (← (S_read d)) 15 0) op16
                   (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ())))))))
-      | 32 => (do
+      | 32 =>
+        (do
           let op32 ← (( do
             bif op1_neg
             then (FPNeg (← (S_read n)))
             else (S_read n) ) : SailM (BitVec 32) )
           (S_set d (← (FPMulAdd (← (S_read d)) op32 (← (S_read m)) (← (FPSCR_read ()))))))
-      | 64 => (do
+      | 64 =>
+        (do
           let op64 ← (( do
             bif op1_neg
             then (FPNeg (← (D_read n)))
@@ -17958,7 +17979,8 @@ def execute_aarch32_instrs_VFNMA_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (n :
   let op64 ← (( do (undefined_bitvector 64) ) : SailM (BitVec 64) )
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (do
+  | 16 =>
+    (do
       let op16 ← (( do
         bif op1_neg
         then (FPNeg (Sail.BitVec.extractLsb (← (S_read n)) 15 0))
@@ -17967,14 +17989,16 @@ def execute_aarch32_instrs_VFNMA_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (n :
         ((Zeros (n := 16)) ++ (← (FPMulAdd
               (← (FPNeg (Sail.BitVec.extractLsb (← (S_read d)) 15 0))) op16
               (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ())))))))
-  | 32 => (do
+  | 32 =>
+    (do
       let op32 ← (( do
         bif op1_neg
         then (FPNeg (← (S_read n)))
         else (S_read n) ) : SailM (BitVec 32) )
       (S_set d
         (← (FPMulAdd (← (FPNeg (← (S_read d)))) op32 (← (S_read m)) (← (FPSCR_read ()))))))
-  | 64 => (do
+  | 64 =>
+    (do
       let op64 ← (( do
         bif op1_neg
         then (FPNeg (← (D_read n)))
@@ -20282,7 +20306,8 @@ def execute_aarch32_instrs_VLDR_Op_A_txt (add : Bool) (d : Nat) (esize : Nat) (i
   match esize with
   | 16 => (S_set d ((Zeros (n := 16)) ++ (← (MemA_read address 2))))
   | 32 => (S_set d (← (MemA_read address 4)))
-  | 64 => (do
+  | 64 =>
+    (do
       let word1 ← (( do (MemA_read address 4) ) : SailM (BitVec 32) )
       let word2 ← (( do (MemA_read (BitVec.addInt address 4) 4) ) : SailM (BitVec 32) )
       (D_set d
@@ -20627,7 +20652,8 @@ def execute_aarch32_instrs_VMLA_f_Op_A_txt (add : Bool) (advsimd : Bool) (d__arg
   else
     (do
       match esize with
-      | 16 => (do
+      | 16 =>
+        (do
           let addend16 ← (( do
             bif add
             then
@@ -20641,14 +20667,16 @@ def execute_aarch32_instrs_VMLA_f_Op_A_txt (add : Bool) (advsimd : Bool) (d__arg
           (S_set d
             ((Zeros (n := 16)) ++ (← (FPAdd (Sail.BitVec.extractLsb (← (S_read d)) 15 0)
                   addend16 (← (FPSCR_read ())))))))
-      | 32 => (do
+      | 32 =>
+        (do
           let addend32 ← (( do
             bif add
             then (FPMul (← (S_read n)) (← (S_read m)) (← (FPSCR_read ())))
             else (FPNeg (← (FPMul (← (S_read n)) (← (S_read m)) (← (FPSCR_read ()))))) ) :
             SailM (BitVec 32) )
           (S_set d (← (FPAdd (← (S_read d)) addend32 (← (FPSCR_read ()))))))
-      | 64 => (do
+      | 64 =>
+        (do
           let addend64 ← (( do
             bif add
             then (FPMul (← (D_read n)) (← (D_read m)) (← (FPSCR_read ())))
@@ -22336,7 +22364,8 @@ def execute_aarch32_instrs_VMUL_f_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elem
   else
     (do
       match esize with
-      | 16 => (S_set d
+      | 16 =>
+        (S_set d
           ((Zeros (n := 16)) ++ (← (FPMul (Sail.BitVec.extractLsb (← (S_read n)) 15 0)
                 (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ()))))))
       | 32 => (S_set d (← (FPMul (← (S_read n)) (← (S_read m)) (← (FPSCR_read ())))))
@@ -23229,8 +23258,8 @@ def execute_aarch32_instrs_VNEG_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elemen
   else
     (do
       match esize with
-      | 16 => (S_set d
-          ((Zeros (n := 16)) ++ (← (FPNeg (Sail.BitVec.extractLsb (← (S_read m)) 15 0)))))
+      | 16 =>
+        (S_set d ((Zeros (n := 16)) ++ (← (FPNeg (Sail.BitVec.extractLsb (← (S_read m)) 15 0)))))
       | 32 => (S_set d (← (FPNeg (← (S_read m)))))
       | 64 => (D_set d (← (FPNeg (← (D_read m)))))
       | _ => (pure ()))
@@ -23407,38 +23436,45 @@ def execute_aarch32_instrs_VNMLA_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (n :
   let product64 ← (( do (undefined_bitvector 64) ) : SailM (BitVec 64) )
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (do
+  | 16 =>
+    (do
       let product16 ← (( do
         (FPMul (Sail.BitVec.extractLsb (← (S_read n)) 15 0)
           (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ()))) ) : SailM
         (BitVec 16) )
       match vtype with
-      | VFPNegMul_VNMLA => (S_set d
+      | VFPNegMul_VNMLA =>
+        (S_set d
           ((Zeros (n := 16)) ++ (← (FPAdd
                 (← (FPNeg (Sail.BitVec.extractLsb (← (S_read d)) 15 0))) (← (FPNeg product16))
                 (← (FPSCR_read ()))))))
-      | VFPNegMul_VNMLS => (S_set d
+      | VFPNegMul_VNMLS =>
+        (S_set d
           ((Zeros (n := 16)) ++ (← (FPAdd
                 (← (FPNeg (Sail.BitVec.extractLsb (← (S_read d)) 15 0))) product16
                 (← (FPSCR_read ()))))))
       | VFPNegMul_VNMUL => (S_set d ((Zeros (n := 16)) ++ (← (FPNeg product16)))))
-  | 32 => (do
+  | 32 =>
+    (do
       let product32 ← (( do (FPMul (← (S_read n)) (← (S_read m)) (← (FPSCR_read ()))) ) :
         SailM (BitVec 32) )
       match vtype with
-      | VFPNegMul_VNMLA => (S_set d
+      | VFPNegMul_VNMLA =>
+        (S_set d
           (← (FPAdd (← (FPNeg (← (S_read d)))) (← (FPNeg product32)) (← (FPSCR_read ())))))
-      | VFPNegMul_VNMLS => (S_set d
-          (← (FPAdd (← (FPNeg (← (S_read d)))) product32 (← (FPSCR_read ())))))
+      | VFPNegMul_VNMLS =>
+        (S_set d (← (FPAdd (← (FPNeg (← (S_read d)))) product32 (← (FPSCR_read ())))))
       | VFPNegMul_VNMUL => (S_set d (← (FPNeg product32))))
-  | 64 => (do
+  | 64 =>
+    (do
       let product64 ← (( do (FPMul (← (D_read n)) (← (D_read m)) (← (FPSCR_read ()))) ) :
         SailM (BitVec 64) )
       match vtype with
-      | VFPNegMul_VNMLA => (D_set d
+      | VFPNegMul_VNMLA =>
+        (D_set d
           (← (FPAdd (← (FPNeg (← (D_read d)))) (← (FPNeg product64)) (← (FPSCR_read ())))))
-      | VFPNegMul_VNMLS => (D_set d
-          (← (FPAdd (← (FPNeg (← (D_read d)))) product64 (← (FPSCR_read ())))))
+      | VFPNegMul_VNMLS =>
+        (D_set d (← (FPAdd (← (FPNeg (← (D_read d)))) product64 (← (FPSCR_read ())))))
       | VFPNegMul_VNMUL => (D_set d (← (FPNeg product64))))
   | _ => (pure ())
 
@@ -26368,14 +26404,18 @@ def decode_aarch32_instrs_VQSHL_i_A1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
         then 1
         else 2
       match esize with
-      | 8 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 8 m regs shift_amount
+      | 8 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 8 m regs shift_amount
           src_unsigned)
-      | 16 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 16 m regs
-          shift_amount src_unsigned)
-      | 32 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 32 m regs
-          shift_amount src_unsigned)
-      | 64 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 64 m regs
-          shift_amount src_unsigned)
+      | 16 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 16 m regs shift_amount
+          src_unsigned)
+      | 32 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 32 m regs shift_amount
+          src_unsigned)
+      | 64 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 64 m regs shift_amount
+          src_unsigned)
       | _ => assert false "src/instrs32.sail:34086.26-34086.27")
   else (pure ())
 
@@ -26441,14 +26481,18 @@ def decode_aarch32_instrs_VQSHL_i_T1enc_A_txt (U : (BitVec 1)) (D : (BitVec 1)) 
         then 1
         else 2
       match esize with
-      | 8 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 8 m regs shift_amount
+      | 8 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 8 m regs shift_amount
           src_unsigned)
-      | 16 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 16 m regs
-          shift_amount src_unsigned)
-      | 32 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 32 m regs
-          shift_amount src_unsigned)
-      | 64 => (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 64 m regs
-          shift_amount src_unsigned)
+      | 16 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 16 m regs shift_amount
+          src_unsigned)
+      | 32 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 32 m regs shift_amount
+          src_unsigned)
+      | 64 =>
+        (execute_aarch32_instrs_VQSHL_i_Op_A_txt d dest_unsigned elements 64 m regs shift_amount
+          src_unsigned)
       | _ => assert false "src/instrs32.sail:34171.26-34171.27")
   else (pure ())
 
@@ -28918,7 +28962,8 @@ def decode_aarch32_instrs_VSLI_T1enc_A_txt (D : (BitVec 1)) (imm6 : (BitVec 6)) 
 def execute_aarch32_instrs_VSQRT_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) : SailM Unit := do
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (S_set d
+  | 16 =>
+    (S_set d
       ((Zeros (n := 16)) ++ (← (FPSqrt (Sail.BitVec.extractLsb (← (S_read m)) 15 0)
             (← (FPSCR_read ()))))))
   | 32 => (S_set d (← (FPSqrt (← (S_read m)) (← (FPSCR_read ())))))
@@ -31029,7 +31074,8 @@ def execute_aarch32_instrs_VSTR_Op_A_txt (add : Bool) (d : Nat) (esize : Nat) (i
   match esize with
   | 16 => (MemA_set address 2 (Sail.BitVec.extractLsb (← (S_read d)) 15 0))
   | 32 => (MemA_set address 4 (← (S_read d)))
-  | 64 => (do
+  | 64 =>
+    (do
       bif (← (BigEndian AccessType_ASIMD))
       then
         (do
@@ -31159,7 +31205,8 @@ def execute_aarch32_instrs_VSUB_f_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elem
   else
     (do
       match esize with
-      | 16 => (S_set d
+      | 16 =>
+        (S_set d
           ((Zeros (n := 16)) ++ (← (FPSub (Sail.BitVec.extractLsb (← (S_read n)) 15 0)
                 (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ()))))))
       | 32 => (S_set d (← (FPSub (← (S_read n)) (← (S_read m)) (← (FPSCR_read ())))))
@@ -35030,13 +35077,14 @@ def decode_aarch32_instrs_VCVTA_asimd_T1enc_A_txt (D : (BitVec 1)) (size : (BitV
 def execute_aarch32_instrs_VCVTA_vfp_Op_A_txt (d : Nat) (esize : Nat) (m : Nat) (rounding : FPRounding) (is_unsigned : Bool) : SailM Unit := do
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (S_set d
+  | 16 =>
+    (S_set d
       (← (FPToFixed (Sail.BitVec.extractLsb (← (S_read m)) 15 0) 0 is_unsigned
           (← (FPSCR_read ())) rounding 32)))
-  | 32 => (S_set d
-      (← (FPToFixed (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
-  | 64 => (S_set d
-      (← (FPToFixed (← (D_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
+  | 32 =>
+    (S_set d (← (FPToFixed (← (S_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
+  | 64 =>
+    (S_set d (← (FPToFixed (← (D_read m)) 0 is_unsigned (← (FPSCR_read ())) rounding 32)))
   | _ => (pure ())
 
 def decode_aarch32_instrs_VCVTA_vfp_A1enc_A_txt (D : (BitVec 1)) (RM : (BitVec 2)) (Vd : (BitVec 4)) (size : (BitVec 2)) (op : (BitVec 1)) (M : (BitVec 1)) (Vm : (BitVec 4)) : SailM Unit := do
@@ -35152,7 +35200,8 @@ def execute_aarch32_instrs_VMAXNM_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elem
   else
     (do
       match esize with
-      | 16 => (do
+      | 16 =>
+        (do
           bif maximum
           then
             (S_set d
@@ -35162,11 +35211,13 @@ def execute_aarch32_instrs_VMAXNM_Op_A_txt (advsimd : Bool) (d__arg : Nat) (elem
             (S_set d
               ((Zeros (n := 16)) ++ (← (FPMinNum (Sail.BitVec.extractLsb (← (S_read n)) 15 0)
                     (Sail.BitVec.extractLsb (← (S_read m)) 15 0) (← (FPSCR_read ())))))))
-      | 32 => (do
+      | 32 =>
+        (do
           bif maximum
           then (S_set d (← (FPMaxNum (← (S_read n)) (← (S_read m)) (← (FPSCR_read ())))))
           else (S_set d (← (FPMinNum (← (S_read n)) (← (S_read m)) (← (FPSCR_read ()))))))
-      | 64 => (do
+      | 64 =>
+        (do
           bif maximum
           then (D_set d (← (FPMaxNum (← (D_read n)) (← (D_read m)) (← (FPSCR_read ())))))
           else (D_set d (← (FPMinNum (← (D_read n)) (← (D_read m)) (← (FPSCR_read ()))))))
@@ -35462,7 +35513,8 @@ def decode_aarch32_instrs_VRINTA_asimd_T1enc_A_txt (D : (BitVec 1)) (size : (Bit
 def execute_aarch32_instrs_VRINTA_vfp_Op_A_txt (d : Nat) (esize : Nat) (exact : Bool) (m : Nat) (rounding : FPRounding) : SailM Unit := do
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (S_set d
+  | 16 =>
+    (S_set d
       ((Zeros (n := 16)) ++ (← (FPRoundInt (Sail.BitVec.extractLsb (← (S_read m)) 15 0)
             (← (FPSCR_read ())) rounding exact))))
   | 32 => (S_set d (← (FPRoundInt (← (S_read m)) (← (FPSCR_read ())) rounding exact)))
@@ -35659,7 +35711,8 @@ def execute_aarch32_instrs_VRINTX_vfp_Op_A_txt (d : Nat) (esize : Nat) (exact : 
   (CheckVFPEnabled true)
   let rounding ← (( do (FPRoundingMode (← (FPSCR_read ()))) ) : SailM FPRounding )
   match esize with
-  | 16 => (S_set d
+  | 16 =>
+    (S_set d
       ((Zeros (n := 16)) ++ (← (FPRoundInt (Sail.BitVec.extractLsb (← (S_read m)) 15 0)
             (← (FPSCR_read ())) rounding exact))))
   | 32 => (S_set d (← (FPRoundInt (← (S_read m)) (← (FPSCR_read ())) rounding exact)))
@@ -35865,7 +35918,8 @@ def decode_aarch32_instrs_VRINTZ_asimd_T1enc_A_txt (D : (BitVec 1)) (size : (Bit
 def execute_aarch32_instrs_VRINTZ_vfp_Op_A_txt (d : Nat) (esize : Nat) (exact : Bool) (m : Nat) (rounding : FPRounding) : SailM Unit := do
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (S_set d
+  | 16 =>
+    (S_set d
       ((Zeros (n := 16)) ++ (← (FPRoundInt (Sail.BitVec.extractLsb (← (S_read m)) 15 0)
             (← (FPSCR_read ())) rounding exact))))
   | 32 => (S_set d (← (FPRoundInt (← (S_read m)) (← (FPSCR_read ())) rounding exact)))
@@ -35972,18 +36026,21 @@ def decode_aarch32_instrs_VRINTZ_vfp_T1enc_A_txt (D : (BitVec 1)) (Vd : (BitVec 
 def execute_aarch32_instrs_VSEL_Op_A_txt (cond : (BitVec 4)) (d : Nat) (esize : Nat) (m : Nat) (n : Nat) : SailM Unit := do
   (CheckVFPEnabled true)
   match esize with
-  | 16 => (S_set d
+  | 16 =>
+    (S_set d
       ((Zeros (n := 16)) ++ (Sail.BitVec.extractLsb
           (← do
             bif (← (ConditionHolds cond))
             then (S_read n)
             else (S_read m)) 15 0)))
-  | 32 => (S_set d
+  | 32 =>
+    (S_set d
       (← do
         bif (← (ConditionHolds cond))
         then (S_read n)
         else (S_read m)))
-  | 64 => (D_set d
+  | 64 =>
+    (D_set d
       (← do
         bif (← (ConditionHolds cond))
         then (D_read n)

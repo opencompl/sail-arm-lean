@@ -213,7 +213,8 @@ def ExecuteA64 (instr : (BitVec 32)) : SailM Unit := do
         (__SetThisInstrDetails __A64 instr (← (__DefaultCond __A64)))
         (__DecodeA64 (BitVec.toNat (← readReg _PC)) instr))) (fun the_exception => 
       match the_exception with
-        | exn => (do
+        | exn =>
+          (do
             bif (IsExceptionTaken exn)
             then (pure ())
             else
@@ -233,7 +234,8 @@ def ExecuteT32__1 (instr : (BitVec 32)) : SailM Unit := do
         (__SetThisInstrDetails __T32 instr (← (__DefaultCond __T32)))
         (__DecodeT32 (BitVec.toNat (← readReg _PC)) instr))) (fun the_exception => 
       match the_exception with
-        | exn => (do
+        | exn =>
+          (do
             bif (IsExceptionTaken exn)
             then (pure ())
             else
@@ -311,14 +313,16 @@ def __TryDecodeExecute (enc : __InstrEnc) (instr : (BitVec 32)) : SailM Unit := 
 def __DecodeExecute (enc : __InstrEnc) (instr : (BitVec 32)) : SailM Unit := do
   sailTryCatch ((__TryDecodeExecute enc instr)) (fun the_exception => 
     match the_exception with
-      | exn => (do
+      | exn =>
+        (do
           bif (IsSEE exn)
           then (__TryDecodeExecute enc instr)
           else sailThrow (exn)))
 
 def __CheckForEmulatorTermination (enc : __InstrEnc) (instr : (BitVec 32)) : SailM Unit := do
   match (← readReg __emulator_termination_opcode) with
-  | .some magic => (do
+  | .some magic =>
+    (do
       bif (instr == magic)
       then
         (do
@@ -360,7 +364,8 @@ def __InstructionExecute (_ : Unit) : SailM Unit := do
       (__DecodeExecute enc instr)
       (PMUEvent PMU_EVENT_INST_RETIRED))) (fun the_exception => 
     match the_exception with
-      | exn => (do
+      | exn =>
+        (do
           bif (((IsSEE exn) || (IsUNDEFINED exn)) || (IsUNPREDICTABLE exn))
           then
             (do
@@ -420,7 +425,8 @@ def __TopLevel (_ : Unit) : SailM Unit := do
               (__InstructionExecute ()))
           else (pure ()))) (fun the_exception => 
         match the_exception with
-          | .Error_SError iesb_req => (do
+          | .Error_SError iesb_req =>
+            (do
               bif (← (UsingAArch32 ()))
               then (AArch32_TakePhysicalSErrorException iesb_req)
               else (AArch64_TakePhysicalSErrorException iesb_req))

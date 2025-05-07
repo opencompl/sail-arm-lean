@@ -2493,10 +2493,12 @@ def execute_aarch64_instrs_vector_logical (datasize : Nat) (imm : (BitVec datasi
     match operation with
     | ImmediateOp_MOVI => (pure imm)
     | ImmediateOp_MVNI => (pure (Complement.complement imm))
-    | ImmediateOp_ORR => (do
+    | ImmediateOp_ORR =>
+      (do
         let operand ← (( do (V_read rd datasize) ) : SailM (BitVec datasize) )
         (pure (operand ||| imm)))
-    | ImmediateOp_BIC => (do
+    | ImmediateOp_BIC =>
+      (do
         let operand ← (( do (V_read rd datasize) ) : SailM (BitVec datasize) )
         (pure (operand &&& (Complement.complement imm)))) ) : SailM (BitVec datasize) )
   (V_set rd datasize result)
@@ -2915,22 +2917,26 @@ def execute_aarch64_instrs_vector_arithmetic_binary_uniform_logical_bsl_eor (d :
   let operand4 ← (( do (V_read n datasize) ) : SailM (BitVec datasize) )
   let (operand1, operand2, operand3) ← (( do
     match op with
-    | VBitOp_VEOR => (do
+    | VBitOp_VEOR =>
+      (do
         let operand1 ← (V_read m datasize)
         let operand2 : (BitVec datasize) := (Zeros (n := datasize))
         let operand3 : (BitVec datasize) := (Ones (n := datasize))
         (pure (operand1, operand2, operand3)))
-    | VBitOp_VBSL => (do
+    | VBitOp_VBSL =>
+      (do
         let operand1 ← (V_read m datasize)
         let operand2 : (BitVec datasize) := operand1
         let operand3 ← (V_read d datasize)
         (pure (operand1, operand2, operand3)))
-    | VBitOp_VBIT => (do
+    | VBitOp_VBIT =>
+      (do
         let operand1 ← (V_read d datasize)
         let operand2 : (BitVec datasize) := operand1
         let operand3 ← (V_read m datasize)
         (pure (operand1, operand2, operand3)))
-    | VBitOp_VBIF => (do
+    | VBitOp_VBIF =>
+      (do
         let operand1 ← (V_read d datasize)
         let operand2 : (BitVec datasize) := operand1
         let operand3 ← (pure (Complement.complement (← (V_read m datasize))))
@@ -3120,7 +3126,8 @@ def execute_aarch64_instrs_branch_unconditional_register (branch_type : BranchTy
       (X_set 30 64 (BitVec.addInt (← (PC_read ())) 4)))
   else (pure ())
   match branch_type with
-  | BranchType_INDIR => (do
+  | BranchType_INDIR =>
+    (do
       bif (← readReg InGuardedPage)
       then
         (do
@@ -3484,15 +3491,18 @@ def execute_aarch64_instrs_system_hints (op : SystemHintOp) : SailM Unit := do
   match op with
   | SystemHintOp_YIELD => (pure (Hint_Yield ()))
   | SystemHintOp_DGH => (pure (Hint_DGH ()))
-  | SystemHintOp_WFE => (do
+  | SystemHintOp_WFE =>
+    (do
       let localtimeout := (Int.shiftl 1 64)
       (Hint_WFE localtimeout WFxType_WFE))
-  | SystemHintOp_WFI => (do
+  | SystemHintOp_WFI =>
+    (do
       let localtimeout := (Int.shiftl 1 64)
       (Hint_WFI localtimeout WFxType_WFI))
   | SystemHintOp_SEV => (pure (SendEvent ()))
   | SystemHintOp_SEVL => (SendEventLocal ())
-  | SystemHintOp_ESB => (do
+  | SystemHintOp_ESB =>
+    (do
       bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
       then (FailTransaction TMFailure_ERR false)
       else (pure ())
@@ -10022,7 +10032,8 @@ def execute_aarch64_instrs_system_barriers_dsb (alias' : DSBAlias) (domain : MBR
   match alias' with
   | DSBAlias_SSBB => (pure (SpeculativeStoreBypassBarrierToVA ()))
   | DSBAlias_PSSBB => (pure (SpeculativeStoreBypassBarrierToPA ()))
-  | DSBAlias_DSB => (do
+  | DSBAlias_DSB =>
+    (do
       bif ((← (HaveTME ())) && ((← readReg TSTATE).depth >b 0))
       then (FailTransaction TMFailure_ERR false)
       else (pure ())
@@ -10471,13 +10482,17 @@ def execute_aarch64_instrs_float_arithmetic_unary (d : Nat) (esize : Nat) (fpop 
   let operand ← (( do (V_read n esize) ) : SailM (BitVec esize) )
   let result ← (( do
     match fpop with
-    | FPUnaryOp_MOV => (do
+    | FPUnaryOp_MOV =>
+      (do
         (Elem_set result 0 esize operand))
-    | FPUnaryOp_ABS => (do
+    | FPUnaryOp_ABS =>
+      (do
         (Elem_set result 0 esize (← (FPAbs operand))))
-    | FPUnaryOp_NEG => (do
+    | FPUnaryOp_NEG =>
+      (do
         (Elem_set result 0 esize (← (FPNeg operand))))
-    | FPUnaryOp_SQRT => (do
+    | FPUnaryOp_SQRT =>
+      (do
         (Elem_set result 0 esize (← (FPSqrt operand fpcr)))) ) : SailM (BitVec 128) )
   (V_set d 128 result)
 
@@ -10806,11 +10821,14 @@ def execute_aarch64_instrs_vector_arithmetic_binary_uniform_cmp_fp16_sisd (abs :
           else (pure (element1, element2)) ) : SailM ((BitVec esize) × (BitVec esize)) )
         let test_passed ← (( do
           match cmp with
-          | CompareOp_EQ => (do
+          | CompareOp_EQ =>
+            (do
               (FPCompareEQ element1 element2 fpcr))
-          | CompareOp_GE => (do
+          | CompareOp_GE =>
+            (do
               (FPCompareGE element1 element2 fpcr))
-          | CompareOp_GT => (do
+          | CompareOp_GT =>
+            (do
               (FPCompareGT element1 element2 fpcr))
           | _ => (pure test_passed) ) : SailM Bool )
         let result ←
@@ -12279,15 +12297,20 @@ def execute_aarch64_instrs_vector_arithmetic_unary_cmp_fp16_bulk_sisd (compariso
         let element ← (Elem_read operand e esize)
         let test_passed ← (( do
           match comparison with
-          | CompareOp_GT => (do
+          | CompareOp_GT =>
+            (do
               (FPCompareGT element zero (← (FPCR_read ()))))
-          | CompareOp_GE => (do
+          | CompareOp_GE =>
+            (do
               (FPCompareGE element zero (← (FPCR_read ()))))
-          | CompareOp_EQ => (do
+          | CompareOp_EQ =>
+            (do
               (FPCompareEQ element zero (← (FPCR_read ()))))
-          | CompareOp_LE => (do
+          | CompareOp_LE =>
+            (do
               (FPCompareGE zero element (← (FPCR_read ()))))
-          | CompareOp_LT => (do
+          | CompareOp_LT =>
+            (do
               (FPCompareGT zero element (← (FPCR_read ())))) ) : SailM Bool )
         let result ←
           (Elem_set result e esize
@@ -13072,15 +13095,20 @@ def execute_aarch64_instrs_vector_arithmetic_unary_cmp_fp16_lessthan_sisd (compa
         let element ← (Elem_read operand e esize)
         let test_passed ← (( do
           match comparison with
-          | CompareOp_GT => (do
+          | CompareOp_GT =>
+            (do
               (FPCompareGT element zero (← (FPCR_read ()))))
-          | CompareOp_GE => (do
+          | CompareOp_GE =>
+            (do
               (FPCompareGE element zero (← (FPCR_read ()))))
-          | CompareOp_EQ => (do
+          | CompareOp_EQ =>
+            (do
               (FPCompareEQ element zero (← (FPCR_read ()))))
-          | CompareOp_LE => (do
+          | CompareOp_LE =>
+            (do
               (FPCompareGE zero element (← (FPCR_read ()))))
-          | CompareOp_LT => (do
+          | CompareOp_LT =>
+            (do
               (FPCompareGT zero element (← (FPCR_read ())))) ) : SailM Bool )
         let result ←
           (Elem_set result e esize
@@ -13488,13 +13516,15 @@ def execute_aarch64_instrs_float_convert_int (d : Nat) (fltsize : Nat) (intsize 
   let fltval ← (( do (undefined_bitvector fsize) ) : SailM (BitVec fsize) )
   let intval ← (( do (undefined_bitvector intsize) ) : SailM (BitVec intsize) )
   match op with
-  | FPConvOp_CVT_FtoI => (do
+  | FPConvOp_CVT_FtoI =>
+    (do
       let fltval ← (( do (V_read n fsize) ) : SailM (BitVec fsize) )
       assert ((((fsize == 16) || (fsize == 32)) || (fsize == 64)) && (((intsize == 16) || (intsize == 32)) || (intsize == 64))) "src/instrs64.sail:14270.80-14270.81"
       let intval ← (( do (FPToFixed fltval 0 is_unsigned fpcr rounding intsize) ) : SailM
         (BitVec intsize) )
       (X_set d intsize intval))
-  | FPConvOp_CVT_ItoF => (do
+  | FPConvOp_CVT_ItoF =>
+    (do
       let intval ← (( do (X_read n intsize) ) : SailM (BitVec intsize) )
       let fltval ← ((
         bif merge
@@ -13504,17 +13534,20 @@ def execute_aarch64_instrs_float_convert_int (d : Nat) (fltsize : Nat) (intsize 
       let fltval ←
         (Elem_set fltval 0 fltsize (← (FixedToFP intval 0 is_unsigned fpcr rounding fltsize)))
       (V_set d fsize fltval))
-  | FPConvOp_MOV_FtoI => (do
+  | FPConvOp_MOV_FtoI =>
+    (do
       let fltval ← (( do (Vpart_read n part fsize) ) : SailM (BitVec fsize) )
       assert ((fsize ≥b 0) && (intsize ≥b fsize)) "src/instrs64.sail:14284.63-14284.64"
       let intval : (BitVec intsize) := (Sail.BitVec.zeroExtend fltval intsize)
       (X_set d intsize intval))
-  | FPConvOp_MOV_ItoF => (do
+  | FPConvOp_MOV_ItoF =>
+    (do
       let intval ← (( do (X_read n intsize) ) : SailM (BitVec intsize) )
       assert ((0 ≤b (fsize -i 1)) && ((fsize -i 1) <b intsize)) "src/instrs64.sail:14290.70-14290.71"
       let fltval : (BitVec fsize) := (Sail.BitVec.extractLsb intval (fsize -i 1) 0)
       (Vpart_set d part fsize fltval))
-  | FPConvOp_CVT_FtoI_JS => (do
+  | FPConvOp_CVT_FtoI_JS =>
+    (do
       let z ← (( do (undefined_bitvector 1) ) : SailM (BitVec 1) )
       let fltval ← (( do (V_read n fsize) ) : SailM (BitVec fsize) )
       assert (fsize == 64) "src/instrs64.sail:14297.41-14297.42"
@@ -15834,13 +15867,15 @@ def execute_aarch64_instrs_float_convert_fix (d : Nat) (fltsize : Nat) (fracbits
   let fltval ← (( do (undefined_bitvector fsize) ) : SailM (BitVec fsize) )
   let intval ← (( do (undefined_bitvector intsize) ) : SailM (BitVec intsize) )
   match op with
-  | FPConvOp_CVT_FtoI => (do
+  | FPConvOp_CVT_FtoI =>
+    (do
       let fltval ← (( do (V_read n fsize) ) : SailM (BitVec fsize) )
       assert ((((fsize == 16) || (fsize == 32)) || (fsize == 64)) && (((intsize == 16) || (intsize == 32)) || (intsize == 64))) "src/instrs64.sail:16857.80-16857.81"
       let intval ← (( do (FPToFixed fltval fracbits is_unsigned fpcr rounding intsize) ) : SailM
         (BitVec intsize) )
       (X_set d intsize intval))
-  | FPConvOp_CVT_ItoF => (do
+  | FPConvOp_CVT_ItoF =>
+    (do
       let intval ← (( do (X_read n intsize) ) : SailM (BitVec intsize) )
       let fltval ← ((
         bif merge
@@ -16540,13 +16575,17 @@ def execute_aarch64_instrs_float_arithmetic_max_min (d : Nat) (esize : Nat) (m :
     else (pure (Zeros (n := 128))) ) : SailM (BitVec 128) )
   let result ← (( do
     match operation with
-    | FPMaxMinOp_MAX => (do
+    | FPMaxMinOp_MAX =>
+      (do
         (Elem_set result 0 esize (← (FPMax operand1 operand2 fpcr))))
-    | FPMaxMinOp_MIN => (do
+    | FPMaxMinOp_MIN =>
+      (do
         (Elem_set result 0 esize (← (FPMin operand1 operand2 fpcr))))
-    | FPMaxMinOp_MAXNUM => (do
+    | FPMaxMinOp_MAXNUM =>
+      (do
         (Elem_set result 0 esize (← (FPMaxNum operand1 operand2 fpcr))))
-    | FPMaxMinOp_MINNUM => (do
+    | FPMaxMinOp_MINNUM =>
+      (do
         (Elem_set result 0 esize (← (FPMinNum operand1 operand2 fpcr)))) ) : SailM (BitVec 128) )
   (V_set d 128 result)
 
@@ -20643,35 +20682,43 @@ def decode_ins_advsimd_elt_aarch64_instrs_vector_transfer_vector_insert (Rd : (B
     else 64
   let esize := (Int.shiftl 8 size)
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match idxdsize with
       | 64 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 8 64 n src_index)
       | 128 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 8 128 n src_index)
       | _ => assert false "src/instrs64.sail:22571.28-22571.29")
-  | 16 => (do
+  | 16 =>
+    (do
       match idxdsize with
       | 64 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 16 64 n src_index)
       | 128 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 16 128 n src_index)
       | _ => assert false "src/instrs64.sail:22584.28-22584.29")
-  | 32 => (do
+  | 32 =>
+    (do
       match idxdsize with
       | 64 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 32 64 n src_index)
       | 128 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 32 128 n src_index)
       | _ => assert false "src/instrs64.sail:22597.28-22597.29")
-  | 64 => (do
+  | 64 =>
+    (do
       match idxdsize with
       | 64 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 64 64 n src_index)
       | 128 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 64 128 n src_index)
       | _ => assert false "src/instrs64.sail:22610.28-22610.29")
-  | 128 => (do
+  | 128 =>
+    (do
       match idxdsize with
       | 64 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 128 64 n src_index)
-      | 128 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 128 128 n src_index)
+      | 128 =>
+        (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 128 128 n src_index)
       | _ => assert false "src/instrs64.sail:22623.28-22623.29")
-  | 256 => (do
+  | 256 =>
+    (do
       match idxdsize with
       | 64 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 256 64 n src_index)
-      | 128 => (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 256 128 n src_index)
+      | 128 =>
+        (execute_aarch64_instrs_vector_transfer_vector_insert d dst_index 256 128 n src_index)
       | _ => assert false "src/instrs64.sail:22636.28-22636.29")
   | _ => assert false "src/instrs64.sail:22641.22-22641.23"
 
@@ -20859,22 +20906,26 @@ def decode_ld1_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -20922,22 +20973,26 @@ def decode_ld1_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -20985,22 +21040,26 @@ def decode_ld1r_advsimd_aarch64_instrs_memory_vector_single_no_wb (Rt : (BitVec 
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21048,22 +21107,26 @@ def decode_ld1r_advsimd_aarch64_instrs_memory_vector_single_post_inc (Rt : (BitV
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21111,22 +21174,26 @@ def decode_ld2_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21174,22 +21241,26 @@ def decode_ld2_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21237,22 +21308,26 @@ def decode_ld2r_advsimd_aarch64_instrs_memory_vector_single_no_wb (Rt : (BitVec 
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21300,22 +21375,26 @@ def decode_ld2r_advsimd_aarch64_instrs_memory_vector_single_post_inc (Rt : (BitV
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21363,22 +21442,26 @@ def decode_ld3_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21426,22 +21509,26 @@ def decode_ld3_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21489,22 +21576,26 @@ def decode_ld3r_advsimd_aarch64_instrs_memory_vector_single_no_wb (Rt : (BitVec 
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21552,22 +21643,26 @@ def decode_ld3r_advsimd_aarch64_instrs_memory_vector_single_post_inc (Rt : (BitV
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21615,22 +21710,26 @@ def decode_ld4_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21678,22 +21777,26 @@ def decode_ld4_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21741,22 +21844,26 @@ def decode_ld4r_advsimd_aarch64_instrs_memory_vector_single_no_wb (Rt : (BitVec 
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21804,22 +21911,26 @@ def decode_ld4r_advsimd_aarch64_instrs_memory_vector_single_post_inc (Rt : (BitV
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21867,22 +21978,26 @@ def decode_st1_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21930,22 +22045,26 @@ def decode_st1_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -21993,22 +22112,26 @@ def decode_st2_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -22056,22 +22179,26 @@ def decode_st2_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -22119,22 +22246,26 @@ def decode_st3_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -22182,22 +22313,26 @@ def decode_st3_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -22245,22 +22380,26 @@ def decode_st4_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb (Rt : (Bit
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -22308,22 +22447,26 @@ def decode_st4_advsimd_sngl_aarch64_instrs_memory_vector_single_post_inc (Rt : (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -25287,22 +25430,26 @@ def decode_ldap1_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb_ordered 
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -25350,22 +25497,26 @@ def decode_stl1_advsimd_sngl_aarch64_instrs_memory_vector_single_no_wb_ordered (
   let index ← (( do (undefined_int ()) ) : SailM Int )
   let (index, replicate, scale) ← (( do
     match scale with
-    | 3 => (do
+    | 3 =>
+      (do
         bif ((L == (0b0 : (BitVec 1))) || (S == (0b1 : (BitVec 1))))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let scale : Int := (BitVec.toNat size)
         let replicate : Bool := true
         (pure (index, replicate, scale)))
-    | 0 => (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
+    | 0 =>
+      (let index : Int := (BitVec.toNat ((Q ++ S) ++ size))
       (pure (index, replicate, scale)))
-    | 1 => (do
+    | 1 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 0)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
         let index : Int := (BitVec.toNat ((Q ++ S) ++ (BitVec.join1 [(BitVec.access size 1)])))
         (pure (index, replicate, scale)))
-    | 2 => (do
+    | 2 =>
+      (do
         bif ((BitVec.join1 [(BitVec.access size 1)]) == (0b1 : (BitVec 1)))
         then sailThrow ((Error_Undefined ()))
         else (pure ())
@@ -25481,12 +25632,15 @@ def decode_ldapr_aarch64_instrs_memory_ordered_rcpc_writeback (Rt : (BitVec 5)) 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:27393.113-27393.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -25564,7 +25718,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_offset_lda_stl
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -25578,7 +25733,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_offset_lda_stl
         then (AArch64_SetLSInstructionSyndrome (Int.ediv datasize 8) false t (regsize == 64) false)
         else ()
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let _ : Unit :=
         bif (! wback)
         then
@@ -25672,12 +25828,15 @@ def decode_ldapur_gen_aarch64_instrs_memory_single_general_immediate_signed_offs
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:27586.113-27586.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -25694,7 +25853,8 @@ def decode_ldapur_gen_aarch64_instrs_memory_single_general_immediate_signed_offs
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -25758,12 +25918,15 @@ def decode_ldapurb_aarch64_instrs_memory_single_general_immediate_signed_offset_
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:27671.113-27671.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -25780,7 +25943,8 @@ def decode_ldapurb_aarch64_instrs_memory_single_general_immediate_signed_offset_
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -25844,12 +26008,15 @@ def decode_ldapurh_aarch64_instrs_memory_single_general_immediate_signed_offset_
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:27756.113-27756.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -25866,7 +26033,8 @@ def decode_ldapurh_aarch64_instrs_memory_single_general_immediate_signed_offset_
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -25930,12 +26098,15 @@ def decode_ldapursb_aarch64_instrs_memory_single_general_immediate_signed_offset
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:27841.113-27841.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -25952,7 +26123,8 @@ def decode_ldapursb_aarch64_instrs_memory_single_general_immediate_signed_offset
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -26016,12 +26188,15 @@ def decode_ldapursh_aarch64_instrs_memory_single_general_immediate_signed_offset
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:27926.113-27926.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -26038,7 +26213,8 @@ def decode_ldapursh_aarch64_instrs_memory_single_general_immediate_signed_offset
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -26102,12 +26278,15 @@ def decode_ldapursw_aarch64_instrs_memory_single_general_immediate_signed_offset
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:28011.113-28011.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -26124,7 +26303,8 @@ def decode_ldapursw_aarch64_instrs_memory_single_general_immediate_signed_offset
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -26188,12 +26368,15 @@ def decode_stlur_gen_aarch64_instrs_memory_single_general_immediate_signed_offse
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:28096.113-28096.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -26210,7 +26393,8 @@ def decode_stlur_gen_aarch64_instrs_memory_single_general_immediate_signed_offse
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -26274,12 +26458,15 @@ def decode_stlurb_aarch64_instrs_memory_single_general_immediate_signed_offset_l
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:28181.113-28181.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -26296,7 +26483,8 @@ def decode_stlurb_aarch64_instrs_memory_single_general_immediate_signed_offset_l
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -26360,12 +26548,15 @@ def decode_stlurh_aarch64_instrs_memory_single_general_immediate_signed_offset_l
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:28266.113-28266.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -26382,7 +26573,8 @@ def decode_stlurh_aarch64_instrs_memory_single_general_immediate_signed_offset_l
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -26412,11 +26604,13 @@ def execute_aarch64_instrs_memory_single_simdfp_immediate_signed_offset_ordered 
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:28335.62-28335.63"
       let data ← (( do (V_read t datasize) ) : SailM (BitVec datasize) )
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let data ← (( do (Mem_read address (Int.ediv datasize 8) accdesc) ) : SailM
         (BitVec datasize) )
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:28341.62-28341.63"
@@ -26505,7 +26699,8 @@ def execute_aarch64_instrs_memory_ordered (datasize : Nat) (limitedordered : Boo
       (do
         (X_read n 64)) ) : SailM (BitVec 64) )
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let address : (BitVec 64) := (BitVec.addInt address offset)
       let data ← (( do
         bif rt_unknown
@@ -26524,7 +26719,8 @@ def execute_aarch64_instrs_memory_ordered (datasize : Nat) (limitedordered : Boo
           then (SP_set address)
           else (X_set n 64 address))
       else (pure ()))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let _ : Unit := (AArch64_SetLSInstructionSyndrome dbytes false t (regsize == 64) true)
       let data ← (( do (Mem_read address dbytes accdesc) ) : SailM (BitVec datasize) )
       assert ((datasize ≥b 0) && (regsize ≥b datasize)) "src/instrs64.sail:28464.69-28464.70"
@@ -26795,7 +26991,8 @@ def decode_stlr_aarch64_instrs_memory_ordered_writeback (Rt : (BitVec 5)) (Rn : 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -26880,7 +27077,8 @@ def execute_aarch64_instrs_memory_exclusive_pair (acqrel : Bool) (datasize : Nat
           (do
             (X_read n 64))) ) : SailM (BitVec 64) )
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -26916,7 +27114,8 @@ def execute_aarch64_instrs_memory_exclusive_pair (acqrel : Bool) (datasize : Nat
             else (pure ())
             (pure status)) ) : SailM (BitVec 1) )
       (X_set s 32 (Sail.BitVec.zeroExtend status 32)))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       (AArch64_SetExclusiveMonitors address dbytes)
       bif pair
       then
@@ -27006,7 +27205,8 @@ def decode_ldaxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (B
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27026,7 +27226,8 @@ def decode_ldaxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (B
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27042,7 +27243,8 @@ def decode_ldaxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (B
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27085,7 +27287,8 @@ def decode_ldxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (Bi
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27105,7 +27308,8 @@ def decode_ldxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (Bi
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27121,7 +27325,8 @@ def decode_ldxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (Bi
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27164,7 +27369,8 @@ def decode_stlxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (B
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27184,7 +27390,8 @@ def decode_stlxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (B
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27200,7 +27407,8 @@ def decode_stlxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (B
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27243,7 +27451,8 @@ def decode_stxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (Bi
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27263,7 +27472,8 @@ def decode_stxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (Bi
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27279,7 +27489,8 @@ def decode_stxp_aarch64_instrs_memory_exclusive_pair (Rt : (BitVec 5)) (Rn : (Bi
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27320,7 +27531,8 @@ def execute_aarch64_instrs_memory_exclusive_single (acqrel : Bool) (datasize : N
           (do
             (X_read n 64))) ) : SailM (BitVec 64) )
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -27358,7 +27570,8 @@ def execute_aarch64_instrs_memory_exclusive_single (acqrel : Bool) (datasize : N
             else (pure ())
             (pure status)) ) : SailM (BitVec 1) )
       (X_set s 32 (Sail.BitVec.zeroExtend status 32)))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       (AArch64_SetExclusiveMonitors address dbytes)
       bif pair
       then
@@ -27449,7 +27662,8 @@ def decode_ldaxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27469,7 +27683,8 @@ def decode_ldaxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27485,7 +27700,8 @@ def decode_ldaxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27528,7 +27744,8 @@ def decode_ldaxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27548,7 +27765,8 @@ def decode_ldaxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27564,7 +27782,8 @@ def decode_ldaxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27607,7 +27826,8 @@ def decode_ldaxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27627,7 +27847,8 @@ def decode_ldaxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27643,7 +27864,8 @@ def decode_ldaxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27686,7 +27908,8 @@ def decode_ldxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : (
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27706,7 +27929,8 @@ def decode_ldxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : (
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27722,7 +27946,8 @@ def decode_ldxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : (
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27765,7 +27990,8 @@ def decode_ldxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27785,7 +28011,8 @@ def decode_ldxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27801,7 +28028,8 @@ def decode_ldxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27844,7 +28072,8 @@ def decode_ldxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27864,7 +28093,8 @@ def decode_ldxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27880,7 +28110,8 @@ def decode_ldxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -27923,7 +28154,8 @@ def decode_stlxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -27943,7 +28175,8 @@ def decode_stlxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -27959,7 +28192,8 @@ def decode_stlxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -28002,7 +28236,8 @@ def decode_stlxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28022,7 +28257,8 @@ def decode_stlxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -28038,7 +28274,8 @@ def decode_stlxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -28081,7 +28318,8 @@ def decode_stlxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28101,7 +28339,8 @@ def decode_stlxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -28117,7 +28356,8 @@ def decode_stlxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn :
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -28160,7 +28400,8 @@ def decode_stxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : (
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28180,7 +28421,8 @@ def decode_stxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : (
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -28196,7 +28438,8 @@ def decode_stxr_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : (
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -28239,7 +28482,8 @@ def decode_stxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28259,7 +28503,8 @@ def decode_stxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -28275,7 +28520,8 @@ def decode_stxrb_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -28318,7 +28564,8 @@ def decode_stxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28338,7 +28585,8 @@ def decode_stxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rt_unknown))
               | _ => (pure rt_unknown))
@@ -28354,7 +28602,8 @@ def decode_stxrh_aarch64_instrs_memory_exclusive_single (Rt : (BitVec 5)) (Rn : 
               match c with
               | Constraint_UNKNOWN => (pure true)
               | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-              | Constraint_NOP => (do
+              | Constraint_NOP =>
+                (do
                   (EndOfInstruction ())
                   (pure rn_unknown))
               | _ => (pure rn_unknown))
@@ -28527,7 +28776,8 @@ def execute_aarch64_instrs_memory_ordered_pair_ldiapp (datasize : Nat) (memop : 
     then (BitVec.addInt address offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data1 ← (( do
         bif (rt_unknown && (t == n))
         then
@@ -28567,7 +28817,8 @@ def execute_aarch64_instrs_memory_ordered_pair_ldiapp (datasize : Nat) (memop : 
             (do
               (Mem_set (BitVec.addInt address 0) dbytes accdesc data1)
               (Mem_set (BitVec.addInt address dbytes) dbytes accdesc data2))))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let (data1, data2) ← (( do
         bif (← (HaveLSE2Ext ()))
         then
@@ -28665,12 +28916,15 @@ def decode_ldiapp_aarch64_instrs_memory_ordered_pair_ldiapp (Rt : (BitVec 5)) (R
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:30759.113-30759.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -28687,7 +28941,8 @@ def decode_ldiapp_aarch64_instrs_memory_ordered_pair_ldiapp (Rt : (BitVec 5)) (R
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28702,7 +28957,8 @@ def decode_ldiapp_aarch64_instrs_memory_ordered_pair_ldiapp (Rt : (BitVec 5)) (R
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28736,7 +28992,8 @@ def execute_aarch64_instrs_memory_pair_general_no_alloc (datasize : Nat) (memop 
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data1 ← (( do
         bif (rt_unknown && (t == n))
         then
@@ -28755,7 +29012,8 @@ def execute_aarch64_instrs_memory_pair_general_no_alloc (datasize : Nat) (memop 
             (X_read t2 datasize)) ) : SailM (BitVec datasize) )
       (Mem_set (BitVec.addInt address 0) dbytes accdesc data1)
       (Mem_set (BitVec.addInt address dbytes) dbytes accdesc data2))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let (data1, data2) ← (( do
         bif (← (HaveLSE2Ext ()))
         then
@@ -28838,7 +29096,8 @@ def decode_ldnp_gen_aarch64_instrs_memory_pair_general_no_alloc (Rt : (BitVec 5)
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28876,7 +29135,8 @@ def decode_stnp_gen_aarch64_instrs_memory_pair_general_no_alloc (Rt : (BitVec 5)
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -28910,13 +29170,15 @@ def execute_aarch64_instrs_memory_pair_simdfp_no_alloc (datasize : Nat) (memop :
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:31021.62-31021.63"
       let data1 ← (( do (V_read t datasize) ) : SailM (BitVec datasize) )
       let data2 ← (( do (V_read t2 datasize) ) : SailM (BitVec datasize) )
       (Mem_set (BitVec.addInt address 0) dbytes accdesc data1)
       (Mem_set (BitVec.addInt address dbytes) dbytes accdesc data2))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let data1 ← (( (Mem_read (BitVec.addInt address 0) dbytes accdesc) ) : SailM
         (BitVec datasize) )
       let data2 ← (( (Mem_read (BitVec.addInt address dbytes) dbytes accdesc) ) : SailM
@@ -28977,7 +29239,8 @@ def decode_ldnp_fpsimd_aarch64_instrs_memory_pair_simdfp_no_alloc (Rt : (BitVec 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29015,7 +29278,8 @@ def decode_stnp_fpsimd_aarch64_instrs_memory_pair_simdfp_no_alloc (Rt : (BitVec 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29049,13 +29313,15 @@ def execute_aarch64_instrs_memory_pair_simdfp_post_idx (datasize : Nat) (memop :
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:31176.62-31176.63"
       let data1 ← (( do (V_read t datasize) ) : SailM (BitVec datasize) )
       let data2 ← (( do (V_read t2 datasize) ) : SailM (BitVec datasize) )
       (Mem_set (BitVec.addInt address 0) dbytes accdesc data1)
       (Mem_set (BitVec.addInt address dbytes) dbytes accdesc data2))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let data1 ← (( (Mem_read (BitVec.addInt address 0) dbytes accdesc) ) : SailM
         (BitVec datasize) )
       let data2 ← (( (Mem_read (BitVec.addInt address dbytes) dbytes accdesc) ) : SailM
@@ -29116,7 +29382,8 @@ def decode_ldp_fpsimd_aarch64_instrs_memory_pair_simdfp_post_idx (Rt : (BitVec 5
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29154,7 +29421,8 @@ def decode_ldp_fpsimd_aarch64_instrs_memory_pair_simdfp_pre_idx (Rt : (BitVec 5)
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29192,7 +29460,8 @@ def decode_ldp_fpsimd_aarch64_instrs_memory_pair_simdfp_offset (Rt : (BitVec 5))
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29230,7 +29499,8 @@ def decode_stp_fpsimd_aarch64_instrs_memory_pair_simdfp_post_idx (Rt : (BitVec 5
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29268,7 +29538,8 @@ def decode_stp_fpsimd_aarch64_instrs_memory_pair_simdfp_pre_idx (Rt : (BitVec 5)
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29306,7 +29577,8 @@ def decode_stp_fpsimd_aarch64_instrs_memory_pair_simdfp_offset (Rt : (BitVec 5))
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29341,7 +29613,8 @@ def execute_aarch64_instrs_memory_pair_general_post_idx (datasize : Nat) (memop 
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data1 ← (( do
         bif (rt_unknown && (t == n))
         then
@@ -29373,7 +29646,8 @@ def execute_aarch64_instrs_memory_pair_general_post_idx (datasize : Nat) (memop 
         (do
           (Mem_set (BitVec.addInt address 0) dbytes accdesc data1)
           (Mem_set (BitVec.addInt address dbytes) dbytes accdesc data2)))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let (data1, data2) ← (( do
         bif ((← (HaveLSE2Ext ())) && (! is_signed))
         then
@@ -29469,12 +29743,15 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5))
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:31620.113-31620.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -29491,7 +29768,8 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5))
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29506,7 +29784,8 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5))
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29545,12 +29824,15 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:31709.113-31709.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -29567,7 +29849,8 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29582,7 +29865,8 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29621,12 +29905,15 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:31798.113-31798.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -29643,7 +29930,8 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29658,7 +29946,8 @@ def decode_ldp_gen_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29697,12 +29986,15 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5)) (
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:31887.113-31887.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -29719,7 +30011,8 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5)) (
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29734,7 +30027,8 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5)) (
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29773,12 +30067,15 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) (R
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:31976.113-31976.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -29795,7 +30092,8 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) (R
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29810,7 +30108,8 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) (R
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29849,12 +30148,15 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (Rn
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:32065.113-32065.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -29871,7 +30173,8 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (Rn
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29886,7 +30189,8 @@ def decode_ldpsw_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (Rn
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29925,12 +30229,15 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5))
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:32154.113-32154.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -29947,7 +30254,8 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5))
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -29962,7 +30270,8 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_post_idx (Rt : (BitVec 5))
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30001,12 +30310,15 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:32243.113-32243.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -30023,7 +30335,8 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30038,7 +30351,8 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_pre_idx (Rt : (BitVec 5)) 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30077,12 +30391,15 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:32332.113-32332.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -30099,7 +30416,8 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30114,7 +30432,8 @@ def decode_stp_gen_aarch64_instrs_memory_pair_general_offset (Rt : (BitVec 5)) (
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30146,11 +30465,13 @@ def execute_aarch64_instrs_memory_single_simdfp_immediate_signed_post_idx (datas
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:32419.62-32419.63"
       let data ← (( do (V_read t datasize) ) : SailM (BitVec datasize) )
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let data ← (( do (Mem_read address (Int.ediv datasize 8) accdesc) ) : SailM
         (BitVec datasize) )
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:32425.62-32425.63"
@@ -30306,7 +30627,8 @@ def execute_aarch64_instrs_memory_literal_general (memop : MemOp) (nontemporal :
   let accdesc ← (( do (CreateAccDescGPR memop nontemporal privileged tagchecked) ) : SailM
     AccessDescriptor )
   match memop with
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let data ← (( do (Mem_read address size accdesc) ) : SailM (BitVec (size * 8)) )
       bif is_signed
       then (X_set t 64 (sign_extend data 64))
@@ -30480,7 +30802,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_post_idx (data
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -30494,7 +30817,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_post_idx (data
         then (AArch64_SetLSInstructionSyndrome (Int.ediv datasize 8) false t (regsize == 64) false)
         else ()
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let _ : Unit :=
         bif (! wback)
         then
@@ -30589,12 +30913,15 @@ def decode_ldr_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pos
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:32921.113-32921.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -30611,7 +30938,8 @@ def decode_ldr_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pos
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30676,12 +31004,15 @@ def decode_ldr_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pre
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33007.113-33007.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -30698,7 +31029,8 @@ def decode_ldr_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pre
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30763,12 +31095,15 @@ def decode_ldr_imm_gen_aarch64_instrs_memory_single_general_immediate_unsigned (
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33093.113-33093.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -30785,7 +31120,8 @@ def decode_ldr_imm_gen_aarch64_instrs_memory_single_general_immediate_unsigned (
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30850,12 +31186,15 @@ def decode_ldrb_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33179.113-33179.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -30872,7 +31211,8 @@ def decode_ldrb_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -30937,12 +31277,15 @@ def decode_ldrb_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33265.113-33265.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -30959,7 +31302,8 @@ def decode_ldrb_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31024,12 +31368,15 @@ def decode_ldrb_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33351.113-33351.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31046,7 +31393,8 @@ def decode_ldrb_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31111,12 +31459,15 @@ def decode_ldrh_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33437.113-33437.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31133,7 +31484,8 @@ def decode_ldrh_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31198,12 +31550,15 @@ def decode_ldrh_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33523.113-33523.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31220,7 +31575,8 @@ def decode_ldrh_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31285,12 +31641,15 @@ def decode_ldrh_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33609.113-33609.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31307,7 +31666,8 @@ def decode_ldrh_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31372,12 +31732,15 @@ def decode_ldrsb_imm_aarch64_instrs_memory_single_general_immediate_signed_post_
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33695.113-33695.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31394,7 +31757,8 @@ def decode_ldrsb_imm_aarch64_instrs_memory_single_general_immediate_signed_post_
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31459,12 +31823,15 @@ def decode_ldrsb_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_i
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33781.113-33781.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31481,7 +31848,8 @@ def decode_ldrsb_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_i
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31546,12 +31914,15 @@ def decode_ldrsb_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33867.113-33867.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31568,7 +31939,8 @@ def decode_ldrsb_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31633,12 +32005,15 @@ def decode_ldrsh_imm_aarch64_instrs_memory_single_general_immediate_signed_post_
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:33953.113-33953.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31655,7 +32030,8 @@ def decode_ldrsh_imm_aarch64_instrs_memory_single_general_immediate_signed_post_
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31720,12 +32096,15 @@ def decode_ldrsh_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_i
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34039.113-34039.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31742,7 +32121,8 @@ def decode_ldrsh_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_i
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31807,12 +32187,15 @@ def decode_ldrsh_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34125.113-34125.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31829,7 +32212,8 @@ def decode_ldrsh_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31894,12 +32278,15 @@ def decode_ldrsw_imm_aarch64_instrs_memory_single_general_immediate_signed_post_
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34211.113-34211.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -31916,7 +32303,8 @@ def decode_ldrsw_imm_aarch64_instrs_memory_single_general_immediate_signed_post_
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -31981,12 +32369,15 @@ def decode_ldrsw_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_i
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34297.113-34297.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32003,7 +32394,8 @@ def decode_ldrsw_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_i
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32068,12 +32460,15 @@ def decode_ldrsw_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34383.113-34383.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32090,7 +32485,8 @@ def decode_ldrsw_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32155,12 +32551,15 @@ def decode_str_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pos
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34469.113-34469.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32177,7 +32576,8 @@ def decode_str_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pos
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32242,12 +32642,15 @@ def decode_str_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pre
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34555.113-34555.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32264,7 +32667,8 @@ def decode_str_imm_gen_aarch64_instrs_memory_single_general_immediate_signed_pre
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32329,12 +32733,15 @@ def decode_str_imm_gen_aarch64_instrs_memory_single_general_immediate_unsigned (
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34641.113-34641.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32351,7 +32758,8 @@ def decode_str_imm_gen_aarch64_instrs_memory_single_general_immediate_unsigned (
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32416,12 +32824,15 @@ def decode_strb_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34727.113-34727.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32438,7 +32849,8 @@ def decode_strb_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32503,12 +32915,15 @@ def decode_strb_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34813.113-34813.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32525,7 +32940,8 @@ def decode_strb_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32590,12 +33006,15 @@ def decode_strb_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34899.113-34899.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32612,7 +33031,8 @@ def decode_strb_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32677,12 +33097,15 @@ def decode_strh_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:34985.113-34985.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32699,7 +33122,8 @@ def decode_strh_imm_aarch64_instrs_memory_single_general_immediate_signed_post_i
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32764,12 +33188,15 @@ def decode_strh_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35071.113-35071.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32786,7 +33213,8 @@ def decode_strh_imm_aarch64_instrs_memory_single_general_immediate_signed_pre_id
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32851,12 +33279,15 @@ def decode_strh_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35157.113-35157.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -32873,7 +33304,8 @@ def decode_strh_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -32911,7 +33343,8 @@ def execute_aarch64_instrs_memory_single_general_register (datasize : Nat) (exte
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -32925,7 +33358,8 @@ def execute_aarch64_instrs_memory_single_general_register (datasize : Nat) (exte
         then (AArch64_SetLSInstructionSyndrome (Int.ediv datasize 8) false t (regsize == 64) false)
         else ()
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let _ : Unit :=
         bif (! wback)
         then
@@ -33034,12 +33468,15 @@ def decode_ldr_reg_gen_aarch64_instrs_memory_single_general_register (Rt : (BitV
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35320.113-35320.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33056,7 +33493,8 @@ def decode_ldr_reg_gen_aarch64_instrs_memory_single_general_register (Rt : (BitV
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33135,12 +33573,15 @@ def decode_ldrb_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35417.113-35417.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33157,7 +33598,8 @@ def decode_ldrb_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33236,12 +33678,15 @@ def decode_ldrh_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35514.113-35514.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33258,7 +33703,8 @@ def decode_ldrh_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33337,12 +33783,15 @@ def decode_ldrsb_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35611.113-35611.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33359,7 +33808,8 @@ def decode_ldrsb_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33438,12 +33888,15 @@ def decode_ldrsh_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35708.113-35708.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33460,7 +33913,8 @@ def decode_ldrsh_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33539,12 +33993,15 @@ def decode_ldrsw_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35805.113-35805.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33561,7 +34018,8 @@ def decode_ldrsw_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33644,12 +34102,15 @@ def decode_prfm_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:35906.113-35906.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33666,7 +34127,8 @@ def decode_prfm_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33745,12 +34207,15 @@ def decode_str_reg_gen_aarch64_instrs_memory_single_general_register (Rt : (BitV
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36006.113-36006.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33767,7 +34232,8 @@ def decode_str_reg_gen_aarch64_instrs_memory_single_general_register (Rt : (BitV
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33846,12 +34312,15 @@ def decode_strb_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36103.113-36103.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33868,7 +34337,8 @@ def decode_strb_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -33947,12 +34417,15 @@ def decode_strh_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36200.113-36200.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -33969,7 +34442,8 @@ def decode_strh_reg_aarch64_instrs_memory_single_general_register (Rt : (BitVec 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34004,11 +34478,13 @@ def execute_aarch64_instrs_memory_single_simdfp_register (datasize : Nat) (exten
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:36272.62-36272.63"
       let data ← (( do (V_read t datasize) ) : SailM (BitVec datasize) )
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let data ← (( do (Mem_read address (Int.ediv datasize 8) accdesc) ) : SailM
         (BitVec datasize) )
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:36278.62-36278.63"
@@ -34106,12 +34582,15 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_pac (memop : M
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36386.113-36386.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34267,7 +34746,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_offset_unpriv 
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -34281,7 +34761,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_offset_unpriv 
         then (AArch64_SetLSInstructionSyndrome (Int.ediv datasize 8) false t (regsize == 64) false)
         else ()
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let _ : Unit :=
         bif (! wback)
         then
@@ -34376,12 +34857,15 @@ def decode_ldtr_aarch64_instrs_memory_single_general_immediate_signed_offset_unp
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36647.113-36647.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34398,7 +34882,8 @@ def decode_ldtr_aarch64_instrs_memory_single_general_immediate_signed_offset_unp
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34463,12 +34948,15 @@ def decode_ldtrb_aarch64_instrs_memory_single_general_immediate_signed_offset_un
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36733.113-36733.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34485,7 +34973,8 @@ def decode_ldtrb_aarch64_instrs_memory_single_general_immediate_signed_offset_un
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34550,12 +35039,15 @@ def decode_ldtrh_aarch64_instrs_memory_single_general_immediate_signed_offset_un
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36819.113-36819.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34572,7 +35064,8 @@ def decode_ldtrh_aarch64_instrs_memory_single_general_immediate_signed_offset_un
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34637,12 +35130,15 @@ def decode_ldtrsb_aarch64_instrs_memory_single_general_immediate_signed_offset_u
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36905.113-36905.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34659,7 +35155,8 @@ def decode_ldtrsb_aarch64_instrs_memory_single_general_immediate_signed_offset_u
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34724,12 +35221,15 @@ def decode_ldtrsh_aarch64_instrs_memory_single_general_immediate_signed_offset_u
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:36991.113-36991.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34746,7 +35246,8 @@ def decode_ldtrsh_aarch64_instrs_memory_single_general_immediate_signed_offset_u
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34811,12 +35312,15 @@ def decode_ldtrsw_aarch64_instrs_memory_single_general_immediate_signed_offset_u
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37077.113-37077.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34833,7 +35337,8 @@ def decode_ldtrsw_aarch64_instrs_memory_single_general_immediate_signed_offset_u
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34898,12 +35403,15 @@ def decode_sttr_aarch64_instrs_memory_single_general_immediate_signed_offset_unp
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37163.113-37163.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -34920,7 +35428,8 @@ def decode_sttr_aarch64_instrs_memory_single_general_immediate_signed_offset_unp
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -34985,12 +35494,15 @@ def decode_sttrb_aarch64_instrs_memory_single_general_immediate_signed_offset_un
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37249.113-37249.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35007,7 +35519,8 @@ def decode_sttrb_aarch64_instrs_memory_single_general_immediate_signed_offset_un
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35072,12 +35585,15 @@ def decode_sttrh_aarch64_instrs_memory_single_general_immediate_signed_offset_un
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37335.113-37335.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35094,7 +35610,8 @@ def decode_sttrh_aarch64_instrs_memory_single_general_immediate_signed_offset_un
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35125,11 +35642,13 @@ def execute_aarch64_instrs_memory_single_simdfp_immediate_signed_offset_normal (
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:37404.62-37404.63"
       let data ← (( do (V_read t datasize) ) : SailM (BitVec datasize) )
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let data ← (( do (Mem_read address (Int.ediv datasize 8) accdesc) ) : SailM
         (BitVec datasize) )
       assert (((((datasize == 8) || (datasize == 16)) || (datasize == 32)) || (datasize == 64)) || (datasize == 128)) "src/instrs64.sail:37410.62-37410.63"
@@ -35218,7 +35737,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_offset_normal 
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -35232,7 +35752,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_signed_offset_normal 
         then (AArch64_SetLSInstructionSyndrome (Int.ediv datasize 8) false t (regsize == 64) false)
         else ()
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let _ : Unit :=
         bif (! wback)
         then
@@ -35333,12 +35854,15 @@ def decode_ldur_gen_aarch64_instrs_memory_single_general_immediate_signed_offset
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37599.113-37599.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35355,7 +35879,8 @@ def decode_ldur_gen_aarch64_instrs_memory_single_general_immediate_signed_offset
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35426,12 +35951,15 @@ def decode_ldurb_aarch64_instrs_memory_single_general_immediate_signed_offset_no
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37689.113-37689.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35448,7 +35976,8 @@ def decode_ldurb_aarch64_instrs_memory_single_general_immediate_signed_offset_no
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35519,12 +36048,15 @@ def decode_ldurh_aarch64_instrs_memory_single_general_immediate_signed_offset_no
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37779.113-37779.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35541,7 +36073,8 @@ def decode_ldurh_aarch64_instrs_memory_single_general_immediate_signed_offset_no
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35612,12 +36145,15 @@ def decode_ldursb_aarch64_instrs_memory_single_general_immediate_signed_offset_n
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37869.113-37869.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35634,7 +36170,8 @@ def decode_ldursb_aarch64_instrs_memory_single_general_immediate_signed_offset_n
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35705,12 +36242,15 @@ def decode_ldursh_aarch64_instrs_memory_single_general_immediate_signed_offset_n
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:37959.113-37959.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35727,7 +36267,8 @@ def decode_ldursh_aarch64_instrs_memory_single_general_immediate_signed_offset_n
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35798,12 +36339,15 @@ def decode_ldursw_aarch64_instrs_memory_single_general_immediate_signed_offset_n
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:38049.113-38049.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35820,7 +36364,8 @@ def decode_ldursw_aarch64_instrs_memory_single_general_immediate_signed_offset_n
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35891,12 +36436,15 @@ def decode_prfum_aarch64_instrs_memory_single_general_immediate_signed_offset_no
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:38139.113-38139.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -35913,7 +36461,8 @@ def decode_prfum_aarch64_instrs_memory_single_general_immediate_signed_offset_no
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -35984,12 +36533,15 @@ def decode_stur_gen_aarch64_instrs_memory_single_general_immediate_signed_offset
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:38229.113-38229.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -36006,7 +36558,8 @@ def decode_stur_gen_aarch64_instrs_memory_single_general_immediate_signed_offset
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -36077,12 +36630,15 @@ def decode_sturb_aarch64_instrs_memory_single_general_immediate_signed_offset_no
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:38319.113-38319.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -36099,7 +36655,8 @@ def decode_sturb_aarch64_instrs_memory_single_general_immediate_signed_offset_no
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -36170,12 +36727,15 @@ def decode_sturh_aarch64_instrs_memory_single_general_immediate_signed_offset_no
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:38409.113-38409.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -36192,7 +36752,8 @@ def decode_sturh_aarch64_instrs_memory_single_general_immediate_signed_offset_no
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -36632,11 +37193,12 @@ def decode_msr_reg_aarch64_instrs_system_register_system (Rt : (BitVec 5)) (op2 
 
 def execute_aarch64_instrs_system_register_cpsr (field : PSTATEField) (operand : (BitVec 4)) : SailM Unit := do
   match field with
-  | PSTATEField_SSBS => writeReg PSTATE { (← readReg PSTATE) with SSBS := (BitVec.join1 [(BitVec.access
-        operand 0)]) }
-  | PSTATEField_SP => writeReg PSTATE { (← readReg PSTATE) with SP := (BitVec.join1 [(BitVec.access
-        operand 0)]) }
-  | PSTATEField_DAIFSet => (do
+  | PSTATEField_SSBS =>
+    writeReg PSTATE { (← readReg PSTATE) with SSBS := (BitVec.join1 [(BitVec.access operand 0)]) }
+  | PSTATEField_SP =>
+    writeReg PSTATE { (← readReg PSTATE) with SP := (BitVec.join1 [(BitVec.access operand 0)]) }
+  | PSTATEField_DAIFSet =>
+    (do
       writeReg PSTATE { (← readReg PSTATE) with D := ((← readReg PSTATE).D ||| (BitVec.join1 [(BitVec.access
             operand 3)])) }
       writeReg PSTATE { (← readReg PSTATE) with A := ((← readReg PSTATE).A ||| (BitVec.join1 [(BitVec.access
@@ -36645,7 +37207,8 @@ def execute_aarch64_instrs_system_register_cpsr (field : PSTATEField) (operand :
             operand 1)])) }
       writeReg PSTATE { (← readReg PSTATE) with F := ((← readReg PSTATE).F ||| (BitVec.join1 [(BitVec.access
             operand 0)])) })
-  | PSTATEField_DAIFClr => (do
+  | PSTATEField_DAIFClr =>
+    (do
       writeReg PSTATE { (← readReg PSTATE) with D := ((← readReg PSTATE).D &&& (Complement.complement
           (BitVec.join1 [(BitVec.access operand 3)]))) }
       writeReg PSTATE { (← readReg PSTATE) with A := ((← readReg PSTATE).A &&& (Complement.complement
@@ -36654,33 +37217,37 @@ def execute_aarch64_instrs_system_register_cpsr (field : PSTATEField) (operand :
           (BitVec.join1 [(BitVec.access operand 1)]))) }
       writeReg PSTATE { (← readReg PSTATE) with F := ((← readReg PSTATE).F &&& (Complement.complement
           (BitVec.join1 [(BitVec.access operand 0)]))) })
-  | PSTATEField_PAN => writeReg PSTATE { (← readReg PSTATE) with PAN := (BitVec.join1 [(BitVec.access
-        operand 0)]) }
-  | PSTATEField_UAO => writeReg PSTATE { (← readReg PSTATE) with UAO := (BitVec.join1 [(BitVec.access
-        operand 0)]) }
-  | PSTATEField_DIT => writeReg PSTATE { (← readReg PSTATE) with DIT := (BitVec.join1 [(BitVec.access
-        operand 0)]) }
-  | PSTATEField_TCO => writeReg PSTATE { (← readReg PSTATE) with TCO := (BitVec.join1 [(BitVec.access
-        operand 0)]) }
-  | PSTATEField_ALLINT => (do
+  | PSTATEField_PAN =>
+    writeReg PSTATE { (← readReg PSTATE) with PAN := (BitVec.join1 [(BitVec.access operand 0)]) }
+  | PSTATEField_UAO =>
+    writeReg PSTATE { (← readReg PSTATE) with UAO := (BitVec.join1 [(BitVec.access operand 0)]) }
+  | PSTATEField_DIT =>
+    writeReg PSTATE { (← readReg PSTATE) with DIT := (BitVec.join1 [(BitVec.access operand 0)]) }
+  | PSTATEField_TCO =>
+    writeReg PSTATE { (← readReg PSTATE) with TCO := (BitVec.join1 [(BitVec.access operand 0)]) }
+  | PSTATEField_ALLINT =>
+    (do
       bif (((((← readReg PSTATE).EL == EL1) && (← (IsHCRXEL2Enabled ()))) && ((_get_HCRX_EL2_Type_TALLINT
                  (← readReg HCRX_EL2)) == (0b1 : (BitVec 1)))) && ((BitVec.join1 [(BitVec.access
                  operand 0)]) == (0b1 : (BitVec 1))))
       then (AArch64_SystemAccessTrap EL2 (BitVec.toNat (0x18 : (BitVec 8))))
       else (pure ())
       writeReg PSTATE { (← readReg PSTATE) with ALLINT := (BitVec.join1 [(BitVec.access operand 0)]) })
-  | PSTATEField_SVCRSM => (do
+  | PSTATEField_SVCRSM =>
+    (do
       (CheckSMEAccess ())
       (SetPSTATE_SM (BitVec.join1 [(BitVec.access operand 0)])))
-  | PSTATEField_SVCRZA => (do
+  | PSTATEField_SVCRZA =>
+    (do
       (CheckSMEAccess ())
       (SetPSTATE_ZA (BitVec.join1 [(BitVec.access operand 0)])))
-  | PSTATEField_SVCRSMZA => (do
+  | PSTATEField_SVCRSMZA =>
+    (do
       (CheckSMEAccess ())
       (SetPSTATE_SM (BitVec.join1 [(BitVec.access operand 0)]))
       (SetPSTATE_ZA (BitVec.join1 [(BitVec.access operand 0)])))
-  | PSTATEField_PM => writeReg PSTATE { (← readReg PSTATE) with PM := (BitVec.join1 [(BitVec.access
-        operand 0)]) }
+  | PSTATEField_PM =>
+    writeReg PSTATE { (← readReg PSTATE) with PM := (BitVec.join1 [(BitVec.access operand 0)]) }
 
 def decode_msr_imm_aarch64_instrs_system_register_cpsr (op2 : (BitVec 3)) (CRm : (BitVec 4)) (op1 : (BitVec 3)) : SailM Unit := do
   bif ((op1 == (0b000 : (BitVec 3))) && (op2 == (0b000 : (BitVec 3))))
@@ -37389,7 +37956,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_unsigned (datasize : 
     then (address + offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data ← (( do
         bif rt_unknown
         then
@@ -37403,7 +37971,8 @@ def execute_aarch64_instrs_memory_single_general_immediate_unsigned (datasize : 
         then (AArch64_SetLSInstructionSyndrome (Int.ediv datasize 8) false t (regsize == 64) false)
         else ()
       (Mem_set address (Int.ediv datasize 8) accdesc data))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let _ : Unit :=
         bif (! wback)
         then
@@ -37504,12 +38073,15 @@ def decode_prfm_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:39889.113-39889.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -37526,7 +38098,8 @@ def decode_prfm_imm_aarch64_instrs_memory_single_general_immediate_unsigned (Rt 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -46333,7 +46906,8 @@ def execute_aarch64_instrs_memory_ordered_pair_stilp (datasize : Nat) (memop : M
     then (BitVec.addInt address offset)
     else address
   match memop with
-  | MemOp_STORE => (do
+  | MemOp_STORE =>
+    (do
       let data1 ← (( do
         bif (rt_unknown && (t == n))
         then
@@ -46373,7 +46947,8 @@ def execute_aarch64_instrs_memory_ordered_pair_stilp (datasize : Nat) (memop : M
             (do
               (Mem_set (BitVec.addInt address 0) dbytes accdesc data1)
               (Mem_set (BitVec.addInt address dbytes) dbytes accdesc data2))))
-  | MemOp_LOAD => (do
+  | MemOp_LOAD =>
+    (do
       let (data1, data2) ← (( do
         bif (← (HaveLSE2Ext ()))
         then
@@ -46471,12 +47046,15 @@ def decode_stilp_aarch64_instrs_memory_ordered_pair_stilp (Rt : (BitVec 5)) (Rn 
                 Constraint_UNDEF) || (BEq.beq c Constraint_NOP)))) "src/instrs64.sail:51080.113-51080.114"
         let (wb_unknown, wback) ← (( do
           match c with
-          | Constraint_WBSUPPRESS => (let wback : Bool := false
+          | Constraint_WBSUPPRESS =>
+            (let wback : Bool := false
             (pure (wb_unknown, wback)))
-          | Constraint_UNKNOWN => (let wb_unknown : Bool := true
+          | Constraint_UNKNOWN =>
+            (let wb_unknown : Bool := true
             (pure (wb_unknown, wback)))
           | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-          | Constraint_NOP => (do
+          | Constraint_NOP =>
+            (do
               (EndOfInstruction ())
               (pure (wb_unknown, wback)))
           | _ => (pure (wb_unknown, wback)) ) : SailM (Bool × Bool) )
@@ -46493,7 +47071,8 @@ def decode_stilp_aarch64_instrs_memory_ordered_pair_stilp (Rt : (BitVec 5)) (Rn 
         | Constraint_NONE => (pure false)
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))
@@ -46508,7 +47087,8 @@ def decode_stilp_aarch64_instrs_memory_ordered_pair_stilp (Rt : (BitVec 5)) (Rn 
         match c with
         | Constraint_UNKNOWN => (pure true)
         | Constraint_UNDEF => sailThrow ((Error_Undefined ()))
-        | Constraint_NOP => (do
+        | Constraint_NOP =>
+          (do
             (EndOfInstruction ())
             (pure rt_unknown))
         | _ => (pure rt_unknown))

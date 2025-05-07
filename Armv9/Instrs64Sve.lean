@@ -576,22 +576,28 @@ def execute_FCMGE_P_P_Z0__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:635.59-635.60"
                   (FPCompareEQ element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:639.59-639.60"
                   (FPCompareGE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:643.59-643.60"
                   (FPCompareGT element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:647.59-647.60"
                   (FPCompareNE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:651.117-651.118"
                   (FPCompareGT (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:655.117-655.118"
                   (FPCompareGE (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -657,22 +663,28 @@ def execute_FCMGT_P_P_Z0__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:738.59-738.60"
                   (FPCompareEQ element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:742.59-742.60"
                   (FPCompareGE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:746.59-746.60"
                   (FPCompareGT element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:750.59-750.60"
                   (FPCompareNE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:754.117-754.118"
                   (FPCompareGT (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:758.117-758.118"
                   (FPCompareGE (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -738,22 +750,28 @@ def execute_FCMLT_P_P_Z0__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:841.59-841.60"
                   (FPCompareEQ element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:845.59-845.60"
                   (FPCompareGE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:849.59-849.60"
                   (FPCompareGT element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:853.59-853.60"
                   (FPCompareNE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:857.117-857.118"
                   (FPCompareGT (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:861.117-861.118"
                   (FPCompareGE (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -819,22 +837,28 @@ def execute_FCMLE_P_P_Z0__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:944.59-944.60"
                   (FPCompareEQ element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:948.59-948.60"
                   (FPCompareGE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:952.59-952.60"
                   (FPCompareGT element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:956.59-956.60"
                   (FPCompareNE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:960.117-960.118"
                   (FPCompareGT (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:964.117-964.118"
                   (FPCompareGE (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -900,22 +924,28 @@ def execute_FCMEQ_P_P_Z0__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1047.59-1047.60"
                   (FPCompareEQ element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1051.59-1051.60"
                   (FPCompareGE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1055.59-1055.60"
                   (FPCompareGT element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1059.59-1059.60"
                   (FPCompareNE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:1063.117-1063.118"
                   (FPCompareGT (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:1067.117-1067.118"
                   (FPCompareGE (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -981,22 +1011,28 @@ def execute_FCMNE_P_P_Z0__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (n : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1150.59-1150.60"
                   (FPCompareEQ element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1154.59-1154.60"
                   (FPCompareGE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1158.59-1158.60"
                   (FPCompareGT element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:1162.59-1162.60"
                   (FPCompareNE element (integer_subrange 0 (esize -i 1) 0) (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:1166.117-1166.118"
                   (FPCompareGT (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((((esize -i 1) -i 0) +i 1) == 16) || (((((esize -i 1) -i 0) +i 1) == 32) || ((((esize -i 1) -i 0) +i 1) == 64))) "src/instrs64_sve.sail:1170.117-1170.118"
                   (FPCompareGE (integer_subrange 0 (esize -i 1) 0) element (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -4505,10 +4541,12 @@ def execute_FACGE_P_P_ZZ__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5665.59-5665.60"
                   (FPCompareGE (← (FPAbs element1)) (← (FPAbs element2)) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5669.59-5669.60"
                   (FPCompareGT (← (FPAbs element1)) (← (FPAbs element2)) (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -4582,10 +4620,12 @@ def execute_FACGT_P_P_ZZ__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5756.59-5756.60"
                   (FPCompareGE (← (FPAbs element1)) (← (FPAbs element2)) (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5760.59-5760.60"
                   (FPCompareGT (← (FPAbs element1)) (← (FPAbs element2)) (← (FPCR_read ()))))
               | _ => (pure res) ) : SailM Bool )
@@ -4659,25 +4699,32 @@ def execute_FCMUO_P_P_ZZ__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5847.59-5847.60"
                   (FPCompareEQ element1 element2 (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5851.59-5851.60"
                   (FPCompareGE element1 element2 (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5855.59-5855.60"
                   (FPCompareGT element1 element2 (← (FPCR_read ()))))
-              | Cmp_UN => (do
+              | Cmp_UN =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5859.59-5859.60"
                   (FPCompareUN element1 element2 (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5863.59-5863.60"
                   (FPCompareNE element1 element2 (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5867.59-5867.60"
                   (FPCompareGT element2 element1 (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5871.59-5871.60"
                   (FPCompareGE element2 element1 (← (FPCR_read ())))) ) : SailM Bool )
             let res := res
@@ -4751,25 +4798,32 @@ def execute_FCMGE_P_P_ZZ__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5958.59-5958.60"
                   (FPCompareEQ element1 element2 (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5962.59-5962.60"
                   (FPCompareGE element1 element2 (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5966.59-5966.60"
                   (FPCompareGT element1 element2 (← (FPCR_read ()))))
-              | Cmp_UN => (do
+              | Cmp_UN =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5970.59-5970.60"
                   (FPCompareUN element1 element2 (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5974.59-5974.60"
                   (FPCompareNE element1 element2 (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5978.59-5978.60"
                   (FPCompareGT element2 element1 (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:5982.59-5982.60"
                   (FPCompareGE element2 element1 (← (FPCR_read ())))) ) : SailM Bool )
             let res := res
@@ -4843,25 +4897,32 @@ def execute_FCMGT_P_P_ZZ__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6071.59-6071.60"
                   (FPCompareEQ element1 element2 (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6075.59-6075.60"
                   (FPCompareGE element1 element2 (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6079.59-6079.60"
                   (FPCompareGT element1 element2 (← (FPCR_read ()))))
-              | Cmp_UN => (do
+              | Cmp_UN =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6083.59-6083.60"
                   (FPCompareUN element1 element2 (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6087.59-6087.60"
                   (FPCompareNE element1 element2 (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6091.59-6091.60"
                   (FPCompareGT element2 element1 (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6095.59-6095.60"
                   (FPCompareGE element2 element1 (← (FPCR_read ())))) ) : SailM Bool )
             let res := res
@@ -4935,25 +4996,32 @@ def execute_FCMEQ_P_P_ZZ__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6184.59-6184.60"
                   (FPCompareEQ element1 element2 (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6188.59-6188.60"
                   (FPCompareGE element1 element2 (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6192.59-6192.60"
                   (FPCompareGT element1 element2 (← (FPCR_read ()))))
-              | Cmp_UN => (do
+              | Cmp_UN =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6196.59-6196.60"
                   (FPCompareUN element1 element2 (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6200.59-6200.60"
                   (FPCompareNE element1 element2 (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6204.59-6204.60"
                   (FPCompareGT element2 element1 (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6208.59-6208.60"
                   (FPCompareGE element2 element1 (← (FPCR_read ())))) ) : SailM Bool )
             let res := res
@@ -5027,25 +5095,32 @@ def execute_FCMNE_P_P_ZZ__ (VL : Nat) (d : Nat) (esize : Nat) (g : Nat) (m : Nat
             let res ← (( do (undefined_bool ()) ) : SailM Bool )
             let res ← (( do
               match op with
-              | Cmp_EQ => (do
+              | Cmp_EQ =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6297.59-6297.60"
                   (FPCompareEQ element1 element2 (← (FPCR_read ()))))
-              | Cmp_GE => (do
+              | Cmp_GE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6301.59-6301.60"
                   (FPCompareGE element1 element2 (← (FPCR_read ()))))
-              | Cmp_GT => (do
+              | Cmp_GT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6305.59-6305.60"
                   (FPCompareGT element1 element2 (← (FPCR_read ()))))
-              | Cmp_UN => (do
+              | Cmp_UN =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6309.59-6309.60"
                   (FPCompareUN element1 element2 (← (FPCR_read ()))))
-              | Cmp_NE => (do
+              | Cmp_NE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6313.59-6313.60"
                   (FPCompareNE element1 element2 (← (FPCR_read ()))))
-              | Cmp_LT => (do
+              | Cmp_LT =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6317.59-6317.60"
                   (FPCompareGT element2 element1 (← (FPCR_read ()))))
-              | Cmp_LE => (do
+              | Cmp_LE =>
+                (do
                   assert (((esize == 16) || (esize == 32)) || (esize == 64)) "src/instrs64_sve.sail:6321.59-6321.60"
                   (FPCompareGE element2 element1 (← (FPCR_read ())))) ) : SailM Bool )
             let res := res
@@ -12318,9 +12393,11 @@ def execute_WHILELO_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -12385,9 +12462,11 @@ def execute_WHILELS_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -12452,9 +12531,11 @@ def execute_WHILELT_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -12519,9 +12600,11 @@ def execute_WHILELE_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -12586,9 +12669,11 @@ def execute_WHILEHI_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -12653,9 +12738,11 @@ def execute_WHILEHS_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -12720,9 +12807,11 @@ def execute_WHILEGT_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -12787,9 +12876,11 @@ def execute_WHILEGE_P_P_RR__ (VL : Nat) (d : Nat) (esize : Nat) (m : Nat) (n : N
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -23518,7 +23609,8 @@ def decode_LSL_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
   let d := (BitVec.toNat Zd)
   let shift := ((BitVec.toNat (tsize ++ imm3)) -i esize)
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_ZI__ 128 d 8 n shift)
       | 256 => (execute_LSL_Z_ZI__ 256 d 8 n shift)
@@ -23526,7 +23618,8 @@ def decode_LSL_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_LSL_Z_ZI__ 1024 d 8 n shift)
       | 2048 => (execute_LSL_Z_ZI__ 2048 d 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_ZI__ 128 d 16 n shift)
       | 256 => (execute_LSL_Z_ZI__ 256 d 16 n shift)
@@ -23534,7 +23627,8 @@ def decode_LSL_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_LSL_Z_ZI__ 1024 d 16 n shift)
       | 2048 => (execute_LSL_Z_ZI__ 2048 d 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_ZI__ 128 d 32 n shift)
       | 256 => (execute_LSL_Z_ZI__ 256 d 32 n shift)
@@ -23542,7 +23636,8 @@ def decode_LSL_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_LSL_Z_ZI__ 1024 d 32 n shift)
       | 2048 => (execute_LSL_Z_ZI__ 2048 d 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_ZI__ 128 d 64 n shift)
       | 256 => (execute_LSL_Z_ZI__ 256 d 64 n shift)
@@ -23605,7 +23700,8 @@ def decode_LSR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
   let d := (BitVec.toNat Zd)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_ZI__ 128 d 8 n shift)
       | 256 => (execute_LSR_Z_ZI__ 256 d 8 n shift)
@@ -23613,7 +23709,8 @@ def decode_LSR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_LSR_Z_ZI__ 1024 d 8 n shift)
       | 2048 => (execute_LSR_Z_ZI__ 2048 d 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_ZI__ 128 d 16 n shift)
       | 256 => (execute_LSR_Z_ZI__ 256 d 16 n shift)
@@ -23621,7 +23718,8 @@ def decode_LSR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_LSR_Z_ZI__ 1024 d 16 n shift)
       | 2048 => (execute_LSR_Z_ZI__ 2048 d 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_ZI__ 128 d 32 n shift)
       | 256 => (execute_LSR_Z_ZI__ 256 d 32 n shift)
@@ -23629,7 +23727,8 @@ def decode_LSR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_LSR_Z_ZI__ 1024 d 32 n shift)
       | 2048 => (execute_LSR_Z_ZI__ 2048 d 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_ZI__ 128 d 64 n shift)
       | 256 => (execute_LSR_Z_ZI__ 256 d 64 n shift)
@@ -23692,7 +23791,8 @@ def decode_ASR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
   let d := (BitVec.toNat Zd)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_ZI__ 128 d 8 n shift)
       | 256 => (execute_ASR_Z_ZI__ 256 d 8 n shift)
@@ -23700,7 +23800,8 @@ def decode_ASR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_ASR_Z_ZI__ 1024 d 8 n shift)
       | 2048 => (execute_ASR_Z_ZI__ 2048 d 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_ZI__ 128 d 16 n shift)
       | 256 => (execute_ASR_Z_ZI__ 256 d 16 n shift)
@@ -23708,7 +23809,8 @@ def decode_ASR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_ASR_Z_ZI__ 1024 d 16 n shift)
       | 2048 => (execute_ASR_Z_ZI__ 2048 d 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_ZI__ 128 d 32 n shift)
       | 256 => (execute_ASR_Z_ZI__ 256 d 32 n shift)
@@ -23716,7 +23818,8 @@ def decode_ASR_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3)
       | 1024 => (execute_ASR_Z_ZI__ 1024 d 32 n shift)
       | 2048 => (execute_ASR_Z_ZI__ 2048 d 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_ZI__ 128 d 64 n shift)
       | 256 => (execute_ASR_Z_ZI__ 256 d 64 n shift)
@@ -23794,7 +23897,8 @@ def decode_ASRD_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (
   let dn := (BitVec.toNat Zdn)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_ASRD_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_ASRD_Z_P_ZI__ 256 dn 8 g shift)
@@ -23802,7 +23906,8 @@ def decode_ASRD_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (
       | 1024 => (execute_ASRD_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_ASRD_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_ASRD_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_ASRD_Z_P_ZI__ 256 dn 16 g shift)
@@ -23810,7 +23915,8 @@ def decode_ASRD_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (
       | 1024 => (execute_ASRD_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_ASRD_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_ASRD_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_ASRD_Z_P_ZI__ 256 dn 32 g shift)
@@ -23818,7 +23924,8 @@ def decode_ASRD_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (
       | 1024 => (execute_ASRD_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_ASRD_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_ASRD_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_ASRD_Z_P_ZI__ 256 dn 64 g shift)
@@ -23889,7 +23996,8 @@ def decode_LSL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
   let dn := (BitVec.toNat Zdn)
   let shift := ((BitVec.toNat (tsize ++ imm3)) -i esize)
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_LSL_Z_P_ZI__ 256 dn 8 g shift)
@@ -23897,7 +24005,8 @@ def decode_LSL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_LSL_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_LSL_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_LSL_Z_P_ZI__ 256 dn 16 g shift)
@@ -23905,7 +24014,8 @@ def decode_LSL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_LSL_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_LSL_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_LSL_Z_P_ZI__ 256 dn 32 g shift)
@@ -23913,7 +24023,8 @@ def decode_LSL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_LSL_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_LSL_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_LSL_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_LSL_Z_P_ZI__ 256 dn 64 g shift)
@@ -23984,7 +24095,8 @@ def decode_LSR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
   let dn := (BitVec.toNat Zdn)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_LSR_Z_P_ZI__ 256 dn 8 g shift)
@@ -23992,7 +24104,8 @@ def decode_LSR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_LSR_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_LSR_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_LSR_Z_P_ZI__ 256 dn 16 g shift)
@@ -24000,7 +24113,8 @@ def decode_LSR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_LSR_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_LSR_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_LSR_Z_P_ZI__ 256 dn 32 g shift)
@@ -24008,7 +24122,8 @@ def decode_LSR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_LSR_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_LSR_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_LSR_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_LSR_Z_P_ZI__ 256 dn 64 g shift)
@@ -24079,7 +24194,8 @@ def decode_ASR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
   let dn := (BitVec.toNat Zdn)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_ASR_Z_P_ZI__ 256 dn 8 g shift)
@@ -24087,7 +24203,8 @@ def decode_ASR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_ASR_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_ASR_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_ASR_Z_P_ZI__ 256 dn 16 g shift)
@@ -24095,7 +24212,8 @@ def decode_ASR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_ASR_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_ASR_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_ASR_Z_P_ZI__ 256 dn 32 g shift)
@@ -24103,7 +24221,8 @@ def decode_ASR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) (P
       | 1024 => (execute_ASR_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_ASR_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_ASR_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_ASR_Z_P_ZI__ 256 dn 64 g shift)
@@ -28155,7 +28274,8 @@ def decode_SRSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
   let dn := (BitVec.toNat Zdn)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_SRSHR_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_SRSHR_Z_P_ZI__ 256 dn 8 g shift)
@@ -28163,7 +28283,8 @@ def decode_SRSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_SRSHR_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_SRSHR_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_SRSHR_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_SRSHR_Z_P_ZI__ 256 dn 16 g shift)
@@ -28171,7 +28292,8 @@ def decode_SRSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_SRSHR_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_SRSHR_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_SRSHR_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_SRSHR_Z_P_ZI__ 256 dn 32 g shift)
@@ -28179,7 +28301,8 @@ def decode_SRSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_SRSHR_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_SRSHR_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_SRSHR_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_SRSHR_Z_P_ZI__ 256 dn 64 g shift)
@@ -28251,7 +28374,8 @@ def decode_URSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
   let dn := (BitVec.toNat Zdn)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_URSHR_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_URSHR_Z_P_ZI__ 256 dn 8 g shift)
@@ -28259,7 +28383,8 @@ def decode_URSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_URSHR_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_URSHR_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_URSHR_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_URSHR_Z_P_ZI__ 256 dn 16 g shift)
@@ -28267,7 +28392,8 @@ def decode_URSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_URSHR_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_URSHR_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_URSHR_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_URSHR_Z_P_ZI__ 256 dn 32 g shift)
@@ -28275,7 +28401,8 @@ def decode_URSHR_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_URSHR_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_URSHR_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_URSHR_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_URSHR_Z_P_ZI__ 256 dn 64 g shift)
@@ -28347,7 +28474,8 @@ def decode_SQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
   let dn := (BitVec.toNat Zdn)
   let shift := ((BitVec.toNat (tsize ++ imm3)) -i esize)
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_SQSHL_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_SQSHL_Z_P_ZI__ 256 dn 8 g shift)
@@ -28355,7 +28483,8 @@ def decode_SQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_SQSHL_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_SQSHL_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_SQSHL_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_SQSHL_Z_P_ZI__ 256 dn 16 g shift)
@@ -28363,7 +28492,8 @@ def decode_SQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_SQSHL_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_SQSHL_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_SQSHL_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_SQSHL_Z_P_ZI__ 256 dn 32 g shift)
@@ -28371,7 +28501,8 @@ def decode_SQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_SQSHL_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_SQSHL_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_SQSHL_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_SQSHL_Z_P_ZI__ 256 dn 64 g shift)
@@ -28443,7 +28574,8 @@ def decode_UQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
   let dn := (BitVec.toNat Zdn)
   let shift := ((BitVec.toNat (tsize ++ imm3)) -i esize)
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_UQSHL_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_UQSHL_Z_P_ZI__ 256 dn 8 g shift)
@@ -28451,7 +28583,8 @@ def decode_UQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_UQSHL_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_UQSHL_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_UQSHL_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_UQSHL_Z_P_ZI__ 256 dn 16 g shift)
@@ -28459,7 +28592,8 @@ def decode_UQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_UQSHL_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_UQSHL_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_UQSHL_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_UQSHL_Z_P_ZI__ 256 dn 32 g shift)
@@ -28467,7 +28601,8 @@ def decode_UQSHL_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1)) 
       | 1024 => (execute_UQSHL_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_UQSHL_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_UQSHL_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_UQSHL_Z_P_ZI__ 256 dn 64 g shift)
@@ -28539,7 +28674,8 @@ def decode_SQSHLU_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1))
   let dn := (BitVec.toNat Zdn)
   let shift := ((BitVec.toNat (tsize ++ imm3)) -i esize)
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_SQSHLU_Z_P_ZI__ 128 dn 8 g shift)
       | 256 => (execute_SQSHLU_Z_P_ZI__ 256 dn 8 g shift)
@@ -28547,7 +28683,8 @@ def decode_SQSHLU_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1))
       | 1024 => (execute_SQSHLU_Z_P_ZI__ 1024 dn 8 g shift)
       | 2048 => (execute_SQSHLU_Z_P_ZI__ 2048 dn 8 g shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_SQSHLU_Z_P_ZI__ 128 dn 16 g shift)
       | 256 => (execute_SQSHLU_Z_P_ZI__ 256 dn 16 g shift)
@@ -28555,7 +28692,8 @@ def decode_SQSHLU_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1))
       | 1024 => (execute_SQSHLU_Z_P_ZI__ 1024 dn 16 g shift)
       | 2048 => (execute_SQSHLU_Z_P_ZI__ 2048 dn 16 g shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_SQSHLU_Z_P_ZI__ 128 dn 32 g shift)
       | 256 => (execute_SQSHLU_Z_P_ZI__ 256 dn 32 g shift)
@@ -28563,7 +28701,8 @@ def decode_SQSHLU_Z_P_ZI__ (tszh : (BitVec 2)) (L : (BitVec 1)) (U : (BitVec 1))
       | 1024 => (execute_SQSHLU_Z_P_ZI__ 1024 dn 32 g shift)
       | 2048 => (execute_SQSHLU_Z_P_ZI__ 2048 dn 32 g shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_SQSHLU_Z_P_ZI__ 128 dn 64 g shift)
       | 256 => (execute_SQSHLU_Z_P_ZI__ 256 dn 64 g shift)
@@ -37074,7 +37213,8 @@ def decode_SLI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
   let d := (BitVec.toNat Zd)
   let shift := ((BitVec.toNat (tsize ++ imm3)) -i esize)
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_SLI_Z_ZZI__ 128 d 8 n shift)
       | 256 => (execute_SLI_Z_ZZI__ 256 d 8 n shift)
@@ -37082,7 +37222,8 @@ def decode_SLI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SLI_Z_ZZI__ 1024 d 8 n shift)
       | 2048 => (execute_SLI_Z_ZZI__ 2048 d 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_SLI_Z_ZZI__ 128 d 16 n shift)
       | 256 => (execute_SLI_Z_ZZI__ 256 d 16 n shift)
@@ -37090,7 +37231,8 @@ def decode_SLI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SLI_Z_ZZI__ 1024 d 16 n shift)
       | 2048 => (execute_SLI_Z_ZZI__ 2048 d 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_SLI_Z_ZZI__ 128 d 32 n shift)
       | 256 => (execute_SLI_Z_ZZI__ 256 d 32 n shift)
@@ -37098,7 +37240,8 @@ def decode_SLI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SLI_Z_ZZI__ 1024 d 32 n shift)
       | 2048 => (execute_SLI_Z_ZZI__ 2048 d 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_SLI_Z_ZZI__ 128 d 64 n shift)
       | 256 => (execute_SLI_Z_ZZI__ 256 d 64 n shift)
@@ -37165,7 +37308,8 @@ def decode_SRI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
   let d := (BitVec.toNat Zd)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_SRI_Z_ZZI__ 128 d 8 n shift)
       | 256 => (execute_SRI_Z_ZZI__ 256 d 8 n shift)
@@ -37173,7 +37317,8 @@ def decode_SRI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SRI_Z_ZZI__ 1024 d 8 n shift)
       | 2048 => (execute_SRI_Z_ZZI__ 2048 d 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_SRI_Z_ZZI__ 128 d 16 n shift)
       | 256 => (execute_SRI_Z_ZZI__ 256 d 16 n shift)
@@ -37181,7 +37326,8 @@ def decode_SRI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SRI_Z_ZZI__ 1024 d 16 n shift)
       | 2048 => (execute_SRI_Z_ZZI__ 2048 d 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_SRI_Z_ZZI__ 128 d 32 n shift)
       | 256 => (execute_SRI_Z_ZZI__ 256 d 32 n shift)
@@ -37189,7 +37335,8 @@ def decode_SRI_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SRI_Z_ZZI__ 1024 d 32 n shift)
       | 2048 => (execute_SRI_Z_ZZI__ 2048 d 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_SRI_Z_ZZI__ 128 d 64 n shift)
       | 256 => (execute_SRI_Z_ZZI__ 256 d 64 n shift)
@@ -38543,7 +38690,8 @@ def decode_SRSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
   let da := (BitVec.toNat Zda)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_SRSRA_Z_ZI__ 128 da 8 n shift)
       | 256 => (execute_SRSRA_Z_ZI__ 256 da 8 n shift)
@@ -38551,7 +38699,8 @@ def decode_SRSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
       | 1024 => (execute_SRSRA_Z_ZI__ 1024 da 8 n shift)
       | 2048 => (execute_SRSRA_Z_ZI__ 2048 da 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_SRSRA_Z_ZI__ 128 da 16 n shift)
       | 256 => (execute_SRSRA_Z_ZI__ 256 da 16 n shift)
@@ -38559,7 +38708,8 @@ def decode_SRSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
       | 1024 => (execute_SRSRA_Z_ZI__ 1024 da 16 n shift)
       | 2048 => (execute_SRSRA_Z_ZI__ 2048 da 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_SRSRA_Z_ZI__ 128 da 32 n shift)
       | 256 => (execute_SRSRA_Z_ZI__ 256 da 32 n shift)
@@ -38567,7 +38717,8 @@ def decode_SRSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
       | 1024 => (execute_SRSRA_Z_ZI__ 1024 da 32 n shift)
       | 2048 => (execute_SRSRA_Z_ZI__ 2048 da 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_SRSRA_Z_ZI__ 128 da 64 n shift)
       | 256 => (execute_SRSRA_Z_ZI__ 256 da 64 n shift)
@@ -38633,7 +38784,8 @@ def decode_SSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
   let da := (BitVec.toNat Zda)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_SSRA_Z_ZI__ 128 da 8 n shift)
       | 256 => (execute_SSRA_Z_ZI__ 256 da 8 n shift)
@@ -38641,7 +38793,8 @@ def decode_SSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SSRA_Z_ZI__ 1024 da 8 n shift)
       | 2048 => (execute_SSRA_Z_ZI__ 2048 da 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_SSRA_Z_ZI__ 128 da 16 n shift)
       | 256 => (execute_SSRA_Z_ZI__ 256 da 16 n shift)
@@ -38649,7 +38802,8 @@ def decode_SSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SSRA_Z_ZI__ 1024 da 16 n shift)
       | 2048 => (execute_SSRA_Z_ZI__ 2048 da 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_SSRA_Z_ZI__ 128 da 32 n shift)
       | 256 => (execute_SSRA_Z_ZI__ 256 da 32 n shift)
@@ -38657,7 +38811,8 @@ def decode_SSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_SSRA_Z_ZI__ 1024 da 32 n shift)
       | 2048 => (execute_SSRA_Z_ZI__ 2048 da 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_SSRA_Z_ZI__ 128 da 64 n shift)
       | 256 => (execute_SSRA_Z_ZI__ 256 da 64 n shift)
@@ -38725,7 +38880,8 @@ def decode_URSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
   let da := (BitVec.toNat Zda)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_URSRA_Z_ZI__ 128 da 8 n shift)
       | 256 => (execute_URSRA_Z_ZI__ 256 da 8 n shift)
@@ -38733,7 +38889,8 @@ def decode_URSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
       | 1024 => (execute_URSRA_Z_ZI__ 1024 da 8 n shift)
       | 2048 => (execute_URSRA_Z_ZI__ 2048 da 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_URSRA_Z_ZI__ 128 da 16 n shift)
       | 256 => (execute_URSRA_Z_ZI__ 256 da 16 n shift)
@@ -38741,7 +38898,8 @@ def decode_URSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
       | 1024 => (execute_URSRA_Z_ZI__ 1024 da 16 n shift)
       | 2048 => (execute_URSRA_Z_ZI__ 2048 da 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_URSRA_Z_ZI__ 128 da 32 n shift)
       | 256 => (execute_URSRA_Z_ZI__ 256 da 32 n shift)
@@ -38749,7 +38907,8 @@ def decode_URSRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 
       | 1024 => (execute_URSRA_Z_ZI__ 1024 da 32 n shift)
       | 2048 => (execute_URSRA_Z_ZI__ 2048 da 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_URSRA_Z_ZI__ 128 da 64 n shift)
       | 256 => (execute_URSRA_Z_ZI__ 256 da 64 n shift)
@@ -38815,7 +38974,8 @@ def decode_USRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
   let da := (BitVec.toNat Zda)
   let shift := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_USRA_Z_ZI__ 128 da 8 n shift)
       | 256 => (execute_USRA_Z_ZI__ 256 da 8 n shift)
@@ -38823,7 +38983,8 @@ def decode_USRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_USRA_Z_ZI__ 1024 da 8 n shift)
       | 2048 => (execute_USRA_Z_ZI__ 2048 da 8 n shift)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_USRA_Z_ZI__ 128 da 16 n shift)
       | 256 => (execute_USRA_Z_ZI__ 256 da 16 n shift)
@@ -38831,7 +38992,8 @@ def decode_USRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_USRA_Z_ZI__ 1024 da 16 n shift)
       | 2048 => (execute_USRA_Z_ZI__ 2048 da 16 n shift)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_USRA_Z_ZI__ 128 da 32 n shift)
       | 256 => (execute_USRA_Z_ZI__ 256 da 32 n shift)
@@ -38839,7 +39001,8 @@ def decode_USRA_Z_ZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_USRA_Z_ZI__ 1024 da 32 n shift)
       | 2048 => (execute_USRA_Z_ZI__ 2048 da 32 n shift)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_USRA_Z_ZI__ 128 da 64 n shift)
       | 256 => (execute_USRA_Z_ZI__ 256 da 64 n shift)
@@ -39230,7 +39393,8 @@ def decode_XAR_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
   let dn := (BitVec.toNat Zdn)
   let rot := ((2 *i esize) -i (BitVec.toNat (tsize ++ imm3)))
   match esize with
-  | 8 => (do
+  | 8 =>
+    (do
       match VL with
       | 128 => (execute_XAR_Z_ZZI__ 128 dn 8 m rot)
       | 256 => (execute_XAR_Z_ZZI__ 256 dn 8 m rot)
@@ -39238,7 +39402,8 @@ def decode_XAR_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_XAR_Z_ZZI__ 1024 dn 8 m rot)
       | 2048 => (execute_XAR_Z_ZZI__ 2048 dn 8 m rot)
       | _ => (pure ()))
-  | 16 => (do
+  | 16 =>
+    (do
       match VL with
       | 128 => (execute_XAR_Z_ZZI__ 128 dn 16 m rot)
       | 256 => (execute_XAR_Z_ZZI__ 256 dn 16 m rot)
@@ -39246,7 +39411,8 @@ def decode_XAR_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_XAR_Z_ZZI__ 1024 dn 16 m rot)
       | 2048 => (execute_XAR_Z_ZZI__ 2048 dn 16 m rot)
       | _ => (pure ()))
-  | 32 => (do
+  | 32 =>
+    (do
       match VL with
       | 128 => (execute_XAR_Z_ZZI__ 128 dn 32 m rot)
       | 256 => (execute_XAR_Z_ZZI__ 256 dn 32 m rot)
@@ -39254,7 +39420,8 @@ def decode_XAR_Z_ZZI__ (tszh : (BitVec 2)) (tszl : (BitVec 2)) (imm3 : (BitVec 3
       | 1024 => (execute_XAR_Z_ZZI__ 1024 dn 32 m rot)
       | 2048 => (execute_XAR_Z_ZZI__ 2048 dn 32 m rot)
       | _ => (pure ()))
-  | 64 => (do
+  | 64 =>
+    (do
       match VL with
       | 128 => (execute_XAR_Z_ZZI__ 128 dn 64 m rot)
       | 256 => (execute_XAR_Z_ZZI__ 256 dn 64 m rot)
@@ -39966,9 +40133,11 @@ def execute_WHILELO_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -40037,9 +40206,11 @@ def execute_WHILELS_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -40108,9 +40279,11 @@ def execute_WHILELT_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -40179,9 +40352,11 @@ def execute_WHILELE_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -40250,9 +40425,11 @@ def execute_WHILEHI_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -40321,9 +40498,11 @@ def execute_WHILEHS_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -40392,9 +40571,11 @@ def execute_WHILEGT_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -40463,9 +40644,11 @@ def execute_WHILEGE_PP_RR__ (VL : Nat) (d0 : Nat) (d1 : Nat) (esize : Nat) (m : 
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42277,19 +42460,24 @@ def decode_CNTP_R_PN__ (size : (BitVec 2)) (vl : (BitVec 1)) (PNn : (BitVec 4)) 
   let d := (BitVec.toNat Rd)
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 15) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))) "src/instrs64_sve.sail:56606.130-56606.131"
       (execute_CNTP_R_PN__ 128 d esize n width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 15) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))) "src/instrs64_sve.sail:56610.130-56610.131"
       (execute_CNTP_R_PN__ 256 d esize n width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 15) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))) "src/instrs64_sve.sail:56614.130-56614.131"
       (execute_CNTP_R_PN__ 512 d esize n width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 15) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))) "src/instrs64_sve.sail:56618.131-56618.132"
       (execute_CNTP_R_PN__ 1024 d esize n width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 15) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))) "src/instrs64_sve.sail:56622.131-56622.132"
       (execute_CNTP_R_PN__ 2048 d esize n width))
   | _ => (pure ())
@@ -42321,9 +42509,11 @@ def execute_WHILELO_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42358,19 +42548,24 @@ def decode_WHILELO_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_LT
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:56696.151-56696.152"
       (execute_WHILELO_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:56700.151-56700.152"
       (execute_WHILELO_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:56704.151-56704.152"
       (execute_WHILELO_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:56708.152-56708.153"
       (execute_WHILELO_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:56712.152-56712.153"
       (execute_WHILELO_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -42402,9 +42597,11 @@ def execute_WHILELS_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42439,19 +42636,24 @@ def decode_WHILELS_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_LE
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:56790.151-56790.152"
       (execute_WHILELS_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:56794.151-56794.152"
       (execute_WHILELS_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:56798.151-56798.152"
       (execute_WHILELS_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:56802.152-56802.153"
       (execute_WHILELS_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:56806.152-56806.153"
       (execute_WHILELS_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -42483,9 +42685,11 @@ def execute_WHILELT_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42520,19 +42724,24 @@ def decode_WHILELT_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_LT
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:56884.151-56884.152"
       (execute_WHILELT_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:56888.151-56888.152"
       (execute_WHILELT_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:56892.151-56892.152"
       (execute_WHILELT_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:56896.152-56896.153"
       (execute_WHILELT_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:56900.152-56900.153"
       (execute_WHILELT_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -42564,9 +42773,11 @@ def execute_WHILELE_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_LT => (do
+          | Cmp_LT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) <b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_LE => (do
+          | Cmp_LE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≤b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42601,19 +42812,24 @@ def decode_WHILELE_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_LE
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:56978.151-56978.152"
       (execute_WHILELE_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:56982.151-56982.152"
       (execute_WHILELE_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:56986.151-56986.152"
       (execute_WHILELE_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:56990.152-56990.153"
       (execute_WHILELE_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:56994.152-56994.153"
       (execute_WHILELE_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -42645,9 +42861,11 @@ def execute_WHILEHI_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42682,19 +42900,24 @@ def decode_WHILEHI_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_GT
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:57072.151-57072.152"
       (execute_WHILEHI_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:57076.151-57076.152"
       (execute_WHILEHI_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:57080.151-57080.152"
       (execute_WHILEHI_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:57084.152-57084.153"
       (execute_WHILEHI_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:57088.152-57088.153"
       (execute_WHILEHI_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -42726,9 +42949,11 @@ def execute_WHILEHS_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42763,19 +42988,24 @@ def decode_WHILEHS_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_GE
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:57166.151-57166.152"
       (execute_WHILEHS_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:57170.151-57170.152"
       (execute_WHILEHS_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:57174.151-57174.152"
       (execute_WHILEHS_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:57178.152-57178.153"
       (execute_WHILEHS_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:57182.152-57182.153"
       (execute_WHILEHS_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -42807,9 +43037,11 @@ def execute_WHILEGT_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42844,19 +43076,24 @@ def decode_WHILEGT_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_GT
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:57260.151-57260.152"
       (execute_WHILEGT_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:57264.151-57264.152"
       (execute_WHILEGT_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:57268.151-57268.152"
       (execute_WHILEGT_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:57272.152-57272.153"
       (execute_WHILEGT_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:57276.152-57276.153"
       (execute_WHILEGT_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -42888,9 +43125,11 @@ def execute_WHILEGE_PN_RR__ (VL : Nat) (d : Nat) (esize : Nat) (invert : Bool) (
         let cond ← (( do (undefined_bool ()) ) : SailM Bool )
         let cond ← (( do
           match op with
-          | Cmp_GT => (do
+          | Cmp_GT =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) >b (← (asl_Int operand2 is_unsigned)))))
-          | Cmp_GE => (do
+          | Cmp_GE =>
+            (do
               (pure ((← (asl_Int operand1 is_unsigned)) ≥b (← (asl_Int operand2 is_unsigned)))))
           | _ => (pure cond) ) : SailM Bool )
         let last : Bool := (last && cond)
@@ -42925,19 +43164,24 @@ def decode_WHILEGE_PN_RR__ (size : (BitVec 2)) (Rm : (BitVec 5)) (vl : (BitVec 1
   let op : SVECmp := Cmp_GE
   let width := (Int.shiftl 2 (BitVec.toNat vl))
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048)))))))))) "src/instrs64_sve.sail:57354.151-57354.152"
       (execute_WHILEGE_PN_RR__ 128 d esize invert m n op rsize is_unsigned width))
-  | 256 => (do
+  | 256 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048)))))))))) "src/instrs64_sve.sail:57358.151-57358.152"
       (execute_WHILEGE_PN_RR__ 256 d esize invert m n op rsize is_unsigned width))
-  | 512 => (do
+  | 512 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048)))))))))) "src/instrs64_sve.sail:57362.151-57362.152"
       (execute_WHILEGE_PN_RR__ 512 d esize invert m n op rsize is_unsigned width))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048)))))))))) "src/instrs64_sve.sail:57366.152-57366.153"
       (execute_WHILEGE_PN_RR__ 1024 d esize invert m n op rsize is_unsigned width))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert (((width == 2) || (width == 4)) && ((0 ≤b n) && ((n ≤b 31) && ((0 ≤b m) && ((m ≤b 31) && (((((esize == 8) || (esize == 16)) || (esize == 32)) || (esize == 64)) && ((0 ≤b d) && ((d ≤b 15) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048)))))))))) "src/instrs64_sve.sail:57370.152-57370.153"
       (execute_WHILEGE_PN_RR__ 2048 d esize invert m n op rsize is_unsigned width))
   | _ => (pure ())
@@ -43028,16 +43272,21 @@ def decode_LD1B_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1B_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1B_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1B_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1B_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1B_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1B_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1B_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1B_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1B_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1B_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43126,16 +43375,21 @@ def decode_LD1SB_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SB_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LD1SB_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LD1SB_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LD1SB_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LD1SB_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LD1SB_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LD1SB_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LD1SB_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LD1SB_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SB_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43267,16 +43521,21 @@ def decode_LDFF1B_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1B_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43408,16 +43667,21 @@ def decode_LDFF1SB_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 256 => (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 512 => (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 1024 => (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SB_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43507,16 +43771,21 @@ def decode_LD1H_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1H_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1H_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1H_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1H_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1H_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1H_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1H_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1H_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1H_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1H_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43606,16 +43875,21 @@ def decode_LD1SH_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SH_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LD1SH_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LD1SH_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LD1SH_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LD1SH_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43748,16 +44022,21 @@ def decode_LDFF1H_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43890,16 +44169,21 @@ def decode_LDFF1SH_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 256 => (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 512 => (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 1024 => (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -43989,16 +44273,21 @@ def decode_LD1W_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1W_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1W_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1W_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1W_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1W_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1W_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1W_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1W_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1W_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1W_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -44131,16 +44420,21 @@ def decode_LDFF1W_Z_P_BZ_S_x32_unscaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -44208,16 +44502,21 @@ def decode_PRFB_I_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_PRFB_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFB_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFB_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFB_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFB_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFB_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFB_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFB_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFB_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFB_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -44285,16 +44584,21 @@ def decode_PRFH_I_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_PRFH_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFH_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFH_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFH_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFH_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFH_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFH_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFH_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFH_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFH_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -44362,16 +44666,21 @@ def decode_PRFW_I_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_PRFW_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFW_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFW_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFW_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFW_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFW_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFW_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFW_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFW_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFW_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -44439,16 +44748,21 @@ def decode_PRFD_I_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 3
   match VL with
-  | 128 => (execute_PRFD_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFD_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFD_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFD_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFD_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFD_I_P_BZ_S_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFD_I_P_BZ_S_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFD_I_P_BZ_S_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFD_I_P_BZ_S_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFD_I_P_BZ_S_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -44538,15 +44852,20 @@ def decode_LD1H_Z_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (Bi
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LD1H_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1H_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1H_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1H_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1H_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1H_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1H_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1H_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1H_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1H_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -44637,16 +44956,21 @@ def decode_LD1SH_Z_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (B
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LD1SH_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SH_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SH_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SH_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1SH_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SH_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -44779,16 +45103,21 @@ def decode_LDFF1H_Z_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LDFF1H_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1H_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1H_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1H_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1H_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1H_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -44921,16 +45250,21 @@ def decode_LDFF1SH_Z_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SH_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -45020,15 +45354,20 @@ def decode_LD1W_Z_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (Bi
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_LD1W_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1W_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1W_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1W_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1W_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1W_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1W_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1W_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1W_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1W_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -45162,16 +45501,21 @@ def decode_LDFF1W_Z_P_BZ_S_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_LDFF1W_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1W_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1W_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1W_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1W_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1W_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, imm : Int, n : Nat, t : Nat, 0 ≤ t ∧
@@ -59755,16 +60099,21 @@ def decode_LD1B_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1B_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1B_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1B_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1B_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1B_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1B_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1B_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1B_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1B_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1B_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -59853,16 +60202,21 @@ def decode_LD1SB_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SB_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LD1SB_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LD1SB_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LD1SB_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LD1SB_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LD1SB_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LD1SB_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LD1SB_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LD1SB_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SB_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -59994,16 +60348,21 @@ def decode_LDFF1B_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1B_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60135,16 +60494,21 @@ def decode_LDFF1SB_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Z
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 256 => (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 512 => (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 1024 => (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SB_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60234,16 +60598,21 @@ def decode_LD1H_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1H_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1H_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1H_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1H_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1H_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1H_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1H_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1H_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1H_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1H_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60333,16 +60702,21 @@ def decode_LD1SH_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SH_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LD1SH_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LD1SH_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LD1SH_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LD1SH_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60475,16 +60849,21 @@ def decode_LDFF1H_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60617,16 +60996,21 @@ def decode_LDFF1SH_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Z
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 256 => (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 512 => (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 1024 => (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60716,16 +61100,21 @@ def decode_LD1W_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1W_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1W_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1W_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1W_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1W_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1W_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1W_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1W_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1W_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1W_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60815,16 +61204,21 @@ def decode_LD1SW_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SW_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LD1SW_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LD1SW_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LD1SW_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LD1SW_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -60957,16 +61351,21 @@ def decode_LDFF1W_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -61099,16 +61498,21 @@ def decode_LDFF1SW_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Z
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 256 => (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 512 => (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 1024 => (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -61198,16 +61602,21 @@ def decode_LD1D_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LD1D_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1D_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1D_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1D_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1D_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1D_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1D_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1D_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1D_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1D_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -61340,16 +61749,21 @@ def decode_LDFF1D_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (xs : (BitVec 1)) (Zm
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -61417,16 +61831,21 @@ def decode_PRFB_I_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_PRFB_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFB_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFB_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFB_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFB_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFB_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFB_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFB_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFB_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFB_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -61494,16 +61913,21 @@ def decode_PRFH_I_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_PRFH_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFH_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFH_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFH_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFH_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFH_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFH_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFH_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFH_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFH_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -61571,16 +61995,21 @@ def decode_PRFW_I_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_PRFW_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFW_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFW_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFW_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFW_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFW_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFW_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFW_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFW_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFW_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -61648,16 +62077,21 @@ def decode_PRFD_I_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (msz : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 3
   match VL with
-  | 128 => (execute_PRFD_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFD_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFD_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFD_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFD_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFD_I_P_BZ_D_x32_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFD_I_P_BZ_D_x32_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFD_I_P_BZ_D_x32_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFD_I_P_BZ_D_x32_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFD_I_P_BZ_D_x32_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -61747,15 +62181,20 @@ def decode_LD1H_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (Bi
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LD1H_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1H_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1H_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1H_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1H_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1H_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1H_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1H_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1H_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1H_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -61846,16 +62285,21 @@ def decode_LD1SH_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (B
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LD1SH_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SH_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SH_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SH_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1SH_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SH_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -61988,16 +62432,21 @@ def decode_LDFF1H_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LDFF1H_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1H_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1H_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1H_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1H_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1H_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -62130,16 +62579,21 @@ def decode_LDFF1SH_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 1
   match VL with
-  | 128 => (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SH_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -62229,15 +62683,20 @@ def decode_LD1W_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (Bi
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_LD1W_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1W_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1W_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1W_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1W_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1W_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1W_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1W_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1W_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1W_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -62328,16 +62787,21 @@ def decode_LD1SW_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (B
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_LD1SW_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SW_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SW_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SW_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1SW_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SW_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -62470,16 +62934,21 @@ def decode_LDFF1W_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_LDFF1W_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1W_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1W_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1W_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1W_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1W_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -62612,16 +63081,21 @@ def decode_LDFF1SW_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 2
   match VL with
-  | 128 => (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SW_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -62711,15 +63185,20 @@ def decode_LD1D_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (Bi
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 3
   match VL with
-  | 128 => (execute_LD1D_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1D_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1D_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1D_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1D_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1D_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1D_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1D_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1D_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1D_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -62853,16 +63332,21 @@ def decode_LDFF1D_Z_P_BZ_D_x32_scaled (xs : (BitVec 1)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 3
   match VL with
-  | 128 => (execute_LDFF1D_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1D_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1D_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1D_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1D_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1D_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, n : Nat, offset : Nat, scale :
@@ -64528,16 +65012,21 @@ def decode_LD1B_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LD1B_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1B_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1B_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1B_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1B_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1B_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1B_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1B_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1B_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1B_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -64626,16 +65115,21 @@ def decode_LD1SB_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SB_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SB_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SB_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SB_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SB_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SB_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SB_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1SB_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1SB_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SB_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -64767,16 +65261,21 @@ def decode_LDFF1B_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U :
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1B_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1B_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1B_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1B_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1B_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1B_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1B_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1B_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1B_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1B_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -64908,16 +65407,21 @@ def decode_LDFF1SB_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U 
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SB_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65007,16 +65511,21 @@ def decode_LD1H_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LD1H_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1H_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1H_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1H_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1H_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1H_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1H_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1H_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1H_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1H_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65106,16 +65615,21 @@ def decode_LD1SH_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SH_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SH_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SH_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SH_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SH_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SH_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SH_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1SH_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1SH_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SH_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65248,16 +65762,21 @@ def decode_LDFF1H_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U :
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1H_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1H_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1H_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1H_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1H_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65390,16 +65909,21 @@ def decode_LDFF1SH_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U 
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65489,16 +66013,21 @@ def decode_LD1W_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LD1W_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1W_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1W_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1W_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1W_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1W_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1W_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1W_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1W_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1W_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65588,16 +66117,21 @@ def decode_LD1SW_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U : 
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LD1SW_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SW_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SW_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SW_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SW_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SW_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SW_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1SW_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1SW_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1SW_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65730,16 +66264,21 @@ def decode_LDFF1W_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U :
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1W_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1W_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1W_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1W_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1W_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65872,16 +66411,21 @@ def decode_LDFF1SW_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U 
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -65971,16 +66515,21 @@ def decode_LD1D_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U : (
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LD1D_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1D_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1D_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1D_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1D_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1D_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1D_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LD1D_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LD1D_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LD1D_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -66113,16 +66662,21 @@ def decode_LDFF1D_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (U :
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_LDFF1D_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 256 => (execute_LDFF1D_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 512 => (execute_LDFF1D_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 1024 => (execute_LDFF1D_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
-  | 2048 => (execute_LDFF1D_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned
-      scale t is_unsigned)
+  | 128 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 256 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 512 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 1024 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -66190,16 +66744,21 @@ def decode_PRFB_I_P_BZ_D_64_scaled (Zm : (BitVec 5)) (msz : (BitVec 2)) (Pg : (B
   let offs_unsigned : Bool := true
   let scale := 0
   match VL with
-  | 128 => (execute_PRFB_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFB_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFB_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFB_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFB_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFB_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFB_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFB_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFB_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFB_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -66267,16 +66826,21 @@ def decode_PRFH_I_P_BZ_D_64_scaled (Zm : (BitVec 5)) (msz : (BitVec 2)) (Pg : (B
   let offs_unsigned : Bool := true
   let scale := 1
   match VL with
-  | 128 => (execute_PRFH_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFH_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFH_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFH_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFH_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFH_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFH_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFH_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFH_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFH_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -66344,16 +66908,21 @@ def decode_PRFW_I_P_BZ_D_64_scaled (Zm : (BitVec 5)) (msz : (BitVec 2)) (Pg : (B
   let offs_unsigned : Bool := true
   let scale := 2
   match VL with
-  | 128 => (execute_PRFW_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFW_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFW_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFW_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFW_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFW_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFW_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFW_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFW_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFW_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, level : Nat, m : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -66421,16 +66990,21 @@ def decode_PRFD_I_P_BZ_D_64_scaled (Zm : (BitVec 5)) (msz : (BitVec 2)) (Pg : (B
   let offs_unsigned : Bool := true
   let scale := 3
   match VL with
-  | 128 => (execute_PRFD_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 256 => (execute_PRFD_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 512 => (execute_PRFD_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint
-      scale stream)
-  | 1024 => (execute_PRFD_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
-  | 2048 => (execute_PRFD_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned
-      pref_hint scale stream)
+  | 128 =>
+    (execute_PRFD_I_P_BZ_D_64_scaled 128 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 256 =>
+    (execute_PRFD_I_P_BZ_D_64_scaled 256 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 512 =>
+    (execute_PRFD_I_P_BZ_D_64_scaled 512 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 1024 =>
+    (execute_PRFD_I_P_BZ_D_64_scaled 1024 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
+  | 2048 =>
+    (execute_PRFD_I_P_BZ_D_64_scaled 2048 esize g level m n offs_size offs_unsigned pref_hint scale
+      stream)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -66520,15 +67094,20 @@ def decode_LD1H_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (Bit
   let offs_unsigned : Bool := true
   let scale := 1
   match VL with
-  | 128 => (execute_LD1H_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1H_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1H_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1H_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1H_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1H_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1H_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1H_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1H_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1H_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -66619,15 +67198,20 @@ def decode_LD1SH_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (Bi
   let offs_unsigned : Bool := true
   let scale := 1
   match VL with
-  | 128 => (execute_LD1SH_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SH_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SH_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SH_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SH_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SH_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SH_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1SH_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1SH_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1SH_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -66761,16 +67345,21 @@ def decode_LDFF1H_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (B
   let offs_unsigned : Bool := true
   let scale := 1
   match VL with
-  | 128 => (execute_LDFF1H_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1H_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1H_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1H_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1H_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1H_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -66903,16 +67492,21 @@ def decode_LDFF1SH_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (
   let offs_unsigned : Bool := true
   let scale := 1
   match VL with
-  | 128 => (execute_LDFF1SH_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1SH_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1SH_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1SH_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1SH_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SH_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -67002,15 +67596,20 @@ def decode_LD1W_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (Bit
   let offs_unsigned : Bool := true
   let scale := 2
   match VL with
-  | 128 => (execute_LD1W_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1W_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1W_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1W_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1W_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1W_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1W_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1W_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1W_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1W_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -67101,15 +67700,20 @@ def decode_LD1SW_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (Bi
   let offs_unsigned : Bool := true
   let scale := 2
   match VL with
-  | 128 => (execute_LD1SW_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1SW_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1SW_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1SW_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1SW_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1SW_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1SW_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1SW_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1SW_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1SW_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -67243,16 +67847,21 @@ def decode_LDFF1W_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (B
   let offs_unsigned : Bool := true
   let scale := 2
   match VL with
-  | 128 => (execute_LDFF1W_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1W_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1W_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1W_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1W_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1W_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -67385,16 +67994,21 @@ def decode_LDFF1SW_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (
   let offs_unsigned : Bool := true
   let scale := 2
   match VL with
-  | 128 => (execute_LDFF1SW_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1SW_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1SW_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1SW_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1SW_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1SW_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, k_is_unsigned : Bool, m : Nat, msize : Nat, n
@@ -67484,15 +68098,20 @@ def decode_LD1D_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (Bit
   let offs_unsigned : Bool := true
   let scale := 3
   match VL with
-  | 128 => (execute_LD1D_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LD1D_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LD1D_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LD1D_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LD1D_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LD1D_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LD1D_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+  | 1024 =>
+    (execute_LD1D_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 2048 => (execute_LD1D_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+  | 2048 =>
+    (execute_LD1D_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
   | _ => (pure ())
 
@@ -67626,16 +68245,21 @@ def decode_LDFF1D_Z_P_BZ_D_64_scaled (Zm : (BitVec 5)) (U : (BitVec 1)) (ff : (B
   let offs_unsigned : Bool := true
   let scale := 3
   match VL with
-  | 128 => (execute_LDFF1D_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
+  | 128 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_scaled 128 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 256 => (execute_LDFF1D_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
+  | 256 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_scaled 256 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 512 => (execute_LDFF1D_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
+  | 512 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_scaled 512 esize g m msize n offs_size offs_unsigned scale t
       is_unsigned)
-  | 1024 => (execute_LDFF1D_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
-  | 2048 => (execute_LDFF1D_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t is_unsigned)
+  | 1024 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_scaled 1024 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
+  | 2048 =>
+    (execute_LDFF1D_Z_P_BZ_D_64_scaled 2048 esize g m msize n offs_size offs_unsigned scale t
+      is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, t : Nat, 0 ≤
@@ -70014,13 +70638,16 @@ def decode_ST1B_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_ST1B_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
-  | 256 => (execute_ST1B_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
-  | 512 => (execute_ST1B_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1B_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1B_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 128 =>
+    (execute_ST1B_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
+  | 256 =>
+    (execute_ST1B_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
+  | 512 =>
+    (execute_ST1B_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1B_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1B_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70100,13 +70727,16 @@ def decode_ST1H_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_ST1H_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
-  | 256 => (execute_ST1H_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
-  | 512 => (execute_ST1H_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1H_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1H_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 128 =>
+    (execute_ST1H_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
+  | 256 =>
+    (execute_ST1H_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
+  | 512 =>
+    (execute_ST1H_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1H_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1H_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70186,13 +70816,16 @@ def decode_ST1W_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_ST1W_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
-  | 256 => (execute_ST1W_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
-  | 512 => (execute_ST1W_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1W_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1W_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 128 =>
+    (execute_ST1W_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
+  | 256 =>
+    (execute_ST1W_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
+  | 512 =>
+    (execute_ST1W_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1W_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1W_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70272,13 +70905,16 @@ def decode_ST1D_Z_P_BZ_D_x32_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_ST1D_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
-  | 256 => (execute_ST1D_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
-  | 512 => (execute_ST1D_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1D_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1D_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 128 =>
+    (execute_ST1D_Z_P_BZ_D_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
+  | 256 =>
+    (execute_ST1D_Z_P_BZ_D_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
+  | 512 =>
+    (execute_ST1D_Z_P_BZ_D_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1D_Z_P_BZ_D_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1D_Z_P_BZ_D_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70357,13 +70993,16 @@ def decode_ST1B_Z_P_BZ_S_x32_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_ST1B_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
-  | 256 => (execute_ST1B_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
-  | 512 => (execute_ST1B_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1B_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1B_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 128 =>
+    (execute_ST1B_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
+  | 256 =>
+    (execute_ST1B_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
+  | 512 =>
+    (execute_ST1B_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1B_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1B_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70443,13 +71082,16 @@ def decode_ST1H_Z_P_BZ_S_x32_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_ST1H_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
-  | 256 => (execute_ST1H_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
-  | 512 => (execute_ST1H_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1H_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1H_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 128 =>
+    (execute_ST1H_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
+  | 256 =>
+    (execute_ST1H_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
+  | 512 =>
+    (execute_ST1H_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1H_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1H_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70529,13 +71171,16 @@ def decode_ST1W_Z_P_BZ_S_x32_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs :
   let offs_unsigned : Bool := (xs == (0b0 : (BitVec 1)))
   let scale := 0
   match VL with
-  | 128 => (execute_ST1W_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
-  | 256 => (execute_ST1W_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
-  | 512 => (execute_ST1W_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1W_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1W_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 128 =>
+    (execute_ST1W_Z_P_BZ_S_x32_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
+  | 256 =>
+    (execute_ST1W_Z_P_BZ_S_x32_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
+  | 512 =>
+    (execute_ST1W_Z_P_BZ_S_x32_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1W_Z_P_BZ_S_x32_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1W_Z_P_BZ_S_x32_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70618,8 +71263,10 @@ def decode_ST1H_Z_P_BZ_D_x32_scaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs : (
   | 128 => (execute_ST1H_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1H_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1H_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1H_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
-  | 2048 => (execute_ST1H_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1H_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1H_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70702,8 +71349,10 @@ def decode_ST1W_Z_P_BZ_D_x32_scaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs : (
   | 128 => (execute_ST1W_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1W_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1W_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1W_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
-  | 2048 => (execute_ST1W_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1W_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1W_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70786,8 +71435,10 @@ def decode_ST1D_Z_P_BZ_D_x32_scaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs : (
   | 128 => (execute_ST1D_Z_P_BZ_D_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1D_Z_P_BZ_D_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1D_Z_P_BZ_D_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1D_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
-  | 2048 => (execute_ST1D_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1D_Z_P_BZ_D_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1D_Z_P_BZ_D_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70870,8 +71521,10 @@ def decode_ST1H_Z_P_BZ_S_x32_scaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs : (
   | 128 => (execute_ST1H_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1H_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1H_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1H_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
-  | 2048 => (execute_ST1H_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1H_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1H_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -70954,8 +71607,10 @@ def decode_ST1W_Z_P_BZ_S_x32_scaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (xs : (
   | 128 => (execute_ST1W_Z_P_BZ_S_x32_scaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1W_Z_P_BZ_S_x32_scaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1W_Z_P_BZ_S_x32_scaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1W_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
-  | 2048 => (execute_ST1W_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
+  | 1024 =>
+    (execute_ST1W_Z_P_BZ_S_x32_scaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1W_Z_P_BZ_S_x32_scaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -71037,10 +71692,10 @@ def decode_ST1B_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (Pg : 
   | 128 => (execute_ST1B_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1B_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1B_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1B_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1B_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 1024 =>
+    (execute_ST1B_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1B_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -71123,10 +71778,10 @@ def decode_ST1H_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (Pg : 
   | 128 => (execute_ST1H_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1H_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1H_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1H_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1H_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 1024 =>
+    (execute_ST1H_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1H_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -71209,10 +71864,10 @@ def decode_ST1W_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (Pg : 
   | 128 => (execute_ST1W_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1W_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1W_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1W_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1W_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 1024 =>
+    (execute_ST1W_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1W_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned
@@ -71295,10 +71950,10 @@ def decode_ST1D_Z_P_BZ_D_64_unscaled (msz : (BitVec 2)) (Zm : (BitVec 5)) (Pg : 
   | 128 => (execute_ST1D_Z_P_BZ_D_64_unscaled 128 esize g m msize n offs_size offs_unsigned scale t)
   | 256 => (execute_ST1D_Z_P_BZ_D_64_unscaled 256 esize g m msize n offs_size offs_unsigned scale t)
   | 512 => (execute_ST1D_Z_P_BZ_D_64_unscaled 512 esize g m msize n offs_size offs_unsigned scale t)
-  | 1024 => (execute_ST1D_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale
-      t)
-  | 2048 => (execute_ST1D_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale
-      t)
+  | 1024 =>
+    (execute_ST1D_Z_P_BZ_D_64_unscaled 1024 esize g m msize n offs_size offs_unsigned scale t)
+  | 2048 =>
+    (execute_ST1D_Z_P_BZ_D_64_unscaled 2048 esize g m msize n offs_size offs_unsigned scale t)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, g : Nat, m : Nat, msize : Nat, n : Nat, offs_size : Nat, k_offs_unsigned

@@ -96,7 +96,8 @@ open ATAccess
 
 def __GIC_ClearPendingInterrupt (intid : (BitVec 32)) : SailM Unit := do
   match (← readReg __GIC_Pending) with
-  | .some pending_intid => (do
+  | .some pending_intid =>
+    (do
       bif ((__GIC_InterruptID pending_intid) == intid)
       then writeReg __GIC_Pending none
       else (pure ()))
@@ -118,7 +119,8 @@ def __UpdateSystemCounter (_ : Unit) : SailM Unit := do
 
 def __HandlePendingInterrupt (_ : Unit) : SailM Unit := do
   match (← readReg __GIC_Pending) with
-  | .some intid => (do
+  | .some intid =>
+    (do
       let _ : Unit := (prerr_bits "[Clock] GIC interrupt " (__GIC_InterruptID intid))
       (AArch64_TakePhysicalIRQException ()))
   | none => (pure ())

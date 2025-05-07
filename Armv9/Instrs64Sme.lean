@@ -164,16 +164,21 @@ def decode_FMOPA_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := false
   match VL with
-  | 128 => (execute_FMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_FMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_FMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_FMOPA_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_FMOPA_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_FMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_FMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_FMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_FMOPA_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_FMOPA_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -246,16 +251,21 @@ def decode_FMOPS_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := true
   match VL with
-  | 128 => (execute_FMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_FMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_FMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_FMOPS_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_FMOPS_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_FMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_FMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_FMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_FMOPS_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_FMOPS_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -328,16 +338,21 @@ def decode_FMOPA_ZA_PP_ZZ_64 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := false
   match VL with
-  | 128 => (execute_FMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_FMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_FMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_FMOPA_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_FMOPA_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_FMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_FMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_FMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_FMOPA_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_FMOPA_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -410,16 +425,21 @@ def decode_FMOPS_ZA_PP_ZZ_64 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := true
   match VL with
-  | 128 => (execute_FMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_FMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_FMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_FMOPS_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_FMOPS_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_FMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_FMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_FMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_FMOPS_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_FMOPS_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_32 : Nat, m : Nat, n : Nat, k_sub_op
@@ -521,16 +541,21 @@ def decode_BFMOPA_ZA32_PP_ZZ__ (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := false
   match VL with
-  | 128 => (execute_BFMOPA_ZA32_PP_ZZ__ 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da
-      m n sub_op)
-  | 256 => (execute_BFMOPA_ZA32_PP_ZZ__ 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da
-      m n sub_op)
-  | 512 => (execute_BFMOPA_ZA32_PP_ZZ__ 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da
-      m n sub_op)
-  | 1024 => (execute_BFMOPA_ZA32_PP_ZZ__ 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b
-      da m n sub_op)
-  | 2048 => (execute_BFMOPA_ZA32_PP_ZZ__ 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b
-      da m n sub_op)
+  | 128 =>
+    (execute_BFMOPA_ZA32_PP_ZZ__ 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da m n
+      sub_op)
+  | 256 =>
+    (execute_BFMOPA_ZA32_PP_ZZ__ 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da m n
+      sub_op)
+  | 512 =>
+    (execute_BFMOPA_ZA32_PP_ZZ__ 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da m n
+      sub_op)
+  | 1024 =>
+    (execute_BFMOPA_ZA32_PP_ZZ__ 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b da m n
+      sub_op)
+  | 2048 =>
+    (execute_BFMOPA_ZA32_PP_ZZ__ 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b da m n
+      sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_32 : Nat, m : Nat, n : Nat, k_sub_op
@@ -632,16 +657,21 @@ def decode_BFMOPS_ZA32_PP_ZZ__ (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := true
   match VL with
-  | 128 => (execute_BFMOPS_ZA32_PP_ZZ__ 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da
-      m n sub_op)
-  | 256 => (execute_BFMOPS_ZA32_PP_ZZ__ 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da
-      m n sub_op)
-  | 512 => (execute_BFMOPS_ZA32_PP_ZZ__ 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da
-      m n sub_op)
-  | 1024 => (execute_BFMOPS_ZA32_PP_ZZ__ 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b
-      da m n sub_op)
-  | 2048 => (execute_BFMOPS_ZA32_PP_ZZ__ 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b
-      da m n sub_op)
+  | 128 =>
+    (execute_BFMOPS_ZA32_PP_ZZ__ 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da m n
+      sub_op)
+  | 256 =>
+    (execute_BFMOPS_ZA32_PP_ZZ__ 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da m n
+      sub_op)
+  | 512 =>
+    (execute_BFMOPS_ZA32_PP_ZZ__ 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da m n
+      sub_op)
+  | 1024 =>
+    (execute_BFMOPS_ZA32_PP_ZZ__ 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b da m n
+      sub_op)
+  | 2048 =>
+    (execute_BFMOPS_ZA32_PP_ZZ__ 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b da m n
+      sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_32 : Nat, m : Nat, n : Nat, k_sub_op
@@ -742,16 +772,21 @@ def decode_FMOPA_ZA32_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := false
   match VL with
-  | 128 => (execute_FMOPA_ZA32_PP_ZZ_16 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da
-      m n sub_op)
-  | 256 => (execute_FMOPA_ZA32_PP_ZZ_16 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da
-      m n sub_op)
-  | 512 => (execute_FMOPA_ZA32_PP_ZZ_16 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da
-      m n sub_op)
-  | 1024 => (execute_FMOPA_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b
-      da m n sub_op)
-  | 2048 => (execute_FMOPA_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b
-      da m n sub_op)
+  | 128 =>
+    (execute_FMOPA_ZA32_PP_ZZ_16 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da m n
+      sub_op)
+  | 256 =>
+    (execute_FMOPA_ZA32_PP_ZZ_16 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da m n
+      sub_op)
+  | 512 =>
+    (execute_FMOPA_ZA32_PP_ZZ_16 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da m n
+      sub_op)
+  | 1024 =>
+    (execute_FMOPA_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b da m n
+      sub_op)
+  | 2048 =>
+    (execute_FMOPA_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b da m n
+      sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_32 : Nat, m : Nat, n : Nat, k_sub_op
@@ -852,16 +887,21 @@ def decode_FMOPS_ZA32_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := true
   match VL with
-  | 128 => (execute_FMOPS_ZA32_PP_ZZ_16 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da
-      m n sub_op)
-  | 256 => (execute_FMOPS_ZA32_PP_ZZ_16 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da
-      m n sub_op)
-  | 512 => (execute_FMOPS_ZA32_PP_ZZ_16 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da
-      m n sub_op)
-  | 1024 => (execute_FMOPS_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b
-      da m n sub_op)
-  | 2048 => (execute_FMOPS_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b
-      da m n sub_op)
+  | 128 =>
+    (execute_FMOPS_ZA32_PP_ZZ_16 128 (((Int.ediv 128 32) *i (Int.ediv 128 32)) *i 32) a b da m n
+      sub_op)
+  | 256 =>
+    (execute_FMOPS_ZA32_PP_ZZ_16 256 (((Int.ediv 256 32) *i (Int.ediv 256 32)) *i 32) a b da m n
+      sub_op)
+  | 512 =>
+    (execute_FMOPS_ZA32_PP_ZZ_16 512 (((Int.ediv 512 32) *i (Int.ediv 512 32)) *i 32) a b da m n
+      sub_op)
+  | 1024 =>
+    (execute_FMOPS_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 32) *i (Int.ediv 1024 32)) *i 32) a b da m n
+      sub_op)
+  | 2048 =>
+    (execute_FMOPS_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 32) *i (Int.ediv 2048 32)) *i 32) a b da m n
+      sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -951,18 +991,21 @@ def decode_SMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_SMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SMOPA_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SMOPA_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SMOPA_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SMOPA_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1052,18 +1095,21 @@ def decode_SUMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_SUMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SUMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SUMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SUMOPA_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SUMOPA_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SUMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SUMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SUMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SUMOPA_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SUMOPA_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1153,18 +1199,21 @@ def decode_USMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_USMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_USMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_USMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_USMOPA_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_USMOPA_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_USMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_USMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_USMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_USMOPA_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_USMOPA_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1254,18 +1303,21 @@ def decode_UMOPA_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_UMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_UMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_UMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_UMOPA_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_UMOPA_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_UMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_UMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_UMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_UMOPA_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_UMOPA_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1355,18 +1407,21 @@ def decode_SMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_SMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SMOPS_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SMOPS_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SMOPS_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SMOPS_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1456,18 +1511,21 @@ def decode_SUMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_SUMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SUMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SUMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SUMOPS_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SUMOPS_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SUMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SUMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SUMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SUMOPS_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SUMOPS_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1557,18 +1615,21 @@ def decode_USMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_USMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_USMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_USMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_USMOPS_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_USMOPS_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_USMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_USMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_USMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_USMOPS_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_USMOPS_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1658,18 +1719,21 @@ def decode_UMOPS_ZA_PP_ZZ_32 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_UMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_UMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_UMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_UMOPS_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_UMOPS_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_UMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_UMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_UMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_UMOPS_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_UMOPS_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1759,18 +1823,21 @@ def decode_SMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_SMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SMOPA_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SMOPA_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SMOPA_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SMOPA_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1860,18 +1927,21 @@ def decode_SUMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_SUMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SUMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SUMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SUMOPA_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SUMOPA_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SUMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SUMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SUMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SUMOPA_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SUMOPA_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -1961,18 +2031,21 @@ def decode_USMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_USMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_USMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_USMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_USMOPA_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_USMOPA_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_USMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_USMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_USMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_USMOPA_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_USMOPA_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -2062,18 +2135,21 @@ def decode_UMOPA_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_UMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_UMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_UMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_UMOPA_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_UMOPA_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_UMOPA_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_UMOPA_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_UMOPA_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_UMOPA_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_UMOPA_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -2163,18 +2239,21 @@ def decode_SMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_SMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SMOPS_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SMOPS_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SMOPS_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SMOPS_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -2264,18 +2343,21 @@ def decode_SUMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := false
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_SUMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_SUMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_SUMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_SUMOPS_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_SUMOPS_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_SUMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_SUMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_SUMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_SUMOPS_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_SUMOPS_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -2365,18 +2447,21 @@ def decode_USMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := false
   match VL with
-  | 128 => (execute_USMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_USMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_USMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_USMOPS_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_USMOPS_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_USMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_USMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_USMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_USMOPS_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_USMOPS_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -2466,18 +2551,21 @@ def decode_UMOPS_ZA_PP_ZZ_64 (u0 : (BitVec 1)) (u1 : (BitVec 1)) (Zm : (BitVec 5
   let op1_unsigned : Bool := true
   let op2_unsigned : Bool := true
   match VL with
-  | 128 => (execute_UMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 256 => (execute_UMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 512 => (execute_UMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n op1_unsigned op2_unsigned sub_op)
-  | 1024 => (execute_UMOPS_ZA_PP_ZZ_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
-  | 2048 => (execute_UMOPS_ZA_PP_ZZ_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n op1_unsigned
-      op2_unsigned sub_op)
+  | 128 =>
+    (execute_UMOPS_ZA_PP_ZZ_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 256 =>
+    (execute_UMOPS_ZA_PP_ZZ_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 512 =>
+    (execute_UMOPS_ZA_PP_ZZ_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n op1_unsigned op2_unsigned sub_op)
+  | 1024 =>
+    (execute_UMOPS_ZA_PP_ZZ_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
+  | 2048 =>
+    (execute_UMOPS_ZA_PP_ZZ_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n op1_unsigned op2_unsigned sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, d : Nat, esize : Nat, g : Nat, n : Nat, offset : Nat, s : Nat, k_vertical
@@ -3951,16 +4039,21 @@ def decode_ADDHA_ZA_PP_Z_32 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3))
   let n := (BitVec.toNat Zn)
   let da := (BitVec.toNat ZAda)
   match VL with
-  | 128 => (execute_ADDHA_ZA_PP_Z_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a
-      b da esize n)
-  | 256 => (execute_ADDHA_ZA_PP_Z_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a
-      b da esize n)
-  | 512 => (execute_ADDHA_ZA_PP_Z_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a
-      b da esize n)
-  | 1024 => (execute_ADDHA_ZA_PP_Z_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize n)
-  | 2048 => (execute_ADDHA_ZA_PP_Z_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize n)
+  | 128 =>
+    (execute_ADDHA_ZA_PP_Z_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize n)
+  | 256 =>
+    (execute_ADDHA_ZA_PP_Z_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize n)
+  | 512 =>
+    (execute_ADDHA_ZA_PP_Z_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize n)
+  | 1024 =>
+    (execute_ADDHA_ZA_PP_Z_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize n)
+  | 2048 =>
+    (execute_ADDHA_ZA_PP_Z_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize n)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, n :
@@ -4019,16 +4112,21 @@ def decode_ADDHA_ZA_PP_Z_64 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3))
   let n := (BitVec.toNat Zn)
   let da := (BitVec.toNat ZAda)
   match VL with
-  | 128 => (execute_ADDHA_ZA_PP_Z_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a
-      b da esize n)
-  | 256 => (execute_ADDHA_ZA_PP_Z_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a
-      b da esize n)
-  | 512 => (execute_ADDHA_ZA_PP_Z_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a
-      b da esize n)
-  | 1024 => (execute_ADDHA_ZA_PP_Z_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize n)
-  | 2048 => (execute_ADDHA_ZA_PP_Z_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize n)
+  | 128 =>
+    (execute_ADDHA_ZA_PP_Z_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize n)
+  | 256 =>
+    (execute_ADDHA_ZA_PP_Z_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize n)
+  | 512 =>
+    (execute_ADDHA_ZA_PP_Z_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize n)
+  | 1024 =>
+    (execute_ADDHA_ZA_PP_Z_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize n)
+  | 2048 =>
+    (execute_ADDHA_ZA_PP_Z_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize n)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, n :
@@ -4087,16 +4185,21 @@ def decode_ADDVA_ZA_PP_Z_32 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3))
   let n := (BitVec.toNat Zn)
   let da := (BitVec.toNat ZAda)
   match VL with
-  | 128 => (execute_ADDVA_ZA_PP_Z_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a
-      b da esize n)
-  | 256 => (execute_ADDVA_ZA_PP_Z_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a
-      b da esize n)
-  | 512 => (execute_ADDVA_ZA_PP_Z_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a
-      b da esize n)
-  | 1024 => (execute_ADDVA_ZA_PP_Z_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize n)
-  | 2048 => (execute_ADDVA_ZA_PP_Z_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize n)
+  | 128 =>
+    (execute_ADDVA_ZA_PP_Z_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize n)
+  | 256 =>
+    (execute_ADDVA_ZA_PP_Z_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize n)
+  | 512 =>
+    (execute_ADDVA_ZA_PP_Z_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize n)
+  | 1024 =>
+    (execute_ADDVA_ZA_PP_Z_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize n)
+  | 2048 =>
+    (execute_ADDVA_ZA_PP_Z_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize n)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, n :
@@ -4155,16 +4258,21 @@ def decode_ADDVA_ZA_PP_Z_64 (V : (BitVec 1)) (Pm : (BitVec 3)) (Pn : (BitVec 3))
   let n := (BitVec.toNat Zn)
   let da := (BitVec.toNat ZAda)
   match VL with
-  | 128 => (execute_ADDVA_ZA_PP_Z_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a
-      b da esize n)
-  | 256 => (execute_ADDVA_ZA_PP_Z_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a
-      b da esize n)
-  | 512 => (execute_ADDVA_ZA_PP_Z_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a
-      b da esize n)
-  | 1024 => (execute_ADDVA_ZA_PP_Z_64 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize n)
-  | 2048 => (execute_ADDVA_ZA_PP_Z_64 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize n)
+  | 128 =>
+    (execute_ADDVA_ZA_PP_Z_64 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize n)
+  | 256 =>
+    (execute_ADDVA_ZA_PP_Z_64 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize n)
+  | 512 =>
+    (execute_ADDVA_ZA_PP_Z_64 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize n)
+  | 1024 =>
+    (execute_ADDVA_ZA_PP_Z_64 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize n)
+  | 2048 =>
+    (execute_ADDVA_ZA_PP_Z_64 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize n)
   | _ => (pure ())
 
 /-- Type quantifiers: SVL : Nat, dim_dim_esize : Nat, esize : Nat, esize = 64 ∧
@@ -4196,16 +4304,16 @@ def decode_ZERO_ZA_I__ (imm8 : (BitVec 8)) : SailM Unit := do
   let mask : (BitVec 8) := imm8
   let esize := 64
   match SVL with
-  | 128 => (execute_ZERO_ZA_I__ 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) esize
-      mask)
-  | 256 => (execute_ZERO_ZA_I__ 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) esize
-      mask)
-  | 512 => (execute_ZERO_ZA_I__ 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) esize
-      mask)
-  | 1024 => (execute_ZERO_ZA_I__ 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize)
-      esize mask)
-  | 2048 => (execute_ZERO_ZA_I__ 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize)
-      esize mask)
+  | 128 =>
+    (execute_ZERO_ZA_I__ 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) esize mask)
+  | 256 =>
+    (execute_ZERO_ZA_I__ 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) esize mask)
+  | 512 =>
+    (execute_ZERO_ZA_I__ 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) esize mask)
+  | 1024 =>
+    (execute_ZERO_ZA_I__ 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) esize mask)
+  | 2048 =>
+    (execute_ZERO_ZA_I__ 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) esize mask)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, d : Nat, esize : Nat, n : Nat, nreg : Nat, offset : Nat, s : Nat, k_vertical
@@ -32939,19 +33047,24 @@ def decode_SQCVTN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat Zd)
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34431.103-34431.104"
       (execute_SQCVTN_Z_MZ4__ 128 d esize n))
-  | 256 => (do
+  | 256 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34435.103-34435.104"
       (execute_SQCVTN_Z_MZ4__ 256 d esize n))
-  | 512 => (do
+  | 512 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34439.103-34439.104"
       (execute_SQCVTN_Z_MZ4__ 512 d esize n))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34443.104-34443.105"
       (execute_SQCVTN_Z_MZ4__ 1024 d esize n))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34447.104-34447.105"
       (execute_SQCVTN_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
@@ -32992,19 +33105,24 @@ def decode_UQCVTN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat Zd)
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34495.103-34495.104"
       (execute_UQCVTN_Z_MZ4__ 128 d esize n))
-  | 256 => (do
+  | 256 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34499.103-34499.104"
       (execute_UQCVTN_Z_MZ4__ 256 d esize n))
-  | 512 => (do
+  | 512 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34503.103-34503.104"
       (execute_UQCVTN_Z_MZ4__ 512 d esize n))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34507.104-34507.105"
       (execute_UQCVTN_Z_MZ4__ 1024 d esize n))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34511.104-34511.105"
       (execute_UQCVTN_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
@@ -33045,19 +33163,24 @@ def decode_SQCVTUN_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) 
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat Zd)
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34559.103-34559.104"
       (execute_SQCVTUN_Z_MZ4__ 128 d esize n))
-  | 256 => (do
+  | 256 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34563.103-34563.104"
       (execute_SQCVTUN_Z_MZ4__ 256 d esize n))
-  | 512 => (do
+  | 512 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34567.103-34567.104"
       (execute_SQCVTUN_Z_MZ4__ 512 d esize n))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34571.104-34571.105"
       (execute_SQCVTUN_Z_MZ4__ 1024 d esize n))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34575.104-34575.105"
       (execute_SQCVTUN_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
@@ -33098,19 +33221,24 @@ def decode_SQCVT_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat Zd)
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34623.103-34623.104"
       (execute_SQCVT_Z_MZ4__ 128 d esize n))
-  | 256 => (do
+  | 256 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34627.103-34627.104"
       (execute_SQCVT_Z_MZ4__ 256 d esize n))
-  | 512 => (do
+  | 512 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34631.103-34631.104"
       (execute_SQCVT_Z_MZ4__ 512 d esize n))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34635.104-34635.105"
       (execute_SQCVT_Z_MZ4__ 1024 d esize n))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34639.104-34639.105"
       (execute_SQCVT_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
@@ -33151,19 +33279,24 @@ def decode_UQCVT_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (U
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat Zd)
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34687.103-34687.104"
       (execute_UQCVT_Z_MZ4__ 128 d esize n))
-  | 256 => (do
+  | 256 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34691.103-34691.104"
       (execute_UQCVT_Z_MZ4__ 256 d esize n))
-  | 512 => (do
+  | 512 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34695.103-34695.104"
       (execute_UQCVT_Z_MZ4__ 512 d esize n))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34699.104-34699.105"
       (execute_UQCVT_Z_MZ4__ 1024 d esize n))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34703.104-34703.105"
       (execute_UQCVT_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
@@ -33204,19 +33337,24 @@ def decode_SQCVTU_Z_MZ4__ (sz : (BitVec 1)) (Zn : (BitVec 3)) (N : (BitVec 1)) (
   let n := (BitVec.toNat (Zn ++ (0b00 : (BitVec 2))))
   let d := (BitVec.toNat Zd)
   match VL with
-  | 128 => (do
+  | 128 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((128 == 128) || (128 == 256)) || (128 == 512)) || (128 == 1024)) || (128 == 2048))))))) "src/instrs64_sme.sail:34751.103-34751.104"
       (execute_SQCVTU_Z_MZ4__ 128 d esize n))
-  | 256 => (do
+  | 256 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((256 == 128) || (256 == 256)) || (256 == 512)) || (256 == 1024)) || (256 == 2048))))))) "src/instrs64_sme.sail:34755.103-34755.104"
       (execute_SQCVTU_Z_MZ4__ 256 d esize n))
-  | 512 => (do
+  | 512 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((512 == 128) || (512 == 256)) || (512 == 512)) || (512 == 1024)) || (512 == 2048))))))) "src/instrs64_sme.sail:34759.103-34759.104"
       (execute_SQCVTU_Z_MZ4__ 512 d esize n))
-  | 1024 => (do
+  | 1024 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((1024 == 128) || (1024 == 256)) || (1024 == 512)) || (1024 == 1024)) || (1024 == 2048))))))) "src/instrs64_sme.sail:34763.104-34763.105"
       (execute_SQCVTU_Z_MZ4__ 1024 d esize n))
-  | 2048 => (do
+  | 2048 =>
+    (do
       assert ((0 ≤b n) && ((n ≤b 31) && (((esize == 8) || (esize == 16)) && ((0 ≤b d) && ((d ≤b 31) && (((((2048 == 128) || (2048 == 256)) || (2048 == 512)) || (2048 == 1024)) || (2048 == 2048))))))) "src/instrs64_sme.sail:34767.104-34767.105"
       (execute_SQCVTU_Z_MZ4__ 2048 d esize n))
   | _ => (pure ())
@@ -33892,16 +34030,21 @@ def decode_BMOPA_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := false
   match VL with
-  | 128 => (execute_BMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_BMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_BMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_BMOPA_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_BMOPA_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_BMOPA_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_BMOPA_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_BMOPA_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_BMOPA_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_BMOPA_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -33973,16 +34116,21 @@ def decode_BMOPS_ZA_PP_ZZ_32 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := true
   match VL with
-  | 128 => (execute_BMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_BMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_BMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_BMOPS_ZA_PP_ZZ_32 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_BMOPS_ZA_PP_ZZ_32 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_BMOPS_ZA_PP_ZZ_32 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_BMOPS_ZA_PP_ZZ_32 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_BMOPS_ZA_PP_ZZ_32 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_BMOPS_ZA_PP_ZZ_32 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_BMOPS_ZA_PP_ZZ_32 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, k_is_unsigned
@@ -34071,18 +34219,21 @@ def decode_SMOPA_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec
   let sub_op : Bool := false
   let is_unsigned : Bool := false
   match VL with
-  | 128 => (execute_SMOPA_ZA32_PP_ZZ_16 128
-      (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 256 => (execute_SMOPA_ZA32_PP_ZZ_16 256
-      (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 512 => (execute_SMOPA_ZA32_PP_ZZ_16 512
-      (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 1024 => (execute_SMOPA_ZA32_PP_ZZ_16 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
-  | 2048 => (execute_SMOPA_ZA32_PP_ZZ_16 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
+  | 128 =>
+    (execute_SMOPA_ZA32_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 256 =>
+    (execute_SMOPA_ZA32_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 512 =>
+    (execute_SMOPA_ZA32_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 1024 =>
+    (execute_SMOPA_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
+  | 2048 =>
+    (execute_SMOPA_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, k_is_unsigned
@@ -34171,18 +34322,21 @@ def decode_UMOPA_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec
   let sub_op : Bool := false
   let is_unsigned : Bool := true
   match VL with
-  | 128 => (execute_UMOPA_ZA32_PP_ZZ_16 128
-      (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 256 => (execute_UMOPA_ZA32_PP_ZZ_16 256
-      (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 512 => (execute_UMOPA_ZA32_PP_ZZ_16 512
-      (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 1024 => (execute_UMOPA_ZA32_PP_ZZ_16 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
-  | 2048 => (execute_UMOPA_ZA32_PP_ZZ_16 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
+  | 128 =>
+    (execute_UMOPA_ZA32_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 256 =>
+    (execute_UMOPA_ZA32_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 512 =>
+    (execute_UMOPA_ZA32_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 1024 =>
+    (execute_UMOPA_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
+  | 2048 =>
+    (execute_UMOPA_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, k_is_unsigned
@@ -34271,18 +34425,21 @@ def decode_SMOPS_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec
   let sub_op : Bool := true
   let is_unsigned : Bool := false
   match VL with
-  | 128 => (execute_SMOPS_ZA32_PP_ZZ_16 128
-      (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 256 => (execute_SMOPS_ZA32_PP_ZZ_16 256
-      (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 512 => (execute_SMOPS_ZA32_PP_ZZ_16 512
-      (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 1024 => (execute_SMOPS_ZA32_PP_ZZ_16 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
-  | 2048 => (execute_SMOPS_ZA32_PP_ZZ_16 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
+  | 128 =>
+    (execute_SMOPS_ZA32_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 256 =>
+    (execute_SMOPS_ZA32_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 512 =>
+    (execute_SMOPS_ZA32_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 1024 =>
+    (execute_SMOPS_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
+  | 2048 =>
+    (execute_SMOPS_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, k_is_unsigned
@@ -34371,18 +34528,21 @@ def decode_UMOPS_ZA32_PP_ZZ_16 (u0 : (BitVec 1)) (Zm : (BitVec 5)) (Pm : (BitVec
   let sub_op : Bool := true
   let is_unsigned : Bool := true
   match VL with
-  | 128 => (execute_UMOPS_ZA32_PP_ZZ_16 128
-      (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 256 => (execute_UMOPS_ZA32_PP_ZZ_16 256
-      (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 512 => (execute_UMOPS_ZA32_PP_ZZ_16 512
-      (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da esize m n sub_op is_unsigned)
-  | 1024 => (execute_UMOPS_ZA32_PP_ZZ_16 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
-  | 2048 => (execute_UMOPS_ZA32_PP_ZZ_16 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op
-      is_unsigned)
+  | 128 =>
+    (execute_UMOPS_ZA32_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 256 =>
+    (execute_UMOPS_ZA32_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 512 =>
+    (execute_UMOPS_ZA32_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b
+      da esize m n sub_op is_unsigned)
+  | 1024 =>
+    (execute_UMOPS_ZA32_PP_ZZ_16 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
+  | 2048 =>
+    (execute_UMOPS_ZA32_PP_ZZ_16 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a
+      b da esize m n sub_op is_unsigned)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, d : Nat, esize : Nat, imm : Nat, isize : Nat, n : Nat, nreg : Nat, nreg
@@ -36257,16 +36417,21 @@ def decode_FMOPA_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := false
   match VL with
-  | 128 => (execute_FMOPA_ZA_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_FMOPA_ZA_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_FMOPA_ZA_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_FMOPA_ZA_PP_ZZ_16 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_FMOPA_ZA_PP_ZZ_16 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_FMOPA_ZA_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_FMOPA_ZA_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_FMOPA_ZA_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_FMOPA_ZA_PP_ZZ_16 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_FMOPA_ZA_PP_ZZ_16 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_esize : Nat, esize : Nat, m :
@@ -36339,16 +36504,21 @@ def decode_FMOPS_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 3
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := true
   match VL with
-  | 128 => (execute_FMOPS_ZA_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 256 => (execute_FMOPS_ZA_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 512 => (execute_FMOPS_ZA_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize)
-      a b da esize m n sub_op)
-  | 1024 => (execute_FMOPS_ZA_PP_ZZ_16 1024
-      (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b da esize m n sub_op)
-  | 2048 => (execute_FMOPS_ZA_PP_ZZ_16 2048
-      (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b da esize m n sub_op)
+  | 128 =>
+    (execute_FMOPS_ZA_PP_ZZ_16 128 (((Int.ediv 128 esize) *i (Int.ediv 128 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 256 =>
+    (execute_FMOPS_ZA_PP_ZZ_16 256 (((Int.ediv 256 esize) *i (Int.ediv 256 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 512 =>
+    (execute_FMOPS_ZA_PP_ZZ_16 512 (((Int.ediv 512 esize) *i (Int.ediv 512 esize)) *i esize) a b da
+      esize m n sub_op)
+  | 1024 =>
+    (execute_FMOPS_ZA_PP_ZZ_16 1024 (((Int.ediv 1024 esize) *i (Int.ediv 1024 esize)) *i esize) a b
+      da esize m n sub_op)
+  | 2048 =>
+    (execute_FMOPS_ZA_PP_ZZ_16 2048 (((Int.ediv 2048 esize) *i (Int.ediv 2048 esize)) *i esize) a b
+      da esize m n sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_16 : Nat, m : Nat, n : Nat, k_sub_op
@@ -36418,16 +36588,21 @@ def decode_BFMOPA_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := false
   match VL with
-  | 128 => (execute_BFMOPA_ZA_PP_ZZ_16 128 (((Int.ediv 128 16) *i (Int.ediv 128 16)) *i 16) a b da m
-      n sub_op)
-  | 256 => (execute_BFMOPA_ZA_PP_ZZ_16 256 (((Int.ediv 256 16) *i (Int.ediv 256 16)) *i 16) a b da m
-      n sub_op)
-  | 512 => (execute_BFMOPA_ZA_PP_ZZ_16 512 (((Int.ediv 512 16) *i (Int.ediv 512 16)) *i 16) a b da m
-      n sub_op)
-  | 1024 => (execute_BFMOPA_ZA_PP_ZZ_16 1024 (((Int.ediv 1024 16) *i (Int.ediv 1024 16)) *i 16) a b
-      da m n sub_op)
-  | 2048 => (execute_BFMOPA_ZA_PP_ZZ_16 2048 (((Int.ediv 2048 16) *i (Int.ediv 2048 16)) *i 16) a b
-      da m n sub_op)
+  | 128 =>
+    (execute_BFMOPA_ZA_PP_ZZ_16 128 (((Int.ediv 128 16) *i (Int.ediv 128 16)) *i 16) a b da m n
+      sub_op)
+  | 256 =>
+    (execute_BFMOPA_ZA_PP_ZZ_16 256 (((Int.ediv 256 16) *i (Int.ediv 256 16)) *i 16) a b da m n
+      sub_op)
+  | 512 =>
+    (execute_BFMOPA_ZA_PP_ZZ_16 512 (((Int.ediv 512 16) *i (Int.ediv 512 16)) *i 16) a b da m n
+      sub_op)
+  | 1024 =>
+    (execute_BFMOPA_ZA_PP_ZZ_16 1024 (((Int.ediv 1024 16) *i (Int.ediv 1024 16)) *i 16) a b da m n
+      sub_op)
+  | 2048 =>
+    (execute_BFMOPA_ZA_PP_ZZ_16 2048 (((Int.ediv 2048 16) *i (Int.ediv 2048 16)) *i 16) a b da m n
+      sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, a : Nat, b : Nat, da : Nat, dim_dim_16 : Nat, m : Nat, n : Nat, k_sub_op
@@ -36497,16 +36672,21 @@ def decode_BFMOPS_ZA_PP_ZZ_16 (Zm : (BitVec 5)) (Pm : (BitVec 3)) (Pn : (BitVec 
   let da := (BitVec.toNat ZAda)
   let sub_op : Bool := true
   match VL with
-  | 128 => (execute_BFMOPS_ZA_PP_ZZ_16 128 (((Int.ediv 128 16) *i (Int.ediv 128 16)) *i 16) a b da m
-      n sub_op)
-  | 256 => (execute_BFMOPS_ZA_PP_ZZ_16 256 (((Int.ediv 256 16) *i (Int.ediv 256 16)) *i 16) a b da m
-      n sub_op)
-  | 512 => (execute_BFMOPS_ZA_PP_ZZ_16 512 (((Int.ediv 512 16) *i (Int.ediv 512 16)) *i 16) a b da m
-      n sub_op)
-  | 1024 => (execute_BFMOPS_ZA_PP_ZZ_16 1024 (((Int.ediv 1024 16) *i (Int.ediv 1024 16)) *i 16) a b
-      da m n sub_op)
-  | 2048 => (execute_BFMOPS_ZA_PP_ZZ_16 2048 (((Int.ediv 2048 16) *i (Int.ediv 2048 16)) *i 16) a b
-      da m n sub_op)
+  | 128 =>
+    (execute_BFMOPS_ZA_PP_ZZ_16 128 (((Int.ediv 128 16) *i (Int.ediv 128 16)) *i 16) a b da m n
+      sub_op)
+  | 256 =>
+    (execute_BFMOPS_ZA_PP_ZZ_16 256 (((Int.ediv 256 16) *i (Int.ediv 256 16)) *i 16) a b da m n
+      sub_op)
+  | 512 =>
+    (execute_BFMOPS_ZA_PP_ZZ_16 512 (((Int.ediv 512 16) *i (Int.ediv 512 16)) *i 16) a b da m n
+      sub_op)
+  | 1024 =>
+    (execute_BFMOPS_ZA_PP_ZZ_16 1024 (((Int.ediv 1024 16) *i (Int.ediv 1024 16)) *i 16) a b da m n
+      sub_op)
+  | 2048 =>
+    (execute_BFMOPS_ZA_PP_ZZ_16 2048 (((Int.ediv 2048 16) *i (Int.ediv 2048 16)) *i 16) a b da m n
+      sub_op)
   | _ => (pure ())
 
 /-- Type quantifiers: VL : Nat, esize : Nat, m : Nat, nreg : Nat, offset : Nat, v : Nat, 0 ≤ v ∧
