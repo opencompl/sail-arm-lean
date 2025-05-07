@@ -78,8 +78,8 @@ jobs:
         cp report.py sail-arm/arm-v9.4-a/lean/armv9
         cd sail-arm/arm-v9.4-a/lean/armv9
         echo "build skipped" > build_log.txt
-        #(timeout 5h lake build | tee build_log.txt || true)
         cp README.md.template README.md
+        #(timeout 5h lake build | tee build_log.txt || true)
         ./report.py >> README.md
         cd ../../../..
   
