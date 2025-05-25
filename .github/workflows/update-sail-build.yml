@@ -2,7 +2,7 @@ name: Build ARM For Lean
 
 on:
   schedule:
-    - cron: "42 * * * *"
+    - cron: "42 3 * * *"
   workflow_dispatch:
 
 env:
