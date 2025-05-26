@@ -16,10 +16,10 @@ abbrev bits k_n := (BitVec k_n)
 inductive option (k_a : Type) where
   | Some (_ : k_a)
   | None (_ : Unit)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive signal where | LOW | HIGH
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive exception where
   | Error_Undefined (_ : Unit)
@@ -30,7 +30,7 @@ inductive exception where
   | Error_Unpredictable (_ : Unit)
   | Error_ConstrainedUnpredictable (_ : Unit)
   | Error_SError (_ : Bool)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 
 
@@ -45,10 +45,10 @@ abbrev Configuration_Type := (BitVec 32)
 abbrev DormantCtl_Type := (BitVec 32)
 
 inductive Feature where | FEAT_AA32EL0 | FEAT_AA32EL1 | FEAT_AA32EL2 | FEAT_AA32EL3 | FEAT_AA64EL0 | FEAT_AA64EL1 | FEAT_AA64EL2 | FEAT_AA64EL3 | FEAT_EL0 | FEAT_EL1 | FEAT_EL2 | FEAT_EL3 | FEAT_AES | FEAT_AdvSIMD | FEAT_CSV2_1p1 | FEAT_CSV2_1p2 | FEAT_CSV2_2 | FEAT_CSV2_3 | FEAT_DoubleLock | FEAT_ETMv4 | FEAT_ETMv4p1 | FEAT_ETMv4p2 | FEAT_ETMv4p3 | FEAT_ETMv4p4 | FEAT_ETMv4p5 | FEAT_ETMv4p6 | FEAT_ETS2 | FEAT_FP | FEAT_GICv3 | FEAT_GICv3_LEGACY | FEAT_GICv3_TDIR | FEAT_GICv3p1 | FEAT_GICv4 | FEAT_GICv4p1 | FEAT_IVIPT | FEAT_PCSRv8 | FEAT_PMULL | FEAT_PMUv3 | FEAT_PMUv3_EXT | FEAT_PMUv3_EXT32 | FEAT_SHA1 | FEAT_SHA256 | FEAT_TRC_EXT | FEAT_TRC_SR | FEAT_nTLBPA | FEAT_CRC32 | FEAT_Debugv8p1 | FEAT_HAFDBS | FEAT_HPDS | FEAT_LOR | FEAT_LSE | FEAT_PAN | FEAT_PMUv3p1 | FEAT_RDM | FEAT_VHE | FEAT_VMID16 | FEAT_AA32BF16 | FEAT_AA32HPD | FEAT_AA32I8MM | FEAT_ASMv8p2 | FEAT_DPB | FEAT_Debugv8p2 | FEAT_EDHSR | FEAT_F32MM | FEAT_F64MM | FEAT_FP16 | FEAT_HPDS2 | FEAT_I8MM | FEAT_IESB | FEAT_LPA | FEAT_LSMAOC | FEAT_LVA | FEAT_MPAM | FEAT_PAN2 | FEAT_PCSRv8p2 | FEAT_RAS | FEAT_SHA3 | FEAT_SHA512 | FEAT_SM3 | FEAT_SM4 | FEAT_SPE | FEAT_SVE | FEAT_TTCNP | FEAT_UAO | FEAT_VPIPT | FEAT_XNX | FEAT_CCIDX | FEAT_CONSTPACFIELD | FEAT_EPAC | FEAT_FCMA | FEAT_FPAC | FEAT_FPACCOMBINE | FEAT_JSCVT | FEAT_LRCPC | FEAT_NV | FEAT_PACIMP | FEAT_PACQARMA3 | FEAT_PACQARMA5 | FEAT_PAuth | FEAT_SPEv1p1 | FEAT_AMUv1 | FEAT_BBM | FEAT_CNTSC | FEAT_DIT | FEAT_Debugv8p4 | FEAT_DotProd | FEAT_DoubleFault | FEAT_FHM | FEAT_FlagM | FEAT_IDST | FEAT_LRCPC2 | FEAT_LSE2 | FEAT_NV2 | FEAT_PMUv3p4 | FEAT_RASSAv1p1 | FEAT_RASv1p1 | FEAT_S2FWB | FEAT_SEL2 | FEAT_TLBIOS | FEAT_TLBIRANGE | FEAT_TRF | FEAT_TTL | FEAT_TTST | FEAT_BTI | FEAT_CSV2 | FEAT_CSV3 | FEAT_DPB2 | FEAT_E0PD | FEAT_EVT | FEAT_ExS | FEAT_FRINTTS | FEAT_FlagM2 | FEAT_GTG | FEAT_MTE | FEAT_MTE2 | FEAT_PMUv3p5 | FEAT_RNG | FEAT_RNG_TRAP | FEAT_SB | FEAT_SPECRES | FEAT_SSBS | FEAT_SSBS2 | FEAT_AMUv1p1 | FEAT_BF16 | FEAT_DGH | FEAT_ECV | FEAT_FGT | FEAT_HPMN0 | FEAT_MPAMv0p1 | FEAT_MPAMv1p1 | FEAT_MTPMU | FEAT_PAuth2 | FEAT_TWED | FEAT_AFP | FEAT_EBF16 | FEAT_HCX | FEAT_LPA2 | FEAT_LS64 | FEAT_LS64_ACCDATA | FEAT_LS64_V | FEAT_MTE3 | FEAT_PAN3 | FEAT_PMUv3p7 | FEAT_RPRES | FEAT_SPEv1p2 | FEAT_WFxT | FEAT_XS | FEAT_CMOW | FEAT_Debugv8p8 | FEAT_GICv3_NMI | FEAT_HBC | FEAT_MOPS | FEAT_NMI | FEAT_PMUv3_EXT64 | FEAT_PMUv3_TH | FEAT_PMUv3p8 | FEAT_SCTLR2 | FEAT_SPEv1p3 | FEAT_TCR2 | FEAT_TIDCP1 | FEAT_ADERR | FEAT_AIE | FEAT_ANERR | FEAT_CLRBHB | FEAT_CSSC | FEAT_Debugv8p9 | FEAT_DoubleFault2 | FEAT_ECBHB | FEAT_FGT2 | FEAT_HAFT | FEAT_LRCPC3 | FEAT_MTE4 | FEAT_MTE_ASYM_FAULT | FEAT_MTE_ASYNC | FEAT_MTE_CANONICAL_TAGS | FEAT_MTE_NO_ADDRESS_TAGS | FEAT_MTE_PERM | FEAT_MTE_STORE_ONLY | FEAT_MTE_TAGGED_FAR | FEAT_PCSRv8p9 | FEAT_PFAR | FEAT_PMUv3_EDGE | FEAT_PMUv3_ICNTR | FEAT_PMUv3_SS | FEAT_PMUv3p9 | FEAT_PRFMSLC | FEAT_RASSAv2 | FEAT_RASv2 | FEAT_RPRFM | FEAT_S1PIE | FEAT_S1POE | FEAT_S2PIE | FEAT_S2POE | FEAT_SPECRES2 | FEAT_SPE_CRR | FEAT_SPE_FDS | FEAT_SPEv1p4 | FEAT_SPMU | FEAT_THE | FEAT_DoPD | FEAT_ETE | FEAT_SVE2 | FEAT_SVE_AES | FEAT_SVE_BitPerm | FEAT_SVE_PMULL128 | FEAT_SVE_SHA3 | FEAT_SVE_SM4 | FEAT_TME | FEAT_TRBE | FEAT_ETEv1p1 | FEAT_BRBE | FEAT_ETEv1p2 | FEAT_RME | FEAT_SME | FEAT_SME_F64F64 | FEAT_SME_FA64 | FEAT_SME_I16I64 | FEAT_BRBEv1p1 | FEAT_MEC | FEAT_SME2 | FEAT_ABLE | FEAT_CHK | FEAT_D128 | FEAT_EBEP | FEAT_ETEv1p3 | FEAT_GCS | FEAT_ITE | FEAT_LSE128 | FEAT_LVA3 | FEAT_SEBEP | FEAT_SME2p1 | FEAT_SME_F16F16 | FEAT_SVE2p1 | FEAT_SVE_B16B16 | FEAT_SYSINSTR128 | FEAT_SYSREG128 | FEAT_TRBE_EXT | FEAT_TRBE_MPAM
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ArchVersion where | v8Ap0 | v8Ap1 | v8Ap2 | v8Ap3 | v8Ap4 | v8Ap5 | v8Ap6 | v8Ap7 | v8Ap8 | v8Ap9 | v9Ap0 | v9Ap1 | v9Ap2 | v9Ap3 | v9Ap4
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 abbrev SCRType := (BitVec 64)
 
@@ -73,10 +73,10 @@ abbrev BRBTGTType := (BitVec 64)
 abbrev BRBINFType := (BitVec 64)
 
 inductive Signal where | Signal_Low | Signal_High
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive SecurityState where | SS_NonSecure | SS_Root | SS_Realm | SS_Secure
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure ProcState where
   N : (BitVec 1)
@@ -111,59 +111,59 @@ structure ProcState where
   T : (BitVec 1)
   E : (BitVec 1)
   M : (BitVec 5)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive PrivilegeLevel where | PL3 | PL2 | PL1 | PL0
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive InstrSet where | InstrSet_A64 | InstrSet_A32 | InstrSet_T32
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive DSBAlias where | DSBAlias_SSBB | DSBAlias_PSSBB | DSBAlias_DSB
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive WFxType where | WFxType_WFE | WFxType_WFI | WFxType_WFET | WFxType_WFIT
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ExceptionalOccurrenceTargetState where | AArch32_NonDebugState | AArch64_NonDebugState | DebugState
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 abbrev PARTIDtype := (BitVec 16)
 
 abbrev PMGtype := (BitVec 8)
 
 inductive PARTIDspaceType where | PIdSpace_Secure | PIdSpace_Root | PIdSpace_Realm | PIdSpace_NonSecure
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure MPAMinfo where
   mpam_sp : PARTIDspaceType
   partid : PARTIDtype
   pmg : PMGtype
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive AccessType where | AccessType_IFETCH | AccessType_GPR | AccessType_ASIMD | AccessType_SVE | AccessType_SME | AccessType_IC | AccessType_DC | AccessType_DCZero | AccessType_AT | AccessType_NV2 | AccessType_SPE | AccessType_GCS | AccessType_GPTW | AccessType_TTW
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MemOp where | MemOp_LOAD | MemOp_STORE | MemOp_PREFETCH
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive VARange where | VARange_LOWER | VARange_UPPER
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MemAtomicOp where | MemAtomicOp_GCSSS1 | MemAtomicOp_ADD | MemAtomicOp_BIC | MemAtomicOp_EOR | MemAtomicOp_ORR | MemAtomicOp_SMAX | MemAtomicOp_SMIN | MemAtomicOp_UMAX | MemAtomicOp_UMIN | MemAtomicOp_SWP | MemAtomicOp_CAS
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive CacheOp where | CacheOp_Clean | CacheOp_Invalidate | CacheOp_CleanInvalidate
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive CacheOpScope where | CacheOpScope_SetWay | CacheOpScope_PoU | CacheOpScope_PoC | CacheOpScope_PoE | CacheOpScope_PoP | CacheOpScope_PoDP | CacheOpScope_PoPA | CacheOpScope_ALLU | CacheOpScope_ALLUIS
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive CacheType where | CacheType_Data | CacheType_Tag | CacheType_Data_Tag | CacheType_Instruction
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive CachePASpace where | CPAS_NonSecure | CPAS_Any | CPAS_RealmNonSecure | CPAS_Realm | CPAS_Root | CPAS_SecureNonSecure | CPAS_Secure
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure AccessDescriptor where
   acctype : AccessType
@@ -199,25 +199,25 @@ structure AccessDescriptor where
   tagchecked : Bool
   tagaccess : Bool
   mpam : MPAMinfo
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MemType where | MemType_Normal | MemType_Device
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive DeviceType where | DeviceType_GRE | DeviceType_nGRE | DeviceType_nGnRE | DeviceType_nGnRnE
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure MemAttrHints where
   attrs : (BitVec 2)
   hints : (BitVec 2)
   transient : Bool
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Shareability where | Shareability_NSH | Shareability_ISH | Shareability_OSH
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MemTagType where | MemTag_Untagged | MemTag_AllocationTagged | MemTag_CanonicallyTagged
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure MemoryAttributes where
   memtype : MemType
@@ -228,29 +228,29 @@ structure MemoryAttributes where
   tags : MemTagType
   notagaccess : Bool
   xs : (BitVec 1)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive PASpace where | PAS_NonSecure | PAS_Secure | PAS_Root | PAS_Realm
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure FullAddress where
   paspace : PASpace
   address : (BitVec 56)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive GPCF where | GPCF_None | GPCF_AddressSize | GPCF_Walk | GPCF_EABT | GPCF_Fail
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure GPCFRecord where
   gpf : GPCF
   level : Int
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Fault where | Fault_None | Fault_AccessFlag | Fault_Alignment | Fault_Background | Fault_Domain | Fault_Permission | Fault_Translation | Fault_AddressSize | Fault_SyncExternal | Fault_SyncExternalOnWalk | Fault_SyncParity | Fault_SyncParityOnWalk | Fault_GPCFOnWalk | Fault_GPCFOnOutput | Fault_AsyncParity | Fault_AsyncExternal | Fault_TagCheck | Fault_Debug | Fault_TLBConflict | Fault_BranchTarget | Fault_HWUpdateAccessFlag | Fault_Lockdown | Fault_Exclusive | Fault_ICacheMaint
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ErrorState where | ErrorState_UC | ErrorState_UEU | ErrorState_UEO | ErrorState_UER | ErrorState_CE | ErrorState_Uncategorized | ErrorState_IMPDEF
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure FaultRecord where
   statuscode : Fault
@@ -273,14 +273,14 @@ structure FaultRecord where
   domain : (BitVec 4)
   merrorstate : ErrorState
   debugmoe : (BitVec 4)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure PhysMemRetStatus where
   statuscode : Fault
   extflag : (BitVec 1)
   merrorstate : ErrorState
   store64bstatus : (BitVec 64)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure Permissions where
   ap_table : (BitVec 2)
@@ -302,7 +302,7 @@ structure Permissions where
   s2tag_na : (BitVec 1)
   s2xnx : (BitVec 1)
   s2xn : (BitVec 1)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure S1AccessControls where
   r : (BitVec 1)
@@ -314,7 +314,7 @@ structure S1AccessControls where
   ow : (BitVec 1)
   ox : (BitVec 1)
   wxn : (BitVec 1)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure S2AccessControls where
   r : (BitVec 1)
@@ -334,22 +334,22 @@ structure S2AccessControls where
   ow_rcw : (BitVec 1)
   or_mmu : (BitVec 1)
   ow_mmu : (BitVec 1)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MBReqDomain where | MBReqDomain_Nonshareable | MBReqDomain_InnerShareable | MBReqDomain_OuterShareable | MBReqDomain_FullSystem
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MBReqTypes where | MBReqTypes_Reads | MBReqTypes_Writes | MBReqTypes_All
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive PrefetchHint where | Prefetch_READ | Prefetch_WRITE | Prefetch_EXEC
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Unpredictable where | Unpredictable_VMSR | Unpredictable_WBOVERLAPLD | Unpredictable_WBOVERLAPST | Unpredictable_LDPOVERLAP | Unpredictable_BASEOVERLAP | Unpredictable_DATAOVERLAP | Unpredictable_DEVPAGE2 | Unpredictable_INSTRDEVICE | Unpredictable_RESCPACR | Unpredictable_RESMAIR | Unpredictable_S1CTAGGED | Unpredictable_S2RESMEMATTR | Unpredictable_RESTEXCB | Unpredictable_RESPRRR | Unpredictable_RESDACR | Unpredictable_RESVTCRS | Unpredictable_RESTnSZ | Unpredictable_RESTCF | Unpredictable_DEVICETAGSTORE | Unpredictable_OORTnSZ | Unpredictable_LARGEIPA | Unpredictable_ESRCONDPASS | Unpredictable_ILZEROIT | Unpredictable_ILZEROT | Unpredictable_BPVECTORCATCHPRI | Unpredictable_VCMATCHHALF | Unpredictable_VCMATCHDAPA | Unpredictable_WPMASKANDBAS | Unpredictable_WPBASCONTIGUOUS | Unpredictable_RESWPMASK | Unpredictable_WPMASKEDBITS | Unpredictable_RESBPWPCTRL | Unpredictable_BPNOTIMPL | Unpredictable_RESBPTYPE | Unpredictable_RESMDSELR | Unpredictable_BPNOTCTXCMP | Unpredictable_BPMATCHHALF | Unpredictable_BPMISMATCHHALF | Unpredictable_BPLINKINGDISABLED | Unpredictable_RESBPMASK | Unpredictable_BPMASK | Unpredictable_BPMASKEDBITS | Unpredictable_BPLINKEDADDRMATCH | Unpredictable_RESTARTALIGNPC | Unpredictable_RESTARTZEROUPPERPC | Unpredictable_ZEROUPPER | Unpredictable_ERETZEROUPPERPC | Unpredictable_A32FORCEALIGNPC | Unpredictable_SMD | Unpredictable_NONFAULT | Unpredictable_SVEZEROUPPER | Unpredictable_SVELDNFDATA | Unpredictable_SVELDNFZERO | Unpredictable_CHECKSPNONEACTIVE | Unpredictable_SMEZEROUPPER | Unpredictable_NVNV1 | Unpredictable_Shareability | Unpredictable_AFUPDATE | Unpredictable_DBUPDATE | Unpredictable_IESBinDebug | Unpredictable_BADPMSFCR | Unpredictable_ZEROBTYPE | Unpredictable_EL2TIMESTAMP | Unpredictable_EL1TIMESTAMP | Unpredictable_RESERVEDNSxB | Unpredictable_WFxTDEBUG | Unpredictable_LS64UNSUPPORTED | Unpredictable_MISALIGNEDATOMIC | Unpredictable_CLEARERRITEZERO | Unpredictable_ALUEXCEPTIONRETURN | Unpredictable_IGNORETRAPINDEBUG | Unpredictable_DBGxVR_RESS | Unpredictable_PMUEVENTCOUNTER | Unpredictable_PMSCR_PCT | Unpredictable_CounterReservedForEL2 | Unpredictable_BRBFILTRATE | Unpredictable_MOPSOVERLAP31 | Unpredictable_STOREONLYTAGCHECKEDCAS | Unpredictable_RESTC
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Constraint where | Constraint_NONE | Constraint_UNKNOWN | Constraint_UNDEF | Constraint_UNDEFEL0 | Constraint_NOP | Constraint_TRUE | Constraint_FALSE | Constraint_DISABLED | Constraint_UNCOND | Constraint_COND | Constraint_ADDITIONAL_DECODE | Constraint_WBSUPPRESS | Constraint_FAULT | Constraint_LIMITED_ATOMICITY | Constraint_NVNV1_00 | Constraint_NVNV1_01 | Constraint_NVNV1_11 | Constraint_EL1TIMESTAMP | Constraint_EL2TIMESTAMP | Constraint_OSH | Constraint_ISH | Constraint_NSH | Constraint_NC | Constraint_WT | Constraint_WB | Constraint_FORCE | Constraint_FORCENOSLCHECK | Constraint_MAPTOALLOCATED | Constraint_PMSCR_PCT_VIRT
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure CacheRecord where
   acctype : AccessType
@@ -370,10 +370,10 @@ structure CacheRecord where
   asid : (BitVec 16)
   security : SecurityState
   cpas : CachePASpace
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive RestrictType where | RestrictType_DataValue | RestrictType_ControlFlow | RestrictType_CachePrefetch | RestrictType_Other
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure ExecutionCntxt where
   is_vmid_valid : Bool
@@ -385,25 +385,25 @@ structure ExecutionCntxt where
   target_el : (BitVec 2)
   security : SecurityState
   restriction : RestrictType
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive FPExc where | FPExc_InvalidOp | FPExc_DivideByZero | FPExc_Overflow | FPExc_Underflow | FPExc_Inexact | FPExc_InputDenorm
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive FPRounding where | FPRounding_TIEEVEN | FPRounding_POSINF | FPRounding_NEGINF | FPRounding_ZERO | FPRounding_TIEAWAY | FPRounding_ODD
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive FPType where | FPType_Zero | FPType_Denormal | FPType_Nonzero | FPType_Infinity | FPType_QNaN | FPType_SNaN
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive BranchType where | BranchType_DIRCALL | BranchType_INDCALL | BranchType_ERET | BranchType_DBGEXIT | BranchType_RET | BranchType_DIR | BranchType_INDIR | BranchType_EXCEPTION | BranchType_TMFAIL | BranchType_RESET | BranchType_UNKNOWN
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive InterruptID where | InterruptID_PMUIRQ | InterruptID_COMMIRQ | InterruptID_CTIIRQ | InterruptID_COMMRX | InterruptID_COMMTX | InterruptID_CNTP | InterruptID_CNTHP | InterruptID_CNTHPS | InterruptID_CNTPS | InterruptID_CNTV | InterruptID_CNTHV | InterruptID_CNTHVS | InterruptID_PMBIRQ
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Exception where | Exception_Uncategorized | Exception_WFxTrap | Exception_CP15RTTrap | Exception_CP15RRTTrap | Exception_CP14RTTrap | Exception_CP14DTTrap | Exception_CP14RRTTrap | Exception_AdvSIMDFPAccessTrap | Exception_FPIDTrap | Exception_LDST64BTrap | Exception_PACTrap | Exception_IllegalState | Exception_SupervisorCall | Exception_HypervisorCall | Exception_MonitorCall | Exception_SystemRegisterTrap | Exception_ERetTrap | Exception_InstructionAbort | Exception_PCAlignment | Exception_DataAbort | Exception_NV2DataAbort | Exception_PACFail | Exception_SPAlignment | Exception_FPTrappedException | Exception_SError | Exception_Breakpoint | Exception_SoftwareStep | Exception_Watchpoint | Exception_NV2Watchpoint | Exception_SoftwareBreakpoint | Exception_VectorCatch | Exception_IRQ | Exception_SVEAccessTrap | Exception_SMEAccessTrap | Exception_TSTARTAccessTrap | Exception_GPC | Exception_BranchTarget | Exception_MemCpyMemSet | Exception_GCSFail | Exception_SystemRegister128Trap | Exception_FIQ
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure ExceptionRecord where
   exceptype : Exception
@@ -416,25 +416,25 @@ structure ExceptionRecord where
   NS : (BitVec 1)
   ipaddress : (BitVec 56)
   trappedsyscallinst : Bool
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive TranslationStage where | TranslationStage_1 | TranslationStage_12
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ATAccess where | ATAccess_Read | ATAccess_Write | ATAccess_ReadPAN | ATAccess_WritePAN
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Regime where | Regime_EL3 | Regime_EL30 | Regime_EL2 | Regime_EL20 | Regime_EL10
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive TGx where | TGx_4KB | TGx_16KB | TGx_64KB
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive DescriptorType where | DescriptorType_Table | DescriptorType_Leaf | DescriptorType_Invalid
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive SDFType where | SDFType_Table | SDFType_Invalid | SDFType_Supersection | SDFType_Section | SDFType_LargePage | SDFType_SmallPage
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure TTWState where
   istable : Bool
@@ -450,7 +450,7 @@ structure TTWState where
   domain : (BitVec 4)
   memattrs : MemoryAttributes
   permissions : Permissions
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure S1TTWParams where
   ha : (BitVec 1)
@@ -493,7 +493,7 @@ structure S1TTWParams where
   dc : (BitVec 1)
   sif : (BitVec 1)
   mair : MAIRType
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure S2TTWParams where
   ha : (BitVec 1)
@@ -527,7 +527,7 @@ structure S2TTWParams where
   ee : (BitVec 1)
   ptw : (BitVec 1)
   vm : (BitVec 1)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure TLBContext where
   ss : SecurityState
@@ -545,7 +545,7 @@ structure TLBContext where
   level : Int
   isd128 : Bool
   xs : (BitVec 1)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure TLBRecord where
   context : TLBContext
@@ -554,7 +554,7 @@ structure TLBRecord where
   contigsize : Int
   s1descriptor : (BitVec 128)
   s2descriptor : (BitVec 128)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure AddressDescriptor where
   fault : FaultRecord
@@ -565,7 +565,7 @@ structure AddressDescriptor where
   s2fs1mro : Bool
   mecid : (BitVec 16)
   vaddress : (BitVec 64)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure TranslationInfo where
   regime : Regime
@@ -577,7 +577,7 @@ structure TranslationInfo where
   s1params : (Option S1TTWParams)
   s2params : (Option S2TTWParams)
   memattrs : MemoryAttributes
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure TranslationStartInfo where
   ss : SecurityState
@@ -588,23 +588,23 @@ structure TranslationStartInfo where
   cnp : (BitVec 1)
   accdesc : AccessDescriptor
   size : Int
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive SVECmp where | Cmp_EQ | Cmp_NE | Cmp_GE | Cmp_GT | Cmp_LT | Cmp_LE | Cmp_UN
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 abbrev MAX_VL : Int := 2048
 
 abbrev MAX_PL : Int := 256
 
 inductive SMEExceptionType where | SMEExceptionType_AccessTrap | SMEExceptionType_Streaming | SMEExceptionType_NotStreaming | SMEExceptionType_InactiveZA | SMEExceptionType_InaccessibleZT0
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive GCSInstruction where | GCSInstType_PRET | GCSInstType_POPM | GCSInstType_PRETAA | GCSInstType_PRETAB | GCSInstType_SS1 | GCSInstType_SS2 | GCSInstType_POPCX | GCSInstType_POPX
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MOPSStage where | MOPSStage_Prologue | MOPSStage_Main | MOPSStage_Epilogue
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 abbrev FPCR_Type := (BitVec 64)
 
@@ -630,17 +630,17 @@ structure TMState where
   A : (BitVec 1)
   I : (BitVec 1)
   F : (BitVec 1)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive TMFailure where | TMFailure_CNCL | TMFailure_DBG | TMFailure_ERR | TMFailure_NEST | TMFailure_SIZE | TMFailure_MEM | TMFailure_TRIVIAL | TMFailure_IMP
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive PGSe where | PGS_4KB | PGS_16KB | PGS_64KB
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure GPTTable where
   address : (BitVec 56)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure GPTEntry where
   gpi : (BitVec 4)
@@ -648,52 +648,52 @@ structure GPTEntry where
   contig_size : Int
   level : Int
   pa : (BitVec 56)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive TimeStamp where | TimeStamp_None | TimeStamp_CoreSight | TimeStamp_Physical | TimeStamp_OffsetPhysical | TimeStamp_Virtual
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive OpType where | OpType_Load | OpType_Store | OpType_LoadAtomic | OpType_Branch | OpType_Other
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive CountOp where | CountOp_CLZ | CountOp_CLS | CountOp_CNT
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ExtendType where | ExtendType_SXTB | ExtendType_SXTH | ExtendType_SXTW | ExtendType_SXTX | ExtendType_UXTB | ExtendType_UXTH | ExtendType_UXTW | ExtendType_UXTX
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive FPMaxMinOp where | FPMaxMinOp_MAX | FPMaxMinOp_MIN | FPMaxMinOp_MAXNUM | FPMaxMinOp_MINNUM
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive FPUnaryOp where | FPUnaryOp_ABS | FPUnaryOp_MOV | FPUnaryOp_NEG | FPUnaryOp_SQRT
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive FPConvOp where | FPConvOp_CVT_FtoI | FPConvOp_CVT_ItoF | FPConvOp_MOV_FtoI | FPConvOp_MOV_ItoF | FPConvOp_CVT_FtoI_JS
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive MoveWideOp where | MoveWideOp_N | MoveWideOp_Z | MoveWideOp_K
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ShiftType where | ShiftType_LSL | ShiftType_LSR | ShiftType_ASR | ShiftType_ROR
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive LogicalOp where | LogicalOp_AND | LogicalOp_EOR | LogicalOp_ORR
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive SystemHintOp where | SystemHintOp_NOP | SystemHintOp_YIELD | SystemHintOp_WFE | SystemHintOp_WFI | SystemHintOp_SEV | SystemHintOp_SEVL | SystemHintOp_DGH | SystemHintOp_ESB | SystemHintOp_PSB | SystemHintOp_TSB | SystemHintOp_BTI | SystemHintOp_WFET | SystemHintOp_WFIT | SystemHintOp_CLRBHB | SystemHintOp_GCSB | SystemHintOp_CHKFEAT | SystemHintOp_CSDB
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive PSTATEField where | PSTATEField_DAIFSet | PSTATEField_DAIFClr | PSTATEField_PAN | PSTATEField_UAO | PSTATEField_DIT | PSTATEField_SSBS | PSTATEField_TCO | PSTATEField_SVCRSM | PSTATEField_SVCRZA | PSTATEField_SVCRSMZA | PSTATEField_ALLINT | PSTATEField_PM | PSTATEField_SP
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive TLBILevel where | TLBILevel_Any | TLBILevel_Last
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive TLBIOp where | TLBIOp_DALL | TLBIOp_DASID | TLBIOp_DVA | TLBIOp_IALL | TLBIOp_IASID | TLBIOp_IVA | TLBIOp_ALL | TLBIOp_ASID | TLBIOp_IPAS2 | TLBIPOp_IPAS2 | TLBIOp_VAA | TLBIOp_VA | TLBIPOp_VAA | TLBIPOp_VA | TLBIOp_VMALL | TLBIOp_VMALLS12 | TLBIOp_RIPAS2 | TLBIPOp_RIPAS2 | TLBIOp_RVAA | TLBIOp_RVA | TLBIPOp_RVAA | TLBIPOp_RVA | TLBIOp_RPA | TLBIOp_PAALL
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive TLBIMemAttr where | TLBI_AllAttr | TLBI_ExcludeXS
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure TLBIRecord where
   op : TLBIOp
@@ -711,32 +711,32 @@ structure TLBIRecord where
   d128 : Bool
   ttl : (BitVec 4)
   tg : (BitVec 2)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive VBitOp where | VBitOp_VBIF | VBitOp_VBIT | VBitOp_VBSL | VBitOp_VEOR
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive CompareOp where | CompareOp_GT | CompareOp_GE | CompareOp_EQ | CompareOp_LE | CompareOp_LT
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ImmediateOp where | ImmediateOp_MOVI | ImmediateOp_MVNI | ImmediateOp_ORR | ImmediateOp_BIC
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive ReduceOp where | ReduceOp_FMINNUM | ReduceOp_FMAXNUM | ReduceOp_FMIN | ReduceOp_FMAX | ReduceOp_FADD | ReduceOp_ADD
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive CrossTriggerIn where | CrossTriggerIn_CrossHalt | CrossTriggerIn_PMUOverflow | CrossTriggerIn_RSVD2 | CrossTriggerIn_RSVD3 | CrossTriggerIn_TraceExtOut0 | CrossTriggerIn_TraceExtOut1 | CrossTriggerIn_TraceExtOut2 | CrossTriggerIn_TraceExtOut3
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure TLBLine where
   tlbrecord : TLBRecord
   valid_name : Bool
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure GPTTLBLine where
   gpt_entry : GPTEntry
   valid_name : Bool
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 structure InterruptReq where
   take_SE : Bool
@@ -746,25 +746,25 @@ structure InterruptReq where
   take_FIQ : Bool
   take_vFIQ : Bool
   iesb_req : Bool
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive __InstrEnc where | __A64 | __A32 | __T16 | __T32
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive SRType where | SRType_LSL | SRType_LSR | SRType_ASR | SRType_ROR | SRType_RRX
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive VCGEType where | VCGEType_signed | VCGEType_unsigned | VCGEType_fp
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive VFPNegMul where | VFPNegMul_VNMLA | VFPNegMul_VNMLS | VFPNegMul_VNMUL
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive VCGTtype where | VCGTtype_signed | VCGTtype_unsigned | VCGTtype_fp
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive VBitOps where | VBitOps_VBIF | VBitOps_VBIT | VBitOps_VBSL
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 abbrev HCR_EL2_Type := (BitVec 64)
 
@@ -1162,7 +1162,7 @@ inductive arm_acc_type where
   | SAcc_SPE (_ : Unit)
   | SAcc_GCS (_ : Unit)
   | SAcc_GPTW (_ : Unit)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 abbrev MAIR2_EL1_Type := (BitVec 64)
 
@@ -2247,7 +2247,7 @@ abbrev BRBTGTINJ_EL1_Type := (BitVec 64)
 structure TLBIInfo where
   rec' : TLBIRecord
   shareability : Shareability
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 abbrev MAIR0_Type := (BitVec 32)
 
@@ -2525,7 +2525,7 @@ structure DxB where
   domain : MBReqDomain
   types : MBReqTypes
   nXS : Bool
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Barrier where
   | Barrier_DSB (_ : DxB)
@@ -2534,7 +2534,7 @@ inductive Barrier where
   | Barrier_SSBB (_ : Unit)
   | Barrier_PSSBB (_ : Unit)
   | Barrier_SB (_ : Unit)
-  deriving Inhabited, BEq
+  deriving Inhabited, BEq, Repr
 
 inductive Register : Type where
   | __emulator_termination_opcode
@@ -3928,7 +3928,7 @@ inductive Register : Type where
   | FEAT_AA32EL1_IMPLEMENTED
   | FEAT_AA32EL0_IMPLEMENTED
   | SEE
-  deriving DecidableEq, Hashable
+  deriving DecidableEq, Hashable, Repr
 open Register
 
 abbrev RegisterType : Register → Type
