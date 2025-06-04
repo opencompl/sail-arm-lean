@@ -1,3 +1,8 @@
+import Armv9.Flow
+import Armv9.Vector
+import Armv9.Prelude
+import Armv9.V8Base
+import Armv9.Stubs
 import Armv9.SysregsAutogen
 
 set_option maxHeartbeats 1_000_000_000

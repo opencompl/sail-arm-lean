@@ -8,7 +8,7 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # Statistics
 
-Lines: 801092  
+Lines: 801218  
 Definitions: 33977  
 Inductive definitions: 89  
 Abbreviations: 940  
