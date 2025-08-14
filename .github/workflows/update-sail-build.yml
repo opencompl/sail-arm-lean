@@ -24,7 +24,6 @@ jobs:
         cd ..
 
     - name: System dependencies (ubuntu)
-      if: startsWith(matrix.os, 'ubuntu')
       run: |
         sudo apt install build-essential libgmp-dev z3 cvc4 opam
 
