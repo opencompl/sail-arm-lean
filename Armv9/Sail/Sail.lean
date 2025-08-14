@@ -1,5 +1,5 @@
 import Std.Data.ExtDHashMap
-import Std.Data.HashMap
+import Std.Data.ExtHashMap
 
 namespace Sail
 
@@ -77,7 +77,7 @@ def update (x : BitVec m) (n : Nat) (b : BitVec 1) := updateSubrange' x n _ b
 def updateBE (x : BitVec m) (n : Nat) (b : BitVec 1) := updateSubrange' x (m - n - 1) _ b
 
 def toBin {w : Nat} (x : BitVec w) : String :=
-  List.asString (List.map (fun c => if c then '1' else '0') (List.ofFn (BitVec.getMsb' x)))
+  List.asString (List.map (fun c => if c then '1' else '0') (List.ofFn (BitVec.getMsb x)))
 
 def toFormatted {w : Nat} (x : BitVec w) : String :=
   if (length x % 4) == 0 then
@@ -88,7 +88,7 @@ def toFormatted {w : Nat} (x : BitVec w) : String :=
 def join1 (xs : List (BitVec 1)) : BitVec xs.length :=
   (BitVec.ofBoolListBE (xs.map fun x => x[0])).cast (by simp)
 
-instance : Coe (BitVec (1 * n)) (BitVec n) where
+instance (priority := low) : Coe (BitVec (1 * n)) (BitVec n) where
   coe x := x.cast (by simp)
 
 end BitVec
@@ -379,7 +379,7 @@ variable {Register : Type} {RegisterType : Register → Type} [DecidableEq Regis
 structure SequentialState (RegisterType : Register → Type) (c : ChoiceSource) where
   regs : Std.ExtDHashMap Register RegisterType
   choiceState : c.α
-  mem : Std.HashMap Nat (BitVec 8)
+  mem : Std.ExtHashMap Nat (BitVec 8)
   tags : Unit
   cycleCount : Nat -- Part of the concurrency interface. See `{get_}cycle_count`
   sailOutput : Array String -- TODO: be able to use the IO monad to run
@@ -582,19 +582,19 @@ instance {α α' β β' : Type u} (x : α × β) [CoeT α x.1 α'] [CoeT β x.2 
 instance {α α' : Type u} [∀ x, CoeT α x α'] (xs : List α) : CoeT (List α) xs (List α') where
   coe := List.map (α := α) (β := α') (fun x => x) xs
 
-instance : HAdd (BitVec n) (BitVec m) (BitVec n) where
+instance (priority := low) : HAdd (BitVec n) (BitVec m) (BitVec n) where
   hAdd x y := x + y
 
-instance : HSub (BitVec n) (BitVec m) (BitVec n) where
+instance (priority := low) : HSub (BitVec n) (BitVec m) (BitVec n) where
   hSub x y := x - y
 
-instance : HAnd (BitVec n) (BitVec m) (BitVec n) where
+instance (priority := low) : HAnd (BitVec n) (BitVec m) (BitVec n) where
   hAnd x y := x &&& y
 
-instance : HOr (BitVec n) (BitVec m) (BitVec n) where
+instance (priority := low) : HOr (BitVec n) (BitVec m) (BitVec n) where
   hOr x y := x ||| y
 
-instance : HXor (BitVec n) (BitVec m) (BitVec n) where
+instance (priority := low) : HXor (BitVec n) (BitVec m) (BitVec n) where
   hXor x y := x ^^^ y
 
 instance [GetElem? coll Nat elem valid] : GetElem? coll Int elem (λ c i ↦ valid c i.toNat) where
@@ -603,9 +603,6 @@ instance [GetElem? coll Nat elem valid] : GetElem? coll Int elem (λ c i ↦ val
 
 instance : HPow Int Int Int where
   hPow x n := x ^ n.toNat
-
-instance [BEq α] [Hashable α] : Inhabited (Std.ExtDHashMap α β) where
-  default := ∅
 
 infixl:65 " +i "   => fun (x y : Int) => x + y
 infixl:65 " -i "   => fun (x y : Int) => x - y
